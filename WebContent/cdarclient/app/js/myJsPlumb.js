@@ -236,12 +236,12 @@ function setLinkId(connection,id)
 // Code not Tested
 function bindConnection() {
 	jsPlumb.bind("connection", function(info) {
-		if(isInizialized){
-		scope.addLink(1, info.sourceId.replace(NODE,""), info.targetId.replace(NODE,""),info.connection);
-		}
-		else if(!isInizialized)
-		{
+		if(!isInizialized){
 			setLinkId(info.connection, info.connection.getParameter("id"));
+		}
+		else
+		{
+			scope.addLink(1, info.sourceId.replace(NODE,""), info.targetId.replace(NODE,""),info.connection);
 		}
 	});
 };

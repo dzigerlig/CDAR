@@ -1,24 +1,28 @@
 $(function() {
 	// 6 create an instance when the DOM is ready
 
-	$('#jstree').jstree({
-		"themes" : {
+	$('#jstree').jstree(
+			{
+				"themes" : {
 
-		},
-		"core" : {
-			// so that create works
-			"check_callback" : true
-		},		 
-		"types" : {
-			"default" : {
-		        "icon" : "glyphicon glyphicon-flash"
-		      },
-		      "demo" : {
-		        "icon" : "glyphicon glyphicon-ok"
-		      }
-		},
-		"plugins" : [ "contextmenu", "dnd", "search", "sort", "types" ]
-	});
+				},
+				"core" : {
+					// so that create works
+					"check_callback" : true
+				},
+
+				"types" : {
+						"default" : {
+							"icon" :  "http://jstree.com/tree.png"
+							
+						}
+					
+
+				},
+				"plugins" : [ "contextmenu", "dnd", "search", "sort", "types",
+						"themes" ]
+			});
+	
 
 	var to = false;
 	$('#plugins4_q').keyup(function() {
