@@ -135,6 +135,10 @@ public class KnowledgeNodeDao {
 	public void setLinksAsSource(Set<KnowledgeNodeLinkDao> linksAsSource) {
 		this.linksAsSource = linksAsSource;
 	}
+	
+	public void deleteSourceLink(KnowledgeNodeLinkDao link) {
+		getLinksAsSource().remove(link);
+	}
 
 	public Set<KnowledgeNodeLinkDao> getLinksAsTarget() {
 		return linksAsTarget;
@@ -142,5 +146,9 @@ public class KnowledgeNodeDao {
 
 	public void setLinksAsTarget(Set<KnowledgeNodeLinkDao> linksAsTarget) {
 		this.linksAsTarget = linksAsTarget;
+	}
+	
+	public void deleteTargetLink(KnowledgeNodeLinkDao link) {
+		getLinksAsTarget().remove(link);
 	}
 }
