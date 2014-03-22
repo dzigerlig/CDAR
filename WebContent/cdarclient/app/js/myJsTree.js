@@ -8,24 +8,14 @@ $(function() {
 		"core" : {
 			// so that create works
 			"check_callback" : true
-		},
-		 "dnd" : {
-			    drop_target     : "#tree-container",
-			    drop_check      : function (data) { return true; },
-			    drag_target     : "#tree-container",
-			    drag_check      : function (data) { return { after : true, before : true, inside : true }; }
-			 },
+		},		 
 		"types" : {
-			"#" : {
-				"valid_children" : [ "default" ]
-			},
-			"folder" : {
-				"valid_children" : [ "default", "file" ]
-			},
-			"file" : {
-				"icon" : "dist/themes/default/File.png",
-				"valid_children" : []
-			}
+			"default" : {
+		        "icon" : "glyphicon glyphicon-flash"
+		      },
+		      "demo" : {
+		        "icon" : "glyphicon glyphicon-ok"
+		      }
 		},
 		"plugins" : [ "contextmenu", "dnd", "search", "sort", "types" ]
 	});

@@ -1,7 +1,7 @@
 var scope = angular.element(document.getElementById("treeControllerDiv"));
 
 var mouseOverFlag = false;
-var eleme = $("div.myClass");
+var eleme = $("#tree-container");
 eleme.mouseover(function() {
 	mouseOverFlag = true;
 }).mouseout(function() {
@@ -37,6 +37,7 @@ $(document).bind(
 		function(e, data) {
 
 			if (isMouseOverContainer()) {
+				console.log(data);
 				data.helper.find('.jstree-icon:eq(0)').removeClass('jstree-er')
 						.addClass('jstree-ok');
 				return;
