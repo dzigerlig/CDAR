@@ -28,8 +28,6 @@ public class NodeLink extends BasicEntity {
 		this(klcd.getId(), klcd.getCreationTime(),klcd.getLastModificationTime(),klcd.getKnowledgeSourceNode().getId(),klcd.getKnowledgeTargetNode().getId());
 	}
 
-
-
 	public int getSourceId() {
 		return sourceId;
 	}

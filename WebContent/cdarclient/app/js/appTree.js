@@ -39,7 +39,7 @@ app
 
 							$scope.addLink = function(treeId, sourceId, targetId,connection) {
 								TreeService.addLink.addLink({refTreeId:treeId, sourceId:sourceId,targetId:targetId},function(response) {
-									setLinkId(response,connection);
+									setLinkId(connection,response.id);
 								});
 							};
 

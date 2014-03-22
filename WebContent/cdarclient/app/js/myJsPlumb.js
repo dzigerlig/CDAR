@@ -2,6 +2,7 @@ var lastConnectionID = -1;
 var scope;
 var isInizialized = false;
 var NODE='node';
+var LINK ='link';
 
 function initializeJsPlumb() {
 	scope = angular.element(document.getElementById("treeControllerDiv"))
@@ -18,10 +19,7 @@ function initializeJsPlumb() {
 };
 
 function addHTMLNode(response, e, data) {
-	var newState = $('<div>').attr('id', NODE + response.id).data(
-			"identifier", {
-				identifier : response.id
-			}).addClass('w');
+	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
 
@@ -41,10 +39,7 @@ function addHTMLNode(response, e, data) {
 // imported Nodes
 function drawExistingNodes(data) {
 	jQuery.each(data, function(object) {
-		var newState = $('<div>').attr('id', NODE + this.id).data(
-				"identifier", {
-					identifier : this.id
-				}).addClass('w');
+		var newState = $('<div>').attr('id', NODE + this.id).addClass('w');
 		var title = $('<div>').addClass('title').text(this.title);
 		var connect = $('<div>').addClass('ep');
 		newState.css({
@@ -141,10 +136,11 @@ function makeTarget(newState) {
 	});
 };
 
-function connectNodes(stateSource, stateTarget) {
+function connectNodes(stateSource, stateTarget,id) {
 	jsPlumb.connect({
 		source : stateSource,
 		target : stateTarget,
+		parameters:{"id":id},
 		anchors : 'Perimeter',
 		overlays : [ [ "Arrow", {
 			location : 1,
@@ -163,13 +159,10 @@ function connectNodes(stateSource, stateTarget) {
 	});
 };
 
-function appendElements(title, connect, newState, save) {
+function appendElements(title, connect, newState) {
 	newState.append(title);
 	newState.append(connect);
 	$('#tree-container').append(newState);
-	if (save) {
-		console.log('new Node with id ' + newState[0].id);
-	}
 };
 
 function makeNodesDraggable(newState) {
@@ -181,18 +174,16 @@ function makeNodesDraggable(newState) {
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("click", function(c) {
 		jsPlumb.detach(c);
-		console.log(c);
-
 		if (c.id !== lastConnectionID) {
 			lastConnectionID = c.id;
-			scope.removeLinkById(c.id);
+			scope.removeLinkById(c.id.replace(LINK,""));
 		}
 	});
 };
 
+//unused
 function bindBeforeDroppedConnector() {
 	jsPlumb.bind("beforeDrop", function(c) {
-
 		return true;
 	});
 };
@@ -209,14 +200,14 @@ function removeNodeEvent(newState) {
 		});
 
 		jQuery.each(allTargetConnection, function() {
-			scope.removeLinkById(this.id);
+			scope.removeLinkById(this.id.replace(LINK,""));
 		});
 
 		jQuery.each(allSourceConnection, function() {
-			scope.removeLinkById(this.id);
+			scope.removeLinkById(this.id.replace(LINK,""));
 		});
 
-		scope.removeNodeById(newState.data("identifier").identifier);
+		scope.removeNodeById(newState[0].id.replace(NODE,""));
 
 		jsPlumb.detachAllConnections($(this));
 		$(this).remove();
@@ -227,7 +218,7 @@ function removeNodeEvent(newState) {
 function makeNodeHierarchy(data) {
 	var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
 	jQuery.each(data, function(object) {
-			connectNodes(NODE + this.sourceId, NODE + this.targetId);
+			connectNodes(NODE + this.sourceId, NODE + this.targetId,this.id);
 			direction += NODE + this.sourceId + " -> "+NODE + this.targetId
 					+ ";";		
 	});
@@ -237,20 +228,20 @@ function makeNodeHierarchy(data) {
 };
 
 
-function setLinkId(response,connection) {
-	connection.id=response.id;
-};
-
-function rename(connection,id)
+function setLinkId(connection,id)
 {
-	connection.id=id;
-}
+	connection.id=LINK+id;
+};
 
 // Code not Tested
 function bindConnection() {
 	jsPlumb.bind("connection", function(info) {
 		if(isInizialized){
 		scope.addLink(1, info.sourceId.replace(NODE,""), info.targetId.replace(NODE,""),info.connection);
+		}
+		else if(!isInizialized)
+		{
+			setLinkId(info.connection, info.connection.getParameter("id"));
 		}
 	});
 };

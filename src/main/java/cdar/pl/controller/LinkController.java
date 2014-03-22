@@ -41,7 +41,6 @@ public class LinkController {
 	@Path("/removeLink")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeLink(String id) {
-		System.out.println(id);
 		linkModel.removeLinkById(id);
 		return Response.status(200).build();
 	}
