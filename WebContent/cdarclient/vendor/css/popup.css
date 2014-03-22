@@ -1,0 +1,24 @@
+.popup-box {
+    position: absolute;
+    border-radius: 5px;
+    background: #fff;
+    display: none;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+    z-index: 9999999;
+    font-size: 14px;
+}
+
+.popup-box .top {
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+.popup-box .bottom {
+    background: #eee;
+    border-top: 1px solid #e5e5e5;
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

@@ -1,0 +1,78 @@
+<div class="navbar navbar-inverse navbar-fixed-top"
+	data-role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#/home">CDAR</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li data-ng-show="UserService.isLogged"><a href="#">Login</a></li>
+				<li data-ng-hide="UserService.isLogged"><a
+					data-ng-click="logout()" href="">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container-cdar">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li><a href="#/homeconsumer">Home</a></li>
+					<li><a href="#">Link 2</a></li>
+					<li><a href="#">Link 3</a></li>
+					<li><a href="#">Link 4</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div id="home" class="row">
+					<div class="container">
+						<div class="large-6 large-offset-3">
+							<h1 class="page-header">Project Tree: {{projecttree.name}}</h1>
+							<div class="col-lg-4">
+								<h3>STATIC TREE</h3>
+								<ul>
+									<li data-ng-repeat="node in nodes | orderBy:'id':false"><a href="" data-ng-click="changeNode(node.id)">{{node.title}}</a></li>
+								</ul>
+
+								<h4>Knowledge Tree Add:</h4>
+								<div id="addKnowledgeTree" class="row">
+									<form data-role="form">
+										<div class="col-xs-6">
+											<select class="form-control input-sm" id="myList"
+												data-ng-model="selectedktreeId">
+												<option data-ng-repeat="tree in knowledgetrees | orderBy:'id':false" value="{{tree.id}}">{{tree.name}}</option>
+											</select>
+										</div>
+										<div class="col-xs-6">
+											<button class="btn btn-primary btn-xs" type="submit" data-ng-click="addKnowledgeTree()">add tree</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="col-lg-8">
+								<h3>DYNAMIC TREE</h3>
+							</div>
+							<div class="col-lg-4">
+								<h3>MADE DECISIONS</h3>
+							</div>
+							<div class="col-lg-8">
+								<h3>WikiEntry of Current node</h3>
+								<p data-ng-bind-html="wikiText" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

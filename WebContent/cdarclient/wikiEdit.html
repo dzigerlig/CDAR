@@ -1,0 +1,48 @@
+<div class="navbar navbar-inverse navbar-fixed-top"
+	data-role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">CDAR</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li data-ng-show="UserService.isLogged"><a href="#">Login</a></li>
+				<li data-ng-hide="UserService.isLogged"><a
+					data-ng-click="logout()" href="">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container-cdar">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12 main">
+				<h1 class="page-header">Dashboard</h1>
+				<div id="home" class="row">
+					<div class="container">
+						<div class="large-6 large-offset-3">
+							<div class="small-block-grid">
+								<div id="wiki_entry">
+									<form data-role="form" data-ng-submit="saveWikiEntry()">
+										<a class="btn btn-lg btn-primary btn-block" href="#/wiki">back
+											to read-only</a>
+										<textarea id="wikiArea" name="wikiArea" cols="35" rows="4"
+											data-ng-model="wiki.text"></textarea>
+										<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

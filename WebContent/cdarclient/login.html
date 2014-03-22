@@ -1,0 +1,23 @@
+<div class="container-fluid">
+	<div class="col-md-12">
+		<div id="login">
+			<div class="container">
+				<form id="formLogin" class="form-signin" data-role="form"
+					data-ng-submit="login()">
+					<h2 class="form-signin-heading">Please sign in</h2>
+					<input class="form-control" placeholder="Username" required
+						autofocus data-ng-model="credentials.username" /> <input
+						type="password" class="form-control" placeholder="Password"
+						required data-ng-model="credentials.password" />
+					<div class="checkbox">
+						<label><input type="checkbox" data-ng-model="chkbKnowledgeProducer"><b>Log in as Knowledge Producer</b></label>
+					</div>
+					<button class="btn btn-lg btn-success btn-block" type="submit">Sign
+						in</button>
+					<a class="btn btn-lg btn-primary btn-block" href="#/registration">Register</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

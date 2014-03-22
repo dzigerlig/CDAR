@@ -1,0 +1,152 @@
+app.factory('KnowledgeTreeService', function($resource) {
+	return $resource('../webapi/ktree/:action/1/:treeid', {}, {
+		'query' : {
+			method : 'GET',
+			isArray : true
+		},
+		'postEntry' : {
+			method : 'POST'
+		},
+		'removeTree' : {
+			method : 'GET',
+			params: {
+				action: 'delete'
+					}
+		},
+		'getTree' : {
+			method : 'GET',
+			isArray : false
+		}
+	});
+});
+
+app.factory('ProjectTreeService', function($resource) {
+	return $resource('../webapi/ptree/:action/1/:treeid/:ktreeid/', {}, {
+		'query' : {
+			method : 'GET',
+			isArray : true
+		},
+		'postEntry' : {
+			method : 'POST'
+		},
+		'removeTree' : {
+			method : 'GET',
+			params: {
+				action: 'delete'
+					}
+		},
+		'getTree' : {
+			method : 'GET',
+			isArray : false
+		},
+		'copyTree' : {
+			method : 'GET',
+			isArray : false,
+			params: {
+				action: 'copy'
+			}
+		},
+		'getNodes' : {
+			method : 'GET',
+			isArray : true,
+			params: {
+				action: 'nodes'
+			}
+		}
+	});
+});
+
+app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'ProjectTreeService', 'UserService', function ($scope, AuthenticationService, ProjectTreeService, UserService) {
+	$scope.projectTrees;
+	$scope.newTreeName = "";
+	$scope.UserService = UserService;
+	
+	var reloadTrees = function() {
+		ProjectTreeService.query(function(response) {
+			$scope.projectTrees = response;
+		});
+	};
+	
+	reloadTrees();
+	
+	$scope.addNewTree = function() {
+		ProjectTreeService.postEntry($scope.newTreeName, function(response) {
+			if (response[0] == 1) {
+				$scope.newTreeName = '';
+				reloadTrees();
+			} else {
+				alert("Error: ProjectTree NOT added!");
+			}
+		});
+	};
+	
+	$scope.deleteTree = function(id) {
+		ProjectTreeService.removeTree({treeid : id}, function(response) {
+			reloadTrees();
+		});
+	};
+	
+	$scope.showTree = function(id) {
+		$location.path('/projecttree/' + id);
+	};
+
+    $scope.logout = function () {
+        AuthenticationService.logout();
+    };
+}]);
+
+app.factory('WikiService', function($resource) {
+	return $resource('../webapi/wiki/:role/:nodeid/', {}, {
+		'getWikiEntry' : {
+			method : 'GET'
+		},
+		'postEntry' : {
+			method : 'POST'
+		}
+	});
+});
+
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'KnowledgeTreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, KnowledgeTreeService, UserService, WikiService) {
+	$scope.UserService = UserService;
+	$scope.projecttree;
+	$scope.nodes;
+	$scope.knowledgetrees;
+	$scope.selectedktreeId;
+	
+	$scope.wikiText = "no wiki entry selected";
+	
+	var reloadTree = function() {
+		ProjectTreeService.getTree({treeid:$routeParams.treeId}, function(response) {
+			$scope.projecttree = response;
+		});
+		
+		ProjectTreeService.getNodes({treeid:$routeParams.treeId}, function(response) {
+			$scope.nodes = response;
+		});
+	};
+	
+	$scope.changeNode = function(id) {
+		$scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+		WikiService.getWikiEntry({role:'consumer', nodeid: id}, function(response) {
+			$scope.wikiText = response.wikiContentHtml;
+		});
+	};
+	
+	reloadTree();
+	
+	KnowledgeTreeService.query(function(response) {
+		$scope.knowledgetrees = response;
+	});
+	
+	$scope.addKnowledgeTree = function() {
+		if (typeof($scope.selectedktreeId) != "undefined") {
+			ProjectTreeService.copyTree({treeid : $routeParams.treeId, ktreeid : $scope.selectedktreeId}, function(response) {
+				reloadTree();
+			});
+		}
+	};
+	
+    $scope.logout = function () {
+        AuthenticationService.logout();
+    };
+}]);
