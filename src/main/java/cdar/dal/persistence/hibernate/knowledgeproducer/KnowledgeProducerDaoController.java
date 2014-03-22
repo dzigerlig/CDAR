@@ -249,7 +249,45 @@ public class KnowledgeProducerDaoController {
 			return -1;
 		}
 	}
-
+	
+	public int removeKnowledgeNodeLink(int linkid) {
+		try {
+			KnowledgeNodeLinkDao knld = getKnowledgeNodeLink(linkid);
+			
+			int targetNodeId = knld.getKnowledgeTargetNode().getId();
+			int sourceNodeId = knld.getKnowledgeSourceNode().getId();
+			KnowledgeNodeDao targetNode = getKnowledgeNodeById(targetNodeId);
+			KnowledgeNodeDao sourceNode = getKnowledgeNodeById(sourceNodeId);
+			
+			sourceNode.deleteSourceLink(knld);
+			targetNode.deleteTargetLink(knld);
+			
+			Session session = HibernateUtil.getSessionFactory()
+					.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.update(sourceNode);
+			session.update(targetNode);
+			tx.commit();
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Query q = session.createQuery("delete KnowledgeNodeLinkDao where id = "
+					+ linkid);
+			q.executeUpdate();
+			tx.commit();
+			return 0;
+		} catch (RuntimeException e) {
+			try {
+				Session session = HibernateUtil.getSessionFactory()
+						.getCurrentSession();
+				if (session.getTransaction().isActive())
+					session.getTransaction().rollback();
+			} catch (HibernateException e1) {
+				System.out.println("Error rolling back transaction");
+			}
+			return -1;
+		}
+	}
+	
 	public void addKnowledgeSubNode(int nodeId, String subNodeTitle) {
 		KnowledgeNodeDao node = getKnowledgeNodeById(nodeId);
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
