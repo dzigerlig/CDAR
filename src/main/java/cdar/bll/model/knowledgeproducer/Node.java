@@ -16,9 +16,9 @@ public class Node extends WikiEntity implements Serializable {
 	}
 
 	public Node(int id, Date creationDate, Date lastModification,
-			String title, String wikititle, int refTree, int status) {
+			String title, String wikititle, int refTreeId, int status) {
 		super(id, creationDate, lastModification, title, wikititle);
-		this.refTreeId = refTree;
+		this.refTreeId = refTreeId;
 		this.status = status;
 	}
 	
@@ -26,12 +26,12 @@ public class Node extends WikiEntity implements Serializable {
 		this(knd.getId(), knd.getCreationTime(),knd.getLastModificationTime(),knd.getTitle(),knd.getWikititle(),knd.getKnowledgeTree().getId(),0);
 	}
 
-	public int getRefTree() {
+	public int getRefTreeId() {
 		return refTreeId;
 	}
 
-	public void setRefTree(int refTree) {
-		this.refTreeId = refTree;
+	public void setRefTreeId(int refTreeId) {
+		this.refTreeId = refTreeId;
 	}
 
 	public int getStatus() {

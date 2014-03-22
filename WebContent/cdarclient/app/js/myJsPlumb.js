@@ -22,7 +22,7 @@ function addHTMLNode(response, e, data) {
 			"identifier", {
 				identifier : response.id
 			}).addClass('w');
-	var title = $('<div>').addClass('title').text(data.element.innerText);
+	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
 
 	newState.css({
@@ -239,7 +239,6 @@ function makeNodeHierarchy(data) {
 
 function setLinkId(response,connection) {
 	connection.id=response.id;
-	console.log(connection.id);
 };
 
 function rename(connection,id)

@@ -1,5 +1,6 @@
 package cdar.pl.controller;
 
+
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -23,11 +24,12 @@ public class NodeController{
 		return nodeModel.getNodes();
 	}
 	
-	@GET
+	@POST
 	@Path("/addNode")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Node addNode() {
-		return nodeModel.addNode();
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Node addNode(Node n) {
+		System.out.println(n.getTitle()+": "+n.getRefTreeId());
+		return nodeModel.addNode(n);
 	}
 	
 	@POST

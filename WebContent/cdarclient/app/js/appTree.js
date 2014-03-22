@@ -27,7 +27,8 @@ app
 							});
 
 							$scope.addNode = function(e,data) {
-								TreeService.addNode.addNode(function(response) {
+								console.log(data);
+								TreeService.addNode.addNode({refTreeId:1,title:data.element.innerText},function(response) {
 									addHTMLNode(response,e,data);
 								});
 							};
@@ -59,7 +60,7 @@ app.factory('TreeService', function($resource) {
 		addNode : $resource('../webapi/nodes/addNode',
 				{}, {
 					'addNode' : {
-						method : 'GET',
+						method : 'POST',
 							isArray:false
 					}
 				}),
@@ -98,7 +99,6 @@ app.factory('TreeService', function($resource) {
 
 function getLinks(TreeService){
 	TreeService.getLinks.getLinks(function(response) {
-		console.log('2');
 		makeNodeHierarchy(response);
 		w_launch();
 	});

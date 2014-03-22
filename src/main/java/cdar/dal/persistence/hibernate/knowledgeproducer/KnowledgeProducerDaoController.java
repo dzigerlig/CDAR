@@ -203,7 +203,8 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 	
-	public void addKnowledgeNode(int treeId, String nodeTitle) {
+	
+	public KnowledgeNodeDao addKnowledgeNode(int treeId, String nodeTitle) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -211,9 +212,11 @@ public class KnowledgeProducerDaoController {
 		KnowledgeNodeDao newNode = new KnowledgeNodeDao(
 				nodeTitle);
 		newNode.setKnowledgeTree(tree);
+		
 		tree.getKnowledgeNodes().add(newNode);
 		session.update(tree);
 		tx.commit();
+		return newNode;
 	}
 
 	public int removeKnowledgeNode(int ktreeid, int nodeId) {

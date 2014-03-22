@@ -28,7 +28,7 @@ function drag(ev) {
 
 function drop(ev) {
 	if (ev.target.id.indexOf("node") == -1) {
-		scope.addNode(ev);
+		scope.addNode(ev1);
 	}
 }
 
