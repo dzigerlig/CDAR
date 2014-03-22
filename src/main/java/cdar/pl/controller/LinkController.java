@@ -40,7 +40,7 @@ public class LinkController {
 	@POST
 	@Path("/removeLink")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeLink(String id) {
+	public Response removeLink(int id) {
 		linkModel.removeLinkById(id);
 		return Response.status(200).build();
 	}

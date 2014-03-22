@@ -31,9 +31,11 @@ public class LinkModel {
 		return ln;
 	}
 	
-	public void removeLinkById(String id)
+	public void removeLinkById(int id)
 	{
-		System.out.println("Link "+id+" removed");
+		System.out.println("remove link"+id);
+
+		kpdc.removeKnowledgeNodeLink(id);
 	}
 	
 	public NodeLink addLink(NodeLink nl)

@@ -28,9 +28,8 @@ public class NodeModel {
 	}
 
 	public void removeNodeById(int id) {
+		System.out.println("remove node"+id);
 		kpdc.removeKnowledgeNode(1, id);
-		System.out.println("Node " + id + " removed");
-		//kpdc.removeKnowledgeNode(1, id);
 	}
 
 	public Node addNode(Node n)	
