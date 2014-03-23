@@ -15,7 +15,11 @@ $(function() {
 						"default" : {
 							"icon" :  "http://jstree.com/tree.png"
 							
-						}
+						},
+				"demo" : {
+					"icon" :  ""
+					
+				}
 					
 
 				},
