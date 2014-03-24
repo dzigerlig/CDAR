@@ -1,0 +1,54 @@
+<div class="navbar navbar-inverse navbar-fixed-top"
+	data-role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#/home">CDAR</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li data-ng-hide="UserService.isLoggedIn()"><a href="#">Login</a></li>
+				<li data-ng-show="UserService.isLoggedIn()"><a
+					data-ng-click="logout()" href="" class="btn">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container-cdar">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li><a href="#/homeconsumer">Home</a></li>
+					<li><a href="#">Link 2</a></li>
+					<li><a href="#">Link 3</a></li>
+					<li><a href="#">Link 4</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div id="home" class="row">
+					<div class="container">
+						<div class="large-6 large-offset-3">
+							<h1>CDAR - Knowledge Consumer</h1>
+							<div class="col-lg-12">&nbsp;</div>
+							<div class="col-lg-6">
+								<h2>Project Trees</h2>
+							</div>
+							<div class="col-lg-6">
+								<h3>Entscheidungs Log</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

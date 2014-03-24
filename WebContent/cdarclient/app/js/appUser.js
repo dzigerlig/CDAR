@@ -24,7 +24,8 @@ app.factory('AuthenticationService', function($log, $resource, $location) {
 app.factory('UserService', [ function () {
 	return {
 		user : $.cookie('cdar'),
-		isLoggedIn : function() { return this.user.id!=-1; }
+		isLoggedIn : function() { return this.user.id!=-1; },
+		isProducer : true
 	};
 } ]);
 
@@ -51,6 +52,7 @@ app.controller("LoginController", function($scope, $location,
 					$location.path('/homeproducer');
 				} else {
 					$location.path('/homeconsumer');
+					UserService.isProducer = false;
 				}
 			} else {
 				alert("wrong username/password combination");

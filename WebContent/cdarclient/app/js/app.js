@@ -28,6 +28,12 @@ app.config(function ($routeProvider,$httpProvider) {
         controller: 'HomeConsumerController',
         needsLogin: true
     });
+    
+    $routeProvider.when('/homenew', {
+        templateUrl: 'knowledgeconsumer/newhome.html',
+        controller: 'HomeConsumerController',
+        needsLogin: true
+    });
 
     $routeProvider.when('/tree', {
         templateUrl: 'tree.html',
