@@ -1,0 +1,36 @@
+
+<body>
+	<div id="wrapper">
+
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand"><a href="#/homeconsumer">CDAR</a></li>
+				<li><a href="#/homeconsumer">Overview</a></li>
+				<li><a href="#">Account</a></li>
+				<li><a href="#/logout">Logout</a></li>
+			</ul>
+		</div>
+
+		<div id="page-content-wrapper">
+			<div class="content-header">
+				<h1>
+					<a id="menu-toggle" class="btn btn-default"><i
+						class="icon-reorder"></i></a> Account settings:
+				</h1>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-4">
+						ACCOUNT
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>
+</body>

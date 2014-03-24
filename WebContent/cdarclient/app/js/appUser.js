@@ -82,3 +82,9 @@ app.controller("RegistrationController", function($scope, $location,
 		});
 	};
 });
+
+app.controller("AccountController", function($scope, $location,
+		AuthenticationService, md5, UserService) {
+	
+	
+});

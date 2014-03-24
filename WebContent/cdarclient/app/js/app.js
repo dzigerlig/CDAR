@@ -29,12 +29,6 @@ app.config(function ($routeProvider,$httpProvider) {
         needsLogin: true
     });
     
-    $routeProvider.when('/homenew', {
-        templateUrl: 'knowledgeconsumer/newhome.html',
-        controller: 'HomeConsumerController',
-        needsLogin: true
-    });
-
     $routeProvider.when('/tree', {
         templateUrl: 'tree.html',
         controller: 'TreeController',
@@ -56,6 +50,12 @@ app.config(function ($routeProvider,$httpProvider) {
     $routeProvider.when('/projecttree/:treeId', {
     	templateUrl: 'knowledgeconsumer/projecttree.html',
     	controller: 'ProjectTreeController',
+    	needsLogin: true
+    });
+    
+    $routeProvider.when('/account', {
+    	templateUrl: 'user/account.html',
+    	controller: 'AccountController',
     	needsLogin: true
     });
 /*
