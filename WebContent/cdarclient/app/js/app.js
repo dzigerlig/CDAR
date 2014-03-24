@@ -4,7 +4,7 @@ app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $.cookie.json = true;
-
+    
     $routeProvider.when('/login', {
         templateUrl: 'login.html',
         controller: 'LoginController',
@@ -16,7 +16,7 @@ app.config(function ($routeProvider,$httpProvider) {
         controller: 'RegistrationController',
         needsLogin: false
     });
-
+    
     $routeProvider.when('/homeproducer', {
         templateUrl: 'knowledgeproducer/home.html',
         controller: 'HomeProducerController',
