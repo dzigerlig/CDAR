@@ -41,7 +41,7 @@
 											<tr
 												data-ng-repeat="tree in knowledgeTrees | orderBy:'id':false">
 												<td>{{$index+1}}</td>
-												<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
+												<td><a href="#/knowledgetree/{{tree.id}}">{{tree.name}}</a></td>
 												<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
 														Tree</a></td>
 											</tr>

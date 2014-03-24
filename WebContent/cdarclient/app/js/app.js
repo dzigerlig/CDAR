@@ -58,19 +58,13 @@ app.config(function ($routeProvider,$httpProvider) {
     	controller: 'AccountController',
     	needsLogin: true
     });
-/*
-    $routeProvider.when('/knowledgetrees', {
-        templateUrl: 'knowledgeproducer/knowledgetrees.html',
-        controller: 'KnowledgeTreesController',
-        needsLogin: true
-    });
     
     $routeProvider.when('/knowledgetree/:treeId', {
     	templateUrl: 'knowledgeproducer/knowledgetree.html',
     	controller: 'KnowledgeTreeController',
     	needsLogin: true
     });
-*/
+
     $routeProvider.otherwise({
         redirectTo: '/login'
     });

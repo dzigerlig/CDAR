@@ -1,57 +1,53 @@
-<div class="navbar navbar-inverse navbar-fixed-top"
-	data-role="navigation">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#/home">CDAR</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<li data-ng-show="UserService.isLogged"><a href="#">Login</a></li>
-				<li data-ng-hide="UserService.isLogged"><a
-					data-ng-click="logout()" href="">Logout</a></li>
+
+<body>
+	<div id="wrapper">
+
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand"><a href="#/homeproducer">CDAR</a></li>
+				<li><a href="#/homeproducer">Overview</a></li>
+				<li><a href="#/account">Account</a></li>
+				<li><a href="#/logout">Logout</a></li>
 			</ul>
 		</div>
-	</div>
-</div>
 
-<div class="container-cdar">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar">
-					<li><a href="#/home">Home</a></li>
-					<li><a href="#/knowledgetrees">Knowledge Trees</a></li>
-					<li><a href="#">Link 2</a></li>
-					<li><a href="#">Link 3</a></li>
-					<li><a href="#">Link 4</a></li>
-				</ul>
+		<div id="page-content-wrapper">
+			<div class="content-header">
+				<h1>
+					<a id="menu-toggle" class="btn btn-default"><i
+						class="icon-reorder"></i></a>Knowledge Tree: {{knowledgetree.name}}
+				</h1>
 			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div id="home" class="row">
-					<div class="container">
-						<div class="large-6 large-offset-3">
-							<h1 class="page-header">Knowledge Tree: {{knowledgetree.name}}</h1>
-							<div class="col-lg-12"><h3>DYNAMIC TREE</h3></div>
-							<div class="col-lg-4"><h3>STATIC TREE</h3></div>
-							<div class="col-lg-4"><h3>MADE DECISIONS</h3></div>
-							<div class="col-lg-4">
-								<h3>Users in System:</h3>
-								<ul data-ng-repeat="user in users" class="list-group">
-									<li class="list-group-item">{{user.username}}</li>
-								</ul>
-							</div>
-						</div>
+			<!-- Keep all page content within the page-content inset div! -->
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-4">
+						<h3>STATIC TREE</h3>
+						<ul>
+							<li data-ng-repeat="node in nodes | orderBy:'id':false"><a
+								href="" data-ng-click="changeNode(node.id)">{{node.title}}</a></li>
+						</ul>
+					</div>
+					<div class="col-md-8">
+						<h3>DYNAMIC TREE</h3>
+					</div>
+					</div>
+					<div class="row">
+					<div class="col-md-12">
+						<h3>MADE DECISIONS</h3>
+					</div>
+					<div class="col-md-12">
+						<h3>WikiEntry of Current node</h3>
+						<p class="well" data-ng-bind-html="wikiText" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>
+</body>

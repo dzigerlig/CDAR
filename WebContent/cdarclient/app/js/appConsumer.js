@@ -1,25 +1,3 @@
-app.factory('KnowledgeTreeService', function($resource) {
-	return $resource('../webapi/ktree/:action/1/:treeid', {}, {
-		'query' : {
-			method : 'GET',
-			isArray : true
-		},
-		'postEntry' : {
-			method : 'POST'
-		},
-		'removeTree' : {
-			method : 'GET',
-			params: {
-				action: 'delete'
-					}
-		},
-		'getTree' : {
-			method : 'GET',
-			isArray : false
-		}
-	});
-});
-
 app.factory('ProjectTreeService', function($resource) {
 	return $resource('../webapi/ptree/:action/1/:treeid/:ktreeid/', {}, {
 		'query' : {

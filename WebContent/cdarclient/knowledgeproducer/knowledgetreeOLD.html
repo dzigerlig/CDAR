@@ -12,8 +12,8 @@
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li data-ng-hide="UserService.isLoggedIn()"><a href="#">Login</a></li>
-				<li data-ng-show="UserService.isLoggedIn()"><a
+				<li data-ng-show="UserService.isLogged"><a href="#">Login</a></li>
+				<li data-ng-hide="UserService.isLogged"><a
 					data-ng-click="logout()" href="">Logout</a></li>
 			</ul>
 		</div>
@@ -36,38 +36,16 @@
 				<div id="home" class="row">
 					<div class="container">
 						<div class="large-6 large-offset-3">
-							<h1 class="page-header">Your Knowledge Trees:</h1>
-							<form id="formAddTree" data-role="form"
-								data-ng-submit="addNewTree()">
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th>Name</th>
-											<th>Delete</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr
-											data-ng-repeat="tree in knowledgeTrees | orderBy:'id':false">
-											<td>{{$index+1}}</td>
-											<td><a href="#/knowledgetree/{{tree.id}}">{{tree.name}}</a></td>
-											<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
-													Tree</a></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td><div class="input-append">
-													<input class="form-horizontal" placeholder="Treename" required
-														autofocus data-ng-model="newTreeName" />
-													<button class="btn btn-success" type="submit">Add
-														tree</button>
-												</div></td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
-							</form>
+							<h1 class="page-header">Knowledge Tree: {{knowledgetree.name}}</h1>
+							<div class="col-lg-12"><h3>DYNAMIC TREE</h3></div>
+							<div class="col-lg-4"><h3>STATIC TREE</h3></div>
+							<div class="col-lg-4"><h3>MADE DECISIONS</h3></div>
+							<div class="col-lg-4">
+								<h3>Users in System:</h3>
+								<ul data-ng-repeat="user in users" class="list-group">
+									<li class="list-group-item">{{user.username}}</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
