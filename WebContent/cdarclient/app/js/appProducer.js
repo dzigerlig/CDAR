@@ -58,13 +58,27 @@ app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTree
 	};
 }]);
 
-app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'UserService',
-                                        		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, UserService) {
+app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService',
+                                        		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, WikiService) {
 	$scope.knowledgetree;
+	$scope.nodes;
+	
+	$scope.wikiText = "no wiki entry selected";
 	
 	KnowledgeTreeService.getTree({treeid:$routeParams.treeId}, function(response) {
 		$scope.knowledgetree = response;
 	});
+	
+	KnowledgeTreeService.getNodes({treeid:$routeParams.treeId}, function(response) {
+		$scope.nodes = response;
+	});
+	
+	$scope.changeNode = function(id) {
+		$scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+		WikiService.getWikiEntry({role:'producer', nodeid: id}, function(response) {
+			$scope.wikiText = response.wikiContentHtml;
+		});
+	};
 }]);
 
 /*

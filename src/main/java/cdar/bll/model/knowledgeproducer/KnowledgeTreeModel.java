@@ -1,9 +1,10 @@
 package cdar.bll.model.knowledgeproducer;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.model.knowledgeconsumer.ProjectNode;
 import cdar.bll.model.user.User;
+import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
@@ -37,5 +38,14 @@ public class KnowledgeTreeModel {
 
 	public KnowledgeNode getKnowledgeNodeById(int nodeid) {
 		return new KnowledgeNode(kpdc.getKnowledgeNodeById(nodeid));
+	}
+
+	public Set<KnowledgeNode> getKnowledgeNodes(int ktreeid) {
+		Set<KnowledgeNode> set = new HashSet<KnowledgeNode>();
+		
+		for (KnowledgeNodeDao pnd : kpdc.getKnowledgeTreeById(ktreeid).getKnowledgeNodes()) {
+			set.add(new KnowledgeNode(pnd));
+		}
+		return set;
 	}
 }

@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import cdar.bll.model.knowledgeproducer.KnowledgeNode;
 import cdar.bll.model.knowledgeproducer.KnowledgeTreeModel;
 import cdar.bll.model.knowledgeproducer.Tree;
 
@@ -43,5 +44,12 @@ public class KnowledgeTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
 		return ktm.getKnowledgeTreeById(ktreeid);
+	}
+	
+	@GET
+	@Path("nodes/{uid}/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<KnowledgeNode> getNodes(@PathParam("ktreeid") int ktreeid) {
+		return ktm.getKnowledgeNodes(ktreeid);
 	}
 }
