@@ -63,10 +63,6 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 			reloadTrees();
 		});
 	};
-	
-	$scope.showTree = function(id) {
-		$location.path('/projecttree/' + id);
-	};
 
     $scope.logout = function () {
         AuthenticationService.logout();

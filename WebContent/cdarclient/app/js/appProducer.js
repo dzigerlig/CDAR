@@ -27,28 +27,6 @@ app.factory('KnowledgeTreeService', function($resource) {
 	});
 });
 
-app.factory('KnowledgeTreeService', function($resource) {
-	return $resource('http://localhost:8080/CDAR/webapi/ktree/:action/1/:treeid', {}, {
-		'query' : {
-			method : 'GET',
-			isArray : true
-		},
-		'postEntry' : {
-			method : 'POST'
-		},
-		'removeTree' : {
-			method : 'GET',
-			params: {
-				action: 'delete'
-					}
-		},
-		'getTree' : {
-			method : 'GET',
-			isArray : false
-		}
-	});
-});
-
 app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTreeService', 'AuthenticationService',
                                       		function($scope, $location, KnowledgeTreeService, AuthenticationService) {
 	$scope.knowledgeTrees;
