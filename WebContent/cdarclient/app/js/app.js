@@ -86,12 +86,3 @@ app.run(function ($rootScope, $location, AuthenticationService) {
         event.preventDefault();
     });
 });
-
-app.controller("HomeProducerController", function ($scope, AuthenticationService) {
-    $scope.title = "Hello Producer!";
-    $scope.message = "Mouse Over these images to see a directive at work!";
-
-    $scope.logout = function () {
-        AuthenticationService.logout();
-    };
-});

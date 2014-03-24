@@ -1,45 +1,4 @@
-/*app.controller("KnowledgeTreesController", [ '$scope', '$location', 'TreeService', 'AuthenticationService',
-                               		function($scope, $location, TreeService, AuthenticationService) {
-	$scope.knowledgeTrees;
-	$scope.newTreeName = "";
-	
-	var reloadTrees = function() {
-		TreeService.query(function(response) {
-			$scope.knowledgeTrees = response;
-		});
-	};
-	
-	reloadTrees();
-	
-	$scope.addNewTree = function() {
-		TreeService.postEntry($scope.newTreeName, function(response) {
-			if (response[0] == 1) {
-				$scope.newTreeName = '';
-				reloadTrees();
-			} else {
-				alert("Error: KnowledgeTree NOT added!");
-			}
-		});
-	};
-	
-	$scope.deleteTree = function(id) {
-		TreeService.removeTree({treeid : id}, function(response) {
-			reloadTrees();
-		});
-	};
-	
-	$scope.showTree = function(id) {
-		$location.path('/knowledgetree/' + id);
-	};
-	
-	$scope.logout = function () {
-        AuthenticationService.logout();
-    };
-
-}]);*/
-
-
-/*app.factory('TreeService', function($resource) {
+app.factory('KnowledgeTreeService', function($resource) {
 	return $resource('http://localhost:8080/CDAR/webapi/ktree/:action/1/:treeid', {}, {
 		'query' : {
 			method : 'GET',
@@ -60,6 +19,47 @@
 		}
 	});
 });
+
+app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTreeService', 'AuthenticationService',
+                                      		function($scope, $location, KnowledgeTreeService, AuthenticationService) {
+	$scope.knowledgeTrees;
+	$scope.newTreeName = "";
+	
+	var reloadTrees = function() {
+		KnowledgeTreeService.query(function(response) {
+			$scope.knowledgeTrees = response;
+		});
+	};
+	
+	reloadTrees();
+	
+	$scope.addNewTree = function() {
+		KnowledgeTreeService.postEntry($scope.newTreeName, function(response) {
+			if (response[0] == 1) {
+				$scope.newTreeName = '';
+				reloadTrees();
+			} else {
+				alert("Error: KnowledgeTree NOT added!");
+			}
+		});
+	};
+	
+	$scope.deleteTree = function(id) {
+		KnowledgeTreeService.removeTree({treeid : id}, function(response) {
+			reloadTrees();
+		});
+	};
+	
+	$scope.showTree = function(id) {
+		$location.path('/knowledgetree/' + id);
+	};
+}]);
+
+
+
+
+
+/*
 
 app.factory('UserService', function($resource) {
 	return $resource('../webapi/users', {}, {
