@@ -56,3 +56,28 @@ $(function() {
 		console.log(data.selected);
 	});
 });
+
+
+function demo_create() {
+	var ref = $('#jstree_demo').jstree(true),
+		sel = ref.get_selected();
+	if(!sel.length) { return false; }
+	sel = sel[0];
+	sel = ref.create_node(sel, {"type":"file"});
+	if(sel) {
+		ref.edit(sel);
+	}
+};
+function demo_rename() {
+	var ref = $('#jstree_demo').jstree(true),
+		sel = ref.get_selected();
+	if(!sel.length) { return false; }
+	sel = sel[0];
+	ref.edit(sel);
+};
+function demo_delete() {
+	var ref = $('#jstree_demo').jstree(true),
+		sel = ref.get_selected();
+	if(!sel.length) { return false; }
+	ref.delete_node(sel);
+};
