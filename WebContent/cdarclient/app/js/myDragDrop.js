@@ -26,9 +26,10 @@ function drag(ev) {
 	ev.dataTransfer.setData("Text", ev.target.id);
 }
 
+
 function drop(ev) {
 	if (ev.target.id.indexOf("node") == -1) {
-		scope.addNode(ev1);
+		//scope.addNode(ev1);
 	}
 }
 
