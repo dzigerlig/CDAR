@@ -25,6 +25,7 @@ public class KnowledgeTreeController {
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
 	
+	//Dynamic Tree
 	@GET
 	@Path("ktree")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -52,6 +53,37 @@ public class KnowledgeTreeController {
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
 		return ktm.getKnowledgeTreeById(ktreeid);
 	}
+	
+	//Static Tree
+	/*
+	@GET
+	@Path("ktree")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
+		return ktm.getKnowledgeTreesByUid(uid);
+	}
+	
+	@GET
+	@Path("ktree/delete/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public int deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
+		return ktm.removeKnowledgeTreeById(uid, ktreeid);
+	}
+	
+	@POST
+	@Path("ktree")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Integer addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
+		return ktm.addKnowledgeTreeByUid(uid, treeName);
+	}
+	
+	@GET
+	@Path("ktree/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
+		return ktm.getKnowledgeTreeById(ktreeid);
+	}*/
+	
 	
 	//Nodes
 	@GET
