@@ -129,12 +129,11 @@ app
 								AuthenticationService, WikiService, UserService) {
 							initializeJsPlumb();
 							
-
 							$scope.knowledgetree;
 							$scope.nodes;
 							$scope.UserService = UserService;
 							$scope.selectedNode = 0;
-
+							
 							$scope.wikiHtmlText = "no wiki entry selected";
 							$scope.wikiEntry;
 
