@@ -105,26 +105,6 @@ app.factory('TreeService', function($resource) {
 		}
 	});
 });
-/*
- * app.factory('TreeService', function($resource) { return { getNodes :
- * $resource('../webapi/nodes', {}, { 'getNodes' : { method : 'GET', isArray :
- * true } }),
- * 
- * addNode : $resource('../webapi/nodes/addNode', {}, { 'addNode' : { method :
- * 'POST', isArray:false } }),
- * 
- * removeNode : $resource( '../webapi/nodes/removeNode', {}, { 'removeNode' : {
- * method : 'POST' } }),
- * 
- * getLinks : $resource('../webapi/links', {}, { 'getLinks' : { method : 'GET',
- * isArray : true } }),
- * 
- * addLink : $resource('../webapi/links/addLink', {}, { 'addLink' : { method :
- * 'POST', params: {}, isArray: false } }),
- * 
- * removeLink : $resource( '../webapi/links/removeLink', {}, { 'removeLink' : {
- * method : 'POST' } }) }; });
- */
 
 function getLinks(TreeService) {
 	TreeService.getLinks(function(response) {
