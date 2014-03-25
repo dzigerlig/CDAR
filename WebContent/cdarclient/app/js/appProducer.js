@@ -59,7 +59,7 @@ app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTree
 	};
 }]);
 
-app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService', 'UserSerivce',
+app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService', 'UserService',
                                         		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, WikiService, UserService) {
 	$scope.knowledgetree;
 	$scope.nodes;
