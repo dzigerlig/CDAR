@@ -77,7 +77,7 @@ app.config(function ($routeProvider,$httpProvider) {
 });
 
 
-app.run(function ($rootScope, $location, AuthenticationService) {
+app.run(function ($rootScope, $location, AuthenticationService, $templateCache) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!$.cookie('cdar') && next.needsLogin) {
             $location.url("/login");
