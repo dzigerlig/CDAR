@@ -1,74 +1,74 @@
 
 <body>
-    <div id="wrapper">
+	<div id="wrapper">
 
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"><a href="#/homeconsumer">CDAR</a>
-                </li>
-                <li><a href="#/homeconsumer">Overview</a>
-                </li>
-                <li><a href="#/account">Account</a>
-                </li>
-                <li><a href="#/logout">Logout</a>
-                </li>
-            </ul>
-        </div>
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand sidebar-cdar"><a href="#/homeconsumer"><strong>CDAR</strong></a>
+				</li>
+				<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
+					href="#" data-ng-click="UserService.redirectUrl()"><small>Role: KnowledgeConsumer</small></a></li>
+				<li><a href="#/homeconsumer">Overview</a></li>
+				<li><a href="#/account">Account</a></li>
+				<li><a href="#/logout">Logout</a></li>
+			</ul>
+		</div>
 
-        <div id="page-content-wrapper">
-            <div class="content-header">
-                <h1>
-                    <a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
-                    CDAR - Knowledge Consumer
-                </h1>
-            </div>
-            <!-- Keep all page content within the page-content inset div! -->
-            <div class="page-content inset">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p class="lead">Project overview</p>
-                    </div>
-                    <div class="col-md-12">
-                    	<form id="formAddTree" data-role="form"
-									data-ng-submit="addNewTree()">
-									<table class="table table-striped">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>Name</th>
-												<th>Delete</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr
-												data-ng-repeat="tree in projectTrees | orderBy:'id':false">
-												<td>{{$index+1}}</td>
-												<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
-												<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
-														Tree</a></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td><div class="input-append">
-														<input class="form-horizontal" placeholder="Treename"
-															required autofocus data-ng-model="newTreeName" />
-														<button class="btn btn-success" type="submit">Add
-															tree</button>
-													</div></td>
-												<td></td>
-											</tr>
-										</tbody>
-									</table>
-								</form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div id="page-content-wrapper">
+			<div class="bs-example">
+				<div class="content-header">
+					<h1>
+						<a id="menu-toggle" class="btn btn-default"><i
+							class="icon-reorder"></i></a> CDAR - Knowledge Consumer
+					</h1>
+				</div>
+				<!-- Keep all page content within the page-content inset div! -->
+				<div class="page-content inset">
+					<div class="row">
+						<div class="col-md-12">
+							<p class="lead">Project overview</p>
+						</div>
+						<div class="col-md-12">
+							<form id="formAddTree" data-role="form"
+								data-ng-submit="addNewTree()">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr data-ng-repeat="tree in projectTrees | orderBy:'id':false">
+											<td>{{$index+1}}</td>
+											<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
+											<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
+													Tree</a></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td><div class="input-append">
+													<input class="form-horizontal" placeholder="Treename"
+														required autofocus data-ng-model="newTreeName" />
+													<button class="btn btn-success" type="submit">Add
+														tree</button>
+												</div></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-    });
-    </script>
- </body>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>
+</body>

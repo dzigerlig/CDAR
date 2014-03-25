@@ -15,6 +15,7 @@ public class User extends BasicEntity {
 	private String username;
 	private String password;
 	private String accesstoken;
+	private boolean isProducer;
 	
 	private Set<Tree> knowledgeTrees = new HashSet<Tree>();
 	private Set<ProjectTree> projectTrees = new HashSet<ProjectTree>();
@@ -35,9 +36,10 @@ public class User extends BasicEntity {
 		super(id);
 	}
 	
-	public User(String username, String accesstoken) {
+	public User(String username, String accesstoken, boolean isProducer) {
 		setUsername(username);
 		setAccesstoken(accesstoken);
+		setIsProducer(isProducer);
 	}
 	
 	public User(UserDao userDao) {
@@ -88,5 +90,13 @@ public class User extends BasicEntity {
 
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
+	}
+
+	public boolean getIsProducer() {
+		return isProducer;
+	}
+
+	public void setIsProducer(boolean isProducer) {
+		this.isProducer = isProducer;
 	}
 }

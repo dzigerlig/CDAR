@@ -27,10 +27,11 @@ app.factory('KnowledgeTreeService', function($resource) {
 	});
 });
 
-app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTreeService', 'AuthenticationService',
-                                      		function($scope, $location, KnowledgeTreeService, AuthenticationService) {
+app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTreeService', 'AuthenticationService', 'UserService',
+                                      		function($scope, $location, KnowledgeTreeService, AuthenticationService, UserService) {
 	$scope.knowledgeTrees;
 	$scope.newTreeName = "";
+	$scope.UserService = UserService;
 	
 	var reloadTrees = function() {
 		KnowledgeTreeService.query(function(response) {
@@ -58,10 +59,11 @@ app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTree
 	};
 }]);
 
-app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService',
-                                        		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, WikiService) {
+app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService', 'UserSerivce',
+                                        		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, WikiService, UserService) {
 	$scope.knowledgetree;
 	$scope.nodes;
+	$scope.UserService = UserService;
 	
 	$scope.wikiText = "no wiki entry selected";
 	

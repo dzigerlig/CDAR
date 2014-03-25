@@ -12,10 +12,10 @@ public class UserModel {
 	public UserModel() {
 	}
 
-	public User loginUser(String username, String password) {
+	public User loginUser(String username, String password, boolean isProducer) {
 		UserDao user = udc.loginUser(username, password);
 		if (user != null) {
-			return new User(user.getUsername(), user.getAccesstoken());
+			return new User(user.getUsername(), user.getAccesstoken(), isProducer);
 		}
 		return new User(-1);
 	}

@@ -64,6 +64,11 @@ app.config(function ($routeProvider,$httpProvider) {
     	controller: 'KnowledgeTreeController',
     	needsLogin: true
     });
+    
+    $routeProvider.when('/switchrole', {
+    	controller: 'SwitchRoleController',
+    	needsLogin: true
+    });
 
     $routeProvider.otherwise({
         redirectTo: '/login'

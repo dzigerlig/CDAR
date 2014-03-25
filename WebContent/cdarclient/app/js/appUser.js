@@ -21,11 +21,21 @@ app.factory('AuthenticationService', function($log, $resource, $location) {
 	};
 });
 
-app.factory('UserService', [ function () {
+app.factory('UserService', ['$location', function ($location) {
 	return {
 		user : $.cookie('cdar'),
 		isLoggedIn : function() { return this.user.id!=-1; },
-		isProducer : true
+		redirectUrl : function() {
+			this.user.isProducer = !this.user.isProducer;
+			$.cookie('cdar', this.user, {
+				expires : 7
+			});
+			if (!this.user.isProducer) {
+				$location.path('/homeconsumer');
+			} else {
+				$location.path('/homeproducer');
+			}
+		}
 	};
 } ]);
 
@@ -42,17 +52,16 @@ app.controller("LoginController", function($scope, $location,
 	};
 	
 	$scope.login = function() {
-		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password)}, function(response) {
+		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password),isProducer: $scope.chkbKnowledgeProducer}, function(response) {
 			if (response.id != -1 && response.accesstoken.length == 40) {
 				$.cookie('cdar', response, {
 					expires : 7
 				});
 				UserService.user = $.cookie('cdar');
-				if ($scope.chkbKnowledgeProducer) {
+				if (UserService.user.isProducer) {
 					$location.path('/homeproducer');
 				} else {
 					$location.path('/homeconsumer');
-					UserService.isProducer = false;
 				}
 			} else {
 				alert("wrong username/password combination");
@@ -86,5 +95,11 @@ app.controller("RegistrationController", function($scope, $location,
 app.controller("AccountController", function($scope, $location,
 		AuthenticationService, md5, UserService) {
 	
+	
+});
+
+app.controller("SwitchRoleController", function($scope, $location,
+		AuthenticationService, md5, UserService) {
+	alert("ok nice");
 	
 });
