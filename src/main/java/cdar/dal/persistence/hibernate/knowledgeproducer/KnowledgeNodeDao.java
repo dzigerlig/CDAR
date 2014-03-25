@@ -32,7 +32,7 @@ public class KnowledgeNodeDao {
 	@Column(name = "last_modification_time")
 	private Date last_modification_time;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ktrid")
 	private KnowledgeTreeDao knowledgeTree;
 	

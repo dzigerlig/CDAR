@@ -2,8 +2,10 @@ package cdar.dal.persistence.hibernate.knowledgeproducer;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,7 +36,7 @@ public class KnowledgeTemplateDao {
 	@Column(name = "wikititle")
 	private String wikititle;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ktrid")
 	private KnowledgeTreeDao knowledgeTree;
 	
