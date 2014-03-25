@@ -3,6 +3,7 @@ package cdar.pl.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,17 +14,17 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.model.knowledgeproducer.LinkModel;
+import cdar.bll.model.knowledgeproducer.NodeLinkModel;
 import cdar.bll.model.knowledgeproducer.Node;
 import cdar.bll.model.knowledgeproducer.NodeLink;
 
 @Path("links")
 public class LinkController {
-	private LinkModel linkModel = new LinkModel();
+	private NodeLinkModel linkModel = new NodeLinkModel();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<NodeLink> getNodes() {
+	public Set<NodeLink> getNodes() {
 		return linkModel.getLinks();
 	}
 	

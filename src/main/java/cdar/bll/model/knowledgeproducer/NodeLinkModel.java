@@ -2,25 +2,24 @@ package cdar.bll.model.knowledgeproducer;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 
-public class LinkModel {
+public class NodeLinkModel {
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 
 
-	public List<NodeLink> getLinks() {
-		List<NodeLink> ln = new ArrayList<NodeLink>();
-
-		Set<KnowledgeNodeLinkDao>  kl= kpdc.getKnowledgeTreeById(1).getKnowledgeNodeLinks();
+	public Set<NodeLink> getLinks() {
+		Set<NodeLink>  kl= new HashSet<NodeLink>();
 
 		for (KnowledgeNodeLinkDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodeLinks()) {
-			ln.add(new NodeLink(knd));
+			kl.add(new NodeLink(knd));
 		}
-		return ln;
+		return kl;
 	}
 	
 	public List<NodeLink> getLinksWithFollowers(int Id, int quantityOfFollowers) {

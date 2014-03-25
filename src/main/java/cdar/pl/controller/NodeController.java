@@ -2,6 +2,7 @@ package cdar.pl.controller;
 
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,7 +21,7 @@ public class NodeController{
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Node> getNodes() {
+	public Set<Node> getNodes() {
 		return nodeModel.getNodes();
 	}
 	

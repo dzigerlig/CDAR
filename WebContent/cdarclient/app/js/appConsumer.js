@@ -23,13 +23,6 @@ app.factory('ProjectTreeService', function($resource) {
 			params: {
 				action: 'copy'
 			}
-		},
-		'getNodes' : {
-			method : 'GET',
-			isArray : true,
-			params: {
-				action: 'nodes'
-			}
 		}
 	});
 });

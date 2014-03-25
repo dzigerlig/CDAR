@@ -2,8 +2,10 @@ package cdar.bll.model.knowledgeproducer;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
@@ -11,16 +13,16 @@ import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoCont
 public class NodeModel {
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 
-	public List<Node> getNodes() {
-		List<Node> ln = new ArrayList<Node>();
+	public Set<Node> getNodes() {
+		Set<Node> ln = new HashSet<Node>();
 		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodes()) {
 			ln.add(new Node(knd));
 		}
 		return ln;
 	}
 
-	public List<Node> getNodesWithFollowers(int Id, int quantityOfFollowers) {
-		List<Node> ln = new ArrayList<Node>();
+	public Set<Node> getNodesWithFollowers(int Id, int quantityOfFollowers) {
+		Set<Node> ln = new HashSet<Node>();
 		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodes()) {
 			ln.add(new Node(knd));
 		}
@@ -35,6 +37,5 @@ public class NodeModel {
 	public Node addNode(Node n)	
 	{ 
 		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(),n.getTitle()));
-		//return new Node(new Random().nextInt(),new Date(),new Date(),"newTitle","wikiTitle",0,0);
 	}
 }

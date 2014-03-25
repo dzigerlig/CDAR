@@ -26,19 +26,18 @@ function drag(ev) {
 	ev.dataTransfer.setData("Text", ev.target.id);
 }
 
-
+/*
 function drop(ev) {
 	if (ev.target.id.indexOf("node") == -1) {
 		//scope.addNode(ev1);
 	}
-}
+}*/
 
 $(document).bind(
 		'dnd_move.vakata',
 		function(e, data) {
 
 			if (isMouseOverContainer()) {
-				console.log(data);
 				data.helper.find('.jstree-icon:eq(0)').removeClass('jstree-er')
 						.addClass('jstree-ok');
 				return;
