@@ -1,6 +1,8 @@
 package cdar.pl.controller;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,5 +28,13 @@ public class WikiController {
 	public WikiEntry getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeid) {
 		KnowledgeTreeModel ktm = new KnowledgeTreeModel();
 		return new WikiEntry(ktm.getKnowledgeNodeById(nodeid));
+	}
+	
+	@POST
+	@Path("/producer")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public WikiEntry postKnowledgeNodeWikiEntry(WikiEntry wikiEntry) {
+		return wikiEntry.saveEntry();
 	}
 }
