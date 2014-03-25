@@ -1,3 +1,80 @@
+app.factory('TreeService', function($resource) {
+	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid', {}, {
+//Tree
+		'query' : {
+			method : 'GET',
+			isArray : true,
+		},
+		'postEntry' : {
+			method : 'POST'
+
+		},
+		'removeTree' : {
+			method : 'GET',
+			params: {
+				entity: 'delete',
+				ktreeid:'1'
+					}
+		},
+		'getTree' : {
+			method : 'GET',
+			isArray : true,
+		},
+		
+		// Nodes
+		'getNodes' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'nodes',
+				ktreeid:'1'
+			}
+		},
+		'addNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'add',
+				ktreeid:'1'
+			}
+		},
+		'deleteNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'delete',
+				ktreeid:'1'
+			}
+		},
+
+		// Links
+		'getLinks' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'links',
+				ktreeid:'1'
+			}
+		},
+		'addLink' : {
+			method : 'POST',
+			params : {
+				entity : 'links',
+				action : 'add',
+				ktreeid:'1'
+			}
+		},
+		'deleteLink' : {
+			method : 'POST',
+			params : {
+				entity : 'links',
+				action : 'delete',
+				ktreeid:'1'
+			}
+		}
+	});
+});
+/*
 app.factory('KnowledgeTreeService', function($resource) {
 	return $resource('../webapi/ktree/:action/1/:treeid', {}, {
 		'query' : {
@@ -25,16 +102,18 @@ app.factory('KnowledgeTreeService', function($resource) {
 			}
 		}
 	});
-});
+});*/
 
-app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTreeService', 'AuthenticationService', 'UserService',
-                                      		function($scope, $location, KnowledgeTreeService, AuthenticationService, UserService) {
+app.controller("HomeProducerController", [ '$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService',
+                                      		function($scope, $location, TreeService, AuthenticationService, UserService) {
 	$scope.knowledgeTrees;
 	$scope.newTreeName = "";
 	$scope.UserService = UserService;
 	
 	var reloadTrees = function() {
-		KnowledgeTreeService.query(function(response) {
+		TreeService.query(function(response) {
+			console.log(response);
+
 			$scope.knowledgeTrees = response;
 		});
 	};
@@ -42,7 +121,7 @@ app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTree
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
-		KnowledgeTreeService.postEntry($scope.newTreeName, function(response) {
+		TreeService.postEntry($scope.newTreeName, function(response) {
 			if (response[0] == 1) {
 				$scope.newTreeName = '';
 				reloadTrees();
@@ -53,14 +132,14 @@ app.controller("HomeProducerController", [ '$scope', '$location', 'KnowledgeTree
 	};
 	
 	$scope.deleteTree = function(id) {
-		KnowledgeTreeService.removeTree({treeid : id}, function(response) {
+		TreeService.removeTree( function(response) {
 			reloadTrees();
 		});
 	};
 }]);
 
-app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'KnowledgeTreeService', 'AuthenticationService', 'WikiService', 'UserService',
-                                        		function($scope, $routeParams, KnowledgeTreeService, AuthenticationService, WikiService, UserService) {
+app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'WikiService', 'UserService',
+                                        		function($scope, $routeParams, TreeService, AuthenticationService, WikiService, UserService) {
 	$scope.knowledgetree;
 	$scope.nodes;
 	$scope.UserService = UserService;
@@ -69,11 +148,15 @@ app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'Knowledge
 	$scope.wikiHtmlText = "no wiki entry selected";
 	$scope.wikiEntry;
 	
-	KnowledgeTreeService.getTree({treeid:$routeParams.treeId}, function(response) {
+	TreeService.getTree( function(response) {
+		console.log(response);
 		$scope.knowledgetree = response;
+		
 	});
 	
-	KnowledgeTreeService.getNodes({treeid:$routeParams.treeId}, function(response) {
+	TreeService.getNodes(function(response) {
+		console.log(response);
+
 		$scope.nodes = response;
 	});
 	

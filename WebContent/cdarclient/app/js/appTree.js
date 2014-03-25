@@ -55,56 +55,6 @@ app
 							};
 						} ]);
 
-app.factory('TreeService', function($resource) {
-	return $resource('../webapi/1/ktree/:entity/:action/1', {}, {
-
-		// Nodes
-		'getNodes' : {
-			method : 'GET',
-			isArray : true,
-			params : {
-				entity : 'nodes'
-			}
-		},
-		'addNode' : {
-			method : 'POST',
-			params : {
-				entity : 'nodes',
-				action : 'add'
-			}
-		},
-		'deleteNode' : {
-			method : 'POST',
-			params : {
-				entity : 'nodes',
-				action : 'delete'
-			}
-		},
-
-		// Links
-		'getLinks' : {
-			method : 'GET',
-			isArray : true,
-			params : {
-				entity : 'links'
-			}
-		},
-		'addLink' : {
-			method : 'POST',
-			params : {
-				entity : 'links',
-				action : 'add'
-			}
-		},
-		'deleteLink' : {
-			method : 'POST',
-			params : {
-				entity : 'links',
-				action : 'delete'
-			}
-		}
-	});
-});
 
 function getLinks(TreeService) {
 	TreeService.getLinks(function(response) {
