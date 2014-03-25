@@ -10,10 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -53,6 +55,11 @@ public class KnowledgeNodeDao {
 	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
 	@JoinColumn(name = "targetid")
 	private Set<KnowledgeNodeLinkDao> linksAsTarget;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinTable(name="knowledgenodemapping", joinColumns = @JoinColumn(name="knid"),
+	inverseJoinColumns = @JoinColumn(name="did"))
+	private DictionaryDao dictionary;
 	
 	public KnowledgeNodeDao() {
 		
@@ -146,7 +153,7 @@ public class KnowledgeNodeDao {
 	public void deleteTargetLink(KnowledgeNodeLinkDao link) {
 		getLinksAsTarget().remove(link);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -159,5 +166,13 @@ public class KnowledgeNodeDao {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public DictionaryDao getDictionary() {
+		return dictionary;
+	}
+
+	public void setDictionary(DictionaryDao dictionary) {
+		this.dictionary = dictionary;
 	}
 }
