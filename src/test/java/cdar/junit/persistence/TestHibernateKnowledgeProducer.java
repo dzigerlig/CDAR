@@ -2,8 +2,6 @@ package cdar.junit.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -192,15 +190,4 @@ public class TestHibernateKnowledgeProducer {
 		
 		assertEquals(0, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodeLinks().size());
 	}
-	
-
-	//TEST  NodeLink
-	@Test
-	public void TestKnowledgeNodeLink() {
-//		Set<KnowledgeNodeLinkDao>  kl= kpdc.getKnowledgeTreeById(1).getKnowledgeNodeLinks();
-//		assertEquals(4, kl.size());
-
-	}
-	
-	
 }
