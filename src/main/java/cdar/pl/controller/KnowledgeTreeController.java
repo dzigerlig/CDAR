@@ -19,7 +19,7 @@ import cdar.bll.model.knowledgeproducer.NodeLink;
 import cdar.bll.model.knowledgeproducer.NodeModel;
 import cdar.bll.model.knowledgeproducer.Tree;
 
-@Path("{uid}")
+@Path("{uid}/ktree")
 public class KnowledgeTreeController {
 	private KnowledgeTreeModel ktm = new KnowledgeTreeModel();
 	private NodeModel nM= new NodeModel();
@@ -27,28 +27,26 @@ public class KnowledgeTreeController {
 	
 	//Dynamic Tree
 	@GET
-	@Path("ktree")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
 		return ktm.getKnowledgeTreesByUid(uid);
 	}
 	
 	@GET
-	@Path("ktree/delete/{ktreeid}")
+	@Path("delete/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public int deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
 		return ktm.removeKnowledgeTreeById(uid, ktreeid);
 	}
 	
 	@POST
-	@Path("ktree")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Integer addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
 		return ktm.addKnowledgeTreeByUid(uid, treeName);
 	}
 	
 	@GET
-	@Path("ktree/{ktreeid}")
+	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
 		return ktm.getKnowledgeTreeById(ktreeid);
@@ -87,14 +85,14 @@ public class KnowledgeTreeController {
 	
 	//Nodes
 	@GET
-	@Path("ktree/nodes/{ktreeid}")
+	@Path("/nodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
 		return nM.getNodes();
 	}
 	
 	@POST
-	@Path("ktree/nodes/add/{ktreeid}")
+	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
 		System.out.println(n.getTitle()+": "+n.getRefTreeId());
@@ -102,7 +100,7 @@ public class KnowledgeTreeController {
 	}
 	
 	@POST
-	@Path("ktree/nodes/delete/{ktreeid}")
+	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeNode(int id) {
 		nM.removeNodeById(id);
@@ -111,21 +109,21 @@ public class KnowledgeTreeController {
 	
 	//Links
 	@GET
-	@Path("ktree/links/{ktreeid}")
+	@Path("links/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
 		return lM.getLinks();
 	}		
 	
 	@POST
-	@Path("ktree/links/add/{ktreeid}")
+	@Path("links/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink addLink(NodeLink nl) {		 
 		return lM.addLink(nl);
 	}
 
 	@POST
-	@Path("ktree/links/delete/{ktreeid}")
+	@Path("links/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeLink(int id) {
 		lM.removeLinkById(id);
