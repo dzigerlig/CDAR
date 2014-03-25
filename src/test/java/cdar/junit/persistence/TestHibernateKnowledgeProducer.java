@@ -196,6 +196,5 @@ public class TestHibernateKnowledgeProducer {
 		KnowledgeNodeDao myNode = kpdc.addKnowledgeNode(treeid, "TestNode 1");
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
 		assertNull(myNode.getDictionary());
-		//
 	}
 }
