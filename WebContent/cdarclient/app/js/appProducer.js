@@ -1,26 +1,23 @@
 app.factory('TreeService', function($resource) {
-	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid', {}, {
+	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/', {}, {
 		// Tree
 		
 		'getTrees' : {
 			method : 'GET',
-			isArray:true
+			isArray: true
 		},
 		'postEntry' : {
 			method : 'POST'
-
 		},
 		'removeTree' : {
 			method : 'GET',
 			params : {
 				entity : 'delete',
-				ktreeid : '1'
 			}
 		},
 		'getTree' : {
 			method : 'GET',
 			params : {
-				ktreeid : '1'
 			}
 		},
 
@@ -30,7 +27,6 @@ app.factory('TreeService', function($resource) {
 			isArray : true,
 			params : {
 				entity : 'nodes',
-				ktreeid : '1'
 			}
 		},
 		'addNode' : {
@@ -38,7 +34,6 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'nodes',
 				action : 'add',
-				ktreeid : '1'
 			}
 		},
 		'deleteNode' : {
@@ -46,7 +41,6 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'nodes',
 				action : 'delete',
-				ktreeid : '1'
 			}
 		},
 
@@ -56,7 +50,6 @@ app.factory('TreeService', function($resource) {
 			isArray : true,
 			params : {
 				entity : 'links',
-				ktreeid : '1'
 			}
 		},
 		'addLink' : {
@@ -64,7 +57,6 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'links',
 				action : 'add',
-				ktreeid : '1'
 			}
 		},
 		'deleteLink' : {
@@ -72,7 +64,6 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'links',
 				action : 'delete',
-				ktreeid : '1'
 			}
 		}
 	});
@@ -118,7 +109,7 @@ app.controller("HomeProducerController", [
 			};
 
 			$scope.deleteTree = function(id) {
-				TreeService.removeTree(function(response) {
+				TreeService.removeTree({ktreeid: id},function(response) {
 					reloadTrees();
 				});
 			};
@@ -146,36 +137,42 @@ app
 							$scope.wikiHtmlText = "no wiki entry selected";
 							$scope.wikiEntry;
 
-							TreeService.getTree(function(response) {
+							TreeService.getTree({ktreeid:$routeParams.treeId}, function(response) {
 								$scope.knowledgetree = response;
-
 							});
 
 							$scope.logout = function() {
 								AuthenticationService.logout();
 							};
 							
-							TreeService.getNodes(function(response) {
+							TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
 								drawExistingNodes(response);
-								getLinks(TreeService);
+								$scope.getLinks(TreeService);
 							});
+							
+							$scope.getLinks = function(TreeService) {
+								TreeService.getLinks({ktreeid:$routeParams.treeId}, function(response) {
+									makeNodeHierarchy(response);
+									w_launch();
+								});
+							};
 
 							$scope.addNode = function(e, data) {
-								TreeService.addNode({
-									refTreeId : 1,
-									title : data.element.innerText
+								TreeService.addNode({ktreeid:$routeParams.treeId},
+										{ refTreeId : 1,
+										title : data.element.innerText
 								}, function(response) {
 									addHTMLNode(response, e, data);
 								});
 							};
 
 							$scope.removeNodeById = function(id) {
-								TreeService.deleteNode(id);
+								TreeService.deleteNode({ktreeid:$routeParams.treeId}, id);
 							};
 
 							$scope.addLink = function(treeId, sourceId,
 									targetId, connection) {
-								TreeService.addLink({
+								TreeService.addLink({ktreeid:$routeParams.treeId}, {
 									refTreeId : treeId,
 									sourceId : sourceId,
 									targetId : targetId
@@ -185,7 +182,7 @@ app
 							};
 
 							$scope.removeLinkById = function(id) {
-								TreeService.deleteLink(id);
+								TreeService.deleteLink({ktreeid:$routeParams.treeId}, id);
 							};
 
 							var setLoading = function() {
@@ -195,8 +192,7 @@ app
 							var changeWikiFields = function(response) {
 								$scope.wikiEntry = response;
 								$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
-								$("#wikiArea").val(
-										$scope.wikiEntry.wikiContentPlain);
+								$("#wikiArea").val($scope.wikiEntry.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id) {
@@ -227,12 +223,6 @@ app
 							};
 						} ]);
 
-function getLinks(TreeService) {
-	TreeService.getLinks(function(response) {
-		makeNodeHierarchy(response);
-		w_launch();
-	});
-};
 
 /*
  * 
