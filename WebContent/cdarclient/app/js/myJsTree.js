@@ -1,31 +1,38 @@
 $(function() {
 	// 6 create an instance when the DOM is ready
+	$('#jstree').jstree({ 'core' : {
+		  "animation" : 0,
+		    "check_callback" : true,
+		    "themes" : { "stripes" : true },
+	    'data' : [
+	       { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" ,"icon":"http://jstree.com/tree.png"},
+	       { "id" : "ajson2", "parent" : "#", "text" : "Root node 2" },
+	       { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
+	       { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" },
+	       { "id" : "ajson5", "parent" : "ajson3", "text" : "Child 1" },
 
-	$('#jstree').jstree(
-			{
-				"themes" : {
-
-				},
-				"core" : {
-					// so that create works
-					"check_callback" : true
-				},
-
-				"types" : {
-						"default" : {
-							"icon" :  "http://jstree.com/tree.png"
-							
-						},
-				"demo" : {
-					"icon" :  ""
-					
-				}
-					
-
-				},
-				"plugins" : [ "contextmenu", "dnd", "search", "sort", "types",
-						"themes" ]
-			});
+	    ]
+	},
+	"types" : {
+	    "#" : {
+	      "max_children" : 1, 
+	      "max_depth" : 4, 
+	      "valid_children" : ["root"]
+	    },
+	    "root" : {
+	      "icon" : "/static/3.0.0-beta10/assets/images/tree_icon.png",
+	      "valid_children" : ["default"]
+	    },
+	    "default" : {
+	      "valid_children" : ["default","file"]
+	    },
+	    "file" : {
+	      "icon" : "glyphicon glyphicon-file",
+	      "valid_children" : []
+	    }
+	  },
+	"plugins" : [ "contextmenu", "dnd", "search", "sort", "types",
+			"themes" ] });
 	
 
 	var to = false;
