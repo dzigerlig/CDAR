@@ -123,11 +123,6 @@ public class KnowledgeNodeDao {
 		getKnowledgeSubNodes().remove(subnode);
 	}
 	
-	@Override
-	public int hashCode() {
-	    return id;
-	}
-
 	public Set<KnowledgeNodeLinkDao> getLinksAsSource() {
 		return linksAsSource;
 	}
@@ -150,5 +145,19 @@ public class KnowledgeNodeDao {
 	
 	public void deleteTargetLink(KnowledgeNodeLinkDao link) {
 		getLinksAsTarget().remove(link);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KnowledgeNodeDao other = (KnowledgeNodeDao) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 }
