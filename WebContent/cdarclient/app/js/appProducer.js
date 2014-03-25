@@ -128,6 +128,7 @@ app
 						function($scope, $routeParams, TreeService,
 								AuthenticationService, WikiService, UserService) {
 							initializeJsPlumb();
+							
 
 							$scope.knowledgetree;
 							$scope.nodes;
