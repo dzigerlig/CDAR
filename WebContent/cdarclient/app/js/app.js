@@ -1,4 +1,4 @@
-var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5' ]);
+var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5', 'ui.bootstrap' ]);
 
 app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;

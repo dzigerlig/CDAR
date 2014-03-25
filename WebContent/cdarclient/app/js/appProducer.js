@@ -64,8 +64,10 @@ app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'Knowledge
 	$scope.knowledgetree;
 	$scope.nodes;
 	$scope.UserService = UserService;
+	$scope.selectedNode = 0;
 	
-	$scope.wikiText = "no wiki entry selected";
+	$scope.wikiHtmlText = "no wiki entry selected";
+	$scope.wikiEntry;
 	
 	KnowledgeTreeService.getTree({treeid:$routeParams.treeId}, function(response) {
 		$scope.knowledgetree = response;
@@ -75,11 +77,35 @@ app.controller("KnowledgeTreeController", [ '$scope', '$routeParams', 'Knowledge
 		$scope.nodes = response;
 	});
 	
+	var setLoading = function() {
+		$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+	};
+	
+	var changeWikiFields = function(response) {
+		$scope.wikiEntry = response;
+		$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
+		$("#wikiArea").val($scope.wikiEntry.wikiContentPlain);
+	};
+	
 	$scope.changeNode = function(id) {
-		$scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
-		WikiService.getWikiEntry({role:'producer', nodeid: id}, function(response) {
-			$scope.wikiText = response.wikiContentHtml;
+		setLoading();
+
+		$scope.selectedNode = id;
+		
+		WikiService.getWikiEntry({role:'producer', nodeid: $scope.selectedNode}, function(response) {
+			changeWikiFields(response);
 		});
+	};
+	
+	$scope.saveWikiEntry = function() {
+		if ($scope.selectedNode!=0) {
+			$scope.wikiMarkupText = $("#wikiArea").val();
+			$scope.wikiEntry.wikiContentPlain = $scope.wikiMarkupText;
+			setLoading();
+			WikiService.postEntry({role:'producer'}, $scope.wikiEntry, function(response) {
+				changeWikiFields(response);
+			});
+		}
 	};
 }]);
 

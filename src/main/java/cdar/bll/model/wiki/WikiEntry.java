@@ -9,12 +9,14 @@ import org.wikipedia.Wiki;
 import cdar.bll.model.WikiEntity;
 import cdar.bll.model.knowledgeconsumer.ProjectNode;
 import cdar.bll.model.knowledgeproducer.KnowledgeNode;
-import cdar.bll.model.knowledgeproducer.Node;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;
 	private String wikicontenthtml;
 	
+	public WikiEntry() {
+		
+	}
 	
 	public WikiEntry(ProjectNode node) {
 		super(node.getId(), node.getCreationDate(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
@@ -31,13 +33,13 @@ public class WikiEntry extends WikiEntity {
 		
 		try {
 			setWikiContentPlain(c.getPageText(getWikiTitle()));
-			setWikiContentHtml(WikiModel.toHtml(getWikiContenPlain()));
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public String getWikiContenPlain() {
+	public String getWikiContentPlain() {
 		return wikicontentplain;
 	}
 	
@@ -51,5 +53,17 @@ public class WikiEntry extends WikiEntity {
 
 	public void setWikiContentHtml(String wikicontenthtml) {
 		this.wikicontenthtml = wikicontenthtml;
+	}
+
+	public WikiEntry saveEntry() {
+		try {
+			Wiki c = new Wiki();
+			c.login("admin", "password");
+			c.edit(getWikiTitle(), getWikiContentPlain(), "", 0);
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return this;
 	}
 }
