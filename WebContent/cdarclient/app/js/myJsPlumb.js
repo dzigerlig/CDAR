@@ -38,6 +38,7 @@ function addHTMLNode(response, e, data) {
 
 // imported Nodes
 function drawExistingNodes(data) {
+	isInizialized=false;
 	jQuery.each(data, function(object) {
 		var newState = $('<div>').attr('id', NODE + this.id).addClass('w');
 		var title = $('<div>').addClass('title').text(this.title);
@@ -63,6 +64,7 @@ function setDefaultSettings() {
 	jsPlumb.Defaults.PaintStyle = {
 		lineWidth : 2,
 		strokeStyle : '#1e8151',
+		
 		connectorOverlays : [ [ "Arrow", {
 			location : 1,
 			id : "arrow",
