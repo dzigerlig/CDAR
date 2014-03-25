@@ -1,4 +1,9 @@
 $(function() {
+	$(document).on("dnd_move.vakata", function (e, data) {
+		  //console.log(data);
+		});
+	
+	
 	// 6 create an instance when the DOM is ready
 	$('#jstree').jstree({ 'core' : {
 		  "animation" : 0,
@@ -6,7 +11,7 @@ $(function() {
 		    "themes" : { "stripes" : true },
 	    'data' : [
 	       { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" ,"icon":"http://jstree.com/tree.png"},
-	       { "id" : "ajson2", "parent" : "#", "text" : "Root node 2" },
+	       { "id" : "ajson2", "parent" : "#", "text" : "Root node 2","rel":"root"},
 	       { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
 	       { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" },
 	       { "id" : "ajson5", "parent" : "ajson3", "text" : "Child 1" },
@@ -20,7 +25,7 @@ $(function() {
 	      "valid_children" : ["root"]
 	    },
 	    "root" : {
-	      "icon" : "/static/3.0.0-beta10/assets/images/tree_icon.png",
+	      "icon" : "http://jstree.com/tree.png",
 	      "valid_children" : ["default"]
 	    },
 	    "default" : {

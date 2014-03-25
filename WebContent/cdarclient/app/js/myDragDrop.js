@@ -14,6 +14,7 @@ function isMouseOverContainer() {
 
 $(document).bind('dnd_stop.vakata', function(e, data) {
 	if (isMouseOverContainer()) {
+		console.log(data.children("ul").children("li") );
 		scope.addNode(data.event,data);
 	}
 });
