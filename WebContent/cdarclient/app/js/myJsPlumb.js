@@ -5,7 +5,7 @@ var NODE='node';
 var LINK ='link';
 
 function initializeJsPlumb() {
-	scope = angular.element(document.getElementById("treeControllerDiv"))
+	scope = angular.element(document.getElementById("wrapper"))
 			.scope();
 	setDefaultSettings();
 	makePopupEvents();
