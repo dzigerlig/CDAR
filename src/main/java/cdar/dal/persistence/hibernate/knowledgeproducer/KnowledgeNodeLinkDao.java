@@ -103,4 +103,20 @@ public class KnowledgeNodeLinkDao {
 	public void setKnowledgeSubNode(KnowledgeSubNodeDao knowledgeSubNode) {
 		this.knowledgeSubNode = knowledgeSubNode;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KnowledgeNodeLinkDao other = (KnowledgeNodeLinkDao) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+	
 }

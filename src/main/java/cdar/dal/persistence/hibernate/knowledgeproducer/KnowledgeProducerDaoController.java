@@ -252,21 +252,9 @@ public class KnowledgeProducerDaoController {
 	
 	public int removeKnowledgeNodeLink(int linkid) {
 		try {
-			KnowledgeNodeLinkDao knld = getKnowledgeNodeLink(linkid);
-			
-			int targetNodeId = knld.getKnowledgeTargetNode().getId();
-			int sourceNodeId = knld.getKnowledgeSourceNode().getId();
-			KnowledgeNodeDao targetNode = getKnowledgeNodeById(targetNodeId);
-			KnowledgeNodeDao sourceNode = getKnowledgeNodeById(sourceNodeId);
-			
-			sourceNode.deleteSourceLink(knld);
-			targetNode.deleteTargetLink(knld);
-			
 			Session session = HibernateUtil.getSessionFactory()
 					.getCurrentSession();
 			Transaction tx = session.beginTransaction();
-			session.update(sourceNode);
-			session.update(targetNode);
 			tx.commit();
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();

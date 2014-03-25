@@ -134,7 +134,6 @@ public class TestHibernateKnowledgeProducer {
 		assertEquals(kpdc.getKnowledgeTreeById(treeId).getKnowledgeNodes().size(), 0);
 		kpdc.addKnowledgeNode(treeId, "TestNode");
 		assertEquals(kpdc.getKnowledgeTreeById(treeId).getKnowledgeNodes().size(), 1);
-		//NODE STILL THERE!
 	}
 	
 	//TEST KNOWLEDGE SUB-NODE
