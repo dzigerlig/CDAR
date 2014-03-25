@@ -21,6 +21,8 @@
 <mapping class="cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao" />
 <mapping class="cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeSubNodeDao" />
 <mapping class="cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao" />
+<mapping class="cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao" />
+
 
 <mapping class="cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao" />
 <mapping class="cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao" />
