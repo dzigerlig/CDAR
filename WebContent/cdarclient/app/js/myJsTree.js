@@ -3,7 +3,7 @@ $(function() {
 		  //console.log(data);
 		});
 	
-	
+	$('#jstree').jstree('get_selected');
 	// 6 create an instance when the DOM is ready
 	$('#jstree').jstree({ 'core' : {
 		  "animation" : 0,
@@ -58,8 +58,8 @@ $(function() {
 });
 
 
-function demo_create() {
-	var ref = $('#jstree_demo').jstree(true),
+function jstree_create() {
+	var ref = $('#jstree').jstree(true),
 		sel = ref.get_selected();
 	if(!sel.length) { return false; }
 	sel = sel[0];
@@ -68,15 +68,15 @@ function demo_create() {
 		ref.edit(sel);
 	}
 };
-function demo_rename() {
-	var ref = $('#jstree_demo').jstree(true),
+function jstree_rename() {
+	var ref = $('#jstree').jstree(true),
 		sel = ref.get_selected();
 	if(!sel.length) { return false; }
 	sel = sel[0];
 	ref.edit(sel);
 };
-function demo_delete() {
-	var ref = $('#jstree_demo').jstree(true),
+function jstree_delete() {
+	var ref = $('#jstree').jstree(true),
 		sel = ref.get_selected();
 	if(!sel.length) { return false; }
 	ref.delete_node(sel);
