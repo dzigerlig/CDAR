@@ -171,6 +171,29 @@ public class TestHibernateKnowledgeProducer {
 		assertEquals(treeid, kpdc.getKnowledgeNodeLink(knld.getId()).getKnowledgeTree().getId());
 	}
 	
+	@Test
+	public void TestLinkConnectionRemove() {
+		int uid = udc.getUserByName(testUsername).getId();
+		kpdc.addKnowledgeTreeByUid(uid, "TestTree");
+		int treeid = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
+		assertEquals(kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size(), 0);
+		kpdc.addKnowledgeNode(treeid, "TestNode 1");
+		kpdc.addKnowledgeNode(treeid, "TestNode 2");
+		assertEquals(kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size(), 2);
+		int nodeid1 = ((KnowledgeNodeDao)kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().toArray()[0]).getId();
+		int nodeid2 = ((KnowledgeNodeDao)kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().toArray()[1]).getId();
+		
+		KnowledgeNodeLinkDao knld = kpdc.addKnowledgeNodeLink(nodeid1, nodeid2, treeid);
+		
+		assertEquals(treeid, kpdc.getKnowledgeNodeLink(knld.getId()).getKnowledgeTree().getId());
+		
+		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodeLinks().size());
+		
+		kpdc.removeKnowledgeNodeLink(knld.getId());
+		
+		assertEquals(0, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodeLinks().size());
+	}
+	
 
 	//TEST  NodeLink
 	@Test
