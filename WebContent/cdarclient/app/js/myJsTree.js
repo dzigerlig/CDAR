@@ -10,12 +10,12 @@ $(function() {
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
 	    'data' : [
-	       { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" ,"icon":"http://jstree.com/tree.png"},
-	       { "id" : "ajson2", "parent" : "#", "text" : "Root node 2","rel":"root"},
+	       { "id" : "ajson1", "parent" : "#", "text" : "Simple root node" ,"type":"root", 'data':{"metadata":{"penis":"hans"}}},
+	       { "id" : "ajson2", "parent" : "#", "text" : "Root node 2","type":"root"},
 	       { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" },
 	       { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" },
 	       { "id" : "ajson5", "parent" : "ajson3", "text" : "Child 1" },
-
+	       { "id" : "ajson6", "parent" : "ajson4", "text" : "new File","type":"file" },
 	    ]
 	},
 	"types" : {
