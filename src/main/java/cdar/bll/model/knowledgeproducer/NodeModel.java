@@ -21,14 +21,6 @@ public class NodeModel {
 		return ln;
 	}
 
-	public Set<Node> getNodesWithFollowers(int Id, int quantityOfFollowers) {
-		Set<Node> ln = new HashSet<Node>();
-		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodes()) {
-			ln.add(new Node(knd));
-		}
-		return ln;
-	}
-
 	public void removeNodeById(int id) {
 		System.out.println("remove node"+id);
 		kpdc.removeKnowledgeNode(1, id);

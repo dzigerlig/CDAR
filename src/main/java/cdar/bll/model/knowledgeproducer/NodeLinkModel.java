@@ -22,14 +22,6 @@ public class NodeLinkModel {
 		return kl;
 	}
 	
-	public List<NodeLink> getLinksWithFollowers(int Id, int quantityOfFollowers) {
-		List<NodeLink> ln = new ArrayList<NodeLink>();
-		for (KnowledgeNodeLinkDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodeLinks()) {
-			ln.add(new NodeLink(knd));
-		}
-		return ln;
-	}
-	
 	public void removeLinkById(int id)
 	{
 		System.out.println("remove link"+id);

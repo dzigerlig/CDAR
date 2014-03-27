@@ -26,6 +26,9 @@ public class DictionaryDao {
 	@Column(name = "last_modification_time")
 	private Date last_modification_time;
 	
+	@Column(name = "parentid")
+	private int parentId;
+	
 	@Column(name = "title")
 	private String title;
 	
@@ -68,6 +71,14 @@ public class DictionaryDao {
 		this.title = title;
 	}
 	
+	public int getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
+
 	public KnowledgeNodeDao getKnowledgeNode() {
 		return knowledgeNode;
 	}
