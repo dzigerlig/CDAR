@@ -1,6 +1,7 @@
 package cdar.dal.persistence.hibernate.knowledgeproducer;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,11 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "dictionary")
+@NamedQueries({ @NamedQuery(name = "findDictionaryById", query = "from DictionaryDao dd where dd.id = :id" )})
 public class DictionaryDao {
 	@Id
 	@GeneratedValue
@@ -40,7 +44,7 @@ public class DictionaryDao {
 	private String title;
 
 	@OneToMany(mappedBy = "dictionary", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = KnowledgeNodeDao.class)
-	private Set<KnowledgeNodeDao> knowledgeNodes;
+	private Set<KnowledgeNodeDao> knowledgeNodes = new HashSet<KnowledgeNodeDao>(0);
 
 	public DictionaryDao() {
 
@@ -53,6 +57,13 @@ public class DictionaryDao {
 
 	public DictionaryDao(String string) {
 		setTitle(string);
+	}
+
+	public DictionaryDao(KnowledgeTreeDao tree, KnowledgeNodeDao myNode,
+			String dictionaryTitle) {
+		getKnowledgeNodes().add(myNode);
+		setKnowledgeTree(tree);
+		setTitle(dictionaryTitle);
 	}
 
 	public int getId() {
