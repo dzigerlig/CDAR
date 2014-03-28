@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
@@ -197,6 +198,9 @@ public class TestHibernateKnowledgeProducer {
 		KnowledgeNodeDao myNode = kpdc.addKnowledgeNode(treeid, "TestNode 1");
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
 		assertNull(myNode.getDictionary());
+		kpdc.addDictionary(treeid, myNode, "TestDictionary");
+		assertNotNull(kpdc.getKnowledgeNodeById(myNode.getId()).getDictionary());
+		//assertEquals("TestNode 1", kpdc.getKnowledgeNodeById(myNode.getId()).getDictionary().getTitle());
 	}
 	
 	@Test
@@ -205,7 +209,8 @@ public class TestHibernateKnowledgeProducer {
 		kpdc.addKnowledgeTreeByUid(uid, "TestTree");
 		int treeid = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
 		assertEquals(0, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
-		kpdc.addDictionary(treeid, "My Dictionary Title");
+		DictionaryDao dic = kpdc.addDictionary(treeid, "My Dictionary Title");
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getDictionaries().size());
+		assertEquals(0, kpdc.getDictionaryById(dic.getId()).getKnowledgeNodes().size());
 	}
 }
