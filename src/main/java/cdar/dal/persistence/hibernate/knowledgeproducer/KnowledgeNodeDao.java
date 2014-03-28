@@ -44,6 +44,9 @@ public class KnowledgeNodeDao {
 	@Column(name = "wikititle")
 	private String wikititle;
 	
+	@Column(name = "dynamictreeflag", columnDefinition = "int default 0")
+	private int dynamicTreeFlag;
+	
 	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
 	@JoinColumn(name = "knid")
 	private Set<KnowledgeSubNodeDao> knowledgeSubNodes;
@@ -174,5 +177,13 @@ public class KnowledgeNodeDao {
 
 	public void setDictionary(DictionaryDao dictionary) {
 		this.dictionary = dictionary;
+	}
+
+	public int getDynamicTreeFlag() {
+		return dynamicTreeFlag;
+	}
+
+	public void setDynamicTreeFlag(int dynamicTreeFlag) {
+		this.dynamicTreeFlag = dynamicTreeFlag;
 	}
 }

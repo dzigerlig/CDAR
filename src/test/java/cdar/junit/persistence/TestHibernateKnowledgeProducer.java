@@ -119,6 +119,7 @@ public class TestHibernateKnowledgeProducer {
 		kpdc.addKnowledgeNode(treeId, "TestNode");
 		assertEquals(kpdc.getKnowledgeTreeById(treeId).getKnowledgeNodes().size(), 1);
 		KnowledgeNodeDao knowledgeNode = (KnowledgeNodeDao) ((KnowledgeTreeDao)kpdc.getKnowledgeTreeById(treeId)).getKnowledgeNodes().toArray()[0];
+		assertEquals(0, knowledgeNode.getDynamicTreeFlag());
 		kpdc.removeKnowledgeNode(treeId, knowledgeNode.getId());
 		assertEquals(kpdc.getKnowledgeTreeById(treeId).getKnowledgeNodes().size(), 0);
 	}
