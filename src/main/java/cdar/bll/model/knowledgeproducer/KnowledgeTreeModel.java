@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.model.user.User;
+import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
@@ -45,6 +46,19 @@ public class KnowledgeTreeModel {
 		
 		for (KnowledgeNodeDao pnd : kpdc.getKnowledgeTreeById(ktreeid).getKnowledgeNodes()) {
 			set.add(new KnowledgeNode(pnd));
+		}
+		return set;
+	}
+	
+	public Dictionary getDictionariesById(int dictionaryid) {
+		return new Dictionary(kpdc.getDictionaryById(dictionaryid));
+	}
+	
+	public Set<Dictionary> getDictionaries(int ktreeid) {
+		Set<Dictionary> set = new HashSet<Dictionary>();
+		
+		for (DictionaryDao pdd : kpdc.getKnowledgeTreeById(ktreeid).getDictionaries()) {
+			set.add(new Dictionary(pdd));
 		}
 		return set;
 	}

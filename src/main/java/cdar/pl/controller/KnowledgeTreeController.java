@@ -11,6 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.model.knowledgeproducer.Dictionary;
+import cdar.bll.model.knowledgeproducer.DictionaryModel;
 import cdar.bll.model.knowledgeproducer.KnowledgeNode;
 import cdar.bll.model.knowledgeproducer.KnowledgeTreeModel;
 import cdar.bll.model.knowledgeproducer.NodeLinkModel;
@@ -24,6 +26,7 @@ public class KnowledgeTreeController {
 	private KnowledgeTreeModel ktm = new KnowledgeTreeModel();
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
+	private DictionaryModel dM = new DictionaryModel();
 	
 	//Dynamic Tree
 	@GET
@@ -53,34 +56,27 @@ public class KnowledgeTreeController {
 	}
 	
 	//Static Tree
-	/*
 	@GET
-	@Path("ktree")
+	@Path("/dictionaries/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
-		return ktm.getKnowledgeTreesByUid(uid);
-	}
-	
-	@GET
-	@Path("ktree/delete/{ktreeid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public int deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
-		return ktm.removeKnowledgeTreeById(uid, ktreeid);
+	public Set<Dictionary> getDictionaries(@PathParam("ktreeid") int ktreeid) {
+		return dM.getDictionaries();
 	}
 	
 	@POST
-	@Path("ktree")
+	@Path("dictionaries/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Integer addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
-		return ktm.addKnowledgeTreeByUid(uid, treeName);
+	public Dictionary addDictionary(Dictionary d) {
+		return dM.addDictionary(d);
 	}
 	
-	@GET
-	@Path("ktree/{ktreeid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
-		return ktm.getKnowledgeTreeById(ktreeid);
-	}*/
+	@POST
+	@Path("dictionaries/delete/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeDictionary(int id) {
+		dM.removeDictionaryById(id);
+		return Response.status(200).build();
+	}
 	
 	
 	//Nodes

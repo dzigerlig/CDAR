@@ -7,6 +7,7 @@ import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 
 public class Dictionary extends BasicEntity {
 	private int parentId;
+	private int refTreeId;
 	private String title;
 
 
@@ -15,15 +16,16 @@ public class Dictionary extends BasicEntity {
 	}
 
 	public Dictionary(int id, Date creationTime, Date lastModificationTime,
-			int parentId, String title) {
+			int parentId,int refTreeId, String title) {
 		super(id, creationTime, lastModificationTime);
 		this.parentId = parentId;
+		this.refTreeId = refTreeId;
 		this.title = title;
 	}
 
 	public Dictionary(DictionaryDao knd) {
 		super(knd.getId(), knd.getCreationTime(), knd.getLastModificationTime());
-		this.parentId = knd.getParentId();
+	//	this.parentId = knd.getParentId();
 		this.title = knd.getTitle();	}
 
 	public int getParentId() {
@@ -32,6 +34,14 @@ public class Dictionary extends BasicEntity {
 
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
+	}
+
+	public int getRefTreeId() {
+		return refTreeId;
+	}
+
+	public void setRefTreeId(int refTreeId) {
+		this.refTreeId = refTreeId;
 	}
 
 	public String getTitle() {

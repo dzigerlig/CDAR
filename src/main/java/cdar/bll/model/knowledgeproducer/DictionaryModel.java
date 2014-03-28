@@ -13,20 +13,18 @@ public class DictionaryModel {
 
 	public Set<Dictionary> getDictionaries() {
 		Set<Dictionary> ln = new HashSet<Dictionary>();
-		/*for (DictionaryDao knd : kpdc.get) {
+		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(1).getDictionaries()) {
 			ln.add(new Dictionary(knd));
-		}*/
+		}
 		return ln;
 	}
 
-	public void removeNodeById(int id) {
-		System.out.println("remove node"+id);
-		kpdc.removeKnowledgeNode(1, id);
+	public void removeDictionaryById(int id) {
+		kpdc.removeDictionary(1, id);
 	}
 
-	public Node addNode(Node n)	
+	public Dictionary addDictionary(Dictionary d)	
 	{ 
-		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(),n.getTitle()));
+		return new Dictionary(kpdc.addDictionary(d.getRefTreeId(), d.getParentId(), d.getTitle()));
 	}
-
 }

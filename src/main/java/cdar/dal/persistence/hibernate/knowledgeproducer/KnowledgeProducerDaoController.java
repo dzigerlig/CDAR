@@ -316,4 +316,63 @@ public class KnowledgeProducerDaoController {
 		tx.commit();
 		return link;
 	}
+
+	public DictionaryDao getDictionaryById(int dictionaryid) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.getNamedQuery("findDictionaryById");
+		query.setInteger("id", dictionaryid);
+		List<?> list = query.list();
+		DictionaryDao kn = null;
+		if (!list.isEmpty()) {
+			kn = (DictionaryDao) list.get(0);
+		}
+		tx.commit();
+		return kn;
+	}
+	
+	public DictionaryDao addDictionary(int treeId, int parentid, String dictionaryTitle) {
+		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
+
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		DictionaryDao newDictionary = new DictionaryDao(parentid, dictionaryTitle);
+		newDictionary.setKnowledgeTree(tree);
+		
+		tree.getDictionaries().add(newDictionary);
+		session.update(tree);
+		tx.commit();
+		return newDictionary;
+	}
+	
+	public int removeDictionary(int ktreeid, int dictionaryid) {
+		try {
+			KnowledgeTreeDao tree = getKnowledgeTreeById(ktreeid);
+			DictionaryDao dictionary = getDictionaryById(dictionaryid);
+			tree.deleteDictionary(dictionary);
+			Session session = HibernateUtil.getSessionFactory()
+					.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.update(tree);
+			tx.commit();
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			tx = session.beginTransaction();
+			Query q = session.createQuery("delete Dictionary where id = "
+					+ dictionaryid);
+			q.executeUpdate();
+			tx.commit();
+			
+			return 0;
+		} catch (RuntimeException e) {
+			try {
+				Session session = HibernateUtil.getSessionFactory()
+						.getCurrentSession();
+				if (session.getTransaction().isActive())
+					session.getTransaction().rollback();
+			} catch (HibernateException e1) {
+				System.out.println("Error rolling back transaction");
+			}
+			return -1;
+		}
+	}
 }

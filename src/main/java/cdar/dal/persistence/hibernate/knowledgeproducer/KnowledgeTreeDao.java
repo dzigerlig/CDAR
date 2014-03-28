@@ -53,6 +53,10 @@ public class KnowledgeTreeDao {
 	@JoinColumn(name = "ktrid")
 	private Set<KnowledgeNodeLinkDao> knowledgeNodeLinks;
 	
+	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name = "ktrid")
+	private Set<DictionaryDao> dictionary;
+	
 	public KnowledgeTreeDao() {
 		
 	}
@@ -151,5 +155,17 @@ public class KnowledgeTreeDao {
 
 	public void setKnowledgeNodeLinks(Set<KnowledgeNodeLinkDao> knowledgeNodeLinks) {
 		this.knowledgeNodeLinks = knowledgeNodeLinks;
+	}
+	
+	public Set<DictionaryDao> getDictionaries() {
+		return dictionary;
+	}
+
+	public void setDictionaries(Set<DictionaryDao> dictionary) {
+		this.dictionary = dictionary;
+	}
+	
+	public void deleteDictionary(DictionaryDao dictionary) {
+		getDictionaries().remove(dictionary);
 	}
 }

@@ -20,6 +20,29 @@ app.factory('TreeService', function($resource) {
 			params : {
 			}
 		},
+		
+		// Dictionaries
+		'getDictionaties' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'dictionaties',
+			}
+		},
+		'addDictionary' : {
+			method : 'POST',
+			params : {
+				entity : 'dictionaties',
+				action : 'add',
+			}
+		},
+		'deleteDictionary' : {
+			method : 'POST',
+			params : {
+				entity : 'dictionaties',
+				action : 'delete',
+			}
+		},
 
 		// Nodes
 		'getNodes' : {
