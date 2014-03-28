@@ -90,19 +90,16 @@ function drawDictionary(treeArray){
 function dictionaryDataToArray(response){
 	var treeArray=[];
 	var parentId;
-	console.log(response);
 
 	response.forEach(function(entry){
 		if(entry.parentId===0)
-			{			console.log("root");
-			console.log(entry.parentId);
+			{		;
 
 			parentId="#";}
 		else
 		{parentId="dictionary"+entry.parentId;}
 		treeArray.push({ "id" : "dictionary"+entry.id, "parent" : parentId, "text" : entry.title });
 	});
-console.log(treeArray);
 	drawDictionary(treeArray);
 
 };
