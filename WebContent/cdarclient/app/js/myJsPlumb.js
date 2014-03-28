@@ -177,7 +177,7 @@ function makeNodesDraggable(newState) {
 };
 
 function bindDetachConnectorEvent() {
-	jsPlumb.bind("click", function(c) {
+	jsPlumb.bind("dblclick", function(c) {
 		jsPlumb.detach(c);
 		if (c.id !== lastConnectionID) {
 			lastConnectionID = c.id;
@@ -211,6 +211,7 @@ function removeNodeEvent(newState) {
 			scope.removeLinkById(this.id.replace(LINK, ""));
 		});
 
+		scope.changeNode(newState[0].id.replace(NODE, ""));
 		scope.removeNodeById(newState[0].id.replace(NODE, ""));
 
 		jsPlumb.detachAllConnections($(this));

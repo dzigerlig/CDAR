@@ -168,15 +168,20 @@ app
 								AuthenticationService.logout();
 							};
 							
-							TreeService.getDictionaries({ktreeid:$routeParams.treeId}, function(response) {
-								console.log(response);
-								dictionaryDataToArray(response);
+							TreeService.getDictionaries({ktreeid:$routeParams.treeId}, function(resDictionary) {
+								var resNodes;
+								TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
+									resNodes =response;
+									drawExistingNodes(response);
+									$scope.getLinks(TreeService);
+								});
+								dictionaryDataToArray(resDictionary, resNodes);
 							});
 							
-							TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
+							/*TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
 								drawExistingNodes(response);
 								$scope.getLinks(TreeService);
-							});
+							});*/
 							
 							$scope.getLinks = function(TreeService) {
 								TreeService.getLinks({ktreeid:$routeParams.treeId}, function(response) {
@@ -224,6 +229,7 @@ app
 							};
 
 							$scope.changeNode = function(id) {
+								console.log('changed');
 								setLoading();
 
 								$scope.selectedNode = id;
