@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -40,8 +39,8 @@ public class DictionaryDao {
 	@Column(name = "title")
 	private String title;
 
-	@OneToOne(mappedBy = "dictionary", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = KnowledgeNodeDao.class)
-	private KnowledgeNodeDao knowledgeNode;
+	@OneToMany(mappedBy = "dictionary", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = KnowledgeNodeDao.class)
+	private Set<KnowledgeNodeDao> knowledgeNodes;
 
 	public DictionaryDao() {
 
@@ -50,6 +49,10 @@ public class DictionaryDao {
 	public DictionaryDao(int parentid, String dictionaryTitle) {
 		setParentDictionaryDao(parent);
 		setTitle(dictionaryTitle);
+	}
+
+	public DictionaryDao(String string) {
+		setTitle(string);
 	}
 
 	public int getId() {
@@ -100,11 +103,11 @@ public class DictionaryDao {
 		this.knowledgeTree = knowledgeTree;
 	}
 
-	public KnowledgeNodeDao getKnowledgeNode() {
-		return knowledgeNode;
+	public Set<KnowledgeNodeDao> getKnowledgeNodes() {
+		return knowledgeNodes;
 	}
 
-	public void setKnowledgeNode(KnowledgeNodeDao knowledgeNode) {
-		this.knowledgeNode = knowledgeNode;
+	public void setKnowledgeNodes(Set<KnowledgeNodeDao> knowledgeNodes) {
+		this.knowledgeNodes = knowledgeNodes;
 	}
 }

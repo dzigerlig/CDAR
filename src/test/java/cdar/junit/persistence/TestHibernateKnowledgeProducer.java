@@ -198,4 +198,14 @@ public class TestHibernateKnowledgeProducer {
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
 		assertNull(myNode.getDictionary());
 	}
+	
+	@Test
+	public void TestDictionaryEntryWithoutNode() {
+		int uid = udc.getUserByName(testUsername).getId();
+		kpdc.addKnowledgeTreeByUid(uid, "TestTree");
+		int treeid = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
+		assertEquals(0, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
+		kpdc.addDictionary(treeid, "My Dictionary Title");
+		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getDictionaries().size());
+	}
 }

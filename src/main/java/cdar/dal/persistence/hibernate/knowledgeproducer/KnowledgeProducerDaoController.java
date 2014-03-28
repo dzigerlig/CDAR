@@ -375,4 +375,18 @@ public class KnowledgeProducerDaoController {
 			return -1;
 		}
 	}
+
+	public DictionaryDao addDictionary(int treeid, String dictionaryTitle) {
+		KnowledgeTreeDao tree = getKnowledgeTreeById(treeid);
+
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		DictionaryDao newDictionary = new DictionaryDao(dictionaryTitle);
+		newDictionary.setKnowledgeTree(tree);
+		
+		tree.getDictionaries().add(newDictionary);
+		session.update(tree);
+		tx.commit();
+		return newDictionary;
+	}
 }

@@ -54,12 +54,4 @@ public class KnowledgeTreeModel {
 		return new Dictionary(kpdc.getDictionaryById(dictionaryid));
 	}
 	
-	public Set<Dictionary> getDictionaries(int ktreeid) {
-		Set<Dictionary> set = new HashSet<Dictionary>();
-		
-		for (DictionaryDao pdd : kpdc.getKnowledgeTreeById(ktreeid).getDictionaries()) {
-			set.add(new Dictionary(pdd));
-		}
-		return set;
-	}
 }

@@ -55,7 +55,7 @@ public class KnowledgeTreeDao {
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
 	@JoinColumn(name = "ktrid")
-	private Set<DictionaryDao> dictionary;
+	private Set<DictionaryDao> dictionaries;
 	
 	public KnowledgeTreeDao() {
 		
@@ -158,11 +158,11 @@ public class KnowledgeTreeDao {
 	}
 	
 	public Set<DictionaryDao> getDictionaries() {
-		return dictionary;
+		return dictionaries;
 	}
 
-	public void setDictionaries(Set<DictionaryDao> dictionary) {
-		this.dictionary = dictionary;
+	public void setDictionaries(Set<DictionaryDao> dictionaries) {
+		this.dictionaries = dictionaries;
 	}
 	
 	public void deleteDictionary(DictionaryDao dictionary) {
