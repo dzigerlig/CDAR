@@ -31,7 +31,7 @@ public class DictionaryDao {
 
 	@ManyToOne
 	@JoinColumn(name = "parentid")
-	private DictionaryDao parentId;
+	private DictionaryDao parent;
 
 	@ManyToOne
 	@JoinColumn(name = "ktrid")
@@ -48,7 +48,7 @@ public class DictionaryDao {
 	}
 
 	public DictionaryDao(int parentid, String dictionaryTitle) {
-		setParentDictionaryDao(parentId);
+		setParentDictionaryDao(parent);
 		setTitle(dictionaryTitle);
 	}
 
@@ -85,11 +85,11 @@ public class DictionaryDao {
 	}
 
 	public DictionaryDao getParentDictionaryDao() {
-		return parentId;
+		return parent;
 	}
 
-	public void setParentDictionaryDao(DictionaryDao parentId) {
-		this.parentId = parentId;
+	public void setParentDictionaryDao(DictionaryDao parent) {
+		this.parent = parent;
 	}
 
 	public KnowledgeTreeDao getKnowledgeTree() {

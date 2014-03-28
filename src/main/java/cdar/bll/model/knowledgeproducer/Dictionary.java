@@ -24,9 +24,12 @@ public class Dictionary extends BasicEntity {
 	}
 
 	public Dictionary(DictionaryDao knd) {
-		super(knd.getId(), knd.getCreationTime(), knd.getLastModificationTime());
-	//	this.parentId = knd.getParentId();
-		this.title = knd.getTitle();	}
+		super(knd.getId(), knd.getCreationTime(), knd.getLastModificationTime());		
+		this.title = knd.getTitle();	
+		if(knd.getParentDictionaryDao()!=null){
+			this.parentId = knd.getParentDictionaryDao().getId();
+		}	
+	}
 
 	public int getParentId() {
 		return parentId;

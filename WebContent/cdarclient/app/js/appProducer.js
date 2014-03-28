@@ -22,24 +22,24 @@ app.factory('TreeService', function($resource) {
 		},
 		
 		// Dictionaries
-		'getDictionaties' : {
+		'getDictionaries' : {
 			method : 'GET',
 			isArray : true,
 			params : {
-				entity : 'dictionaties',
+				entity : 'dictionaries',
 			}
 		},
 		'addDictionary' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaties',
+				entity : 'dictionaries',
 				action : 'add',
 			}
 		},
 		'deleteDictionary' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaties',
+				entity : 'dictionaries',
 				action : 'delete',
 			}
 		},
@@ -167,6 +167,11 @@ app
 							$scope.logout = function() {
 								AuthenticationService.logout();
 							};
+							
+							TreeService.getDictionaries({ktreeid:$routeParams.treeId}, function(response) {
+								console.log(response);
+								dictionaryDataToArray(response);
+							});
 							
 							TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
 								drawExistingNodes(response);
