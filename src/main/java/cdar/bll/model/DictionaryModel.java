@@ -1,8 +1,9 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.model;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.producer.Dictionary;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;

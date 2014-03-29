@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.model.BasicEntity;
-import cdar.bll.model.knowledgeconsumer.ProjectTree;
-import cdar.bll.model.knowledgeproducer.Tree;
+import cdar.bll.BasicEntity;
+import cdar.bll.consumer.ProjectTree;
+import cdar.bll.producer.Tree;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
 import cdar.dal.persistence.hibernate.user.UserDao;

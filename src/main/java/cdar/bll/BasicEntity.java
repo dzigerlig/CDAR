@@ -1,4 +1,4 @@
-package cdar.bll.model;
+package cdar.bll;
 
 import java.util.Date;
 

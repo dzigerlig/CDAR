@@ -7,9 +7,9 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import cdar.bll.model.knowledgeproducer.KnowledgeTreeModel;
-import cdar.bll.model.knowledgeproducer.Tree;
+import cdar.bll.model.TreeModel;
 import cdar.bll.model.user.User;
+import cdar.bll.producer.Tree;
 import cdar.dal.persistence.HibernateUtil;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTemplateDao;

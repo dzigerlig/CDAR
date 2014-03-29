@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import org.wikipedia.Wiki;
 
-import cdar.bll.model.WikiEntity;
-import cdar.bll.model.knowledgeconsumer.ProjectNode;
-import cdar.bll.model.knowledgeproducer.KnowledgeNode;
+import cdar.bll.WikiEntity;
+import cdar.bll.consumer.ProjectNode;
+import cdar.bll.producer.KnowledgeNode;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;

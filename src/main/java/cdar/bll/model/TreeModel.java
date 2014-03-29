@@ -1,15 +1,18 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.model;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.model.user.User;
+import cdar.bll.producer.Dictionary;
+import cdar.bll.producer.KnowledgeNode;
+import cdar.bll.producer.Tree;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
-public class KnowledgeTreeModel {
+public class TreeModel {
 
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 	private UserDaoController udc = new UserDaoController();

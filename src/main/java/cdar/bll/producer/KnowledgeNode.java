@@ -1,8 +1,8 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.producer;
 
 import java.util.List;
 
-import cdar.bll.model.WikiEntity;
+import cdar.bll.WikiEntity;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 
 public class KnowledgeNode extends WikiEntity {

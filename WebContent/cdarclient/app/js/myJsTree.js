@@ -92,7 +92,7 @@ function drawDictionary(treeArray) {
 			});
 }
 
-function dictionaryDataToArray(resDictionary, resNodes) {
+function dictionaryDataToArray(resDictionary) {
 	var treeArray = [];
 	var parentId;
 

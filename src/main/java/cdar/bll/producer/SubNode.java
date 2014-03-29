@@ -1,8 +1,8 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.producer;
 
 import java.util.Date;
 
-import cdar.bll.model.WikiEntity;
+import cdar.bll.WikiEntity;
 
 public class SubNode extends WikiEntity {
 	private int refNodeId;

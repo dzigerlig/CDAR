@@ -1,8 +1,8 @@
-package cdar.bll.model.knowledgeconsumer;
+package cdar.bll.consumer;
 
 import java.util.Date;
 
-import cdar.bll.model.WikiEntity;
+import cdar.bll.WikiEntity;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;
 
 public class ProjectNode extends WikiEntity {

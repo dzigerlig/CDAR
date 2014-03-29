@@ -10,9 +10,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.model.knowledgeconsumer.ProjectNode;
-import cdar.bll.model.knowledgeconsumer.ProjectTree;
-import cdar.bll.model.knowledgeconsumer.ProjectTreeModel;
+import cdar.bll.consumer.ProjectNode;
+import cdar.bll.consumer.ProjectTree;
+import cdar.bll.model.ProjectTreeModel;
 
 @Path("ptree")
 public class ProjectTreeController {

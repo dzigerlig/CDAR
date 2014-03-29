@@ -1,4 +1,4 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.producer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.model.BasicEntity;
+import cdar.bll.BasicEntity;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 

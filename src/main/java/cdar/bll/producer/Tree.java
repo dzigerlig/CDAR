@@ -1,8 +1,8 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.producer;
 
 import java.util.Date;
 
-import cdar.bll.model.BasicEntity;
+import cdar.bll.BasicEntity;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
 
 public class Tree extends BasicEntity {

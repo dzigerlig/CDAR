@@ -1,4 +1,4 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.model;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import cdar.bll.producer.Node;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 

@@ -8,8 +8,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.model.knowledgeconsumer.ProjectTreeModel;
-import cdar.bll.model.knowledgeproducer.KnowledgeTreeModel;
+import cdar.bll.model.TreeModel;
+import cdar.bll.model.ProjectTreeModel;
 import cdar.bll.model.wiki.WikiEntry;
 
 @Path("wiki")
@@ -26,7 +26,7 @@ public class WikiController {
 	@Path("/producer/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeid) {
-		KnowledgeTreeModel ktm = new KnowledgeTreeModel();
+		TreeModel ktm = new TreeModel();
 		return new WikiEntry(ktm.getKnowledgeNodeById(nodeid));
 	}
 	

@@ -1,8 +1,10 @@
-package cdar.bll.model.knowledgeconsumer;
+package cdar.bll.model;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.consumer.ProjectNode;
+import cdar.bll.consumer.ProjectTree;
 import cdar.bll.model.user.User;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeConsumerDaoController;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;

@@ -1,9 +1,9 @@
-package cdar.bll.model.knowledgeproducer;
+package cdar.bll.producer;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import cdar.bll.model.WikiEntity;
+import cdar.bll.WikiEntity;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 
 public class Node extends WikiEntity implements Serializable {

@@ -11,19 +11,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.model.knowledgeproducer.Dictionary;
-import cdar.bll.model.knowledgeproducer.DictionaryModel;
-import cdar.bll.model.knowledgeproducer.KnowledgeNode;
-import cdar.bll.model.knowledgeproducer.KnowledgeTreeModel;
-import cdar.bll.model.knowledgeproducer.NodeLinkModel;
-import cdar.bll.model.knowledgeproducer.Node;
-import cdar.bll.model.knowledgeproducer.NodeLink;
-import cdar.bll.model.knowledgeproducer.NodeModel;
-import cdar.bll.model.knowledgeproducer.Tree;
+import cdar.bll.model.DictionaryModel;
+import cdar.bll.model.TreeModel;
+import cdar.bll.model.NodeLinkModel;
+import cdar.bll.model.NodeModel;
+import cdar.bll.producer.Dictionary;
+import cdar.bll.producer.KnowledgeNode;
+import cdar.bll.producer.Node;
+import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.Tree;
 
 @Path("{uid}/ktree")
 public class KnowledgeTreeController {
-	private KnowledgeTreeModel ktm = new KnowledgeTreeModel();
+	private TreeModel ktm = new TreeModel();
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
 	private DictionaryModel dM = new DictionaryModel();

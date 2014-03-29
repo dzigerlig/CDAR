@@ -1,8 +1,8 @@
-package cdar.bll.model.knowledgeconsumer;
+package cdar.bll.consumer;
 
 import java.util.Date;
 
-import cdar.bll.model.BasicEntity;
+import cdar.bll.BasicEntity;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao;
 
 public class ProjectTree extends BasicEntity {
