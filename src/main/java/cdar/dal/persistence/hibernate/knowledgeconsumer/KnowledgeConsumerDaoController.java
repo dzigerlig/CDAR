@@ -14,7 +14,7 @@ import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoCont
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
 import cdar.dal.persistence.hibernate.user.UserDao;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
-import cdar.pl.controller.KnowledgeTreeController;
+import cdar.pl.controller.TreeController;
 
 public class KnowledgeConsumerDaoController {
 

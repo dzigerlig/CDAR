@@ -22,7 +22,7 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Tree;
 
 @Path("{uid}/ktree")
-public class KnowledgeTreeController {
+public class TreeController {
 	private TreeModel ktm = new TreeModel();
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
