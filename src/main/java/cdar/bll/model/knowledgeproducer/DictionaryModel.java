@@ -14,10 +14,7 @@ public class DictionaryModel {
 	public Set<Dictionary> getDictionaries() {
 		Set<Dictionary> ln = new HashSet<Dictionary>();
 		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(1).getDictionaries()) {
-			ln.add(new Dictionary(knd));
-			if(knd.getParentDictionaryDao()!=null)
-			{System.out.println(knd.getParentDictionaryDao().getId());}
-			
+			ln.add(new Dictionary(knd));			
 		}
 		return ln;
 	}
