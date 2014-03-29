@@ -17,7 +17,7 @@ function initializeJsPlumb() {
 	});
 };
 
-function addHTMLNode(response, e, data) {
+function addHTMLNode(response, e) {
 	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
@@ -181,7 +181,7 @@ function bindDetachConnectorEvent() {
 		jsPlumb.detach(c);
 		if (c.id !== lastConnectionID) {
 			lastConnectionID = c.id;
-			scope.removeLinkById(c.id.replace(LINK, ""));
+			scope.deleteLink(c.id.replace(LINK, ""));
 		}
 	});
 };
@@ -204,16 +204,14 @@ function removeNodeEvent(newState) {
 		});
 
 		jQuery.each(allTargetConnection, function() {
-			scope.removeLinkById(this.id.replace(LINK, ""));
+			// scope.deleteLink(this.id.replace(LINK, ""));
 		});
 
 		jQuery.each(allSourceConnection, function() {
-			scope.removeLinkById(this.id.replace(LINK, ""));
+			//scope.deleteLink(this.id.replace(LINK, ""));
 		});
 
-		scope.changeNode(newState[0].id.replace(NODE, ""));
-		scope.removeNodeById(newState[0].id.replace(NODE, ""));
-
+		scope.undropNode(newState[0].id.replace(NODE, ""));
 		jsPlumb.detachAllConnections($(this));
 		$(this).remove();
 		e.stopPropagation();

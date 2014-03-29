@@ -1,16 +1,10 @@
-var DICTIONARY='dictionary';
+var DICTIONARY = 'dictionary';
+var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
 
-
 $(function() {
-	
-	$(document).on("dnd_move.vakata", function(e, data) {
-		// console.log(data);
-	});
 
 	$('#jstree').jstree('get_selected');
-	// 6 create an instance when the DOM is ready
-	//
 
 	var to = false;
 	$('#plugins4_q').keyup(function() {
@@ -23,9 +17,44 @@ $(function() {
 		}, 250);
 	});
 
-	// 7 bind to events triggered on the tree
-	$('#jstree').on("changed.jstree", function(e, data) {
-		scope.changeNode(data.selected[0].replace(DICTIONARY, ""));		
+	$('#jstree').on("select_node.jstree", function(e, data) {
+		var id = data.selected[0];
+		if (data.node.type !== 'default') {
+			id = id.replace(NODE, "");
+		}
+		id = id.replace(DICTIONARY, "");		
+		scope.changeNode(id);
+	});
+
+	$('#jstree').on("rename_node.jstree", function(e, data) {
+		var id = data.node.id;
+		id = id.replace(DICTIONARY, "");
+		if (data.node.type !== 'default') {
+			id = id.replace(NODE, "");
+
+			scope.renameNode(id, data.text);
+		} else {
+			scope.renameDictionary(id, data.text);
+
+		}
+	});
+	
+	$('#jstree').on("delete_node.jstree", function(e, data) {
+		var id = data.node.id;
+		id = id.replace(DICTIONARY, "");
+		if (data.node.type !== 'default') {
+			id = id.replace(NODE, "");
+
+			scope.deleteNode(id, data.text);
+		} else {
+			scope.renameDictionary(id, data.text);
+
+		}
+	});
+	
+	$('#jstree').on("create_node.jstree", function(e, data) {
+		//TODO kommunikation über addNode sowie Mapping hinzufügen
+		console.log(data);
 	});
 });
 
@@ -110,14 +139,14 @@ function dictionaryDataToArray(resDictionary) {
 	});
 
 	resDictionary.forEach(function(dictionary) {
-		if (dictionary.nodes.length!==0) {
-		
+		if (dictionary.nodes.length !== 0) {
+
 			dictionary.nodes.forEach(function(node) {
 				treeArray.push({
-					"id" : "dictionaryNode" + node.id,
+					"id" : "dictionarynode" + node.id,
 					"parent" : "dictionary" + dictionary.id,
-					"text" : node.title	,	
-					"type": "file"
+					"text" : node.title,
+					"type" : "file"
 				});
 			});
 		}

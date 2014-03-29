@@ -16,19 +16,35 @@ public class NodeModel {
 
 	public Set<Node> getNodes() {
 		Set<Node> ln = new HashSet<Node>();
-		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodes()) {
+		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1)
+				.getKnowledgeNodes()) {
 			ln.add(new Node(knd));
 		}
 		return ln;
 	}
 
-	public void removeNodeById(int id) {
-		System.out.println("remove node"+id);
+	public void deleteNodeById(int id) {
+		System.out.println("remove node" + id);
 		kpdc.removeKnowledgeNode(1, id);
 	}
 
-	public Node addNode(Node n)	
-	{ 
-		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(),n.getTitle()));
+	public Node addNode(Node n) {
+		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(), n.getTitle()));
+	}
+
+	public Node dropNode(int id) {
+		System.out.println(id+" dropped");
+		return new Node(kpdc.dropNode(id));
+	}
+
+	public void renameNode(Node n) {
+		System.out.println(n.getTitle());
+
+		kpdc.renameNode(n.getId(),n.getTitle());
+	}
+
+	public void undropNode(int id) {
+		System.out.println(id+" undropped");
+		kpdc.undropNode(id);
 	}
 }

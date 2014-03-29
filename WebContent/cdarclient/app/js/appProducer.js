@@ -1,10 +1,10 @@
 app.factory('TreeService', function($resource) {
 	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/', {}, {
 		// Tree
-		
+
 		'getTrees' : {
 			method : 'GET',
-			isArray: true
+			isArray : true
 		},
 		'postEntry' : {
 			method : 'POST'
@@ -17,10 +17,9 @@ app.factory('TreeService', function($resource) {
 		},
 		'getTree' : {
 			method : 'GET',
-			params : {
-			}
+			params : {}
 		},
-		
+
 		// Dictionaries
 		'getDictionaries' : {
 			method : 'GET',
@@ -41,6 +40,13 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'dictionaries',
 				action : 'delete',
+			}
+		},
+		'renameDictionary' : {
+			method : 'POST',
+			params : {
+				entity : 'dictionaries',
+				action : 'rename',
 			}
 		},
 
@@ -64,6 +70,27 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'nodes',
 				action : 'delete',
+			}
+		},
+		'dropNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'drop',
+			}
+		},
+		'renameNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'rename',
+			}
+		},
+		'undropNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'undrop',
 			}
 		},
 
@@ -132,7 +159,9 @@ app.controller("HomeProducerController", [
 			};
 
 			$scope.deleteTree = function(id) {
-				TreeService.removeTree({ktreeid: id},function(response) {
+				TreeService.removeTree({
+					ktreeid : id
+				}, function(response) {
 					reloadTrees();
 				});
 			};
@@ -151,55 +180,93 @@ app
 						function($scope, $routeParams, TreeService,
 								AuthenticationService, WikiService, UserService) {
 							initializeJsPlumb();
-							
+
 							$scope.knowledgetree;
 							$scope.nodes;
 							$scope.UserService = UserService;
 							$scope.selectedNode = 0;
-							
+
 							$scope.wikiHtmlText = "no wiki entry selected";
 							$scope.wikiEntry;
 
-							TreeService.getTree({ktreeid:$routeParams.treeId}, function(response) {
+							TreeService.getTree({
+								ktreeid : $routeParams.treeId
+							}, function(response) {
 								$scope.knowledgetree = response;
 							});
 
 							$scope.logout = function() {
 								AuthenticationService.logout();
 							};
-							
-							TreeService.getDictionaries({ktreeid:$routeParams.treeId}, function(resDictionary) {
+
+							TreeService.getDictionaries({
+								ktreeid : $routeParams.treeId
+							}, function(resDictionary) {
 								dictionaryDataToArray(resDictionary);
 							});
-							
-							TreeService.getNodes({ktreeid:$routeParams.treeId}, function(response) {
+
+							TreeService.getNodes({
+								ktreeid : $routeParams.treeId
+							}, function(response) {
 								drawExistingNodes(response);
 								$scope.getLinks(TreeService);
 							});
-							
+
 							$scope.getLinks = function(TreeService) {
-								TreeService.getLinks({ktreeid:$routeParams.treeId}, function(response) {
+								TreeService.getLinks({
+									ktreeid : $routeParams.treeId
+								}, function(response) {
 									makeNodeHierarchy(response);
 									w_launch();
 								});
 							};
 
 							$scope.addNode = function(e, data) {
-								TreeService.addNode({ktreeid:$routeParams.treeId},
-										{ refTreeId : 1,
-										title : data.element.innerText
+								TreeService.addNode({
+									ktreeid : $routeParams.treeId
+								}, {
+									refTreeId : 1,
+									title : data.element.innerText
 								}, function(response) {
-									addHTMLNode(response, e, data);
+									//get Node and set id TODO
+									//addHTMLNode(response, e);
 								});
 							};
 
-							$scope.removeNodeById = function(id) {
-								TreeService.deleteNode({ktreeid:$routeParams.treeId}, id);
+							$scope.deleteNode = function(id) {
+								TreeService.deleteNode({
+									ktreeid : $routeParams.treeId
+								}, id);
+							};
+
+							$scope.dropNode = function(e, id) {
+								TreeService.dropNode({
+									ktreeid : $routeParams.treeId
+								},id, function(response) {
+									addHTMLNode(response, e);
+								});
+							};
+
+							$scope.renameNode = function(id, newTitle) {
+								TreeService.renameNode({
+									ktreeid : $routeParams.treeId
+								}, {
+									id : id,
+									title : newTitle
+								});
+							};
+
+							$scope.undropNode = function(id) {
+								TreeService.undropNode({
+									ktreeid : $routeParams.treeId
+								}, id);
 							};
 
 							$scope.addLink = function(treeId, sourceId,
 									targetId, connection) {
-								TreeService.addLink({ktreeid:$routeParams.treeId}, {
+								TreeService.addLink({
+									ktreeid : $routeParams.treeId
+								}, {
 									refTreeId : treeId,
 									sourceId : sourceId,
 									targetId : targetId
@@ -208,8 +275,26 @@ app
 								});
 							};
 
-							$scope.removeLinkById = function(id) {
-								TreeService.deleteLink({ktreeid:$routeParams.treeId}, id);
+							$scope.deleteLink = function(id) {
+								TreeService.deleteLink({
+									ktreeid : $routeParams.treeId
+								}, id);
+							};
+							
+							$scope.renameDictionary = function(id, newTitle) {
+								TreeService.renameDictionary({
+									ktreeid : $routeParams.treeId
+								}, {
+									id : id,
+									title : newTitle
+								});
+							};
+							
+							$scope.deleteDictionary = function(id, newTitle) {
+								//TODO beachten mit cascade in datanbank oder ohne
+								TreeService.deleteDictionary({
+										ktreeid : $routeParams.treeId
+									}, id);
 							};
 
 							var setLoading = function() {
@@ -219,11 +304,11 @@ app
 							var changeWikiFields = function(response) {
 								$scope.wikiEntry = response;
 								$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
-								$("#wikiArea").val($scope.wikiEntry.wikiContentPlain);
+								$("#wikiArea").val(
+										$scope.wikiEntry.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id) {
-								console.log('changed');
 								setLoading();
 
 								$scope.selectedNode = id;
@@ -235,6 +320,8 @@ app
 									changeWikiFields(response);
 								});
 							};
+							
+					
 
 							$scope.saveWikiEntry = function() {
 								if ($scope.selectedNode != 0) {
@@ -250,7 +337,6 @@ app
 								}
 							};
 						} ]);
-
 
 /*
  * 

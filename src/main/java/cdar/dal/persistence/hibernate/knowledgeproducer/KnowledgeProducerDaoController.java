@@ -93,7 +93,7 @@ public class KnowledgeProducerDaoController {
 		tx.commit();
 		return kt;
 	}
-	
+
 	public KnowledgeNodeDao getKnowledgeNodeById(int nodeId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -184,11 +184,12 @@ public class KnowledgeProducerDaoController {
 			tx.commit();
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
-			Query q = session.createQuery("delete KnowledgeTemplateDao where id = "
-					+ templateId);
+			Query q = session
+					.createQuery("delete KnowledgeTemplateDao where id = "
+							+ templateId);
 			q.executeUpdate();
 			tx.commit();
-			
+
 			return 0;
 		} catch (RuntimeException e) {
 			try {
@@ -202,17 +203,15 @@ public class KnowledgeProducerDaoController {
 			return -1;
 		}
 	}
-	
-	
+
 	public KnowledgeNodeDao addKnowledgeNode(int treeId, String nodeTitle) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		KnowledgeNodeDao newNode = new KnowledgeNodeDao(
-				nodeTitle);
+		KnowledgeNodeDao newNode = new KnowledgeNodeDao(nodeTitle);
 		newNode.setKnowledgeTree(tree);
-		
+
 		tree.getKnowledgeNodes().add(newNode);
 		session.update(tree);
 		tx.commit();
@@ -235,7 +234,7 @@ public class KnowledgeProducerDaoController {
 					+ nodeId);
 			q.executeUpdate();
 			tx.commit();
-			
+
 			return 0;
 		} catch (RuntimeException e) {
 			try {
@@ -249,7 +248,7 @@ public class KnowledgeProducerDaoController {
 			return -1;
 		}
 	}
-	
+
 	public int removeKnowledgeNodeLink(int linkid) {
 		try {
 			Session session = HibernateUtil.getSessionFactory()
@@ -258,8 +257,9 @@ public class KnowledgeProducerDaoController {
 			tx.commit();
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			tx = session.beginTransaction();
-			Query q = session.createQuery("delete KnowledgeNodeLinkDao where id = "
-					+ linkid);
+			Query q = session
+					.createQuery("delete KnowledgeNodeLinkDao where id = "
+							+ linkid);
 			q.executeUpdate();
 			tx.commit();
 			return 0;
@@ -275,7 +275,7 @@ public class KnowledgeProducerDaoController {
 			return -1;
 		}
 	}
-	
+
 	public void addKnowledgeSubNode(int nodeId, String subNodeTitle) {
 		KnowledgeNodeDao node = getKnowledgeNodeById(nodeId);
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -286,7 +286,7 @@ public class KnowledgeProducerDaoController {
 		session.update(node);
 		tx.commit();
 	}
-	
+
 	public KnowledgeNodeLinkDao getKnowledgeNodeLink(int linkid) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -301,11 +301,12 @@ public class KnowledgeProducerDaoController {
 		return knl;
 	}
 
-	public KnowledgeNodeLinkDao addKnowledgeNodeLink(int sourceid, int targetid, int treeid) {
+	public KnowledgeNodeLinkDao addKnowledgeNodeLink(int sourceid,
+			int targetid, int treeid) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeid);
 		KnowledgeNodeDao sourcenode = getKnowledgeNodeById(sourceid);
 		KnowledgeNodeDao targetnode = getKnowledgeNodeById(targetid);
-		
+
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		KnowledgeNodeLinkDao link = new KnowledgeNodeLinkDao();
@@ -330,21 +331,36 @@ public class KnowledgeProducerDaoController {
 		tx.commit();
 		return kn;
 	}
-	
-	public DictionaryDao addDictionary(int treeId, int parentid, String dictionaryTitle) {
+
+	public DictionaryDao addDictionary(int treeId, int parentid,
+			String dictionaryTitle) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		DictionaryDao newDictionary = new DictionaryDao(parentid, dictionaryTitle);
+		DictionaryDao newDictionary = new DictionaryDao(parentid,
+				dictionaryTitle);
 		newDictionary.setKnowledgeTree(tree);
-		
+
 		tree.getDictionaries().add(newDictionary);
 		session.update(tree);
 		tx.commit();
 		return newDictionary;
 	}
 	
+	public void renameDictionary(int id, String newTitle) {
+		System.out.println(id);
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session
+				.createQuery("Update DictionaryDao SET title = "+newTitle+" where id = "
+						+ id);
+		q.executeUpdate();
+		tx.commit();		
+	}
+
 	public int removeDictionary(int ktreeid, int dictionaryid) {
 		try {
 			KnowledgeTreeDao tree = getKnowledgeTreeById(ktreeid);
@@ -361,7 +377,7 @@ public class KnowledgeProducerDaoController {
 					+ dictionaryid);
 			q.executeUpdate();
 			tx.commit();
-			
+
 			return 0;
 		} catch (RuntimeException e) {
 			try {
@@ -383,7 +399,7 @@ public class KnowledgeProducerDaoController {
 		Transaction tx = session.beginTransaction();
 		DictionaryDao newDictionary = new DictionaryDao(dictionaryTitle);
 		newDictionary.setKnowledgeTree(tree);
-		
+
 		tree.getDictionaries().add(newDictionary);
 		session.update(tree);
 		tx.commit();
@@ -392,7 +408,8 @@ public class KnowledgeProducerDaoController {
 
 	public DictionaryDao addDictionary(int treeid, KnowledgeNodeDao myNode,
 			String dictionaryTitle) {
-		DictionaryDao dic = new DictionaryDao(getKnowledgeTreeById(treeid), getKnowledgeNodeById(myNode.getId()), dictionaryTitle);
+		DictionaryDao dic = new DictionaryDao(getKnowledgeTreeById(treeid),
+				getKnowledgeNodeById(myNode.getId()), dictionaryTitle);
 		KnowledgeNodeDao node = getKnowledgeNodeById(myNode.getId());
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -409,14 +426,58 @@ public class KnowledgeProducerDaoController {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		DictionaryDao newDictionary = new DictionaryDao(tree, node, title);
-		
-		//tree.getDictionaries().add(newDictionary);
+
+		// tree.getDictionaries().add(newDictionary);
 		node.setDictionary(newDictionary);
-		//session.saveOrUpdate(newDictionary);
+		// session.saveOrUpdate(newDictionary);
 		session.saveOrUpdate(node);
-		//session.saveOrUpdate(tree);
-		
+		// session.saveOrUpdate(tree);
+
 		tx.commit();
 		return newDictionary;
 	}
+
+	public KnowledgeNodeDao dropNode(int id) {
+		System.out.println(id);
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session
+				.createQuery("Update KnowledgeNodeDao SET dynamictreeflag = 1 where id = "
+						+ id);
+		q.executeUpdate();
+		tx.commit();
+		return getKnowledgeNodeById(id);
+	}
+
+	
+	  public void renameNode(int id, String newTitle) {
+			System.out.println(id);
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			Transaction tx = session.beginTransaction();
+
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			Query q = session
+					.createQuery("Update KnowledgeNodeDao SET title = "+newTitle+" where id = "
+							+ id);
+			q.executeUpdate();
+			tx.commit();
+	  }
+	 
+	public void undropNode(int id) { // TODO Auto-generated method stub
+		System.out.println(id);
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.beginTransaction();
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session
+				.createQuery("Update KnowledgeNodeDao SET dynamictreeflag = 0 where id = "
+						+ id);
+		q.executeUpdate();
+		tx.commit();
+	}
+
+
+
 }

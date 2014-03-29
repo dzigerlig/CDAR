@@ -55,7 +55,7 @@ public class TreeController {
 		return ktm.getKnowledgeTreeById(ktreeid);
 	}
 	
-	//Static Tree
+	//Dictionary
 	@GET
 	@Path("/dictionaries/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +75,14 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeDictionary(int id) {
 		dM.removeDictionaryById(id);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("dictionaries/rename/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response renameDictionary(Dictionary d) {
+		dM.renameDictionary(d);
 		return Response.status(200).build();
 	}
 	
@@ -98,8 +106,32 @@ public class TreeController {
 	@POST
 	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeNode(int id) {
-		nM.removeNodeById(id);
+	public Response deleteNode(int id) {
+		nM.deleteNodeById(id);
+		return Response.status(200).build();
+	}
+
+	@POST
+	@Path("nodes/drop/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Node dropNode(int id) {
+		return nM.dropNode(id);
+		
+	}
+	
+	@POST
+	@Path("nodes/rename/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response renameNode(Node n) {
+		nM.renameNode(n);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("nodes/undrop/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response undropNode(int id) {
+		nM.undropNode(id);
 		return Response.status(200).build();
 	}
 	

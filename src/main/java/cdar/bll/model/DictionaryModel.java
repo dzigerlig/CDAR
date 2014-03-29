@@ -28,4 +28,9 @@ public class DictionaryModel {
 	{ 
 		return new Dictionary(kpdc.addDictionary(d.getRefTreeId(), d.getParentId(), d.getTitle()));
 	}
+
+	public void renameDictionary(Dictionary d) {
+		System.out.println(d.getTitle());
+		kpdc.renameDictionary(d.getId(),d.getTitle());		
+	}
 }
