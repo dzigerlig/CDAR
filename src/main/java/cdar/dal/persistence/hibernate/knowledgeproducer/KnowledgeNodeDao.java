@@ -60,8 +60,7 @@ public class KnowledgeNodeDao {
 	private Set<KnowledgeNodeLinkDao> linksAsTarget;
 	
 	@ManyToOne(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
-	@JoinTable(name="knowledgenodemapping", joinColumns = @JoinColumn(name="knid"),
-	inverseJoinColumns = @JoinColumn(name="did"))
+	@JoinTable(name="knowledgenodemapping", joinColumns = @JoinColumn(name="knid"), inverseJoinColumns = @JoinColumn(name="did"))
 	private DictionaryDao dictionary;
 	
 	public KnowledgeNodeDao() {

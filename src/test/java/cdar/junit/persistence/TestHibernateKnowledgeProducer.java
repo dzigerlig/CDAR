@@ -198,9 +198,11 @@ public class TestHibernateKnowledgeProducer {
 		KnowledgeNodeDao myNode = kpdc.addKnowledgeNode(treeid, "TestNode 1");
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getKnowledgeNodes().size());
 		assertNull(myNode.getDictionary());
-		kpdc.addDictionary(treeid, myNode, "TestDictionary");
+		DictionaryDao dic = kpdc.addDictionary(treeid, "TestDictionary", myNode.getId());
 		assertNotNull(kpdc.getKnowledgeNodeById(myNode.getId()).getDictionary());
-		//assertEquals("TestNode 1", kpdc.getKnowledgeNodeById(myNode.getId()).getDictionary().getTitle());
+		assertEquals("TestDictionary", kpdc.getKnowledgeNodeById(myNode.getId()).getDictionary().getTitle());
+		assertEquals("TestNode 1", ((KnowledgeNodeDao)kpdc.getDictionaryById(dic.getId()).getKnowledgeNodes().toArray()[0]).getTitle());
+		assertEquals("TestTree", kpdc.getDictionaryById(dic.getId()).getKnowledgeTree().getName());
 	}
 	
 	@Test
@@ -212,5 +214,6 @@ public class TestHibernateKnowledgeProducer {
 		DictionaryDao dic = kpdc.addDictionary(treeid, "My Dictionary Title");
 		assertEquals(1, kpdc.getKnowledgeTreeById(treeid).getDictionaries().size());
 		assertEquals(0, kpdc.getDictionaryById(dic.getId()).getKnowledgeNodes().size());
+		assertEquals("TestTree", kpdc.getDictionaryById(dic.getId()).getKnowledgeTree().getName());
 	}
 }
