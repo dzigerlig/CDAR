@@ -18,12 +18,14 @@ $(function() {
 	});
 
 	$('#jstree').on("select_node.jstree", function(e, data) {
+		if(data.node.type !== 'default'){
 		var id = data.selected[0];
-		if (data.node.type !== 'default') {
+		//if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
-		}
+		//}
 		id = id.replace(DICTIONARY, "");		
 		scope.changeNode(id);
+		}
 	});
 
 	$('#jstree').on("rename_node.jstree", function(e, data) {
