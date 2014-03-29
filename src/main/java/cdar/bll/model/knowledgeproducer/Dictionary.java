@@ -2,6 +2,8 @@ package cdar.bll.model.knowledgeproducer;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.model.BasicEntity;
@@ -20,11 +22,12 @@ public class Dictionary extends BasicEntity {
 	}
 
 	public Dictionary(int id, Date creationTime, Date lastModificationTime,
-			int parentId,int refTreeId, String title) {
+			int parentId,int refTreeId, String title, Set<Node> nodes) {
 		super(id, creationTime, lastModificationTime);
 		this.parentId = parentId;
 		this.refTreeId = refTreeId;
 		this.title = title;
+		this.nodes = nodes;
 	}
 
 	public Dictionary(DictionaryDao dd) {
@@ -34,10 +37,9 @@ public class Dictionary extends BasicEntity {
 			this.parentId = dd.getParentDictionaryDao().getId();
 		}	
 		if(dd.getKnowledgeNodes()!=null){
+			this.nodes = new HashSet<Node>();
 			for(KnowledgeNodeDao knd: dd.getKnowledgeNodes()){
-				//this.nodes.add(new Node(knd));
-				int i =3;
-				i++;
+				this.nodes.add(new Node(knd));
 			}
 		}
 	}

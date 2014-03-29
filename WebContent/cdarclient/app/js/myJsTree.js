@@ -110,12 +110,11 @@ function dictionaryDataToArray(resDictionary, resNodes) {
 	});
 
 	resDictionary.forEach(function(dictionary) {
-		console.log(dictionary);
-		if (dictionary.nodes !== null) {
-			
+		if (dictionary.nodes.length!==0) {
+		
 			dictionary.nodes.forEach(function(node) {
 				treeArray.push({
-					"id" : "dictionary" + node.id,
+					"id" : "dictionaryNode" + node.id,
 					"parent" : "dictionary" + dictionary.id,
 					"text" : node.title	,	
 					"type": "file"
