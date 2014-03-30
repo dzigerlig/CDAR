@@ -40,17 +40,17 @@ public class NodeModel {
 		return new Node(kpdc.updateNode(node));
 	}
 
-	public void renameNode(Node n) {
+	public Node renameNode(Node n) {
 		System.out.println(n.getTitle());
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(n.getId());
 		node.setTitle(n.getTitle());
-		//return?
+		return new Node(kpdc.updateNode(node));
 	}
 
-	public void undropNode(int id) {
+	public Node undropNode(int id) {
 		System.out.println(id+" undropped");
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
 		node.setDynamicTreeFlag(0);
-		//return?
+		return new Node(kpdc.updateNode(node));
 	}
 }
