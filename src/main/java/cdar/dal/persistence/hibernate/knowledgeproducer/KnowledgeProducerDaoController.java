@@ -436,48 +436,27 @@ public class KnowledgeProducerDaoController {
 		tx.commit();
 		return newDictionary;
 	}
-
-	public KnowledgeNodeDao dropNode(int id) {
-		System.out.println(id);
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx = session.beginTransaction();
-
-		session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session
-				.createQuery("Update KnowledgeNodeDao SET dynamictreeflag = 1 where id = "
-						+ id);
-		q.executeUpdate();
-		tx.commit();
-		return getKnowledgeNodeById(id);
-	}
-
 	
-	  public void renameNode(int id, String newTitle) {
-			System.out.println(id);
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public KnowledgeNodeDao updateNode(KnowledgeNodeDao node) {
+		try {
+			Session session = HibernateUtil.getSessionFactory()
+					.getCurrentSession();
 			Transaction tx = session.beginTransaction();
-
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			Query q = session
-					.createQuery("Update KnowledgeNodeDao SET title = "+newTitle+" where id = "
-							+ id);
-			q.executeUpdate();
+			session.update(node);
 			tx.commit();
-	  }
-	 
-	public void undropNode(int id) { // TODO Auto-generated method stub
-		System.out.println(id);
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx = session.beginTransaction();
-
-		session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session
-				.createQuery("Update KnowledgeNodeDao SET dynamictreeflag = 0 where id = "
-						+ id);
-		q.executeUpdate();
-		tx.commit();
+			return node;
+		} catch (RuntimeException e) {
+			try {
+				Session session = HibernateUtil.getSessionFactory()
+						.getCurrentSession();
+				if (session.getTransaction().isActive())
+					session.getTransaction().rollback();
+			} catch (HibernateException e1) {
+				System.out.println("Error rolling back transaction");
+			}
+			throw e;
+		}
 	}
-
 
 
 }

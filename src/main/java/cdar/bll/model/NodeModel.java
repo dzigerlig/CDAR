@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
@@ -34,17 +35,22 @@ public class NodeModel {
 
 	public Node dropNode(int id) {
 		System.out.println(id+" dropped");
-		return new Node(kpdc.dropNode(id));
+		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
+		node.setDynamicTreeFlag(1);
+		return new Node(kpdc.updateNode(node));
 	}
 
 	public void renameNode(Node n) {
 		System.out.println(n.getTitle());
-
-		kpdc.renameNode(n.getId(),n.getTitle());
+		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(n.getId());
+		node.setTitle(n.getTitle());
+		//return?
 	}
 
 	public void undropNode(int id) {
 		System.out.println(id+" undropped");
-		kpdc.undropNode(id);
+		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
+		node.setDynamicTreeFlag(0);
+		//return?
 	}
 }

@@ -216,4 +216,43 @@ public class TestHibernateKnowledgeProducer {
 		assertEquals(0, kpdc.getDictionaryById(dic.getId()).getKnowledgeNodes().size());
 		assertEquals("TestTree", kpdc.getDictionaryById(dic.getId()).getKnowledgeTree().getName());
 	}
+	
+	@Test
+	public void TestDropNode() {
+		assertEquals(udc.getUserByName(testUsername).getKnowledgeTrees().size(), 0);
+		kpdc.addKnowledgeTreeByUid(udc.getUserByName(testUsername).getId(), "TestTree");
+		int treeId = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
+		KnowledgeNodeDao node = kpdc.addKnowledgeNode(treeId, "TestNode");
+		assertEquals(0, node.getDynamicTreeFlag());
+		node.setDynamicTreeFlag(1);
+		kpdc.updateNode(node);
+		assertEquals(1, kpdc.getKnowledgeNodeById(node.getId()).getDynamicTreeFlag());
+	}
+	
+	@Test
+	public void TestRenameNode() {
+		assertEquals(udc.getUserByName(testUsername).getKnowledgeTrees().size(), 0);
+		kpdc.addKnowledgeTreeByUid(udc.getUserByName(testUsername).getId(), "TestTree");
+		int treeId = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
+		KnowledgeNodeDao node = kpdc.addKnowledgeNode(treeId, "TestNode");
+		assertEquals("TestNode", node.getTitle());
+		node.setTitle("TestNode2");
+		kpdc.updateNode(node);
+		assertEquals("TestNode2", node.getTitle());
+	}
+	
+	@Test
+	public void TestUndropNode() {
+		assertEquals(udc.getUserByName(testUsername).getKnowledgeTrees().size(), 0);
+		kpdc.addKnowledgeTreeByUid(udc.getUserByName(testUsername).getId(), "TestTree");
+		int treeId = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
+		KnowledgeNodeDao node = kpdc.addKnowledgeNode(treeId, "TestNode");
+		assertEquals(0, node.getDynamicTreeFlag());
+		node.setDynamicTreeFlag(1);
+		kpdc.updateNode(node);
+		assertEquals(1, kpdc.getKnowledgeNodeById(node.getId()).getDynamicTreeFlag());
+		node.setDynamicTreeFlag(0);
+		kpdc.updateNode(node);
+		assertEquals(0, kpdc.getKnowledgeNodeById(node.getId()).getDynamicTreeFlag());
+	}
 }
