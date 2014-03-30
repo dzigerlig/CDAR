@@ -30,7 +30,8 @@ public class DictionaryModel {
 	}
 
 	public void renameDictionary(Dictionary d) {
-		System.out.println(d.getTitle());
-		kpdc.renameDictionary(d.getId(),d.getTitle());		
+		DictionaryDao dd = kpdc.getDictionaryById(d.getId());
+		dd.setTitle(d.getTitle());
+		kpdc.updateDictionary(dd);		
 	}
 }

@@ -348,17 +348,25 @@ public class KnowledgeProducerDaoController {
 		return newDictionary;
 	}
 	
-	public void renameDictionary(int id, String newTitle) {
-		System.out.println(id);
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction tx = session.beginTransaction();
-
-		session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session
-				.createQuery("Update DictionaryDao SET title = "+newTitle+" where id = "
-						+ id);
-		q.executeUpdate();
-		tx.commit();		
+	public DictionaryDao updateDictionary(DictionaryDao dd) {
+		try {
+			Session session = HibernateUtil.getSessionFactory()
+					.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.update(dd);
+			tx.commit();
+			return dd;
+		} catch (RuntimeException e) {
+			try {
+				Session session = HibernateUtil.getSessionFactory()
+						.getCurrentSession();
+				if (session.getTransaction().isActive())
+					session.getTransaction().rollback();
+			} catch (HibernateException e1) {
+				System.out.println("Error rolling back transaction");
+			}
+			throw e;
+		}		
 	}
 
 	public int removeDictionary(int ktreeid, int dictionaryid) {

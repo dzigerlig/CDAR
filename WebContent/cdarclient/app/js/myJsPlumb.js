@@ -204,11 +204,11 @@ function removeNodeEvent(newState) {
 		});
 
 		jQuery.each(allTargetConnection, function() {
-			// scope.deleteLink(this.id.replace(LINK, ""));
+			scope.deleteLink(this.id.replace(LINK, ""));
 		});
 
 		jQuery.each(allSourceConnection, function() {
-			//scope.deleteLink(this.id.replace(LINK, ""));
+			scope.deleteLink(this.id.replace(LINK, ""));
 		});
 
 		scope.undropNode(newState[0].id.replace(NODE, ""));
