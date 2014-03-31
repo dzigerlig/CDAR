@@ -18,13 +18,13 @@ $(function() {
 	});
 
 	$('#jstree').on("select_node.jstree", function(e, data) {
-		if(data.node.type !== 'default'){
-		var id = data.selected[0];
-		//if (data.node.type !== 'default') {
+		if (data.node.type !== 'default') {
+			var id = data.selected[0];
+			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
-		//}
-		id = id.replace(DICTIONARY, "");		
-		scope.changeNode(id);
+			// }
+			id = id.replace(DICTIONARY, "");
+			scope.changeNode(id);
 		}
 	});
 
@@ -37,10 +37,9 @@ $(function() {
 			scope.renameNode(id, data.text);
 		} else {
 			scope.renameDictionary(id, data.text);
-
 		}
 	});
-	
+
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		var id = data.node.id;
 		id = id.replace(DICTIONARY, "");
@@ -53,25 +52,23 @@ $(function() {
 
 		}
 	});
-	
+
 	$('#jstree').on("create_node.jstree", function(e, data) {
-		//TODO kommunikation über addNode sowie Mapping hinzufügen
-		console.log(data);
+		var id = data.node.id;
+		var parentId=data.parent.replace(DICTIONARY, "");
+		id = id.replace(DICTIONARY, "");
+		if (data.node.type !== 'default') {
+			id = id.replace(NODE, "");
+			scope.moveNode(id, parentId);
+		} else {
+			if(parentId==='#'){parentId=id;}
+			scope.moveDictionary(id, parentId);
+		}
 	});
 });
 
 function jstree_create() {
-	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length) {
-		return false;
-	}
-	sel = sel[0];
-	sel = ref.create_node(sel, {
-		"type" : "file"
-	});
-	if (sel) {
-		ref.edit(sel);
-	}
+	scope.addNode();
 };
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
@@ -80,6 +77,7 @@ function jstree_rename() {
 	}
 	sel = sel[0];
 	ref.edit(sel);
+	console.log(sel);
 };
 function jstree_delete() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
@@ -155,6 +153,20 @@ function dictionaryDataToArray(resDictionary) {
 	});
 
 	drawDictionary(treeArray);
+};
 
+function createNode(response) {
+	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
+	if (!sel.length) {
+		return false;
+	}
+	sel = sel[0];
+	sel = ref.create_node(sel, {
+		"type" : "file",
+		"id" : "dictionarynode"+response.id
+	});
+	if (sel) {
+		ref.edit(sel);
+	}
 };
 

@@ -5,7 +5,8 @@ var NODE = 'node';
 var LINK = 'link';
 
 function initializeJsPlumb() {
-	scope = angular.element(document.getElementById("wrapper")).scope();
+    //$('html[manifest=saveappoffline.appcache]').attr('content', '');
+    scope = angular.element(document.getElementById("wrapper")).scope();
 	setDefaultSettings();
 	makePopupEvents();
 	bindDetachConnectorEvent();

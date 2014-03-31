@@ -31,6 +31,7 @@ $('#jstree').on("move_node.jstree", function(e, data) {
 	var parentId=data.parent.replace(DICTIONARY, "");
 	id = id.replace(DICTIONARY, "");
 	if (data.node.type !== 'default') {
+		console.log(id);
 		id = id.replace(NODE, "");
 		scope.moveNode(id, parentId);
 	} else {

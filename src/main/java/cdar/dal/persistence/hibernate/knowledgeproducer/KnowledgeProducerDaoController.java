@@ -210,12 +210,12 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 
-	public KnowledgeNodeDao addKnowledgeNode(int treeId, String nodeTitle) {
+	public KnowledgeNodeDao addKnowledgeNode(int treeId) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		KnowledgeNodeDao newNode = new KnowledgeNodeDao(nodeTitle);
+		KnowledgeNodeDao newNode = new KnowledgeNodeDao();
 		newNode.setKnowledgeTree(tree);
 
 		tree.getKnowledgeNodes().add(newNode);
@@ -501,11 +501,13 @@ public class KnowledgeProducerDaoController {
 
 		try {
 			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE KNOWLEDGENODEMAPPING KNM SET DID = ? WHERE KNM.KNID = ?",
+			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (DID, KNID) VALUES (?, ?)ON DUPLICATE KEY UPDATE DID = ?",
+					//"UPDATE KNOWLEDGENODEMAPPING KNM SET DID = ? WHERE KNM.KNID = ?",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, newdictionaryid);
 			preparedStatement.setInt(2, nodeid);
+			preparedStatement.setInt(3, newdictionaryid);
+
 
 			preparedStatement.executeUpdate();
 

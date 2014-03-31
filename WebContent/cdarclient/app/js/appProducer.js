@@ -49,7 +49,7 @@ app.factory('TreeService', function($resource) {
 				action : 'rename',
 			}
 		},
-		
+
 		'moveDictionary' : {
 			method : 'POST',
 			params : {
@@ -101,7 +101,7 @@ app.factory('TreeService', function($resource) {
 				action : 'undrop',
 			}
 		},
-		
+
 		'moveNode' : {
 			method : 'POST',
 			params : {
@@ -109,8 +109,7 @@ app.factory('TreeService', function($resource) {
 				action : 'move',
 			}
 		},
-		
-		
+
 		// Links
 		'getLinks' : {
 			method : 'GET',
@@ -238,15 +237,15 @@ app
 								});
 							};
 
-							$scope.addNode = function(e, data) {
+							$scope.addNode = function() {
 								TreeService.addNode({
 									ktreeid : $routeParams.treeId
 								}, {
-									refTreeId : 1,
-									title : data.element.innerText
+									refTreeId : 1
 								}, function(response) {
-									//get Node and set id TODO
-									//addHTMLNode(response, e);
+									createNode(response);
+									// get Node and set id TODO
+									// addHTMLNode(response, e);
 								});
 							};
 
@@ -259,7 +258,7 @@ app
 							$scope.dropNode = function(e, id) {
 								TreeService.dropNode({
 									ktreeid : $routeParams.treeId
-								},id, function(response) {
+								}, id, function(response) {
 									addHTMLNode(response, e);
 								});
 							};
@@ -278,11 +277,11 @@ app
 									ktreeid : $routeParams.treeId
 								}, id);
 							};
-							
-							$scope.moveNode = function(id,newParentId) {
+
+							$scope.moveNode = function(id, newParentId) {
 								TreeService.moveNode({
 									ktreeid : $routeParams.treeId
-								},{
+								}, {
 									knid : id,
 									did : newParentId
 								});
@@ -306,7 +305,7 @@ app
 									ktreeid : $routeParams.treeId
 								}, id);
 							};
-							
+
 							$scope.renameDictionary = function(id, newTitle) {
 								TreeService.renameDictionary({
 									ktreeid : $routeParams.treeId
@@ -315,18 +314,19 @@ app
 									title : newTitle
 								});
 							};
-							
+
 							$scope.deleteDictionary = function(id, newTitle) {
-								//TODO beachten mit cascade in datanbank oder ohne
+								// TODO beachten mit cascade in datanbank oder
+								// ohne
 								TreeService.deleteDictionary({
-										ktreeid : $routeParams.treeId
-									}, id);
+									ktreeid : $routeParams.treeId
+								}, id);
 							};
-							
-							$scope.moveDictionary = function(id,newParentId) {
+
+							$scope.moveDictionary = function(id, newParentId) {
 								TreeService.moveDictionary({
 									ktreeid : $routeParams.treeId
-								},{
+								}, {
 									id : id,
 									parentId : newParentId
 								});
@@ -355,8 +355,6 @@ app
 									changeWikiFields(response);
 								});
 							};
-							
-					
 
 							$scope.saveWikiEntry = function() {
 								if ($scope.selectedNode != 0) {
