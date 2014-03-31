@@ -449,24 +449,47 @@ public class KnowledgeProducerDaoController {
 	}
 	
 	public KnowledgeNodeDao updateNode(KnowledgeNodeDao node) {
+		//JDBC WORKAROUND
+//		try {
+//			Session session = HibernateUtil.getSessionFactory()
+//					.getCurrentSession();
+//			Transaction tx = session.beginTransaction();
+//			session.update(node);
+//			tx.commit();
+//			return node;
+//		} catch (RuntimeException e) {
+//			try {
+//				Session session = HibernateUtil.getSessionFactory()
+//						.getCurrentSession();
+//				if (session.getTransaction().isActive())
+//					session.getTransaction().rollback();
+//			} catch (HibernateException e1) {
+//				System.out.println("Error rolling back transaction");
+//			}
+//			throw e;
+//		}
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
 		try {
-			Session session = HibernateUtil.getSessionFactory()
-					.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			session.update(node);
-			tx.commit();
-			return node;
-		} catch (RuntimeException e) {
-			try {
-				Session session = HibernateUtil.getSessionFactory()
-						.getCurrentSession();
-				if (session.getTransaction().isActive())
-					session.getTransaction().rollback();
-			} catch (HibernateException e1) {
-				System.out.println("Error rolling back transaction");
-			}
-			throw e;
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"UPDATE KNOWLEDGENODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ? WHERE id = ?",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDate(1, new Date(0));
+			preparedStatement.setString(2, node.getTitle());
+			preparedStatement.setInt(3, node.getDynamicTreeFlag());
+			preparedStatement.setInt(4, node.getId());
+
+			preparedStatement.executeUpdate();
+
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, null);
 		}
+		return node;
 	}
 	
 	public void moveKnowledgeNode(int nodeid, int newdictionaryid) {
