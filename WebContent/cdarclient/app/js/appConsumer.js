@@ -17,6 +17,13 @@ app.factory('ProjectTreeService', function($resource) {
 			method : 'GET',
 			isArray : false
 		},
+		'getNodes' : {
+			method : 'GET',
+			params: {
+				action: "nodes"
+			},
+			isArray : true
+		},
 		'copyTree' : {
 			method : 'GET',
 			isArray : false,
@@ -73,11 +80,11 @@ app.factory('WikiService', function($resource) {
 	});
 });
 
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'KnowledgeTreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, KnowledgeTreeService, UserService, WikiService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'TreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, TreeService, UserService, WikiService) {
 	$scope.UserService = UserService;
 	$scope.projecttree;
 	$scope.nodes;
-	$scope.knowledgetrees;
+	$scope.trees;
 	$scope.selectedktreeId;
 	
 	$scope.wikiText = "no wiki entry selected";
@@ -101,7 +108,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	reloadTree();
 	
-	KnowledgeTreeService.query(function(response) {
+	TreeService.query(function(response) {
 		$scope.knowledgetrees = response;
 	});
 	
