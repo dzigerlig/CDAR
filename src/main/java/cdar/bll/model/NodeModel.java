@@ -10,6 +10,7 @@ import java.util.Set;
 import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeMapping;
+import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 
@@ -55,7 +56,11 @@ public class NodeModel {
 		return new Node(kpdc.updateNode(node));
 	}
 
-	public void moveNode(NodeMapping nodemapping) {
-System.out.println("node moved");		
+	public Node moveNode(NodeMapping nodemapping) {
+		System.out.println("node moved");	
+		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
+		DictionaryDao dic = kpdc.getDictionaryById(nodemapping.getDid());
+		node.setDictionary(dic);
+		return new Node(kpdc.updateNode(node));
 	}
 }

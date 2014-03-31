@@ -16,7 +16,6 @@ import cdar.bll.model.TreeModel;
 import cdar.bll.model.NodeLinkModel;
 import cdar.bll.model.NodeModel;
 import cdar.bll.producer.Dictionary;
-import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.NodeMapping;
