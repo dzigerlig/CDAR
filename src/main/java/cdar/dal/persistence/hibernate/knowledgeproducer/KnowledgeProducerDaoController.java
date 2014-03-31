@@ -463,5 +463,29 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 	
-	
+	public KnowledgeNodeDao moveKnowledgeNode(int nodeid, int newdictionaryid) {
+		try {
+			KnowledgeNodeDao node = getKnowledgeNodeById(nodeid);
+			DictionaryDao dic = getDictionaryById(newdictionaryid);
+			
+			Session session = HibernateUtil.getSessionFactory()
+					.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			node.setDictionary(dic);
+			session.clear();
+			session.merge(node);
+			tx.commit();
+			return node;
+		} catch (RuntimeException e) {
+			try {
+				Session session = HibernateUtil.getSessionFactory()
+						.getCurrentSession();
+				if (session.getTransaction().isActive())
+					session.getTransaction().rollback();
+			} catch (HibernateException e1) {
+				System.out.println("Error rolling back transaction");
+			}
+			throw e;
+		}
+	}
 }

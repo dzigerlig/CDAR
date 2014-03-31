@@ -48,6 +48,10 @@ public class User extends BasicEntity {
 		setProjectTrees(userDao.getKnowledgeProjectTrees());
 	}
 	
+	public User(cdar.dal.persistence.jdbc.user.UserDao userDao) {
+		this(userDao.getId(), userDao.getCreationTime(), userDao.getLastModificationTime(), userDao.getUsername(), userDao.getPassword(), userDao.getAccesstoken());
+	}
+
 	public String getUsername() {
 		return username;
 	}

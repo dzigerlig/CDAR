@@ -294,8 +294,7 @@ public class TestHibernateKnowledgeProducer {
 		DictionaryDao dic = kpdc.addDictionary(treeId, "TestDic1");
 		DictionaryDao dic2 = kpdc.addDictionary(treeId, "TestDic2");
 		assertNull(node.getDictionary());
-		KnowledgeNodeDao node2 = kpdc.getKnowledgeNodeById(node.getId());
-		node2.setDictionary(dic2);
-		kpdc.updateNode(node2);
+		kpdc.moveKnowledgeNode(node.getId(), dic2.getId());
+		assertEquals("TestDic2", dic2.getTitle());
 	}
 }
