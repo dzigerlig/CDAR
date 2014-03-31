@@ -10,7 +10,7 @@ public class UserDao {
 	private String username;
 	private String password;
 	private String accesstoken;
-
+	
 	public UserDao() {
 		
 	}
@@ -66,5 +66,5 @@ public class UserDao {
 
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
-	}
+	}	
 }

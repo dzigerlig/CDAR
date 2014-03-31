@@ -1,6 +1,7 @@
 package cdar.dal.persistence.jdbc.user;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,15 +18,15 @@ public class UserDaoController {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		UserDao user = new UserDao();
+		UserDao user = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
 			result = statement.executeQuery(getUserByIdStatement);
-			if (result != null) {
-				result.next();
+			if (result.next()) {
+				user = new UserDao();
 				user.setId(result.getInt(1));
 				user.setCreationTime(result.getDate(2));
 				user.setLastModificationTime(result.getDate(3));
@@ -55,8 +56,7 @@ public class UserDaoController {
 			statement = connection.createStatement();
 
 			result = statement.executeQuery(getUserByIdStatement);
-			if (result != null) {
-				result.next();
+			if (result.next()) {
 				user.setId(result.getInt(1));
 				user.setCreationTime(result.getDate(2));
 				user.setLastModificationTime(result.getDate(3));
@@ -84,6 +84,37 @@ public class UserDaoController {
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, user.getUsername());
 			preparedStatement.setString(2, user.getPassword());
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				user.setId(generatedKeys.getInt(1));
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+		return user;
+	}
+	
+	public UserDao updateUser(UserDao user) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDate(1, new Date(0));
+			preparedStatement.setString(2, user.getUsername());
+			preparedStatement.setString(3, user.getPassword());
+			preparedStatement.setString(4, user.getAccesstoken());
+			preparedStatement.setInt(5, user.getId());
 
 			preparedStatement.executeUpdate();
 
