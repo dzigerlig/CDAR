@@ -155,20 +155,6 @@ public class KnowledgeNodeDao {
 		getLinksAsTarget().remove(link);
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		KnowledgeNodeDao other = (KnowledgeNodeDao) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
-
 	public DictionaryDao getDictionary() {
 		return dictionary;
 	}
@@ -183,5 +169,19 @@ public class KnowledgeNodeDao {
 
 	public void setDynamicTreeFlag(int dynamicTreeFlag) {
 		this.dynamicTreeFlag = dynamicTreeFlag;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KnowledgeNodeDao other = (KnowledgeNodeDao) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 }

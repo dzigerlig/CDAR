@@ -43,8 +43,8 @@ public class DictionaryDao {
 	@Column(name = "title")
 	private String title;
 
-	@OneToMany(mappedBy = "dictionary", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = KnowledgeNodeDao.class)
-	private Set<KnowledgeNodeDao> knowledgeNodes = new HashSet<KnowledgeNodeDao>(0);
+	@OneToMany(mappedBy = "dictionary", fetch = FetchType.EAGER, targetEntity = KnowledgeNodeDao.class)
+	private Set<KnowledgeNodeDao> knowledgeNodes = new HashSet<KnowledgeNodeDao>();
 
 	public DictionaryDao() {
 
@@ -121,4 +121,28 @@ public class DictionaryDao {
 	public void setKnowledgeNodes(Set<KnowledgeNodeDao> knowledgeNodes) {
 		this.knowledgeNodes = knowledgeNodes;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DictionaryDao other = (DictionaryDao) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+	
 }

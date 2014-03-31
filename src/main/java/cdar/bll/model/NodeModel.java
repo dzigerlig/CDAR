@@ -1,13 +1,8 @@
 package cdar.bll.model;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
-import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeMapping;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;

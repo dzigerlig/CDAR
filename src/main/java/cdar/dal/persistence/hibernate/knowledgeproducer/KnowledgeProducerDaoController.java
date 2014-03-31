@@ -435,11 +435,8 @@ public class KnowledgeProducerDaoController {
 		Transaction tx = session.beginTransaction();
 		DictionaryDao newDictionary = new DictionaryDao(tree, node, title);
 
-		// tree.getDictionaries().add(newDictionary);
 		node.setDictionary(newDictionary);
-		// session.saveOrUpdate(newDictionary);
 		session.saveOrUpdate(node);
-		// session.saveOrUpdate(tree);
 
 		tx.commit();
 		return newDictionary;
@@ -465,6 +462,6 @@ public class KnowledgeProducerDaoController {
 			throw e;
 		}
 	}
-
-
+	
+	
 }
