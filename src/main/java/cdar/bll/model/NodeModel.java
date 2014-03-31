@@ -53,9 +53,8 @@ public class NodeModel {
 
 	public Node moveNode(NodeMapping nodemapping) {
 		System.out.println("node moved");	
+		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
-		DictionaryDao dic = kpdc.getDictionaryById(nodemapping.getDid());
-		node.setDictionary(dic);
-		return new Node(kpdc.updateNode(node));
+		return new Node(node);
 	}
 }
