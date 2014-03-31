@@ -1,5 +1,10 @@
 package cdar.dal.persistence.hibernate.knowledgeproducer;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +16,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import cdar.dal.persistence.HibernateUtil;
+import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.hibernate.user.UserDao;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
@@ -463,29 +469,45 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 	
-	public KnowledgeNodeDao moveKnowledgeNode(int nodeid, int newdictionaryid) {
+	public void moveKnowledgeNode(int nodeid, int newdictionaryid) {
+		//JDBC WORKAROUND
+		//update knowledgenodemapping knm SET did = 4 where knm.knid = 4;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
 		try {
-			KnowledgeNodeDao node = getKnowledgeNodeById(nodeid);
-			DictionaryDao dic = getDictionaryById(newdictionaryid);
-			
-			Session session = HibernateUtil.getSessionFactory()
-					.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			node.setDictionary(dic);
-			session.clear();
-			session.merge(node);
-			tx.commit();
-			return node;
-		} catch (RuntimeException e) {
-			try {
-				Session session = HibernateUtil.getSessionFactory()
-						.getCurrentSession();
-				if (session.getTransaction().isActive())
-					session.getTransaction().rollback();
-			} catch (HibernateException e1) {
-				System.out.println("Error rolling back transaction");
-			}
-			throw e;
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"UPDATE KNOWLEDGENODEMAPPING KNM SET DID = ? WHERE KNM.KNID = ?",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setInt(1, newdictionaryid);
+			preparedStatement.setInt(2, nodeid);
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+	}
+	
+	private void closeConnections(Connection connection,
+			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
+		try {
+			if (generatedKeys != null)
+				generatedKeys.close();
+			if (preparedStatement != null)
+				preparedStatement.close();
+			if (statement != null)
+				statement.close();
+			if (connection != null)
+				connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 }

@@ -6,10 +6,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import cdar.dal.persistence.JDBCUtil;
 
 public class UserDaoController {
+	
+//	public List<UserDao> getUsers() {
+//		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE";
+//
+//		Connection connection = null;
+//		Statement statement = null;
+//		ResultSet result = null;
+//		List<UserDao> users = new ArrayList<UserDao>();
+//
+//		try {
+//			connection = JDBCUtil.getConnection();
+//			statement = connection.createStatement();
+//
+//			result = statement.executeQuery(getUsers);
+//			//while (result.result.next()) {
+//				user = new UserDao();
+//				user.setId(result.getInt(1));
+//				user.setCreationTime(result.getDate(2));
+//				user.setLastModificationTime(result.getDate(3));
+//				user.setUsername(result.getString(4));
+//				user.setPassword(result.getString(5));
+//				user.setAccesstoken(result.getString(6));
+//			}
+//		} catch (SQLException e) {
+//			System.out.println(e.getMessage());
+//		} finally {
+//			closeConnections(connection, null, statement, null);
+//		}
+//		return user;
+//	}
 
 	public UserDao getUserById(int id) {
 		final String getUserByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = "
