@@ -256,35 +256,6 @@ public class TestHibernateKnowledgeProducer {
 		assertEquals(0, kpdc.getKnowledgeNodeById(node.getId()).getDynamicTreeFlag());
 	}
 	
-	@Test
-	public void TestMoveNode() {
-		kpdc.addKnowledgeTreeByUid(udc.getUserByName(testUsername).getId(), "TestTree");
-		int treeId = ((KnowledgeTreeDao)udc.getUserByName(testUsername).getKnowledgeTrees().toArray()[0]).getId();
-		KnowledgeNodeDao node = kpdc.addKnowledgeNode(treeId, "TestNode");
-		DictionaryDao dic = kpdc.addDictionary(treeId, "TestDic1");
-		DictionaryDao dic2 = kpdc.addDictionary(treeId, "TestDic2");
-		DictionaryDao dic3 = kpdc.addDictionary(treeId, dic2.getId(), "TestDic3");
-		assertNull(node.getDictionary());
-		node.setDictionary(dic);
-		kpdc.updateNode(node);
-		assertEquals("TestDic1", kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-		node.setDictionary(dic2);
-		kpdc.updateNode(node);
-		assertEquals("TestDic2", kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-		node.setDictionary(dic3);
-		kpdc.updateNode(node);
-		assertEquals("TestDic3", kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-		node.setDictionary(dic);
-		kpdc.updateNode(node);
-		assertEquals("TestDic1", kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-		node.setDictionary(kpdc.getDictionaryById(dic2.getId()));
-		kpdc.updateNode(node);
-		assertEquals(dic2.getTitle(), kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-		KnowledgeNodeDao node4 = kpdc.getKnowledgeNodeById(node.getId());
-		node4.setDictionary(kpdc.addDictionary(treeId, "ok"));
-		kpdc.updateNode(node4);
-		assertEquals("ok", kpdc.getKnowledgeNodeById(node.getId()).getDictionary().getTitle());
-	}
 	
 	@Test
 	public void TestExistingNodeMoving() {
