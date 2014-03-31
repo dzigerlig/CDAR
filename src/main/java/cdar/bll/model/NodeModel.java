@@ -9,6 +9,7 @@ import java.util.Set;
 
 import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
+import cdar.bll.producer.NodeMapping;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 
@@ -52,5 +53,9 @@ public class NodeModel {
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
 		node.setDynamicTreeFlag(0);
 		return new Node(kpdc.updateNode(node));
+	}
+
+	public void moveNode(NodeMapping nodemapping) {
+System.out.println("node moved");		
 	}
 }

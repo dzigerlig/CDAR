@@ -49,6 +49,14 @@ app.factory('TreeService', function($resource) {
 				action : 'rename',
 			}
 		},
+		
+		'moveDictionary' : {
+			method : 'POST',
+			params : {
+				entity : 'dictionaries',
+				action : 'move',
+			}
+		},
 
 		// Nodes
 		'getNodes' : {
@@ -93,7 +101,16 @@ app.factory('TreeService', function($resource) {
 				action : 'undrop',
 			}
 		},
-
+		
+		'moveNode' : {
+			method : 'POST',
+			params : {
+				entity : 'nodes',
+				action : 'move',
+			}
+		},
+		
+		
 		// Links
 		'getLinks' : {
 			method : 'GET',
@@ -261,6 +278,15 @@ app
 									ktreeid : $routeParams.treeId
 								}, id);
 							};
+							
+							$scope.moveNode = function(id,newParentId) {
+								TreeService.moveNode({
+									ktreeid : $routeParams.treeId
+								},{
+									knid : id,
+									did : newParentId
+								});
+							};
 
 							$scope.addLink = function(treeId, sourceId,
 									targetId, connection) {
@@ -295,6 +321,15 @@ app
 								TreeService.deleteDictionary({
 										ktreeid : $routeParams.treeId
 									}, id);
+							};
+							
+							$scope.moveDictionary = function(id,newParentId) {
+								TreeService.moveDictionary({
+									ktreeid : $routeParams.treeId
+								},{
+									id : id,
+									parentId : newParentId
+								});
 							};
 
 							var setLoading = function() {

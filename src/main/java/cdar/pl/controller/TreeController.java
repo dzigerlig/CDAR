@@ -19,6 +19,7 @@ import cdar.bll.producer.Dictionary;
 import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.NodeMapping;
 import cdar.bll.producer.Tree;
 
 @Path("{uid}/ktree")
@@ -86,6 +87,13 @@ public class TreeController {
 		return Response.status(200).build();
 	}
 	
+	@POST
+	@Path("dictionaries/move/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response moveDictionay(Dictionary d) {
+		dM.moveDictionary(d);
+		return Response.status(200).build();
+	}	
 	
 	//Nodes
 	@GET
@@ -132,6 +140,14 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response undropNode(int id) {
 		nM.undropNode(id);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("nodes/move/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response moveNode(NodeMapping nodemapping) {
+		nM.moveNode(nodemapping);
 		return Response.status(200).build();
 	}
 	

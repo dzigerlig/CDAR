@@ -34,4 +34,8 @@ public class DictionaryModel {
 		dd.setTitle(d.getTitle());
 		kpdc.updateDictionary(dd);		
 	}
+
+	public void moveDictionary(Dictionary d) {
+System.out.println("dictionary moved");		
+	}
 }

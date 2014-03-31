@@ -16,20 +16,32 @@ function isMouseOverContainer() {
 }
 
 $(document).bind('dnd_stop.vakata', function(e, data) {
-	if (isMouseOverContainer()) {
-		var id = data.data.nodes[0];
+	var id = data.data.nodes[0];
+	var type =data.data.origin._model.data[id].type;	
+	if (isMouseOverContainer()&&type!=='default') {
 		id = id.replace(NODE, "");
 		id = id.replace(DICTIONARY, "");
 		scope.dropNode(data.event, id);
+	}
+});
 
-		// scope.addNode(data.event,data);
+
+$('#jstree').on("move_node.jstree", function(e, data) {
+	var id = data.node.id;
+	var parentId=data.parent.replace(DICTIONARY, "");
+	id = id.replace(DICTIONARY, "");
+	if (data.node.type !== 'default') {
+		id = id.replace(NODE, "");
+		scope.moveNode(id, parentId);
+	} else {
+		if(parentId==='#'){parentId=id;}
+		scope.moveDictionary(id, parentId);
 	}
 });
 
 $(document).bind(
 		'dnd_move.vakata',
 		function(e, data) {
-			//data.node.type !== 'default'
 			var nodeId = data.data.nodes[0];
 			if (isMouseOverContainer()&&data.data.origin._model.data[nodeId].type!=='default') {
 				data.helper.find('.jstree-icon:eq(0)').removeClass('jstree-er')
