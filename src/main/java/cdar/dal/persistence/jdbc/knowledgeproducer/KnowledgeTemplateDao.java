@@ -2,7 +2,10 @@ package cdar.dal.persistence.jdbc.knowledgeproducer;
 
 import java.util.Date;
 
-public class KnowledgeTemplateDao {
+import cdar.dal.persistence.CdarDao;
+import cdar.dal.persistence.CdarJdbcHelper;
+
+public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -56,5 +59,23 @@ public class KnowledgeTemplateDao {
 
 	public void setWikititle(String wikititle) {
 		this.wikititle = wikititle;
+	}
+
+	@Override
+	public CdarDao create() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CdarDao update() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

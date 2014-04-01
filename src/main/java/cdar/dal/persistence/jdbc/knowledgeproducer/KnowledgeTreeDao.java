@@ -2,7 +2,10 @@ package cdar.dal.persistence.jdbc.knowledgeproducer;
 
 import java.util.Date;
 
-public class KnowledgeTreeDao {
+import cdar.dal.persistence.CdarDao;
+import cdar.dal.persistence.CdarJdbcHelper;
+
+public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -46,5 +49,23 @@ public class KnowledgeTreeDao {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public CdarDao create() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CdarDao update() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
