@@ -26,7 +26,7 @@ public class TestJDBCKnowledgeProducer {
 	
 	@After
 	public void deleteTestUser() {
-		udc.deleteUser(udc.getUserByName(testUsername).getId());
+		udc.getUserByName(testUsername).delete();
 	}
 
 	@Test

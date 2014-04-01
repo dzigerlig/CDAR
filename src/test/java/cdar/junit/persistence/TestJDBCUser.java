@@ -22,7 +22,7 @@ public class TestJDBCUser {
 	
 	@After
 	public void deleteTestUser() {
-		udc.deleteUser(udc.getUserByName(testUsername).getId());
+		udc.getUserByName(testUsername).delete();
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class TestJDBCUser {
 		assertEquals(testPassword, user.getPassword());
 		String newPassword = "newPassword";
 		user.setPassword(newPassword);
-		udc.updateUser(user);
+		user.update();
 		assertEquals(newPassword, udc.getUserByName(testUsername).getPassword());
 	}
 	
@@ -51,7 +51,7 @@ public class TestJDBCUser {
 		final String password = "MyPassword";
 		UserDao user = new UserDao(username, password).create();
 		assertEquals(password, udc.getUserByName(username).getPassword());
-		udc.deleteUser(user.getId());
+		user.delete();
 		assertNull(udc.getUserById(user.getId()));
 	}
 	
@@ -60,7 +60,7 @@ public class TestJDBCUser {
 		final String accesstoken = "myAccessToken";
 		UserDao user = udc.getUserByName(testUsername);
 		user.setAccesstoken(accesstoken);
-		udc.updateUser(user);
+		user.update();
 		user = udc.getUserById(user.getId());
 		assertEquals(accesstoken, user.getAccesstoken());
 	}
@@ -70,6 +70,6 @@ public class TestJDBCUser {
 		final int currentUserCount = udc.getUsers().size();
 		UserDao user = new UserDao("MyUser", "MyPassword").create();
 		assertEquals(currentUserCount+1, udc.getUsers().size());
-		udc.deleteUser(user.getId());
+		user.delete();
 	}
 }
