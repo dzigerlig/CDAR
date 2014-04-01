@@ -21,7 +21,7 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Before
 	public void createTestUser() {
-		udc.createUser(new UserDao(testUsername, testPassword));
+		new UserDao(testUsername, testPassword).create();
 	}
 	
 	@After
@@ -71,5 +71,100 @@ public class TestJDBCKnowledgeProducer {
 		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
 		kpdc.createTree(user.getId(), tree);
 		assertEquals(1, kpdc.getTrees(user.getId()).size());
+	}
+	
+	@Test
+	public void TestKnowledgeTemplateCreate() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeTemplateUpdate() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeTemplateDelete() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeNodeCreate() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeNodeUpdate() {
+		
+	}
+	
+	@Test
+	public  void TestKnowledgeNodeDelete() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeSubNodeCreate() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeSubNodeUpdate() {
+		
+	}
+	
+	@Test
+	public void TestKnowledgeSubNodeDelete() {
+		
+	}
+	
+	@Test
+	public void TestLinkConnectionCreate() {
+		
+	}
+	
+	@Test
+	public void TestLinkConnectionUpdate() {
+		//?
+	}
+	
+	@Test
+	public void TestLinkConnectionDelete() {
+		
+	}
+	
+	@Test
+	public void TestDictionaryCreate() {
+		
+	}
+	
+	@Test
+	public void TestDictionaryUpdate() {
+		
+	}
+	
+	@Test
+	public void TestDictionaryDelete() {
+		
+	}
+	
+	@Test
+	public void TestDictionaryWithoutNode() {
+		
+	}
+	
+	@Test
+	public void TestDropNode() {
+		
+	}
+	
+	@Test
+	public void TestUndropNode() {
+		
+	}
+	
+	@Test
+	public void TestNodeMoving() {
+		
 	}
 }

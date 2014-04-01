@@ -9,14 +9,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeProducerDaoController {
+public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 	public List<KnowledgeTreeDao> getTrees(int uid) {
-		//if get trees by uid:
-		//SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = ?;"
-		
 		String getUsers = null;
 		if (uid==0) {
 			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
@@ -157,22 +155,6 @@ public class KnowledgeProducerDaoController {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, preparedStatement, null, null);
-		}
-	}
-	
-	private void closeConnections(Connection connection,
-			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
-		try {
-			if (generatedKeys != null)
-				generatedKeys.close();
-			if (preparedStatement != null)
-				preparedStatement.close();
-			if (statement != null)
-				statement.close();
-			if (connection != null)
-				connection.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 }

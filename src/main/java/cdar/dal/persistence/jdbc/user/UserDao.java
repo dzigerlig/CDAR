@@ -1,8 +1,16 @@
 package cdar.dal.persistence.jdbc.user;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Date;
 
-public class UserDao {
+import cdar.dal.persistence.CdarDao;
+import cdar.dal.persistence.CdarJdbcHelper;
+import cdar.dal.persistence.JDBCUtil;
+
+public class UserDao extends CdarJdbcHelper implements CdarDao {
 
 	private int id;
 	private Date creationTime;
@@ -66,5 +74,44 @@ public class UserDao {
 
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
+	}
+
+	@Override
+	public UserDao create() {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO USER (USERNAME, PASSWORD) VALUES (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, getUsername());
+			preparedStatement.setString(2, getPassword());
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+		return this;
+	}
+
+	@Override
+	public UserDao update() {
+		return null;
+	}
+
+	@Override
+	public UserDao delete() {
+		return null;
 	}	
 }

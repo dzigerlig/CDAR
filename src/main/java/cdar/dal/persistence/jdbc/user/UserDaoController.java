@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
 
-public class UserDaoController {
+public class UserDaoController extends CdarJdbcHelper {
 	
 	public List<UserDao> getUsers() {
 		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
@@ -107,34 +108,6 @@ public class UserDaoController {
 		return user;
 	}
 
-	public UserDao createUser(UserDao user) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO USER (USERNAME, PASSWORD) VALUES (?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, user.getUsername());
-			preparedStatement.setString(2, user.getPassword());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				user.setId(generatedKeys.getInt(1));
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return user;
-	}
-	
 	public UserDao updateUser(UserDao user) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -187,22 +160,6 @@ public class UserDaoController {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, preparedStatement, null, null);
-		}
-	}
-
-	private void closeConnections(Connection connection,
-			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
-		try {
-			if (generatedKeys != null)
-				generatedKeys.close();
-			if (preparedStatement != null)
-				preparedStatement.close();
-			if (statement != null)
-				statement.close();
-			if (connection != null)
-				connection.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 }

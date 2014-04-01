@@ -17,7 +17,7 @@ public class TestJDBCUser {
 	
 	@Before
 	public void createTestUser() {
-		udc.createUser(new UserDao(testUsername, testPassword));
+		new UserDao(testUsername, testPassword).create();
 	}
 	
 	@After
@@ -49,7 +49,7 @@ public class TestJDBCUser {
 	public void testDeleteUser() {
 		final String username = "MyUser";
 		final String password = "MyPassword";
-		UserDao user = udc.createUser(new UserDao(username, password));
+		UserDao user = new UserDao(username, password).create();
 		assertEquals(password, udc.getUserByName(username).getPassword());
 		udc.deleteUser(user.getId());
 		assertNull(udc.getUserById(user.getId()));
@@ -68,7 +68,7 @@ public class TestJDBCUser {
 	@Test
 	public void testGetUsers() {
 		final int currentUserCount = udc.getUsers().size();
-		UserDao user = udc.createUser(new UserDao("MyUser", "MyPassword"));
+		UserDao user = new UserDao("MyUser", "MyPassword").create();
 		assertEquals(currentUserCount+1, udc.getUsers().size());
 		udc.deleteUser(user.getId());
 	}
