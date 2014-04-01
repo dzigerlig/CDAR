@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.user;
+package cdar.dal.persistence.jdbc.knowledgeproducer;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,15 +11,17 @@ import java.util.List;
 
 import cdar.dal.persistence.JDBCUtil;
 
-public class UserDaoController {
-	
-	public List<UserDao> getUsers() {
-		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
+public class KnowledgeProducerDaoController {
+
+	public List<KnowledgeTreeDao> getTrees() {
+		//if get trees by uid:
+		//SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = ?;"
+		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		List<UserDao> users = new ArrayList<UserDao>();
+		List<KnowledgeTreeDao> trees = new ArrayList<KnowledgeTreeDao>();
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -27,85 +29,51 @@ public class UserDaoController {
 
 			result = statement.executeQuery(getUsers);
 			while (result.next()) {
-				UserDao user = new UserDao();
-				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
-				user.setUsername(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setAccesstoken(result.getString(6));
-				users.add(user);
+				KnowledgeTreeDao tree = new KnowledgeTreeDao();
+				tree.setId(result.getInt(1));
+				tree.setCreationTime(result.getDate(2));
+				tree.setLastModificationTime(result.getDate(3));
+				tree.setName(result.getString(4));
+				trees.add(tree);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
-		return users;
+		return trees;
 	}
-
-	public UserDao getUserById(int id) {
-		final String getUserByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = "
+	
+	public KnowledgeTreeDao getTreeById(int id) {
+		final String getTreeByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE WHERE ID = "
 				+ id;
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		UserDao user = null;
+		KnowledgeTreeDao tree = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getUserByIdStatement);
+			result = statement.executeQuery(getTreeByIdStatement);
 			if (result.next()) {
-				user = new UserDao();
-				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
-				user.setUsername(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setAccesstoken(result.getString(6));
+				tree = new KnowledgeTreeDao();
+				tree.setId(result.getInt(1));
+				tree.setCreationTime(result.getDate(2));
+				tree.setLastModificationTime(result.getDate(3));
+				tree.setName(result.getString(4));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
-		return user;
+		return tree;
 	}
-
-	public UserDao getUserByName(String username) {
-		final String getUserByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = '"
-				+ username +"'";
-
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet result = null;
-		UserDao user = new UserDao();
-
-		try {
-			connection = JDBCUtil.getConnection();
-			statement = connection.createStatement();
-
-			result = statement.executeQuery(getUserByIdStatement);
-			if (result.next()) {
-				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
-				user.setUsername(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setAccesstoken(result.getString(6));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			closeConnections(connection, null, statement, null);
-		}
-		return user;
-	}
-
-	public UserDao createUser(UserDao user) {
+	
+	public KnowledgeTreeDao createTree(int userid, KnowledgeTreeDao tree) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -113,27 +81,32 @@ public class UserDaoController {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"INSERT INTO USER (USERNAME, PASSWORD) VALUES (?, ?)",
+					"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, user.getUsername());
-			preparedStatement.setString(2, user.getPassword());
+			preparedStatement.setString(1, tree.getName());
 
 			preparedStatement.executeUpdate();
 
 			generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
-				user.setId(generatedKeys.getInt(1));
+				tree.setId(generatedKeys.getInt(1));
 			}
-
+			preparedStatement.close();
+			
+			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
+			preparedStatement.setInt(1, userid);
+			preparedStatement.setInt(2, tree.getId());
+			preparedStatement.executeUpdate();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
 			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
-		return user;
+		return tree;
 	}
 	
-	public UserDao updateUser(UserDao user) {
+	public KnowledgeTreeDao updateTree(KnowledgeTreeDao tree) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -141,19 +114,17 @@ public class UserDaoController {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+					"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setDate(1, new Date(0));
-			preparedStatement.setString(2, user.getUsername());
-			preparedStatement.setString(3, user.getPassword());
-			preparedStatement.setString(4, user.getAccesstoken());
-			preparedStatement.setInt(5, user.getId());
+			preparedStatement.setString(2, tree.getName());
+			preparedStatement.setInt(3, tree.getId());
 
 			preparedStatement.executeUpdate();
 
 			generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
-				user.setId(generatedKeys.getInt(1));
+				tree.setId(generatedKeys.getInt(1));
 			}
 
 		} catch (Exception ex) {
@@ -161,14 +132,14 @@ public class UserDaoController {
 		} finally {
 			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
-		return user;
+		return tree;
 	}
 	
-	public void deleteUser(int id) {
+	public void deleteTree(int id) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String deleteSQL = "DELETE FROM USER WHERE ID = ?";
+		String deleteSQL = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -181,7 +152,7 @@ public class UserDaoController {
 			closeConnections(connection, preparedStatement, null, null);
 		}
 	}
-
+	
 	private void closeConnections(Connection connection,
 			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
 		try {
