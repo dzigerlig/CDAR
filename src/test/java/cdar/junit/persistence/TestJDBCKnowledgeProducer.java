@@ -33,35 +33,36 @@ public class TestJDBCKnowledgeProducer {
 	public void TestTreeNameChange() {
 		final String newTreeName = "newTreeName";
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
+		tree.create(udc.getUserByName(testUsername).getId());
 		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
 		tree.setName(newTreeName);
-		kpdc.updateTree(tree);
+		tree.update();
 		assertEquals(newTreeName, kpdc.getTreeById(tree.getId()).getName());
 	}
 	
 	@Test
 	public void TestGetTreeById() {
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		tree = kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
+		tree = tree.create(udc.getUserByName(testUsername).getId());
 		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
 	}
 	 
 	@Test
 	public void TestDeleteTree() {
 		final String treeName = "mytree";
-		KnowledgeTreeDao tree = kpdc.createTree(udc.getUserByName(testUsername).getId(), new KnowledgeTreeDao(treeName));
+		
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(treeName).create(udc.getUserByName(testUsername).getId());
 		assertEquals(treeName, kpdc.getTreeById(tree.getId()).getName());
-		kpdc.deleteTree(tree.getId());
+		tree.delete();
 		assertNull(kpdc.getTreeById(tree.getId()));
 	}
 	
 	@Test
 	public void testGetTrees() {
-		int currentTreeCount = kpdc.getTrees(0).size();
+		int currentTreeCount = kpdc.getTrees().size();
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
-		assertEquals(currentTreeCount+1, kpdc.getTrees(0).size());
+		tree.create(udc.getUserByName(testUsername).getId());
+		assertEquals(currentTreeCount+1, kpdc.getTrees().size());
 	}
 	
 	@Test
@@ -69,7 +70,7 @@ public class TestJDBCKnowledgeProducer {
 		UserDao user = udc.getUserByName(testUsername);
 		assertEquals(0, kpdc.getTrees(user.getId()).size());
 		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
-		kpdc.createTree(user.getId(), tree);
+		tree.create(user.getId());
 		assertEquals(1, kpdc.getTrees(user.getId()).size());
 	}
 	

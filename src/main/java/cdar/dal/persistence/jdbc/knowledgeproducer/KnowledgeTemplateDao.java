@@ -61,7 +61,6 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		this.wikititle = wikititle;
 	}
 
-	@Override
 	public CdarDao create() {
 		// TODO Auto-generated method stub
 		return null;

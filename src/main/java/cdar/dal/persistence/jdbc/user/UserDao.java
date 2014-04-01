@@ -79,7 +79,6 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		this.accesstoken = accesstoken;
 	}
 
-	@Override
 	public UserDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -152,7 +151,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		//delete knowledgetrees
 		KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 		for (KnowledgeTreeDao tree : kpdc.getTrees(id)) {
-			kpdc.deleteTree(tree.getId());
+			tree.delete();
 		}
 
 		try {
