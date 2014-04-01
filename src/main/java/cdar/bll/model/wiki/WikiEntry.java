@@ -59,7 +59,7 @@ public class WikiEntry extends WikiEntity {
 		try {
 			Wiki c = new Wiki();
 			c.login("admin", "password");
-			c.edit(getWikiTitle(), getWikiContentPlain(), "", 0);
+			c.edit(getWikiTitle(), getWikiContentPlain(), "");
 			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} catch (Exception e) {
 			e.printStackTrace();
