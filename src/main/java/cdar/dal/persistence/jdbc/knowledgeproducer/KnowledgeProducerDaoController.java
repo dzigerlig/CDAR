@@ -1,8 +1,6 @@
 package cdar.dal.persistence.jdbc.knowledgeproducer;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -80,5 +78,64 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return tree;
+	}
+	
+	public List<KnowledgeTemplateDao> getTemplates(int treeid) {
+		String getTemplates = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGETEMPLATE WHERE KTRID = %d;", treeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<KnowledgeTemplateDao> templates = new ArrayList<KnowledgeTemplateDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getTemplates);
+			while (result.next()) {
+				KnowledgeTemplateDao template = new KnowledgeTemplateDao();
+				template.setId(result.getInt(1));
+				template.setCreationTime(result.getDate(2));
+				template.setLastModificationTime(result.getDate(3));
+				template.setTitle(result.getString(4));
+				template.setWikititle(result.getString(5));
+				templates.add(template);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return templates;
+	}
+	
+	public KnowledgeTemplateDao getTemplate(int id) {
+		String getTemplates = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		KnowledgeTemplateDao template = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getTemplates);
+			while (result.next()) {
+				template = new KnowledgeTemplateDao();
+				template.setId(result.getInt(1));
+				template.setCreationTime(result.getDate(2));
+				template.setLastModificationTime(result.getDate(3));
+				template.setTitle(result.getString(4));
+				template.setWikititle(result.getString(5));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return template;
 	}
 }

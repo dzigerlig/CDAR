@@ -10,6 +10,7 @@ import org.junit.Test;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTemplateDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
 
 public class TestJDBCKnowledgeProducer {
@@ -76,17 +77,42 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void TestKnowledgeTemplateCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao("MyTemplate");
+		template.create(tree.getId());
+		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeTemplateUpdate() {
-		
+		final String templateName = "MyTemplate";
+		final String updatedTemplateName = "MyTemplate2";
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao(templateName);
+		template.create(tree.getId());
+		assertEquals(templateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
+		template.setTitle(updatedTemplateName);
+		template.update();
+		assertEquals(updatedTemplateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
 	}
 	
 	@Test
 	public void TestKnowledgeTemplateDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao("MyTemplate");
+		template.create(tree.getId());
+		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
+		template.delete();
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
 	}
 	
 	@Test
