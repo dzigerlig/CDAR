@@ -14,6 +14,8 @@ import cdar.dal.persistence.JDBCUtil;
 public class KnowledgeProducerDaoController {
 
 	public List<KnowledgeTreeDao> getTrees() {
+		//if get trees by uid:
+		//SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = ?;"
 		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
 
 		Connection connection = null;
