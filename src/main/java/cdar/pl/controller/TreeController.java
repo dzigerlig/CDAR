@@ -52,6 +52,7 @@ public class TreeController {
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
+		System.out.println(ktreeid);
 		return ktm.getKnowledgeTreeById(ktreeid);
 	}
 	
@@ -60,7 +61,7 @@ public class TreeController {
 	@Path("/dictionaries/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Dictionary> getDictionaries(@PathParam("ktreeid") int ktreeid) {
-		return dM.getDictionaries();
+		return dM.getDictionaries(ktreeid);
 	}
 	
 	@POST
@@ -99,7 +100,7 @@ public class TreeController {
 	@Path("/nodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
-		return nM.getNodes();
+		return nM.getNodes(ktreeid);
 	}
 	
 	@POST
