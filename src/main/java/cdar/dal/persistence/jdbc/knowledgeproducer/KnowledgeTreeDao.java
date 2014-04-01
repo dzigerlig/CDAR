@@ -12,6 +12,10 @@ public class KnowledgeTreeDao {
 		
 	}
 	
+	public KnowledgeTreeDao(String name) {
+		setName(name);
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -163,23 +163,7 @@ public class UserDaoController {
 		}
 		return user;
 	}
-
-	private void closeConnections(Connection connection,
-			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
-		try {
-			if (generatedKeys != null)
-				generatedKeys.close();
-			if (preparedStatement != null)
-				preparedStatement.close();
-			if (statement != null)
-				statement.close();
-			if (connection != null)
-				connection.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
+	
 	public void deleteUser(int id) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -195,6 +179,22 @@ public class UserDaoController {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, preparedStatement, null, null);
+		}
+	}
+
+	private void closeConnections(Connection connection,
+			PreparedStatement preparedStatement, Statement statement, ResultSet generatedKeys) {
+		try {
+			if (generatedKeys != null)
+				generatedKeys.close();
+			if (preparedStatement != null)
+				preparedStatement.close();
+			if (statement != null)
+				statement.close();
+			if (connection != null)
+				connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 }
