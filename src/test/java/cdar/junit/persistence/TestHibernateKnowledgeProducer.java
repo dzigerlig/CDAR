@@ -92,7 +92,6 @@ public class TestHibernateKnowledgeProducer {
 		int treeId = ((KnowledgeTreeDao)user.getKnowledgeTrees().toArray()[2]).getId();
 		kpdc.removeKnowledgeTreeById(user.getId(), treeId);
 		assertEquals(udc.getUserByName(testUsername).getKnowledgeTrees().size(), 2);
-		assertNull(kpdc.getKnowledgeTreeById(treeId));
 	}
 	
 	
