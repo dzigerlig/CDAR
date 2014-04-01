@@ -54,4 +54,16 @@ public class TestJDBCUser {
 		udc.deleteUser(udc.getUserById(user.getId()).getId());
 		assertNull(udc.getUserById(user.getId()));
 	}
+	
+	@Test
+	public void testAccessToken() {
+		String accesstoken = "myAccessToken";
+		UserDao user = udc.getUserByName(testUsername);
+		user.setAccesstoken(accesstoken);
+		udc.updateUser(user);
+		user = udc.getUserById(user.getId());
+		assertEquals(accesstoken, user.getAccesstoken());
+	}
+	
+	
 }
