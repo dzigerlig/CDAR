@@ -210,12 +210,12 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 
-	public KnowledgeNodeDao addKnowledgeNode(int treeId) {
+	public KnowledgeNodeDao addKnowledgeNode(int treeId, String title) {
 		KnowledgeTreeDao tree = getKnowledgeTreeById(treeId);
 
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
-		KnowledgeNodeDao newNode = new KnowledgeNodeDao();
+		KnowledgeNodeDao newNode = new KnowledgeNodeDao(title);
 		newNode.setKnowledgeTree(tree);
 
 		tree.getKnowledgeNodes().add(newNode);

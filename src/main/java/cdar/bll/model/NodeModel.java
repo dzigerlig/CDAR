@@ -27,7 +27,7 @@ public class NodeModel {
 	}
 
 	public Node addNode(Node n) {
-		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId()));
+		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(), null));
 	}
 
 	public Node dropNode(int id) {
