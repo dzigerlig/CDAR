@@ -58,9 +58,18 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void testGetTrees() {
-		int currentTreeCount = kpdc.getTrees().size();
+		int currentTreeCount = kpdc.getTrees(0).size();
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
 		kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
-		assertEquals(currentTreeCount+1, kpdc.getTrees().size());
+		assertEquals(currentTreeCount+1, kpdc.getTrees(0).size());
+	}
+	
+	@Test
+	public void testGetTreesByUid() {
+		UserDao user = udc.getUserByName(testUsername);
+		assertEquals(0, kpdc.getTrees(user.getId()).size());
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		kpdc.createTree(user.getId(), tree);
+		assertEquals(1, kpdc.getTrees(user.getId()).size());
 	}
 }

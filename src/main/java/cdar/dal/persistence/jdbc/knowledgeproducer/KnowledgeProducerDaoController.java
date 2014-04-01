@@ -13,10 +13,17 @@ import cdar.dal.persistence.JDBCUtil;
 
 public class KnowledgeProducerDaoController {
 
-	public List<KnowledgeTreeDao> getTrees() {
+	public List<KnowledgeTreeDao> getTrees(int uid) {
 		//if get trees by uid:
 		//SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = ?;"
-		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
+		
+		String getUsers = null;
+		if (uid==0) {
+			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
+		} else {
+			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;", uid);
+		}
+		
 
 		Connection connection = null;
 		Statement statement = null;
