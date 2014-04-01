@@ -12,9 +12,9 @@ public class DictionaryModel {
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 
 
-	public Set<Dictionary> getDictionaries() {
+	public Set<Dictionary> getDictionaries(int treeId) {
 		Set<Dictionary> ln = new HashSet<Dictionary>();
-		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(1).getDictionaries()) {
+		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(treeId).getDictionaries()) {
 			ln.add(new Dictionary(knd));			
 		}
 		return ln;

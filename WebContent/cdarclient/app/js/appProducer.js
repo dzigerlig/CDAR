@@ -220,7 +220,7 @@ app
 							}, function(resDictionary) {
 								dictionaryDataToArray(resDictionary);
 							});
-
+														
 							TreeService.getNodes({
 								ktreeid : $routeParams.treeId
 							}, function(response) {

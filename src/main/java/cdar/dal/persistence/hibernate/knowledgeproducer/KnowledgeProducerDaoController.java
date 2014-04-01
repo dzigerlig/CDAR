@@ -83,6 +83,7 @@ public class KnowledgeProducerDaoController {
 			ktd = (KnowledgeTreeDao) list.get(0);
 		}
 		tx.commit();
+		System.out.println(ktd.getId());
 		return ktd;
 	}
 

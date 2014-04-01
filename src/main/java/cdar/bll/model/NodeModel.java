@@ -12,9 +12,9 @@ import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoCont
 public class NodeModel {
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 
-	public Set<Node> getNodes() {
+	public Set<Node> getNodes(int treeId) {
 		Set<Node> ln = new HashSet<Node>();
-		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(1)
+		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(treeId)
 				.getKnowledgeNodes()) {
 			ln.add(new Node(knd));
 		}
