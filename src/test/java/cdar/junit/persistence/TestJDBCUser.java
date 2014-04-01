@@ -65,5 +65,10 @@ public class TestJDBCUser {
 		assertEquals(accesstoken, user.getAccesstoken());
 	}
 	
-	
+	@Test
+	public void testGetUsers() {
+		int currentUserCount = udc.getUsers().size();
+		udc.createUser(new UserDao("MyUser", "MyPassword"));
+		assertEquals(currentUserCount+1, udc.getUsers().size());
+	}
 }
