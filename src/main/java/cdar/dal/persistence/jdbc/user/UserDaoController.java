@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
 
 public class UserDaoController {
 	
@@ -169,6 +171,12 @@ public class UserDaoController {
 		PreparedStatement preparedStatement = null;
 
 		String deleteSQL = "DELETE FROM USER WHERE ID = ?";
+		
+		//delete knowledgetrees
+		KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
+		for (KnowledgeTreeDao tree : kpdc.getTrees(id)) {
+			kpdc.deleteTree(tree.getId());
+		}
 
 		try {
 			connection = JDBCUtil.getConnection();
