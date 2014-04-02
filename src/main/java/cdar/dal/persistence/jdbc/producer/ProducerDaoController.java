@@ -204,7 +204,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<SubNodeDao> getSubNodes(int nodeid) {
-		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+		String getSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -215,7 +215,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getNodes);
+			result = statement.executeQuery(getSubNodes);
 			while (result.next()) {
 				SubNodeDao subnode = new SubNodeDao(nodeid);
 				subnode.setId(result.getInt(1));
@@ -234,7 +234,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public SubNodeDao getSubNode(int id) {
-		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -245,7 +245,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getNode);
+			result = statement.executeQuery(getSubNode);
 			while (result.next()) {
 				subnode = new SubNodeDao(result.getInt(4));
 				subnode.setId(result.getInt(1));
@@ -263,7 +263,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
-		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;", treeid);
+		String getNodeLinks = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;", treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -274,7 +274,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getNodes);
+			result = statement.executeQuery(getNodeLinks);
 			while (result.next()) {
 				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4), result.getInt(5), treeid);
 				nodelink.setId(result.getInt(1));
@@ -292,7 +292,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public NodeLinkDao getNodeLink(int id) {
-		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -303,7 +303,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getNode);
+			result = statement.executeQuery(getNodeLink);
 			while (result.next()) {
 				nodelink = new NodeLinkDao(result.getInt(4), result.getInt(5), result.getInt(6));
 				nodelink.setId(result.getInt(1));
@@ -350,7 +350,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public DirectoryDao getDirectory(int id) {
-		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = %d;", id);
+		String getDirectory = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -361,7 +361,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getNode);
+			result = statement.executeQuery(getDirectory);
 			while (result.next()) {
 				directory = new DirectoryDao(result.getInt(5));
 				directory.setId(result.getInt(1));

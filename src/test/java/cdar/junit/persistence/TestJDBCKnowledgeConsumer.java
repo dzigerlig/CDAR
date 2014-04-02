@@ -8,8 +8,10 @@ import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
@@ -121,17 +123,54 @@ public class TestJDBCKnowledgeConsumer {
 	
 	@Test
 	public void testProjectNodeLinkCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode.create();
+		ProjectNodeDao projectnode2 = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode2.create();
+		assertEquals(0, cdc.getProjectNodeLinks(projecttree.getId()).size());
+		ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(projectnode.getId(), projectnode2.getId(), projecttree.getId());
+		projectnodelink.create();
+		assertEquals(1, cdc.getProjectNodeLinks(projecttree.getId()).size());
 	}
 	
 	@Test
 	public void testProjectNodeLinkUpdate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode.create();
+		ProjectNodeDao projectnode2 = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode2.create();
+		ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(projectnode.getId(), projectnode2.getId(), projecttree.getId());
+		projectnodelink.create();
+		assertEquals(projectnode.getId(), projectnodelink.getSourceid());
+		assertEquals(projectnode2.getId(), projectnodelink.getTargetid());
+		projectnodelink.setTargetid(projectnode.getId());
+		projectnodelink.setSourceid(projectnode2.getId());
+		projectnodelink.update();
+		assertEquals(projectnode2.getId(), projectnodelink.getSourceid());
+		assertEquals(projectnode.getId(), projectnodelink.getTargetid());
 	}
 	
 	@Test
 	public void testProjectNodeLinkDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode.create();
+		ProjectNodeDao projectnode2 = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode2.create();
+		assertEquals(0, cdc.getProjectNodeLinks(projecttree.getId()).size());
+		ProjectNodeLinkDao nodelink = new ProjectNodeLinkDao(projectnode.getId(), projectnode2.getId(), projecttree.getId());
+		nodelink.create();
+		assertEquals(1, cdc.getProjectNodeLinks(projecttree.getId()).size());
+		nodelink.delete();
+		assertEquals(0, cdc.getProjectNodeLinks(projecttree.getId()).size());
 	}
 	
 	@Test
