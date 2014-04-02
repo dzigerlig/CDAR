@@ -141,7 +141,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<NodeDao> getNodes(int treeid) {
-		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, DYNAMICTREEFLAG FROM KNOWLEDGENODE WHERE KTRID = %d;", treeid);
+		String getNodes = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.KTRID = %d AND NODE.ID = MAPPING.KNID;", treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -161,6 +161,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				node.setTitle(result.getString(4));
 				node.setWikititle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
+				node.setDid(result.getInt(7));
 				nodes.add(node);
 				
 			}

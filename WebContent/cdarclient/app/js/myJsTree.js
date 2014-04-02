@@ -55,13 +55,15 @@ $(function() {
 
 	$('#jstree').on("create_node.jstree", function(e, data) {
 		var id = data.node.id;
-		var parentId=data.parent.replace(DICTIONARY, "");
+		var parentId = data.parent.replace(DICTIONARY, "");
 		id = id.replace(DICTIONARY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 			scope.moveNode(id, parentId);
 		} else {
-			if(parentId==='#'){parentId=id;}
+			if (parentId === '#') {
+				parentId = id;
+			}
 			scope.moveDictionary(id, parentId);
 		}
 	});
@@ -121,15 +123,15 @@ function drawDictionary(treeArray) {
 			});
 }
 
-function dictionaryDataToArray(resDictionary) {
+function dictionaryDataToArray(resDictionary, resNodes) {
 	var treeArray = [];
 	var parentId;
 
 	resDictionary.forEach(function(entry) {
-		if (entry.parentId === 0) {
+		if (entry.parentid === 0) {
 			parentId = "#";
 		} else {
-			parentId = "dictionary" + entry.parentId;
+			parentId = "dictionary" + entry.parentid;
 		}
 		treeArray.push({
 			"id" : "dictionary" + entry.id,
@@ -138,20 +140,14 @@ function dictionaryDataToArray(resDictionary) {
 		});
 	});
 
-	resDictionary.forEach(function(dictionary) {
-		if (dictionary.nodes.length !== 0) {
-
-			dictionary.nodes.forEach(function(node) {
-				treeArray.push({
-					"id" : "dictionarynode" + node.id,
-					"parent" : "dictionary" + dictionary.id,
-					"text" : node.title,
-					"type" : "file"
-				});
-			});
-		}
+	resNodes.forEach(function(node) {
+		treeArray.push({
+			"id" : "dictionarynode" + node.id,
+			"parent" : "dictionary" + node.did,
+			"text" : node.title,
+			"type" : "file"
+		});
 	});
-
 	drawDictionary(treeArray);
 };
 
@@ -163,7 +159,7 @@ function createNode(response) {
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
-		"id" : "dictionarynode"+response.id
+		"id" : "dictionarynode" + response.id
 	});
 	if (sel) {
 		ref.edit(sel);

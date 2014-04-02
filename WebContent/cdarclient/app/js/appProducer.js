@@ -1,10 +1,10 @@
 var reload = false;
 console.log("hans");
-function getReload(){
+function getReload() {
 	return reload;
 }
-function setReload(value){
-	 reload = value;
+function setReload(value) {
+	reload = value;
 }
 
 app.factory('TreeService', function($resource) {
@@ -206,15 +206,15 @@ app
 						function($scope, $routeParams, TreeService,
 								AuthenticationService, WikiService,
 								UserService, $route) {
-							
-							//Workaround draw links not correct
+
+							// Workaround draw links not correct
 							if (getReload()) {
 								setReload(false);
-								location.reload();							
-								}
+								location.reload();
+							}
 							setReload(true);
 							//
-							
+
 							initializeJsPlumb();
 
 							$scope.knowledgetree;
@@ -238,14 +238,14 @@ app
 							TreeService.getDictionaries({
 								ktreeid : $routeParams.treeId
 							}, function(resDictionary) {
-								dictionaryDataToArray(resDictionary);
-							});
+								TreeService.getNodes({
+									ktreeid : $routeParams.treeId
+								}, function(resNodes) {
+									drawExistingNodes(resNodes);
+									$scope.getLinks(TreeService);
+									dictionaryDataToArray(resDictionary, resNodes);
+								});
 
-							TreeService.getNodes({
-								ktreeid : $routeParams.treeId
-							}, function(response) {
-								drawExistingNodes(response);
-								$scope.getLinks(TreeService);
 							});
 
 							$scope.getLinks = function(TreeService) {
