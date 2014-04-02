@@ -18,7 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "dictionary")
+@Table(name = "directory")
 @NamedQueries({ @NamedQuery(name = "findDictionaryById", query = "from DictionaryDao dd where dd.id = :id" )})
 public class DictionaryDao {
 	@Id

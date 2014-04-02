@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.knowledgeproducer;
+package cdar.dal.persistence.jdbc.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeNodeLinkDao extends CdarJdbcHelper implements CdarDao {
+public class NodeLinkDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -20,13 +20,13 @@ public class KnowledgeNodeLinkDao extends CdarJdbcHelper implements CdarDao {
 	private int ksnid;
 	private int ktrid;
 	
-	public KnowledgeNodeLinkDao(int sourceid, int targetid, int ktrid) {
+	public NodeLinkDao(int sourceid, int targetid, int ktrid) {
 		setSourceid(sourceid);
 		setTargetid(targetid);
 		setKtrid(ktrid);
 	}
 	
-	public KnowledgeNodeLinkDao(int sourceid, int targetid, int ktrid, int ksnid) {
+	public NodeLinkDao(int sourceid, int targetid, int ktrid, int ksnid) {
 		setSourceid(sourceid);
 		setTargetid(targetid);
 		setKtrid(ktrid);
@@ -90,7 +90,7 @@ public class KnowledgeNodeLinkDao extends CdarJdbcHelper implements CdarDao {
 	}
 
 	@Override
-	public KnowledgeNodeLinkDao create() {
+	public NodeLinkDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -126,7 +126,7 @@ public class KnowledgeNodeLinkDao extends CdarJdbcHelper implements CdarDao {
 	}
 
 	@Override
-	public KnowledgeNodeLinkDao update() {
+	public NodeLinkDao update() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;

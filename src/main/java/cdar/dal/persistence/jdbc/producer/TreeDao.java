@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.knowledgeproducer;
+package cdar.dal.persistence.jdbc.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,24 +10,20 @@ import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
+public class TreeDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
-	private int ktrid;
+	private int uid;
 	private Date creationTime;
 	private Date lastModificationTime;
-	private String title;
-	private String wikititle;
+	private String name;
 	
-	
-	public KnowledgeTemplateDao(int ktrid) {
-		setKtrid(ktrid);
-		setWikititle(String.format("TEMPLATE_%d", getId()));
+	public TreeDao(int uid) {
+		setUid(uid);
 	}
 	
-	public KnowledgeTemplateDao(int ktrid, String title) {
-		setKtrid(ktrid);
-		setTitle(title);
-		setWikititle(String.format("TEMPLATE_%d", getId()));
+	public TreeDao(int uid, String name) {
+		setUid(uid);
+		setName(name);
 	}
 	
 	public int getId() {
@@ -38,12 +34,12 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		this.id = id;
 	}
 	
-	public int getKtrid() {
-		return ktrid;
+	public int getUid() {
+		return uid;
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	public Date getCreationTime() {
@@ -62,24 +58,16 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		this.lastModificationTime = lastModificationTime;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getWikititle() {
-		return wikititle;
-	}
-
-	public void setWikititle(String wikititle) {
-		this.wikititle = wikititle;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
-	public KnowledgeTemplateDao update() {
+	public TreeDao update() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -87,10 +75,10 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
+					"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setDate(1, new java.sql.Date(0));
-			preparedStatement.setString(2, getTitle());
+			preparedStatement.setString(2, getName());
 			preparedStatement.setInt(3, getId());
 
 			preparedStatement.executeUpdate();
@@ -108,13 +96,12 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		return this;
 	}
 
-	@Override
 	public boolean delete() {
-		return delete("KNOWLEDGETEMPLATE", getId());
+		return delete("KNOWLEDGETREE", getId());
 	}
 
 	@Override
-	public CdarDao create() {
+	public TreeDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -122,11 +109,9 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
+					"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getTitle());
-			preparedStatement.setString(2, getWikititle());
-			preparedStatement.setInt(3, getKtrid());
+			preparedStatement.setString(1, getName());
 
 			preparedStatement.executeUpdate();
 
@@ -135,6 +120,10 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 				setId(generatedKeys.getInt(1));
 			}
 			preparedStatement.close();
+			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
+			preparedStatement.setInt(1, getUid());
+			preparedStatement.setInt(2, getId());
+			preparedStatement.executeUpdate();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

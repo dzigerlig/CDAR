@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.model.user.User;
-import cdar.bll.producer.Dictionary;
+import cdar.bll.producer.Directory;
 import cdar.bll.producer.KnowledgeNode;
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
@@ -53,8 +53,8 @@ public class TreeModel {
 		return set;
 	}
 	
-	public Dictionary getDictionariesById(int dictionaryid) {
-		return new Dictionary(kpdc.getDictionaryById(dictionaryid));
+	public Directory getDictionariesById(int dictionaryid) {
+		return new Directory(kpdc.getDictionaryById(dictionaryid));
 	}
 	
 }

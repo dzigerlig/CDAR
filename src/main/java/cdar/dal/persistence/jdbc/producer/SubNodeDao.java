@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.knowledgeproducer;
+package cdar.dal.persistence.jdbc.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,20 +10,23 @@ import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
+public class SubNodeDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
-	private int uid;
 	private Date creationTime;
 	private Date lastModificationTime;
-	private String name;
+	private int knid;
+	private String title;
+	private String wikititle;
 	
-	public KnowledgeTreeDao(int uid) {
-		setUid(uid);
+	public SubNodeDao(int knid) {
+		setKnid(knid);
+		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
 	
-	public KnowledgeTreeDao(int uid, String name) {
-		setUid(uid);
-		setName(name);
+	public SubNodeDao(int knid, String title) {
+		setKnid(knid);
+		setTitle(title);
+		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
 	
 	public int getId() {
@@ -34,12 +37,12 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 		this.id = id;
 	}
 	
-	public int getUid() {
-		return uid;
+	public int getKnid() {
+		return knid;
 	}
 
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setKnid(int knid) {
+		this.knid = knid;
 	}
 
 	public Date getCreationTime() {
@@ -58,16 +61,24 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 		this.lastModificationTime = lastModificationTime;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getWikititle() {
+		return wikititle;
+	}
+
+	public void setWikititle(String wikititle) {
+		this.wikititle = wikititle;
 	}
 
 	@Override
-	public KnowledgeTreeDao update() {
+	public SubNodeDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -75,43 +86,11 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
+					"INSERT INTO KNOWLEDGESUBNODE (KNID, TITLE, WIKITITLE) VALUES (?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
-			preparedStatement.setString(2, getName());
-			preparedStatement.setInt(3, getId());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
-	}
-
-	public boolean delete() {
-		return delete("KNOWLEDGETREE", getId());
-	}
-
-	@Override
-	public KnowledgeTreeDao create() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getName());
+			preparedStatement.setInt(1, getKnid());
+			preparedStatement.setString(2, getTitle());
+			preparedStatement.setString(3, getWikititle());
 
 			preparedStatement.executeUpdate();
 
@@ -120,10 +99,6 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 				setId(generatedKeys.getInt(1));
 			}
 			preparedStatement.close();
-			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
-			preparedStatement.setInt(1, getUid());
-			preparedStatement.setInt(2, getId());
-			preparedStatement.executeUpdate();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -131,5 +106,41 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
 		return this;
+	}
+
+	@Override
+	public SubNodeDao update() {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDate(1, new java.sql.Date(0));
+			preparedStatement.setInt(2, getKnid());
+			preparedStatement.setString(3, getTitle());
+			preparedStatement.setInt(4, getId());
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+		return this;
+	}
+
+	@Override
+	public boolean delete() {
+		return delete("KNOWLEDGESUBNODE", getId());
 	}
 }

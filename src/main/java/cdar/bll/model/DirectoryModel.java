@@ -3,19 +3,19 @@ package cdar.bll.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.producer.Dictionary;
+import cdar.bll.producer.Directory;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 
-public class DictionaryModel {
+public class DirectoryModel {
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 
 
-	public Set<Dictionary> getDictionaries(int treeId) {
-		Set<Dictionary> ln = new HashSet<Dictionary>();
+	public Set<Directory> getDictionaries(int treeId) {
+		Set<Directory> ln = new HashSet<Directory>();
 		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(treeId).getDictionaries()) {
-			ln.add(new Dictionary(knd));			
+			ln.add(new Directory(knd));			
 		}
 		return ln;
 	}
@@ -24,18 +24,18 @@ public class DictionaryModel {
 		kpdc.removeDictionary(1, id);
 	}
 
-	public Dictionary addDictionary(Dictionary d)	
+	public Directory addDictionary(Directory d)	
 	{ 
-		return new Dictionary(kpdc.addDictionary(d.getRefTreeId(), d.getParentId(), d.getTitle()));
+		return new Directory(kpdc.addDictionary(d.getRefTreeId(), d.getParentId(), d.getTitle()));
 	}
 
-	public void renameDictionary(Dictionary d) {
+	public void renameDictionary(Directory d) {
 		DictionaryDao dd = kpdc.getDictionaryById(d.getId());
 		dd.setTitle(d.getTitle());
 		kpdc.updateDictionary(dd);		
 	}
 
-	public void moveDictionary(Dictionary d) {
+	public void moveDictionary(Directory d) {
 System.out.println("dictionary moved");		
 	}
 }

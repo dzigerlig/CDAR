@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.knowledgeproducer;
+package cdar.dal.persistence.jdbc.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,23 +10,24 @@ import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeSubNodeDao extends CdarJdbcHelper implements CdarDao {
+public class TemplateDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
+	private int ktrid;
 	private Date creationTime;
 	private Date lastModificationTime;
-	private int knid;
 	private String title;
 	private String wikititle;
 	
-	public KnowledgeSubNodeDao(int knid) {
-		setKnid(knid);
-		setWikititle(String.format("SUBNODE_%d", getId()));
+	
+	public TemplateDao(int ktrid) {
+		setKtrid(ktrid);
+		setWikititle(String.format("TEMPLATE_%d", getId()));
 	}
 	
-	public KnowledgeSubNodeDao(int knid, String title) {
-		setKnid(knid);
+	public TemplateDao(int ktrid, String title) {
+		setKtrid(ktrid);
 		setTitle(title);
-		setWikititle(String.format("SUBNODE_%d", getId()));
+		setWikititle(String.format("TEMPLATE_%d", getId()));
 	}
 	
 	public int getId() {
@@ -37,12 +38,12 @@ public class KnowledgeSubNodeDao extends CdarJdbcHelper implements CdarDao {
 		this.id = id;
 	}
 	
-	public int getKnid() {
-		return knid;
+	public int getKtrid() {
+		return ktrid;
 	}
 
-	public void setKnid(int knid) {
-		this.knid = knid;
+	public void setKtrid(int ktrid) {
+		this.ktrid = ktrid;
 	}
 
 	public Date getCreationTime() {
@@ -78,7 +79,7 @@ public class KnowledgeSubNodeDao extends CdarJdbcHelper implements CdarDao {
 	}
 
 	@Override
-	public KnowledgeSubNodeDao create() {
+	public TemplateDao update() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -86,43 +87,11 @@ public class KnowledgeSubNodeDao extends CdarJdbcHelper implements CdarDao {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGESUBNODE (KNID, TITLE, WIKITITLE) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, getKnid());
-			preparedStatement.setString(2, getTitle());
-			preparedStatement.setString(3, getWikititle());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
-	}
-
-	@Override
-	public KnowledgeSubNodeDao update() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
+					"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setDate(1, new java.sql.Date(0));
-			preparedStatement.setInt(2, getKnid());
-			preparedStatement.setString(3, getTitle());
-			preparedStatement.setInt(4, getId());
+			preparedStatement.setString(2, getTitle());
+			preparedStatement.setInt(3, getId());
 
 			preparedStatement.executeUpdate();
 
@@ -141,6 +110,37 @@ public class KnowledgeSubNodeDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public boolean delete() {
-		return delete("KNOWLEDGESUBNODE", getId());
+		return delete("KNOWLEDGETEMPLATE", getId());
+	}
+
+	@Override
+	public CdarDao create() {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, getTitle());
+			preparedStatement.setString(2, getWikititle());
+			preparedStatement.setInt(3, getKtrid());
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+			preparedStatement.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+		return this;
 	}
 }

@@ -1,4 +1,4 @@
-package cdar.dal.persistence.jdbc.knowledgeproducer;
+package cdar.dal.persistence.jdbc.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
+public class NodeDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -19,13 +19,13 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 	private String wikititle;
 	private int dynamictreeflag;
 	
-	public KnowledgeNodeDao(int ktrid) {
+	public NodeDao(int ktrid) {
 		setKtrid(ktrid);
 		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 	}
 	
-	public KnowledgeNodeDao(int ktrid, String title) {
+	public NodeDao(int ktrid, String title) {
 		setKtrid(ktrid);
 		setTitle(title);
 		setWikititle(String.format("NODE_%d", getId()));
@@ -89,7 +89,7 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 	}
 	
 	@Override
-	public KnowledgeNodeDao update() {
+	public NodeDao update() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;

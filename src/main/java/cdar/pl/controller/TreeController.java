@@ -11,12 +11,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.model.DictionaryModel;
+import cdar.bll.model.DirectoryModel;
 import cdar.bll.model.SubNodeModel;
 import cdar.bll.model.TreeModel;
 import cdar.bll.model.NodeLinkModel;
 import cdar.bll.model.NodeModel;
-import cdar.bll.producer.Dictionary;
+import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.NodeMapping;
@@ -28,7 +28,7 @@ public class TreeController {
 	private TreeModel ktm = new TreeModel();
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
-	private DictionaryModel dM = new DictionaryModel();
+	private DirectoryModel dM = new DirectoryModel();
 	private SubNodeModel sNM = new SubNodeModel();
 	
 	//Dynamic Tree
@@ -63,14 +63,14 @@ public class TreeController {
 	@GET
 	@Path("/dictionaries/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Dictionary> getDictionaries(@PathParam("ktreeid") int ktreeid) {
+	public Set<Directory> getDictionaries(@PathParam("ktreeid") int ktreeid) {
 		return dM.getDictionaries(ktreeid);
 	}
 	
 	@POST
 	@Path("dictionaries/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Dictionary addDictionary(Dictionary d) {
+	public Directory addDictionary(Directory d) {
 		return dM.addDictionary(d);
 	}
 	
@@ -85,7 +85,7 @@ public class TreeController {
 	@POST
 	@Path("dictionaries/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameDictionary(Dictionary d) {
+	public Response renameDictionary(Directory d) {
 		dM.renameDictionary(d);
 		return Response.status(200).build();
 	}
@@ -93,7 +93,7 @@ public class TreeController {
 	@POST
 	@Path("dictionaries/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response moveDictionay(Dictionary d) {
+	public Response moveDictionay(Directory d) {
 		dM.moveDictionary(d);
 		return Response.status(200).build();
 	}	
