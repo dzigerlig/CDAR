@@ -22,7 +22,6 @@ public class NodeModel {
 	}
 
 	public void deleteNodeById(int id) {
-		System.out.println("remove node" + id);
 		kpdc.removeKnowledgeNode(1, id);
 	}
 
@@ -31,28 +30,24 @@ public class NodeModel {
 	}
 
 	public Node dropNode(int id) {
-		System.out.println(id+" dropped");
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
 		node.setDynamicTreeFlag(1);
 		return new Node(kpdc.updateNode(node));
 	}
 
 	public Node renameNode(Node n) {
-		System.out.println(n.getTitle());
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(n.getId());
 		node.setTitle(n.getTitle());
 		return new Node(kpdc.updateNode(node));
 	}
 
 	public Node undropNode(int id) {
-		System.out.println(id+" undropped");
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
 		node.setDynamicTreeFlag(0);
 		return new Node(kpdc.updateNode(node));
 	}
 
 	public Node moveNode(NodeMapping nodemapping) {
-		System.out.println("node moved");	
 		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
 		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
 		return new Node(node);

@@ -94,7 +94,7 @@ public class KnowledgeSubNodeDao {
 		this.wikititle = wikititle;
 	}
 
-	public KnowledgeNodeDao getKnowledgeTree() {
+	public KnowledgeNodeDao getKnowledgeNode() {
 		return knowledgeNode;
 	}
 

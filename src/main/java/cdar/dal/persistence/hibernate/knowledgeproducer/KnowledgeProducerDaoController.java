@@ -283,7 +283,7 @@ public class KnowledgeProducerDaoController {
 		}
 	}
 
-	public void addKnowledgeSubNode(int nodeId, String subNodeTitle) {
+	public KnowledgeSubNodeDao addKnowledgeSubNode(int nodeId, String subNodeTitle) {
 		KnowledgeNodeDao node = getKnowledgeNodeById(nodeId);
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction tx = session.beginTransaction();
@@ -292,6 +292,7 @@ public class KnowledgeProducerDaoController {
 		node.getKnowledgeSubNodes().add(newSubNode);
 		session.update(node);
 		tx.commit();
+		return newSubNode;
 	}
 
 	public KnowledgeNodeLinkDao getKnowledgeNodeLink(int linkid) {

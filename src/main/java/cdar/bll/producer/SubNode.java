@@ -3,6 +3,7 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
+import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeSubNodeDao;
 
 public class SubNode extends WikiEntity {
 	private int refNodeId;
@@ -15,6 +16,11 @@ public class SubNode extends WikiEntity {
 			String title, String wikititle, int refNodeId) {
 		super(id, creationDate, lastModification, title, wikititle);
 		this.refNodeId = refNodeId;
+	}
+
+	public SubNode(KnowledgeSubNodeDao ksnd) {
+		super(ksnd.getId(), ksnd.getCreationTime(), ksnd.getLastModificationTime(),ksnd.getTitle(),ksnd.getWikititle());
+		this.refNodeId = ksnd.getKnowledgeNode().getId();
 	}
 
 	public int getRefNodeId() {
