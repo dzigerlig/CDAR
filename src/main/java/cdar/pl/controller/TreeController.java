@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.model.DictionaryModel;
+import cdar.bll.model.SubNodeModel;
 import cdar.bll.model.TreeModel;
 import cdar.bll.model.NodeLinkModel;
 import cdar.bll.model.NodeModel;
@@ -19,6 +20,7 @@ import cdar.bll.producer.Dictionary;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.NodeMapping;
+import cdar.bll.producer.SubNode;
 import cdar.bll.producer.Tree;
 
 @Path("{uid}/ktree")
@@ -27,6 +29,7 @@ public class TreeController {
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
 	private DictionaryModel dM = new DictionaryModel();
+	private SubNodeModel sNM = new SubNodeModel();
 	
 	//Dynamic Tree
 	@GET
@@ -170,6 +173,30 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeLink(int id) {
 		lM.removeLinkById(id);
+		return Response.status(200).build();
+	}
+	
+	//Subnodes
+	@GET
+	@Path("subnode/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<SubNode> getSubNodes(@PathParam("ktreeid") int ktreeid) {
+		return sNM.getSubNodes(ktreeid);
+	}	
+
+	
+	@POST
+	@Path("subnode/add/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public SubNode addSubNode(SubNode sN) {		 
+		return sNM.addSubNode(sN);
+	}
+
+	@POST
+	@Path("subnode/delete/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response removeSubNode(int id) {
+		sNM.removeSubNodeById(id);
 		return Response.status(200).build();
 	}
 }
