@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTemplateDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
 
 public class TestJDBCKnowledgeProducer {
@@ -33,35 +35,36 @@ public class TestJDBCKnowledgeProducer {
 	public void TestTreeNameChange() {
 		final String newTreeName = "newTreeName";
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
+		tree.create(udc.getUserByName(testUsername).getId());
 		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
 		tree.setName(newTreeName);
-		kpdc.updateTree(tree);
+		tree.update();
 		assertEquals(newTreeName, kpdc.getTreeById(tree.getId()).getName());
 	}
 	
 	@Test
 	public void TestGetTreeById() {
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		tree = kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
+		tree = tree.create(udc.getUserByName(testUsername).getId());
 		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
 	}
 	 
 	@Test
 	public void TestDeleteTree() {
 		final String treeName = "mytree";
-		KnowledgeTreeDao tree = kpdc.createTree(udc.getUserByName(testUsername).getId(), new KnowledgeTreeDao(treeName));
+		
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(treeName).create(udc.getUserByName(testUsername).getId());
 		assertEquals(treeName, kpdc.getTreeById(tree.getId()).getName());
-		kpdc.deleteTree(tree.getId());
+		tree.delete();
 		assertNull(kpdc.getTreeById(tree.getId()));
 	}
 	
 	@Test
 	public void testGetTrees() {
-		int currentTreeCount = kpdc.getTrees(0).size();
+		int currentTreeCount = kpdc.getTrees().size();
 		KnowledgeTreeDao tree = new KnowledgeTreeDao(testTreeName);
-		kpdc.createTree(udc.getUserByName(testUsername).getId(), tree);
-		assertEquals(currentTreeCount+1, kpdc.getTrees(0).size());
+		tree.create(udc.getUserByName(testUsername).getId());
+		assertEquals(currentTreeCount+1, kpdc.getTrees().size());
 	}
 	
 	@Test
@@ -69,38 +72,92 @@ public class TestJDBCKnowledgeProducer {
 		UserDao user = udc.getUserByName(testUsername);
 		assertEquals(0, kpdc.getTrees(user.getId()).size());
 		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
-		kpdc.createTree(user.getId(), tree);
+		tree.create(user.getId());
 		assertEquals(1, kpdc.getTrees(user.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeTemplateCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao("MyTemplate");
+		template.create(tree.getId());
+		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeTemplateUpdate() {
-		
+		final String templateName = "MyTemplate";
+		final String updatedTemplateName = "MyTemplate2";
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao(templateName);
+		template.create(tree.getId());
+		assertEquals(templateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
+		template.setTitle(updatedTemplateName);
+		template.update();
+		assertEquals(updatedTemplateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
 	}
 	
 	@Test
 	public void TestKnowledgeTemplateDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
+		KnowledgeTemplateDao template = new KnowledgeTemplateDao("MyTemplate");
+		template.create(tree.getId());
+		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
+		template.delete();
+		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeNodeCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeNodeUpdate() {
-		
+		final String title = "MyNode";
+		final String newTitle = "NewTitle";
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), title);
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
+		assertEquals(title, kpdc.getNode(node.getId()).getTitle());
+		assertEquals(0, kpdc.getNode(node.getId()).getDynamicTreeFlag());
+		node.setTitle(newTitle);
+		node.setDynamicTreeFlag(1);
+		node.update();
+		assertEquals(newTitle, kpdc.getNode(node.getId()).getTitle());
+		assertEquals(1, kpdc.getNode(node.getId()).getDynamicTreeFlag());
 	}
 	
 	@Test
 	public  void TestKnowledgeNodeDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
+		node.delete();
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
 	}
 	
 	@Test
@@ -134,22 +191,22 @@ public class TestJDBCKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestDictionaryCreate() {
+	public void TestDirectoryCreate() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryUpdate() {
+	public void TestDirectoryUpdate() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryDelete() {
+	public void TestDirectoryDelete() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryWithoutNode() {
+	public void TestDirectoryWithoutNode() {
 		
 	}
 	
