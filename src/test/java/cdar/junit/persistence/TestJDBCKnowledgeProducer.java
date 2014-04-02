@@ -11,6 +11,7 @@ import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeSubNodeDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTemplateDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
 
@@ -161,17 +162,49 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void TestKnowledgeSubNodeCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
+		KnowledgeSubNodeDao subnode = new KnowledgeSubNodeDao(node.getId(), "MyKnowledgeSubNode");
+		subnode.create();
+		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeSubNodeUpdate() {
-		
+		final String subnodeTitle = "MySubnode";
+		final String newSubnodeTitle = "NewSubnode";
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
+		KnowledgeSubNodeDao subnode = new KnowledgeSubNodeDao(node.getId(), subnodeTitle);
+		subnode.create();
+		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
+		assertEquals(subnodeTitle, kpdc.getSubNode(subnode.getId()).getTitle());
+		subnode.setTitle(newSubnodeTitle);
+		subnode.update();
+		assertEquals(newSubnodeTitle, kpdc.getSubNode(subnode.getId()).getTitle());
 	}
 	
 	@Test
 	public void TestKnowledgeSubNodeDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
+		KnowledgeSubNodeDao subnode = new KnowledgeSubNodeDao(node.getId(), "MySubNode");
+		subnode.create();
+		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
+		subnode.delete();
+		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
 	}
 	
 	@Test

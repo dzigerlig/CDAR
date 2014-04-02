@@ -201,4 +201,63 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 		}
 		return node;
 	}
+	
+	public List<KnowledgeSubNodeDao> getSubNodes(int nodeid) {
+		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<KnowledgeSubNodeDao> subnodes = new ArrayList<KnowledgeSubNodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				KnowledgeSubNodeDao subnode = new KnowledgeSubNodeDao(nodeid);
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(4));
+				subnode.setWikititle(result.getString(5));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
+	}
+	
+	public KnowledgeSubNodeDao getSubNode(int id) {
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		KnowledgeSubNodeDao subnode = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNode);
+			while (result.next()) {
+				subnode = new KnowledgeSubNodeDao(result.getInt(4));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnode;
+	}
 }

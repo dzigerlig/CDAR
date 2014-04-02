@@ -11,7 +11,6 @@ import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
 public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
-
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -22,6 +21,7 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 	
 	public KnowledgeNodeDao(int ktrid) {
 		setKtrid(ktrid);
+		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 	}
 	
