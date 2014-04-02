@@ -3,7 +3,6 @@ package cdar.dal.persistence.jdbc.knowledgeproducer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
@@ -122,23 +121,7 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public boolean delete() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-
-		String deleteSQL = "DELETE FROM KNOWLEDGENODE WHERE ID = ?";
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, id);
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			closeConnections(connection, preparedStatement, null, null);
-		}
-		return false;
+		return delete("KNOWLEDGENODE", getId());
 	}
 
 	@Override
