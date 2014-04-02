@@ -317,4 +317,63 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelink;
 	}
+	
+	public List<DirectoryDao> getDirectories(int treeid) {
+		String getDirectories = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM DIRECTORY WHERE KTRID = %d;", treeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<DirectoryDao> directories = new ArrayList<DirectoryDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getDirectories);
+			while (result.next()) {
+				DirectoryDao directory = new DirectoryDao(treeid);
+				directory.setId(result.getInt(1));
+				directory.setCreationTime(result.getDate(2));
+				directory.setLastModificationTime(result.getDate(3));
+				directory.setParentid(result.getInt(4));
+				directory.setTitle(result.getString(5));
+				directories.add(directory);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return directories;
+	}
+	
+	public DirectoryDao getDirectory(int id) {
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		DirectoryDao directory = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNode);
+			while (result.next()) {
+				directory = new DirectoryDao(result.getInt(5));
+				directory.setId(result.getInt(1));
+				directory.setCreationTime(result.getDate(2));
+				directory.setLastModificationTime(result.getDate(3));
+				directory.setParentid(result.getInt(4));
+				directory.setTitle(result.getString(6));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return directory;
+	}
 }

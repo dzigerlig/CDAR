@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
@@ -261,37 +262,51 @@ public class TestJDBCKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestDirectoryCreate() {
-		
-	}
-	
-	@Test
 	public void TestDirectoryUpdate() {
+		final String directoryName = "MyDirectory";
+		final String newDirectoryName = "MyNewDirectory";
 		
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		assertEquals(0, kpdc.getDirectories(tree.getId()).size());
+		DirectoryDao directory = new DirectoryDao(tree.getId());
+		directory.setTitle(directoryName);
+		directory.create();
+		assertEquals(directoryName, kpdc.getDirectory(directory.getId()).getTitle());
+		directory.setTitle(newDirectoryName);
+		directory.update();
+		assertEquals(newDirectoryName, kpdc.getDirectory(directory.getId()).getTitle());
 	}
 	
 	@Test
 	public void TestDirectoryDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		assertEquals(0, kpdc.getDirectories(tree.getId()).size());
+		DirectoryDao directory = new DirectoryDao(tree.getId());
+		directory.setTitle("MyDirectory");
+		directory.create();
+		assertEquals(1, kpdc.getDirectories(tree.getId()).size());
+		directory.delete();
+		assertEquals(0, kpdc.getDirectories(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestDirectoryWithoutNode() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		assertEquals(0, kpdc.getDirectories(tree.getId()).size());
+		DirectoryDao directory = new DirectoryDao(tree.getId());
+		directory.setTitle("MyDirectory");
+		directory.create();
+		assertEquals(1, kpdc.getDirectories(tree.getId()).size());
 	}
 	
 	@Test
-	public void TestDropNode() {
-		
-	}
-	
-	@Test
-	public void TestUndropNode() {
-		
-	}
-	
-	@Test
-	public void TestNodeMoving() {
+	public void TestDirectoryCreateWithNode() {
 		
 	}
 }
