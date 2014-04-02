@@ -18,6 +18,7 @@ public class NodeDao extends CdarJdbcHelper implements CdarDao {
 	private String title;
 	private String wikititle;
 	private int dynamictreeflag;
+	private int did;
 	
 	public NodeDao(int ktrid) {
 		setKtrid(ktrid);
@@ -88,6 +89,14 @@ public class NodeDao extends CdarJdbcHelper implements CdarDao {
 		this.dynamictreeflag = dynamictreeflag;
 	}
 	
+	public int getDid() {
+		return did;
+	}
+
+	public void setDid(int did) {
+		this.did = did;
+	}
+
 	@Override
 	public NodeDao update() {
 		Connection connection = null;
