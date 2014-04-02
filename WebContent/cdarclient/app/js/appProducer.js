@@ -1,3 +1,12 @@
+var reload = false;
+console.log("hans");
+function getReload(){
+	return reload;
+}
+function setReload(value){
+	 reload = value;
+}
+
 app.factory('TreeService', function($resource) {
 	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/', {}, {
 		// Tree
@@ -193,8 +202,19 @@ app
 						'AuthenticationService',
 						'WikiService',
 						'UserService',
+						'$route',
 						function($scope, $routeParams, TreeService,
-								AuthenticationService, WikiService, UserService) {
+								AuthenticationService, WikiService,
+								UserService, $route) {
+							
+							//Workaround draw links not correct
+							if (getReload()) {
+								setReload(false);
+								location.reload();							
+								}
+							setReload(true);
+							//
+							
 							initializeJsPlumb();
 
 							$scope.knowledgetree;
@@ -220,7 +240,7 @@ app
 							}, function(resDictionary) {
 								dictionaryDataToArray(resDictionary);
 							});
-														
+
 							TreeService.getNodes({
 								ktreeid : $routeParams.treeId
 							}, function(response) {
