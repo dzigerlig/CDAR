@@ -10,6 +10,7 @@ import org.junit.Test;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeNodeDao;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeNodeLinkDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeSubNodeDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTemplateDao;
@@ -209,17 +210,54 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void TestLinkConnectionCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		KnowledgeNodeDao node2 = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node2.create();
+		assertEquals(0, kpdc.getNodeLinks(tree.getId()).size());
+		KnowledgeNodeLinkDao nodelink = new KnowledgeNodeLinkDao(node.getId(), node2.getId(), tree.getId());
+		nodelink.create();
+		assertEquals(1, kpdc.getNodeLinks(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestLinkConnectionUpdate() {
-		//?
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		KnowledgeNodeDao node2 = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node2.create();
+		KnowledgeNodeLinkDao nodelink = new KnowledgeNodeLinkDao(node.getId(), node2.getId(), tree.getId());
+		nodelink.create();
+		assertEquals(node.getId(), nodelink.getSourceid());
+		assertEquals(node2.getId(), nodelink.getTargetid());
+		nodelink.setTargetid(node.getId());
+		nodelink.setSourceid(node2.getId());
+		nodelink.update();
+		assertEquals(node2.getId(), nodelink.getSourceid());
+		assertEquals(node.getId(), nodelink.getTargetid());
 	}
 	
 	@Test
 	public void TestLinkConnectionDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create();
+		KnowledgeNodeDao node2 = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node2.create();
+		assertEquals(0, kpdc.getNodeLinks(tree.getId()).size());
+		KnowledgeNodeLinkDao nodelink = new KnowledgeNodeLinkDao(node.getId(), node2.getId(), tree.getId());
+		nodelink.create();
+		assertEquals(1, kpdc.getNodeLinks(tree.getId()).size());
+		nodelink.delete();
+		assertEquals(0, kpdc.getNodeLinks(tree.getId()).size());
 	}
 	
 	@Test

@@ -260,4 +260,61 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 		}
 		return subnode;
 	}
+	
+	public List<KnowledgeNodeLinkDao> getNodeLinks(int treeid) {
+		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;", treeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<KnowledgeNodeLinkDao> nodelinks = new ArrayList<KnowledgeNodeLinkDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				KnowledgeNodeLinkDao nodelink = new KnowledgeNodeLinkDao(result.getInt(4), result.getInt(5), treeid);
+				nodelink.setId(result.getInt(1));
+				nodelink.setCreationTime(result.getDate(2));
+				nodelink.setLastModificationTime(result.getDate(3));
+				nodelink.setKsnid(result.getInt(6));
+				nodelinks.add(nodelink);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return nodelinks;
+	}
+	
+	public KnowledgeNodeLinkDao getNodeLink(int id) {
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		KnowledgeNodeLinkDao nodelink = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNode);
+			while (result.next()) {
+				nodelink = new KnowledgeNodeLinkDao(result.getInt(4), result.getInt(5), result.getInt(6));
+				nodelink.setId(result.getInt(1));
+				nodelink.setCreationTime(result.getDate(2));
+				nodelink.setLastModificationTime(result.getDate(3));
+				nodelink.setKsnid(result.getInt(7));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return nodelink;
+	}
 }
