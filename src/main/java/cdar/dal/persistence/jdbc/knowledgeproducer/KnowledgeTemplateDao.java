@@ -13,16 +13,19 @@ import cdar.dal.persistence.JDBCUtil;
 
 public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
+	private int ktrid;
 	private Date creationTime;
 	private Date lastModificationTime;
 	private String title;
 	private String wikititle;
 	
-	public KnowledgeTemplateDao() {
-		
+	
+	public KnowledgeTemplateDao(int ktrid) {
+		setKtrid(ktrid);
 	}
 	
-	public KnowledgeTemplateDao(String title) {
+	public KnowledgeTemplateDao(int ktrid, String title) {
+		setKtrid(ktrid);
 		setTitle(title);
 		setWikititle(String.format("TEMPLATE_%d", getId()));
 	}
@@ -33,6 +36,14 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getKtrid() {
+		return ktrid;
+	}
+
+	public void setKtrid(int ktrid) {
+		this.ktrid = ktrid;
 	}
 
 	public Date getCreationTime() {
@@ -65,36 +76,6 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 
 	public void setWikititle(String wikititle) {
 		this.wikititle = wikititle;
-	}
-
-	public KnowledgeTemplateDao create(int treeid) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getTitle());
-			preparedStatement.setString(2, getWikititle());
-			preparedStatement.setInt(3, treeid);
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
 	}
 
 	@Override
@@ -146,5 +127,36 @@ public class KnowledgeTemplateDao extends CdarJdbcHelper implements CdarDao {
 			closeConnections(connection, preparedStatement, null, null);
 		}
 		return false;
+	}
+
+	@Override
+	public CdarDao create() {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, getTitle());
+			preparedStatement.setString(2, getWikititle());
+			preparedStatement.setInt(3, getKtrid());
+
+			preparedStatement.executeUpdate();
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+			preparedStatement.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			closeConnections(connection, preparedStatement, null, generatedKeys);
+		}
+		return this;
 	}
 }
