@@ -19,7 +19,7 @@ public class JDBCUtil {
 	public static Connection getConnection() {
 		try {
 			String hibernateConfig = System.getProperty("fileName");
-			
+			Class.forName("com.mysql.jdbc.Driver"); 
 			if (connection == null || connection.isClosed()) {
 				if (hibernateConfig!=null) {
 					connection = DriverManager.getConnection(REMOTE_DB_CONNECTION,
@@ -30,6 +30,8 @@ public class JDBCUtil {
                 }
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return connection;

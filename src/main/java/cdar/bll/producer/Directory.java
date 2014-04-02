@@ -1,20 +1,15 @@
 package cdar.bll.producer;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 
 public class Directory extends BasicEntity {
-	private int parentId;
-	private int refTreeId;
+	private int parentid;
+	private int ktrid;
 	private String title;
-	private Set<Node> nodes;
+	private int knid;
 
 
 	public Directory() {
@@ -22,42 +17,31 @@ public class Directory extends BasicEntity {
 	}
 
 	public Directory(int id, Date creationTime, Date lastModificationTime,
-			int parentId,int refTreeId, String title, Set<Node> nodes) {
+			int parentid,int ktrid,int knid, String title) {
 		super(id, creationTime, lastModificationTime);
-		this.parentId = parentId;
-		this.refTreeId = refTreeId;
-		this.title = title;
-		this.nodes = nodes;
+		this.setParentid(parentid);
+		this.setKtrid(ktrid);
+		this.setTitle(title);
 	}
 
-	public Directory(DictionaryDao dd) {
-		super(dd.getId(), dd.getCreationTime(), dd.getLastModificationTime());		
-		this.title = dd.getTitle();	
-		if(dd.getParentDictionaryDao()!=null){
-			this.parentId = dd.getParentDictionaryDao().getId();
-		}	
-		if(dd.getKnowledgeNodes()!=null){
-			this.nodes = new HashSet<Node>();
-			for(KnowledgeNodeDao knd: dd.getKnowledgeNodes()){
-				this.nodes.add(new Node(knd));
-			}
-		}
+	public Directory(DirectoryDao directoryDao) {
+		this(directoryDao.getId(), directoryDao.getCreationTime(),directoryDao.getLastModificationTime(), directoryDao.getParentid(), directoryDao.getKtrid(), directoryDao.getKnid(), directoryDao.getTitle());
 	}
 
-	public int getParentId() {
-		return parentId;
+	public int getParentid() {
+		return parentid;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setParentid(int parentid) {
+		this.parentid = parentid;
 	}
 
-	public int getRefTreeId() {
-		return refTreeId;
+	public int getKtrid() {
+		return ktrid;
 	}
 
-	public void setRefTreeId(int refTreeId) {
-		this.refTreeId = refTreeId;
+	public void setKtrid(int ktrid) {
+		this.ktrid = ktrid;
 	}
 
 	public String getTitle() {
@@ -68,11 +52,11 @@ public class Directory extends BasicEntity {
 		this.title = title;
 	}
 
-	public Set<Node> getNodes() {
-		return nodes;
+	public int getKnid() {
+		return knid;
 	}
 
-	public void setNodes(Set<Node> nodes) {
-		this.nodes = nodes;
+	public void setKnid(int knid) {
+		this.knid = knid;
 	}
 }

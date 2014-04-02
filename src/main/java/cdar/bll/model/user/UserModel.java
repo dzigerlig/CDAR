@@ -3,8 +3,8 @@ package cdar.bll.model.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import cdar.dal.persistence.hibernate.user.UserDao;
-import cdar.dal.persistence.hibernate.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDao;
+import cdar.dal.persistence.jdbc.user.UserDaoController;
 
 public class UserModel {
 	private UserDaoController udc = new UserDaoController();
@@ -22,7 +22,11 @@ public class UserModel {
 
 	public User createUser(User user) {
 		try {
-			return udc.createUser(user);
+			UserDao userdao = new UserDao();
+			userdao.setUsername(user.getUsername());
+			userdao.setPassword(user.getPassword());
+			userdao.create();
+			return new User(userdao);
 		} catch (Exception ex) {
 			return new User(-1);
 		}

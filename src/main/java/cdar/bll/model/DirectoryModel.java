@@ -7,35 +7,40 @@ import cdar.bll.producer.Directory;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class DirectoryModel {
-	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
+	private ProducerDaoController pdc = new ProducerDaoController();
 
 
-	public Set<Directory> getDictionaries(int treeId) {
+	public Set<Directory> getDirectories(int treeid) {
 		Set<Directory> ln = new HashSet<Directory>();
-		for (DictionaryDao knd : kpdc.getKnowledgeTreeById(treeId).getDictionaries()) {
-			ln.add(new Directory(knd));			
+		for (DirectoryDao dd : pdc.getDirectories(treeid)) {
+			ln.add(new Directory(dd));			
 		}
 		return ln;
 	}
 
-	public void removeDictionaryById(int id) {
-		kpdc.removeDictionary(1, id);
+	public boolean removeDirectoryById(int id) {
+		return pdc.getDirectory(id).delete();
 	}
 
-	public Directory addDictionary(Directory d)	
+	public Directory addDirectory(Directory d)	
 	{ 
-		return new Directory(kpdc.addDictionary(d.getRefTreeId(), d.getParentId(), d.getTitle()));
+		DirectoryDao directory = new DirectoryDao(d.getKtrid());
+		directory.setParentid(d.getParentid());
+		directory.setTitle(d.getTitle());
+		return new Directory(directory.create());
 	}
 
-	public void renameDictionary(Directory d) {
-		DictionaryDao dd = kpdc.getDictionaryById(d.getId());
+	public Directory renameDirectory(Directory d) {
+		DirectoryDao dd = pdc.getDirectory(d.getId());
 		dd.setTitle(d.getTitle());
-		kpdc.updateDictionary(dd);		
+		return new Directory(dd.update());
 	}
 
-	public void moveDictionary(Directory d) {
-System.out.println("dictionary moved");		
+	public void moveDirectory(Directory d) {
+		System.out.println("dictionary moved");		
 	}
 }

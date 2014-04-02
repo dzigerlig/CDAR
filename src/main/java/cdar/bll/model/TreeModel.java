@@ -3,58 +3,52 @@ package cdar.bll.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.model.user.User;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Tree;
-import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
-import cdar.dal.persistence.hibernate.user.UserDaoController;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class TreeModel {
-
-	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
-	private UserDaoController udc = new UserDaoController();
+	private ProducerDaoController pdc = new ProducerDaoController();
 	
 	public Set<Tree> getKnowledgeTreesByUid(int uid) {
-		User user = new User(udc.getUserById(uid));
-		return user.getKnowledgeTrees();
-	}
-
-	public int addKnowledgeTreeByUid(int uid, String treeName) {
-		try {
-			kpdc.addKnowledgeTreeByUid(uid, treeName);
-			return 1;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return 0;
+		Set<Tree> trees = new HashSet<Tree>();
+		for (TreeDao tree : pdc.getTrees(uid)) {
+			trees.add(new Tree(tree));
 		}
+		return trees;
 	}
 
-	public int removeKnowledgeTreeById(int uid, int ktreeid) {
-		return kpdc.removeKnowledgeTreeById(uid, ktreeid);
+	public Tree addKnowledgeTreeByUid(int uid, String treeName) {
+		TreeDao tree = new TreeDao(uid, treeName);
+		return new Tree(tree.create());
+	}
+
+	public boolean removeKnowledgeTreeById(int ktreeid) {
+		return pdc.getTreeById(ktreeid).delete();
 	}
 
 	public Tree getKnowledgeTreeById(int treeId) {
-		return new Tree(kpdc.getKnowledgeTreeById(treeId));
+		return new Tree(pdc.getTreeById(treeId));
 	}
 
 	public Node getNodeById(int nodeid) {
-		return new Node(kpdc.getKnowledgeNodeById(nodeid));
+		return new Node(pdc.getNode(nodeid));
 	}
 
 	public Set<Node> getKnowledgeNodes(int ktreeid) {
 		Set<Node> set = new HashSet<Node>();
 		
-		for (KnowledgeNodeDao pnd : kpdc.getKnowledgeTreeById(ktreeid).getKnowledgeNodes()) {
+		for (NodeDao pnd : pdc.getNodes(ktreeid)) {
 			set.add(new Node(pnd));
 		}
 		return set;
 	}
 	
 	public Directory getDictionariesById(int dictionaryid) {
-		return new Directory(kpdc.getDictionaryById(dictionaryid));
+		return new Directory(pdc.getDirectory(dictionaryid));
 	}
 	
 }

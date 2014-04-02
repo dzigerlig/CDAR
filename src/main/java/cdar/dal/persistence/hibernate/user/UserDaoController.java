@@ -150,7 +150,8 @@ public class UserDaoController {
 	}
 
 	public User createUser(User user) {
-		return new User(createUser(user.getUsername(), user.getPassword()));
+		//return new User(createUser(user.getUsername(), user.getPassword()));
+		return null;
 	}
 	
 	public void setPassword(int uid, String password) {

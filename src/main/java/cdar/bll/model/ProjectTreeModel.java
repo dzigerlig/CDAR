@@ -16,8 +16,9 @@ public class ProjectTreeModel {
 	private UserDaoController udc = new UserDaoController();
 	
 	public Set<ProjectTree> getProjectTreesByUid(int uid) {
-		User user = new User(udc.getUserById(uid));
-		return user.getProjectTrees();
+//		User user = new User(udc.getUserById(uid));
+//		return user.getProjectTrees();
+		return null;
 	}
 
 	public Integer addProjectTreeByUid(int uid, String treeName) {

@@ -125,7 +125,7 @@ public class NodeDao extends CdarJdbcHelper implements CdarDao {
 	}
 
 	@Override
-	public CdarDao create() {
+	public NodeDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;

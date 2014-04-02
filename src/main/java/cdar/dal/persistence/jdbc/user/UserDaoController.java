@@ -1,17 +1,20 @@
 package cdar.dal.persistence.jdbc.user;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.CdarJdbcHelper;
 
 public class UserDaoController extends CdarJdbcHelper {
-	
+
 	public List<UserDao> getUsers() {
 		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
 
@@ -76,7 +79,7 @@ public class UserDaoController extends CdarJdbcHelper {
 
 	public UserDao getUserByName(String username) {
 		final String getUserByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = '"
-				+ username +"'";
+				+ username + "'";
 
 		Connection connection = null;
 		Statement statement = null;
@@ -102,5 +105,32 @@ public class UserDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return user;
+	}
+
+	public UserDao loginUser(String username, String password) {
+		UserDao user = getUserByName(username);
+		if (user!=null && user.getPassword().equals(password)) {
+			try {
+				user.setAccesstoken(sha1(String.format("%s%s",user.getPassword(),new Date().toString())));
+				user.update();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+			return getUserByName(username);
+		}
+		return null;
+	}
+	
+	// SOURCE: http://www.sha1-online.com/sha1-java/
+	static String sha1(String input) throws NoSuchAlgorithmException {
+		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+		byte[] result = mDigest.digest(input.getBytes());
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < result.length; i++) {
+			sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16)
+					.substring(1));
+		}
+
+		return sb.toString();
 	}
 }

@@ -3,14 +3,14 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
+import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class Tree extends BasicEntity {
 
 	private String name;
 
-	public Tree(KnowledgeTreeDao knowledgeTreeDao) {
-		this(knowledgeTreeDao.getId(), knowledgeTreeDao.getCreationTime(), knowledgeTreeDao.getLastModificationTime(), knowledgeTreeDao.getName());
+	public Tree(TreeDao tree) {
+		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getName());
 	}
 
 	public Tree(int id, Date creationDate, Date lastModification,

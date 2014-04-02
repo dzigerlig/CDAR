@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
 
 public class Node extends WikiEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,8 +22,8 @@ public class Node extends WikiEntity implements Serializable {
 		this.dynamicTreeFlag = dynamicTreeFlag;
 	}
 	
-	public Node(KnowledgeNodeDao knd) {
-		this(knd.getId(), knd.getCreationTime(),knd.getLastModificationTime(),knd.getTitle(),knd.getWikititle(),knd.getKnowledgeTree().getId(),knd.getDynamicTreeFlag());
+	public Node(NodeDao nodeDao) {
+		this(nodeDao.getId(), nodeDao.getCreationTime(),nodeDao.getLastModificationTime(),nodeDao.getTitle(),nodeDao.getWikititle(),nodeDao.getKtrid(),nodeDao.getDynamicTreeFlag());
 	}
 
 	public int getRefTreeId() {

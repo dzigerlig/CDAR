@@ -5,51 +5,52 @@ import java.util.Set;
 
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeMapping;
-import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class NodeModel {
-	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
+	private ProducerDaoController pdc = new ProducerDaoController();
 
-	public Set<Node> getNodes(int treeId) {
+	public Set<Node> getNodes(int treeid) {
 		Set<Node> ln = new HashSet<Node>();
-		for (KnowledgeNodeDao knd : kpdc.getKnowledgeTreeById(treeId)
-				.getKnowledgeNodes()) {
+		for (NodeDao knd : pdc.getNodes(treeid)) {
 			ln.add(new Node(knd));
 		}
 		return ln;
 	}
 
-	public void deleteNodeById(int id) {
-		kpdc.removeKnowledgeNode(1, id);
+	public boolean deleteNodeById(int id) {
+		return pdc.getNode(id).delete();
 	}
 
 	public Node addNode(Node n) {
-		return new Node(kpdc.addKnowledgeNode(n.getRefTreeId(), null));
+		NodeDao node = new NodeDao(n.getRefTreeId(), null);
+		return new Node(node.create());
 	}
 
 	public Node dropNode(int id) {
-		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
+		NodeDao node = pdc.getNode(id);
 		node.setDynamicTreeFlag(1);
-		return new Node(kpdc.updateNode(node));
+		return new Node(node.update());
 	}
 
 	public Node renameNode(Node n) {
-		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(n.getId());
+		NodeDao node = pdc.getNode(n.getId());
 		node.setTitle(n.getTitle());
-		return new Node(kpdc.updateNode(node));
+		return new Node(node.update());
 	}
 
 	public Node undropNode(int id) {
-		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(id);
+		NodeDao node = pdc.getNode(id);
 		node.setDynamicTreeFlag(0);
-		return new Node(kpdc.updateNode(node));
+		return new Node(node.update());
 	}
 
 	public Node moveNode(NodeMapping nodemapping) {
-		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
-		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
-		return new Node(node);
+		//TODO
+//		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
+//		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
+//		return new Node(node);
+		return null;
 	}
 }

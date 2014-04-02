@@ -41,13 +41,13 @@ public class TreeController {
 	@GET
 	@Path("delete/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public int deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
-		return ktm.removeKnowledgeTreeById(uid, ktreeid);
+	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
+		return ktm.removeKnowledgeTreeById(ktreeid);
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Integer addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
+	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
 		return ktm.addKnowledgeTreeByUid(uid, treeName);
 	}
 	
@@ -64,21 +64,21 @@ public class TreeController {
 	@Path("/dictionaries/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Directory> getDictionaries(@PathParam("ktreeid") int ktreeid) {
-		return dM.getDictionaries(ktreeid);
+		return dM.getDirectories(ktreeid);
 	}
 	
 	@POST
 	@Path("dictionaries/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDictionary(Directory d) {
-		return dM.addDictionary(d);
+		return dM.addDirectory(d);
 	}
 	
 	@POST
 	@Path("dictionaries/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeDictionary(int id) {
-		dM.removeDictionaryById(id);
+		dM.removeDirectoryById(id);
 		return Response.status(200).build();
 	}
 	
@@ -86,7 +86,7 @@ public class TreeController {
 	@Path("dictionaries/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response renameDictionary(Directory d) {
-		dM.renameDictionary(d);
+		dM.renameDirectory(d);
 		return Response.status(200).build();
 	}
 	
@@ -94,7 +94,7 @@ public class TreeController {
 	@Path("dictionaries/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveDictionay(Directory d) {
-		dM.moveDictionary(d);
+		dM.moveDirectory(d);
 		return Response.status(200).build();
 	}	
 	
