@@ -31,7 +31,7 @@ public class BasicEntity {
 		this.id = id;
 	}
 	
-	public Date getCreationDate() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
 	

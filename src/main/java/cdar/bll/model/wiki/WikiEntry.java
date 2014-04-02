@@ -19,12 +19,12 @@ public class WikiEntry extends WikiEntity {
 	}
 	
 	public WikiEntry(ProjectNode node) {
-		super(node.getId(), node.getCreationDate(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
+		super(node.getId(), node.getCreationTime(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
 		fillWikiContent();
 	}
 	
 	public WikiEntry(KnowledgeNode node) {
-		super(node.getId(), node.getCreationDate(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
+		super(node.getId(), node.getCreationTime(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
 		fillWikiContent();
 	}
 

@@ -10,9 +10,9 @@ public class WikiEntity extends BasicEntity {
         super();
     }
  
-    public WikiEntity(int id, Date creationDate, Date lastModification,
+    public WikiEntity(int id, Date creationTime, Date lastModification,
             String title, String wikititle) {
-        super(id, creationDate, lastModification);
+        super(id, creationTime, lastModification);
         this.title = title;
         this.wikititle = wikititle;
     }   
