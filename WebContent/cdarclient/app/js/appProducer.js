@@ -174,7 +174,7 @@ app.controller("HomeProducerController", [
 
 			$scope.addNewTree = function() {
 				TreeService.postEntry($scope.newTreeName, function(response) {
-					if (response[0] == 1) {
+					if (response.id != 0) {
 						$scope.newTreeName = '';
 						reloadTrees();
 					} else {
