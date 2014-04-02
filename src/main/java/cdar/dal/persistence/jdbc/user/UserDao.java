@@ -9,6 +9,8 @@ import java.util.Date;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
@@ -143,8 +145,14 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 	@Override
 	public boolean delete() {
 		ProducerDaoController kpdc = new ProducerDaoController();
-		for (TreeDao tree : kpdc.getTrees(id)) {
+		ConsumerDaoController cdc = new ConsumerDaoController();
+		
+		for (TreeDao tree : kpdc.getTrees(getId())) {
 			tree.delete();
+		}
+		
+		for (ProjectTreeDao projecttree : cdc.getProjectTrees(getId())) {
+			projecttree.delete();
 		}
 		
 		return delete("USER", getId());

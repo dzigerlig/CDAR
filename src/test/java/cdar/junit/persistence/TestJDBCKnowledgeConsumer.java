@@ -91,19 +91,19 @@ public class TestJDBCKnowledgeConsumer {
 		final String title = "MyNode";
 		final String newTitle = "NewTitle";
 		UserDao user = udc.getUserByName(testUsername);
-		TreeDao projecttree = new TreeDao(user.getId(), "TestProjectTree");
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestProjectTree");
 		projecttree.create();
 		assertEquals(0, cdc.getProjectNodes(projecttree.getId()).size());
-		ProjectNodeDao node = new ProjectNodeDao(projecttree.getId(), title);
-		node.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), title);
+		projectnode.create();
 		assertEquals(1, cdc.getProjectNodes(projecttree.getId()).size());
-		assertEquals(title, cdc.getProjectNode(node.getId()).getTitle());
-		assertEquals(0, cdc.getProjectNode(node.getId()).getNodestatus());
-		node.setTitle(newTitle);
-		node.setNodestatus(1);
-		node.update();
-		assertEquals(newTitle, cdc.getProjectNode(node.getId()).getTitle());
-		assertEquals(1, cdc.getProjectNode(node.getId()).getNodestatus());
+		assertEquals(title, cdc.getProjectNode(projectnode.getId()).getTitle());
+		assertEquals(0, cdc.getProjectNode(projectnode.getId()).getNodestatus());
+		projectnode.setTitle(newTitle);
+		projectnode.setNodestatus(1);
+		projectnode.update();
+		assertEquals(newTitle, cdc.getProjectNode(projectnode.getId()).getTitle());
+		assertEquals(1, cdc.getProjectNode(projectnode.getId()).getNodestatus());
 	}
 	
 	@Test

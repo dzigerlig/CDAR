@@ -126,13 +126,13 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
-				projectnode = new ProjectNodeDao(result.getInt(1));
+				projectnode = new ProjectNodeDao(result.getInt(7));
+				projectnode.setId(result.getInt(7));
 				projectnode.setCreationTime(result.getDate(2));
 				projectnode.setLastModificationTime(result.getDate(3));
 				projectnode.setTitle(result.getString(4));
 				projectnode.setWikititle(result.getString(5));
 				projectnode.setNodestatus(result.getInt(6));
-				projectnode.setKptid(result.getInt(7));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
