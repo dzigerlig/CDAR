@@ -4,6 +4,7 @@
 
 .w { 	
 	padding:16px;
+	padding-top:4px;
 	position:absolute;
 	border: 1px solid black;
 	z-index:4;
@@ -19,7 +20,7 @@
 	filter:alpha(opacity=80);
 	cursor:move;
 	background-color:white;
-	font-size:11px;
+	font-size:12px;
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;	
