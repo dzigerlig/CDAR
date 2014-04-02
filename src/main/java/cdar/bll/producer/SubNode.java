@@ -19,8 +19,7 @@ public class SubNode extends WikiEntity {
 	}
 
 	public SubNode(KnowledgeSubNodeDao ksnd) {
-		super(ksnd.getId(), ksnd.getCreationTime(), ksnd.getLastModificationTime(),ksnd.getTitle(),ksnd.getWikititle());
-		this.refNodeId = ksnd.getKnowledgeNode().getId();
+		this(ksnd.getId(), ksnd.getCreationTime(), ksnd.getLastModificationTime(),ksnd.getTitle(),ksnd.getWikititle(),ksnd.getKnowledgeNode().getId());
 	}
 
 	public int getRefNodeId() {
