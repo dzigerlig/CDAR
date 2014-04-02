@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTemplateDao;
 import cdar.dal.persistence.jdbc.knowledgeproducer.KnowledgeTreeDao;
@@ -117,17 +118,46 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void TestKnowledgeNodeCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
 	}
 	
 	@Test
 	public void TestKnowledgeNodeUpdate() {
-		
+		final String title = "MyNode";
+		final String newTitle = "NewTitle";
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), title);
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
+		assertEquals(title, kpdc.getNode(node.getId()).getTitle());
+		assertEquals(0, kpdc.getNode(node.getId()).getDynamicTreeFlag());
+		node.setTitle(newTitle);
+		node.setDynamicTreeFlag(1);
+		node.update();
+		assertEquals(newTitle, kpdc.getNode(node.getId()).getTitle());
+		assertEquals(1, kpdc.getNode(node.getId()).getDynamicTreeFlag());
 	}
 	
 	@Test
 	public  void TestKnowledgeNodeDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		KnowledgeTreeDao tree = new KnowledgeTreeDao("TestKnowledgeTree");
+		tree.create(user.getId());
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
+		KnowledgeNodeDao node = new KnowledgeNodeDao(tree.getId(), "MyKnowledgeNode");
+		node.create(tree.getId());
+		assertEquals(1, kpdc.getNodes(tree.getId()).size());
+		node.delete();
+		assertEquals(0, kpdc.getNodes(tree.getId()).size());
 	}
 	
 	@Test
@@ -161,22 +191,22 @@ public class TestJDBCKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestDictionaryCreate() {
+	public void TestDirectoryCreate() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryUpdate() {
+	public void TestDirectoryUpdate() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryDelete() {
+	public void TestDirectoryDelete() {
 		
 	}
 	
 	@Test
-	public void TestDictionaryWithoutNode() {
+	public void TestDirectoryWithoutNode() {
 		
 	}
 	
