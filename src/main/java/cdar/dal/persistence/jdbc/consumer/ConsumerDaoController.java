@@ -51,7 +51,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projecttrees;
 	}
 	
-	public ProjectTreeDao getTreeById(int id) {
+	public ProjectTreeDao getProjectTreeById(int id) {
 		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;
@@ -77,5 +77,68 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return projecttree;
+	}
+	
+	public List<ProjectNodeDao> getProjectNodes(int projecttreeid) {
+		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, NODESTATUS, KPTID FROM KNOWLEDGEPROJECTNODE WHERE KPTID = %d;", projecttreeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<ProjectNodeDao> projectnodes = new ArrayList<ProjectNodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				ProjectNodeDao projectnode = new ProjectNodeDao(projecttreeid);
+				projectnode.setId(result.getInt(1));
+				projectnode.setCreationTime(result.getDate(2));
+				projectnode.setLastModificationTime(result.getDate(3));
+				projectnode.setTitle(result.getString(4));
+				projectnode.setWikititle(result.getString(5));
+				projectnode.setNodestatus(result.getInt(6));
+				projectnode.setKptid(result.getInt(7));
+				projectnodes.add(projectnode);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return projectnodes;
+	}
+	
+	public ProjectNodeDao getProjectNode(int id) {
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, NODESTATUS, KPTID FROM KNOWLEDGEPROJECTNODE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		ProjectNodeDao projectnode = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNode);
+			while (result.next()) {
+				projectnode = new ProjectNodeDao(result.getInt(1));
+				projectnode.setCreationTime(result.getDate(2));
+				projectnode.setLastModificationTime(result.getDate(3));
+				projectnode.setTitle(result.getString(4));
+				projectnode.setWikititle(result.getString(5));
+				projectnode.setNodestatus(result.getInt(6));
+				projectnode.setKptid(result.getInt(7));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return projectnode;
 	}
 }

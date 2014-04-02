@@ -7,7 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
@@ -29,34 +32,34 @@ public class TestJDBCKnowledgeConsumer {
 	}
 
 	@Test
-	public void TestTreeNameChange() {
+	public void TestProjectTreeNameChange() {
 		final String newTreeName = "newTreeName";
 		ProjectTreeDao projecttree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		projecttree.create();
-		assertEquals(testTreeName, cdc.getTreeById(projecttree.getId()).getName());
+		assertEquals(testTreeName, cdc.getProjectTreeById(projecttree.getId()).getName());
 		projecttree.setName(newTreeName);
 		projecttree.update();
-		assertEquals(newTreeName, cdc.getTreeById(projecttree.getId()).getName());
+		assertEquals(newTreeName, cdc.getProjectTreeById(projecttree.getId()).getName());
 	}
 	
 	@Test
-	public void TestGetTreeById() {
+	public void TestGetProjectTreeById() {
 		ProjectTreeDao projecttree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		projecttree = projecttree.create();
-		assertEquals(testTreeName, cdc.getTreeById(projecttree.getId()).getName());
+		assertEquals(testTreeName, cdc.getProjectTreeById(projecttree.getId()).getName());
 	}
 	 
 	@Test
-	public void TestDeleteTree() {
+	public void TestDeleteProjectTree() {
 		final String treeName = "mytree";
 		ProjectTreeDao tree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), treeName).create();
-		assertEquals(treeName, cdc.getTreeById(tree.getId()).getName());
+		assertEquals(treeName, cdc.getProjectTreeById(tree.getId()).getName());
 		tree.delete();
-		assertNull(cdc.getTreeById(tree.getId()));
+		assertNull(cdc.getProjectTreeById(tree.getId()));
 	}
 	
 	@Test
-	public void testGetTrees() {
+	public void testGetProjectTrees() {
 		int currentTreeCount = cdc.getProjectTrees().size();
 		ProjectTreeDao tree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		tree.create();
@@ -64,11 +67,100 @@ public class TestJDBCKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetTreesByUid() {
+	public void testGetProjectTreesByUid() {
 		UserDao user = udc.getUserByName(testUsername);
 		assertEquals(0, cdc.getProjectTrees(user.getId()).size());
-		ProjectTreeDao tree = new ProjectTreeDao(user.getId(), "TestKnowledgeTree");
+		ProjectTreeDao tree = new ProjectTreeDao(user.getId(), "TestProjectTree");
 		tree.create();
 		assertEquals(1, cdc.getProjectTrees(user.getId()).size());
+	}
+	
+	@Test
+	public void testProjectNodeCreate() {
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestProjectTree");
+		projecttree.create();
+		assertEquals(0, cdc.getProjectNodes(projecttree.getId()).size());
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		projectnode.create();
+		assertEquals(1, cdc.getProjectNodes(projecttree.getId()).size());
+	}
+	
+	@Test
+	public void testProjectNodeUpdate() {
+		final String title = "MyNode";
+		final String newTitle = "NewTitle";
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao projecttree = new TreeDao(user.getId(), "TestProjectTree");
+		projecttree.create();
+		assertEquals(0, cdc.getProjectNodes(projecttree.getId()).size());
+		ProjectNodeDao node = new ProjectNodeDao(projecttree.getId(), title);
+		node.create();
+		assertEquals(1, cdc.getProjectNodes(projecttree.getId()).size());
+		assertEquals(title, cdc.getProjectNode(node.getId()).getTitle());
+		assertEquals(0, cdc.getProjectNode(node.getId()).getNodestatus());
+		node.setTitle(newTitle);
+		node.setNodestatus(1);
+		node.update();
+		assertEquals(newTitle, cdc.getProjectNode(node.getId()).getTitle());
+		assertEquals(1, cdc.getProjectNode(node.getId()).getNodestatus());
+	}
+	
+	@Test
+	public void testProjectNodeDelete() {
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestProjectTree");
+		projecttree.create();
+		assertEquals(0, cdc.getProjectNodes(projecttree.getId()).size());
+		ProjectNodeDao node = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeNode");
+		node.create();
+		assertEquals(1, cdc.getProjectNodes(projecttree.getId()).size());
+		node.delete();
+		assertEquals(0, cdc.getProjectNodes(projecttree.getId()).size());
+	}
+	
+	@Test
+	public void testProjectNodeLinkCreate() {
+		
+	}
+	
+	@Test
+	public void testProjectNodeLinkUpdate() {
+		
+	}
+	
+	@Test
+	public void testProjectNodeLinkDelete() {
+		
+	}
+	
+	@Test
+	public void testProjectSubNodeCreate() {
+		
+	}
+	
+	@Test
+	public void testProjectSubNodeUpdate() {
+		
+	}
+	
+	@Test
+	public void testProjectSubNodeDelete() {
+		
+	}
+	
+	@Test
+	public void testUserCommentCreate() {
+		
+	}
+	
+	@Test
+	public void testUserCommentUpdate() {
+		
+	}
+	
+	@Test
+	public void testUserCommentDelete() {
+		
 	}
 }
