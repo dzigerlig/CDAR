@@ -5,7 +5,7 @@ import java.util.Set;
 
 import cdar.bll.model.user.User;
 import cdar.bll.producer.Directory;
-import cdar.bll.producer.KnowledgeNode;
+import cdar.bll.producer.Node;
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
@@ -40,15 +40,15 @@ public class TreeModel {
 		return new Tree(kpdc.getKnowledgeTreeById(treeId));
 	}
 
-	public KnowledgeNode getKnowledgeNodeById(int nodeid) {
-		return new KnowledgeNode(kpdc.getKnowledgeNodeById(nodeid));
+	public Node getNodeById(int nodeid) {
+		return new Node(kpdc.getKnowledgeNodeById(nodeid));
 	}
 
-	public Set<KnowledgeNode> getKnowledgeNodes(int ktreeid) {
-		Set<KnowledgeNode> set = new HashSet<KnowledgeNode>();
+	public Set<Node> getKnowledgeNodes(int ktreeid) {
+		Set<Node> set = new HashSet<Node>();
 		
 		for (KnowledgeNodeDao pnd : kpdc.getKnowledgeTreeById(ktreeid).getKnowledgeNodes()) {
-			set.add(new KnowledgeNode(pnd));
+			set.add(new Node(pnd));
 		}
 		return set;
 	}

@@ -27,7 +27,7 @@ public class WikiController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeid) {
 		TreeModel ktm = new TreeModel();
-		return new WikiEntry(ktm.getKnowledgeNodeById(nodeid));
+		return new WikiEntry(ktm.getNodeById(nodeid));
 	}
 	
 	@POST

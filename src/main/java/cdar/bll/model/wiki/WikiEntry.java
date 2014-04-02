@@ -8,7 +8,7 @@ import org.wikipedia.Wiki;
 
 import cdar.bll.WikiEntity;
 import cdar.bll.consumer.ProjectNode;
-import cdar.bll.producer.KnowledgeNode;
+import cdar.bll.producer.Node;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;
@@ -23,7 +23,7 @@ public class WikiEntry extends WikiEntity {
 		fillWikiContent();
 	}
 	
-	public WikiEntry(KnowledgeNode node) {
+	public WikiEntry(Node node) {
 		super(node.getId(), node.getCreationTime(), node.getLastModified(), node.getTitle(), node.getWikiTitle());
 		fillWikiContent();
 	}
