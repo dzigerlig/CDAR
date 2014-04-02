@@ -3,7 +3,6 @@ package cdar.dal.persistence.jdbc.user;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
@@ -143,28 +142,11 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public boolean delete() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-
-		String deleteSQL = "DELETE FROM USER WHERE ID = ?";
-		
-		//delete knowledgetrees
 		KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 		for (KnowledgeTreeDao tree : kpdc.getTrees(id)) {
 			tree.delete();
 		}
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, id);
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			return false;
-		} finally {
-			closeConnections(connection, preparedStatement, null, null);
-		}
-		return true;
+		
+		return delete("USER", getId());
 	}	
 }

@@ -36,11 +36,12 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getUsers);
 			while (result.next()) {
-				KnowledgeTreeDao tree = new KnowledgeTreeDao();
+				KnowledgeTreeDao tree = new KnowledgeTreeDao(uid);
 				tree.setId(result.getInt(1));
 				tree.setCreationTime(result.getDate(2));
 				tree.setLastModificationTime(result.getDate(3));
 				tree.setName(result.getString(4));
+				tree.setUid(uid);
 				trees.add(tree);
 			}
 		} catch (SQLException e) {
@@ -52,8 +53,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public KnowledgeTreeDao getTreeById(int id) {
-		final String getTreeByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE WHERE ID = "
-				+ id;
+		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -66,13 +66,14 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getTreeByIdStatement);
 			if (result.next()) {
-				tree = new KnowledgeTreeDao();
-				tree.setId(result.getInt(1));
-				tree.setCreationTime(result.getDate(2));
-				tree.setLastModificationTime(result.getDate(3));
-				tree.setName(result.getString(4));
+				tree = new KnowledgeTreeDao(result.getInt(1));
+				tree.setId(result.getInt(2));
+				tree.setCreationTime(result.getDate(3));
+				tree.setLastModificationTime(result.getDate(4));
+				tree.setName(result.getString(5));
 			}
 		} catch (SQLException e) {
+			System.out.println("error getTreeById");
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
@@ -94,7 +95,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getTemplates);
 			while (result.next()) {
-				KnowledgeTemplateDao template = new KnowledgeTemplateDao();
+				KnowledgeTemplateDao template = new KnowledgeTemplateDao(treeid);
 				template.setId(result.getInt(1));
 				template.setCreationTime(result.getDate(2));
 				template.setLastModificationTime(result.getDate(3));
@@ -111,7 +112,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public KnowledgeTemplateDao getTemplate(int id) {
-		String getTemplate = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
+		String getTemplate = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, KTRID FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -124,7 +125,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getTemplate);
 			while (result.next()) {
-				template = new KnowledgeTemplateDao();
+				template = new KnowledgeTemplateDao(result.getInt(6));
 				template.setId(result.getInt(1));
 				template.setCreationTime(result.getDate(2));
 				template.setLastModificationTime(result.getDate(3));
@@ -153,7 +154,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNodes);
 			while (result.next()) {
-				KnowledgeNodeDao node = new KnowledgeNodeDao();
+				KnowledgeNodeDao node = new KnowledgeNodeDao(treeid);
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
@@ -172,7 +173,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public KnowledgeNodeDao getNode(int id) {
-		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, DYNAMICTREEFLAG FROM KNOWLEDGENODE WHERE ID = %d;", id);
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, DYNAMICTREEFLAG, KTRID FROM KNOWLEDGENODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -185,7 +186,7 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
-				node = new KnowledgeNodeDao();
+				node = new KnowledgeNodeDao(result.getInt(7));
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
@@ -199,5 +200,64 @@ public class KnowledgeProducerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return node;
+	}
+	
+	public List<KnowledgeSubNodeDao> getSubNodes(int nodeid) {
+		String getNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<KnowledgeSubNodeDao> subnodes = new ArrayList<KnowledgeSubNodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				KnowledgeSubNodeDao subnode = new KnowledgeSubNodeDao(nodeid);
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(4));
+				subnode.setWikititle(result.getString(5));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
+	}
+	
+	public KnowledgeSubNodeDao getSubNode(int id) {
+		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		KnowledgeSubNodeDao subnode = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNode);
+			while (result.next()) {
+				subnode = new KnowledgeSubNodeDao(result.getInt(4));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnode;
 	}
 }

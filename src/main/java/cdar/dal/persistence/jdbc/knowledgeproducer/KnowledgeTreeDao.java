@@ -3,7 +3,6 @@ package cdar.dal.persistence.jdbc.knowledgeproducer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
@@ -13,15 +12,17 @@ import cdar.dal.persistence.JDBCUtil;
 
 public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 	private int id;
+	private int uid;
 	private Date creationTime;
 	private Date lastModificationTime;
 	private String name;
 	
-	public KnowledgeTreeDao() {
-		
+	public KnowledgeTreeDao(int uid) {
+		setUid(uid);
 	}
 	
-	public KnowledgeTreeDao(String name) {
+	public KnowledgeTreeDao(int uid, String name) {
+		setUid(uid);
 		setName(name);
 	}
 	
@@ -31,6 +32,14 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	public Date getCreationTime() {
@@ -55,39 +64,6 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public KnowledgeTreeDao create(int userid) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getName());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
-			preparedStatement.setInt(1, userid);
-			preparedStatement.setInt(2, getId());
-			preparedStatement.executeUpdate();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
 	}
 
 	@Override
@@ -120,24 +96,40 @@ public class KnowledgeTreeDao extends CdarJdbcHelper implements CdarDao {
 		return this;
 	}
 
-	@Override
 	public boolean delete() {
+		return delete("KNOWLEDGETREE", getId());
+	}
+
+	@Override
+	public KnowledgeTreeDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
-		String deleteSQL = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
+		ResultSet generatedKeys = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, id);
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, getName());
+
 			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+			preparedStatement.close();
+			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
+			preparedStatement.setInt(1, getUid());
+			preparedStatement.setInt(2, getId());
+			preparedStatement.executeUpdate();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		} finally {
-			closeConnections(connection, preparedStatement, null, null);
+			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
-		return false;
+		return this;
 	}
 }

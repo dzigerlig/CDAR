@@ -3,7 +3,6 @@ package cdar.dal.persistence.jdbc.knowledgeproducer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
@@ -12,7 +11,6 @@ import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
 public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
-
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -21,7 +19,9 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 	private String wikititle;
 	private int dynamictreeflag;
 	
-	public KnowledgeNodeDao() {
+	public KnowledgeNodeDao(int ktrid) {
+		setKtrid(ktrid);
+		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 	}
 	
@@ -88,37 +88,6 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 		this.dynamictreeflag = dynamictreeflag;
 	}
 	
-	public KnowledgeNodeDao create(int treeid) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGENODE (TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getTitle());
-			preparedStatement.setString(2, getWikititle());
-			preparedStatement.setInt(3, treeid);
-			preparedStatement.setInt(4, getDynamicTreeFlag());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
-	}
-
 	@Override
 	public KnowledgeNodeDao update() {
 		Connection connection = null;
@@ -152,22 +121,38 @@ public class KnowledgeNodeDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public boolean delete() {
+		return delete("KNOWLEDGENODE", getId());
+	}
+
+	@Override
+	public CdarDao create() {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
-		String deleteSQL = "DELETE FROM KNOWLEDGENODE WHERE ID = ?";
+		ResultSet generatedKeys = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, id);
+			preparedStatement = connection.prepareStatement(
+					"INSERT INTO KNOWLEDGENODE (TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, getTitle());
+			preparedStatement.setString(2, getWikititle());
+			preparedStatement.setInt(3, getKtrid());
+			preparedStatement.setInt(4, getDynamicTreeFlag());
+
 			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				setId(generatedKeys.getInt(1));
+			}
+			preparedStatement.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		} finally {
-			closeConnections(connection, preparedStatement, null, null);
+			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
-		return false;
+		return this;
 	}
 }
