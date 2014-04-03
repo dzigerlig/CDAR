@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.dal.persistence.jdbc.consumer.CommentDao;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
@@ -220,16 +221,46 @@ public class TestJDBCKnowledgeConsumer {
 	
 	@Test
 	public void testUserCommentCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeProjectTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
+		projectnode.create();
+		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
+		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), "This is a comment");
+		usercomment.create();
+		assertEquals(1, cdc.getUserComments(projectnode.getId()).size());
 	}
 	
 	@Test
 	public void testUserCommentUpdate() {
-		
+		final String comment1 = "This is a comment";
+		final String comment2 = "This is another comment";
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeProjectTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
+		projectnode.create();
+		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), comment1);
+		usercomment.create();
+		assertEquals(comment1, cdc.getUserComment(usercomment.getId()).getComment());
+		usercomment.setComment(comment2);
+		usercomment.update();
+		assertEquals(comment2, cdc.getUserComment(usercomment.getId()).getComment());
 	}
 	
 	@Test
 	public void testUserCommentDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeProjectTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
+		projectnode.create();
+		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
+		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), "This is a comment");
+		usercomment.create();
+		assertEquals(1, cdc.getUserComments(projectnode.getId()).size());
+		usercomment.delete();
+		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
 	}
 }
