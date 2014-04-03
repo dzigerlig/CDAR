@@ -9,7 +9,6 @@ import java.util.List;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 
 public class ConsumerDaoController extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {
@@ -198,5 +197,64 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return projectnodelink;
+	}
+	
+	public List<ProjectSubNodeDao> getProjectSubNodes(int kpnid) {
+		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = %d;", kpnid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<ProjectSubNodeDao> projectsubnodes = new ArrayList<ProjectSubNodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getProjectSubNodes);
+			while (result.next()) {
+				ProjectSubNodeDao projectsubnode = new ProjectSubNodeDao(kpnid);
+				projectsubnode.setId(result.getInt(1));
+				projectsubnode.setCreationTime(result.getDate(2));
+				projectsubnode.setLastModificationTime(result.getDate(3));
+				projectsubnode.setTitle(result.getString(4));
+				projectsubnode.setWikititle(result.getString(5));
+				projectsubnodes.add(projectsubnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return projectsubnodes;
+	}
+	
+	public ProjectSubNodeDao getProjectSubNode(int id) {
+		String getProjectSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = %d;", id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		ProjectSubNodeDao projectsubnode = null;
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getProjectSubNode);
+			while (result.next()) {
+				projectsubnode = new ProjectSubNodeDao(result.getInt(4));
+				projectsubnode.setId(result.getInt(1));
+				projectsubnode.setCreationTime(result.getDate(2));
+				projectsubnode.setLastModificationTime(result.getDate(3));
+				projectsubnode.setTitle(result.getString(5));
+				projectsubnode.setWikititle(result.getString(6));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return projectsubnode;
 	}
 }

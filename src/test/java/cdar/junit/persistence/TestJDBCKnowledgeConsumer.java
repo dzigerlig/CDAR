@@ -9,10 +9,8 @@ import org.junit.Test;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectSubNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
@@ -175,17 +173,49 @@ public class TestJDBCKnowledgeConsumer {
 	
 	@Test
 	public void testProjectSubNodeCreate() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao projecttree = new ProjectTreeDao(user.getId(), "TestKnowledgeProjectTree");
+		projecttree.create();
+		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
+		projectnode.create();
+		assertEquals(0, cdc.getProjectSubNodes(projectnode.getId()).size());
+		ProjectSubNodeDao projectsubnode = new ProjectSubNodeDao(projectnode.getId(), "MyKnowledgeProjectSubNode");
+		projectsubnode.create();
+		assertEquals(1, cdc.getProjectSubNodes(projectnode.getId()).size());
 	}
 	
 	@Test
 	public void testProjectSubNodeUpdate() {
-		
+		final String subnodeTitle = "MyProjectubnode";
+		final String newSubnodeTitle = "NewProjectSubnode";
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao tree = new ProjectTreeDao(user.getId(), "TestKnowledgeProkectTree");
+		tree.create();
+		ProjectNodeDao node = new ProjectNodeDao(tree.getId(), "MyKnowledgeProjectNode");
+		node.create();
+		assertEquals(0, cdc.getProjectSubNodes(node.getId()).size());
+		ProjectSubNodeDao subnode = new ProjectSubNodeDao(node.getId(), subnodeTitle);
+		subnode.create();
+		assertEquals(1, cdc.getProjectSubNodes(node.getId()).size());
+		assertEquals(subnodeTitle, cdc.getProjectSubNode(subnode.getId()).getTitle());
+		subnode.setTitle(newSubnodeTitle);
+		subnode.update();
+		assertEquals(newSubnodeTitle, cdc.getProjectSubNode(subnode.getId()).getTitle());
 	}
 	
 	@Test
 	public void testProjectSubNodeDelete() {
-		
+		UserDao user = udc.getUserByName(testUsername);
+		ProjectTreeDao tree = new ProjectTreeDao(user.getId(), "TestKnowledgeProjectTree");
+		tree.create();
+		ProjectNodeDao node = new ProjectNodeDao(tree.getId(), "MyKnowledgeProjectNode");
+		node.create();
+		assertEquals(0, cdc.getProjectSubNodes(node.getId()).size());
+		ProjectSubNodeDao subnode = new ProjectSubNodeDao(node.getId(), "MyProjectSubNode");
+		subnode.create();
+		assertEquals(1, cdc.getProjectSubNodes(node.getId()).size());
+		subnode.delete();
+		assertEquals(0, cdc.getProjectSubNodes(node.getId()).size());
 	}
 	
 	@Test
