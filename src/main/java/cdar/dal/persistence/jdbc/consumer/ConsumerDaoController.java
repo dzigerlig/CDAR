@@ -9,6 +9,8 @@ import java.util.List;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class ConsumerDaoController extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {
@@ -311,5 +313,15 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return usercomment;
+	}
+
+	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
+		// TODO only adding nodelinks!
+		ProducerDaoController pdc = new ProducerDaoController();
+		for (NodeDao node : pdc.getNodes(ktreeid)) {
+			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
+			projectnode.setTitle(node.getTitle());
+			projectnode.setWikititle(node.getWikititle());
+		}
 	}
 }

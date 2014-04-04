@@ -3,7 +3,7 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTree extends BasicEntity {
 	private String name;
@@ -18,8 +18,12 @@ public class ProjectTree extends BasicEntity {
 		this.name = name;
 	}
 
-	public ProjectTree(KnowledgeProjectTreeDao kptd) {
-		this(kptd.getId(), kptd.getCreationTime(), kptd.getLastModificationTime(), kptd.getName());
+	public ProjectTree(ProjectTreeDao tree) {
+		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getName());
+	}
+
+	public ProjectTree(int id) {
+		setId(id);
 	}
 
 	public String getName() {

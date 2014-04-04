@@ -3,7 +3,7 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 
 public class ProjectNode extends WikiEntity {
 	private int nodeStatus;
@@ -20,8 +20,8 @@ public class ProjectNode extends WikiEntity {
 		this.setRefProjectTreeId(refProjectTreeId);
 	}
 
-	public ProjectNode(KnowledgeProjectNodeDao pnd) {
-		this(pnd.getId(), pnd.getCreationTime(), pnd.getLastModificationTime(), pnd.getTitle(), pnd.getWikititle(), pnd.getNodestatus(), pnd.getKnowledgeProjectTree().getId());
+	public ProjectNode(ProjectNodeDao projectNodeDao) {
+		this(projectNodeDao.getId(), projectNodeDao.getCreationTime(), projectNodeDao.getLastModificationTime(), projectNodeDao.getTitle(), projectNodeDao.getWikititle(), projectNodeDao.getNodestatus(), projectNodeDao.getKptid());
 	}
 
 	public int getNodeStatus() {

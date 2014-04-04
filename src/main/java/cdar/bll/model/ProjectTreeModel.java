@@ -5,52 +5,53 @@ import java.util.Set;
 
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
-import cdar.bll.model.user.User;
-import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeConsumerDaoController;
-import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;
-import cdar.dal.persistence.hibernate.user.UserDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTreeModel {
 	
-	private KnowledgeConsumerDaoController kcdc = new KnowledgeConsumerDaoController();
-	private UserDaoController udc = new UserDaoController();
+	private ConsumerDaoController cdc = new ConsumerDaoController();
 	
 	public Set<ProjectTree> getProjectTreesByUid(int uid) {
-//		User user = new User(udc.getUserById(uid));
-//		return user.getProjectTrees();
-		return null;
+		Set<ProjectTree> trees = new HashSet<ProjectTree>();
+		for (ProjectTreeDao tree : cdc.getProjectTrees(uid)) {
+			trees.add(new ProjectTree(tree));
+		}
+		return trees;
 	}
 
-	public Integer addProjectTreeByUid(int uid, String treeName) {
+	public ProjectTree addProjectTreeByUid(int uid, String treeName) {
 		try {
-			kcdc.addKnowledgeProjectTreeByUid(uid, treeName);
-			return 1;
+			ProjectTreeDao tree = new ProjectTreeDao(uid, treeName);
+			return new ProjectTree(tree.create());
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			return 0;
 		}
+		return new ProjectTree(-1);
 	}
 
-	public int removeProjectTreeById(int uid, int ptreeid) {
-		return kcdc.removeKnowledgeProjectTreeById(uid, ptreeid);
+	public boolean removeProjectTreeById(int uid, int ptreeid) {
+		ProjectTreeDao tree = cdc.getProjectTreeById(ptreeid);
+		return tree.delete();
 	}
 	
 	public ProjectNode getProjectNodeById(int nodeid) {
-		return new ProjectNode(kcdc.getKnowledgeProjectNodeById(nodeid));
+		return new ProjectNode(cdc.getProjectNode(nodeid));
 	}
 	
 	public ProjectTree getProjectTreeById(int ptreeid) {
-		return new ProjectTree(kcdc.getKnowledgeProjectTreeById(ptreeid));
+		return new ProjectTree(cdc.getProjectTreeById(ptreeid));
 	}
 
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
-		kcdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
+		cdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
 	}
 
 	public Set<ProjectNode> getProjectNodes(int ptreeid) {
 		Set<ProjectNode> set = new HashSet<ProjectNode>();
 		
-		for (KnowledgeProjectNodeDao pnd : kcdc.getKnowledgeProjectTreeById(ptreeid).getKnowledgeProjectNodes()) {
+		for (ProjectNodeDao pnd : cdc.getProjectNodes(ptreeid)) {
 			set.add(new ProjectNode(pnd));
 		}
 		

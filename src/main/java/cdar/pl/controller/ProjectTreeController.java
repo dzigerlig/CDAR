@@ -28,7 +28,7 @@ public class ProjectTreeController {
 	@GET
 	@Path("delete/{uid}/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public int deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
+	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
 		return ptm.removeProjectTreeById(uid, ptreeid);
 	}
 	
@@ -43,7 +43,7 @@ public class ProjectTreeController {
 	@POST
 	@Path("{uid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Integer addProjectTree(String treeName, @PathParam("uid") int uid) {
+	public ProjectTree addProjectTree(String treeName, @PathParam("uid") int uid) {
 		return ptm.addProjectTreeByUid(uid, treeName);
 	}
 	
