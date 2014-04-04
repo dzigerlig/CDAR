@@ -3,25 +3,34 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
+import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 public class Template extends WikiEntity {
-	private int refTreeId;
-
+	private int treeid;
+	
 	public Template() {
-		super();
+		
+	}
+
+	public Template(TemplateDao template) {
+		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getWikititle(), template.getKtrid());
 	}
 
 	public Template(int id, Date creationDate, Date lastModification,
-			String title, String wikititle, int refTreeId) {
+			String title, String wikititle, int treeid) {
 		super(id, creationDate, lastModification, title, wikititle);
-		this.refTreeId = refTreeId;
+		this.setTreeid(treeid);
 	}
 
-	public int getRefTreeId() {
-		return refTreeId;
+	public Template(int id) {
+		setId(id);
 	}
 
-	public void setRefTreeId(int refTreeId) {
-		this.refTreeId = refTreeId;
-	}	
+	public int getTreeid() {
+		return treeid;
+	}
+
+	public void setTreeid(int treeid) {
+		this.treeid = treeid;
+	}
 }

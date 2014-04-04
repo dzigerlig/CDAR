@@ -5,14 +5,16 @@ import java.util.Set;
 
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
+import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class TreeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
-	
+
 	public Set<Tree> getKnowledgeTreesByUid(int uid) {
 		Set<Tree> trees = new HashSet<Tree>();
 		for (TreeDao tree : pdc.getTrees(uid)) {
@@ -40,15 +42,31 @@ public class TreeModel {
 
 	public Set<Node> getKnowledgeNodes(int ktreeid) {
 		Set<Node> set = new HashSet<Node>();
-		
+
 		for (NodeDao pnd : pdc.getNodes(ktreeid)) {
 			set.add(new Node(pnd));
 		}
 		return set;
 	}
-	
+
 	public Directory getDictionariesById(int dictionaryid) {
 		return new Directory(pdc.getDirectory(dictionaryid));
 	}
-	
+
+	public Set<Template> getKnowledgeTemplates(int ktreeid) {
+		Set<Template> templates = new HashSet<Template>();
+		for (TemplateDao template : pdc.getTemplates(ktreeid)) {
+			templates.add(new Template(template));
+		}
+		return templates;
+	}
+
+	public Template addKnowledgeTemplate(Template template) {
+		try {
+		TemplateDao templatedao = new TemplateDao(template.getTreeid(), template.getTitle());
+		return new Template(templatedao.create());
+		} catch(Exception ex) {
+			return new Template(-1);
+		}
+	}
 }
