@@ -148,7 +148,6 @@ public class NodeDao extends CdarJdbcHelper implements CdarDao {
 
 		String deleteSQL = String.format(
 				"DELETE FROM KNOWLEDGENODEMAPPING WHERE DID = %d;", getDid());
-		System.out.println(deleteSQL);
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(deleteSQL);

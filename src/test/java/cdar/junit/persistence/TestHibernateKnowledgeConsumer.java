@@ -15,7 +15,7 @@ import cdar.dal.persistence.hibernate.user.UserDao;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
 public class TestHibernateKnowledgeConsumer {
-
+/*
 	private UserDaoController udc = new UserDaoController();
 	private KnowledgeConsumerDaoController kcdc = new KnowledgeConsumerDaoController();
 	private String testUsername = "UnitTestUser";
@@ -155,4 +155,5 @@ public class TestHibernateKnowledgeConsumer {
 		assertEquals(kcdc.getKnowledgeProjectTreeById(projectTreeId).getKnowledgeProjectNodes().size(), 8);
 		kcdc.removeKnowledgeProjectTreeById(uid, projectTreeId);
 	}
+	*/
 }

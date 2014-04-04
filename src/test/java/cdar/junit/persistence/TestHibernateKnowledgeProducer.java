@@ -16,6 +16,7 @@ import cdar.dal.persistence.hibernate.user.UserDao;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
 public class TestHibernateKnowledgeProducer {
+	/*
 	private UserDaoController udc = new UserDaoController();
 	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
 	private String testUsername = "UnitTestUser";
@@ -267,4 +268,5 @@ public class TestHibernateKnowledgeProducer {
 		kpdc.moveKnowledgeNode(node.getId(), dic2.getId());
 		assertEquals("TestDic2", dic2.getTitle());
 	}
+	*/
 }

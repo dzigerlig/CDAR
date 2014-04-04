@@ -9,7 +9,7 @@ import org.junit.Test;
 import cdar.dal.persistence.hibernate.user.UserDaoController;
 
 public class TestHibernateUser {
-	
+	/*
 	private UserDaoController udc = new UserDaoController();
 	private String testUsername = "UnitTestUser";
 	private final String testPassword = "UnitTestPassword";
@@ -69,4 +69,5 @@ public class TestHibernateUser {
 		udc.setAccessToken(udc.getUserByName(testUsername).getId());
 		assertNull(udc.getUserByAccessToken("doesnt exist"));
 	}
+	*/
 }
