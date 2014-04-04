@@ -1,5 +1,4 @@
 var reload = false;
-console.log("hans");
 function getReload() {
 	return reload;
 }
