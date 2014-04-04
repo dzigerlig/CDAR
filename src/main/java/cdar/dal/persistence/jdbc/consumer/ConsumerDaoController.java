@@ -5,12 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class ConsumerDaoController extends CdarJdbcHelper {
@@ -317,18 +320,20 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
-		//HashSet<E>
-		// TODO only adding nodelinks!
+		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		ProducerDaoController pdc = new ProducerDaoController();
 		for (NodeDao node : pdc.getNodes(ktreeid)) {
-			
 			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
 			projectnode.setTitle(node.getTitle());
 			projectnode.setWikititle(node.getWikititle());
 			projectnode.create();
-			
-			//id old node: node.getId();
-			//id new node: projectnode.getId();
+			linkMapping.put(node.getId(), projectnode.getId());
+		}
+		
+		for (NodeLinkDao nodeLink : pdc.getNodeLinks(ktreeid)){
+			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodeLink.getSourceid()), nodeLink.getTargetid(), ptreeid);
+			projectnodelink.setKpnsnid(nodeLink.getKsnid());
+			projectnodelink.create();
 		}
 		
 		
