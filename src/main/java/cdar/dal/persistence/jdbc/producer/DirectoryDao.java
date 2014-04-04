@@ -8,11 +8,13 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
 
+import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 
-public class DirectoryDao extends CdarJdbcHelper implements CdarDao {
+public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -20,7 +22,7 @@ public class DirectoryDao extends CdarJdbcHelper implements CdarDao {
 	private int ktrid;
 	private int knid;
 	private String title;
-	
+
 	public DirectoryDao(int treeid) {
 		setKtrid(treeid);
 	}
@@ -72,7 +74,7 @@ public class DirectoryDao extends CdarJdbcHelper implements CdarDao {
 	public void setKnid(int knid) {
 		this.knid = knid;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -83,85 +85,68 @@ public class DirectoryDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public DirectoryDao create() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO DIRECTORY (PARENTID, KTRID, TITLE) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			if (getParentid()!=0) {
-				preparedStatement.setInt(1,  getParentid());
-			} else {
-				preparedStatement.setNull(1, Types.INTEGER);
-			}
-			preparedStatement.setInt(2, getKtrid());
-			preparedStatement.setString(3, getTitle());
-			
-			if (getKnid()!=0) {
-				//TODO: Do mapping
-			}
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
+		return super.create();
 	}
 
 	@Override
 	public DirectoryDao update() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
-			if (getParentid()!=0) {
-				preparedStatement.setInt(2,  getParentid());
-			} else {
-				preparedStatement.setNull(2, Types.INTEGER);
-			}
-			preparedStatement.setInt(3, getKtrid());
-			preparedStatement.setString(4, getTitle());
-			preparedStatement.setInt(5, getId());
-			
-			if (getKnid()!=0) {
-				//TODO: do mapping
-			}
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
+		return super.update();
 	}
 
 	@Override
 	public boolean delete() {
 		return delete("DIRECTORY", getId());
+	}
+
+	@Override
+	protected DirectoryDao createVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO DIRECTORY (PARENTID, KTRID, TITLE) VALUES (?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
+		if (getParentid() != 0) {
+			preparedStatement.setInt(1, getParentid());
+		} else {
+			preparedStatement.setNull(1, Types.INTEGER);
+		}
+		preparedStatement.setInt(2, getKtrid());
+		preparedStatement.setString(3, getTitle());
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}
+		preparedStatement.close();
+		return this;
+	}
+
+	@Override
+	protected DirectoryDao updateVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		if (getParentid() != 0) {
+			preparedStatement.setInt(2, getParentid());
+		} else {
+			preparedStatement.setNull(2, Types.INTEGER);
+		}
+		preparedStatement.setInt(3, getKtrid());
+		preparedStatement.setString(4, getTitle());
+		preparedStatement.setInt(5, getId());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}
+		return this;
 	}
 }

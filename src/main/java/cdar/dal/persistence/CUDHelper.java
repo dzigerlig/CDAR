@@ -18,7 +18,7 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
-		T object =null;
+		T object = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
