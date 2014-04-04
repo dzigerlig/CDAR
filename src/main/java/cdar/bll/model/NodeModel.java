@@ -24,7 +24,7 @@ public class NodeModel {
 	}
 
 	public Node addNode(Node n) {
-		NodeDao node = new NodeDao(n.getRefTreeId(), null);
+		NodeDao node = new NodeDao(n.getRefTreeId(), null, n.getDid());
 		return new Node(node.create());
 	}
 
@@ -46,11 +46,14 @@ public class NodeModel {
 		return new Node(node.update());
 	}
 
-	public Node moveNode(NodeMapping nodemapping) {
+	public Node moveNode(Node n) {
+		NodeDao node = pdc.getNode(n.getId());
+		node.setDid(n.getDid());
+		return new Node(node.update());
+
 		//TODO
 //		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
 //		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
 //		return new Node(node);
-		return null;
 	}
 }

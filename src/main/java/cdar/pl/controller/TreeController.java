@@ -148,8 +148,8 @@ public class TreeController {
 	@POST
 	@Path("nodes/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response moveNode(NodeMapping nodemapping) {
-		nM.moveNode(nodemapping);
+	public Response moveNode(Node n) {
+		nM.moveNode(n);
 		return Response.status(200).build();
 	}
 	

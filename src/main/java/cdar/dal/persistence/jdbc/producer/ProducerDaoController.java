@@ -154,7 +154,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNodes);
 			while (result.next()) {
-				NodeDao node = new NodeDao(treeid);
+				NodeDao node = new NodeDao(treeid, result.getInt(7));
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
@@ -174,7 +174,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public NodeDao getNode(int id) {
-		String getNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, DYNAMICTREEFLAG, KTRID FROM KNOWLEDGENODE WHERE ID = %d;", id);
+		String getNode = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = %d AND NODE.ID = MAPPING.KNID;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -187,7 +187,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
-				node = new NodeDao(result.getInt(7));
+				node = new NodeDao(result.getInt(7),result.getInt(6));
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));

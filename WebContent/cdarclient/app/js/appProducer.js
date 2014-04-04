@@ -264,8 +264,6 @@ app
 									refTreeId : 1
 								}, function(response) {
 									createNode(response);
-									// get Node and set id TODO
-									// addHTMLNode(response, e);
 								});
 							};
 
@@ -302,7 +300,7 @@ app
 								TreeService.moveNode({
 									ktreeid : $routeParams.treeId
 								}, {
-									knid : id,
+									id : id,
 									did : newParentId
 								});
 							};
