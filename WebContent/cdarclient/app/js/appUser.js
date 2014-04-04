@@ -102,15 +102,13 @@ app.controller("RegistrationController", function($scope, $location,
 
 app.controller("AccountController", function($scope, $location,
 		AuthenticationService, md5, UserService) {
-	$scope.user = UserService.user;
+	$scope.UserService = UserService;
 	$scope.newPw = '';
-	
-	alert("IS PRODUCER: " + $scope.user.isProducer);
 	
 	$scope.changePw = function() {
 		console.log($scope.user);
-		$scope.user.password = md5.createHash($scope.newPw);
-		AuthenticationService.edit.changepw($scope.user, function(response) {
+		$scope.UserService.user.password = md5.createHash($scope.newPw);
+		AuthenticationService.edit.changepw($scope.UserService.user, function(response) {
 			if (response.id != -1) {
 				alert("pw changed!");
 				$scope.newPw = '';
