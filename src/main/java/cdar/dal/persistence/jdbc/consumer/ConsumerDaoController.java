@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import cdar.dal.persistence.CdarJdbcHelper;
@@ -316,12 +317,20 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
+		//HashSet<E>
 		// TODO only adding nodelinks!
 		ProducerDaoController pdc = new ProducerDaoController();
 		for (NodeDao node : pdc.getNodes(ktreeid)) {
+			
 			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
 			projectnode.setTitle(node.getTitle());
 			projectnode.setWikititle(node.getWikititle());
+			projectnode.create();
+			
+			//id old node: node.getId();
+			//id new node: projectnode.getId();
 		}
+		
+		
 	}
 }
