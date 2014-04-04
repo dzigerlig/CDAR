@@ -41,4 +41,11 @@ public class UserController {
 	public User createUser(User user) {
 		return userModel.createUser(user);
 	}
+	
+	@POST
+	@Path("/edit")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User editUser(User user) {
+		return userModel.updateUser(user);
+	}
 }

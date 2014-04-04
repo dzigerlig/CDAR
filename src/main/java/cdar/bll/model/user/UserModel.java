@@ -13,9 +13,9 @@ public class UserModel {
 	}
 
 	public User loginUser(String username, String password, boolean isProducer) {
-		UserDao user = udc.loginUser(username, password);
-		if (user != null) {
-			return new User(user.getUsername(), user.getAccesstoken(), isProducer);
+		UserDao userdao = udc.loginUser(username, password);
+		if (userdao != null) {
+			return new User(userdao);
 		}
 		return new User(-1);
 	}
@@ -26,6 +26,18 @@ public class UserModel {
 			userdao.setUsername(user.getUsername());
 			userdao.setPassword(user.getPassword());
 			userdao.create();
+			return new User(userdao);
+		} catch (Exception ex) {
+			return new User(-1);
+		}
+	}
+	
+	public User updateUser(User user) {
+		try {
+			UserDao userdao = udc.getUserById(user.getId());
+			System.out.println(userdao.getUsername());
+			userdao.setPassword(user.getPassword());
+			userdao.update();
 			return new User(userdao);
 		} catch (Exception ex) {
 			return new User(-1);
