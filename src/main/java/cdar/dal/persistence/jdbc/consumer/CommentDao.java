@@ -3,14 +3,17 @@ package cdar.dal.persistence.jdbc.consumer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 
-public class CommentDao extends CdarJdbcHelper implements CdarDao {
+public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -74,33 +77,7 @@ public class CommentDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public CommentDao create() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO USERCOMMENT (UID, KPNID, COMMENT) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, getUid());
-			preparedStatement.setInt(2, getKpnid());
-			preparedStatement.setString(3, getComment());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
+		return super.create();
 	}
 	
 //	CREATE TABLE IF NOT EXISTS cdar.UserComment (
@@ -116,38 +93,52 @@ public class CommentDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public CommentDao update() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
-			preparedStatement.setInt(2, getUid());
-			preparedStatement.setInt(3, getKpnid());
-			preparedStatement.setString(4, getComment());
-			preparedStatement.setInt(5, getId());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
+		return super.update();
 	}
 
 	@Override
 	public boolean delete() {
 		return delete("USERCOMMENT", getId());
+	}
+
+	@Override
+	protected CommentDao createVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection.prepareStatement(
+				"INSERT INTO USERCOMMENT (UID, KPNID, COMMENT) VALUES (?, ?, ?)",
+				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setInt(1, getUid());
+		preparedStatement.setInt(2, getKpnid());
+		preparedStatement.setString(3, getComment());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}
+		preparedStatement.close();		return this;
+	}
+
+	@Override
+	protected CommentDao updateVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection.prepareStatement(
+				"UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",
+				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setInt(2, getUid());
+		preparedStatement.setInt(3, getKpnid());
+		preparedStatement.setString(4, getComment());
+		preparedStatement.setInt(5, getId());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}		return this;
 	}
 }
