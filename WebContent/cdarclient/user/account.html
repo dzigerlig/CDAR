@@ -3,12 +3,30 @@
 	<div id="wrapper">
 
 		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand"><a href="#/homeconsumer">CDAR</a></li>
-				<li><a href="#/homeconsumer">Overview</a></li>
-				<li><a href="#">Account</a></li>
-				<li><a href="#/logout">Logout</a></li>
-			</ul>
+			<div id="consumer" data-ng-hide="UserService.user.isProducer">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand sidebar-cdar"><a
+						href="#/homeconsumer"><strong>CDAR</strong></a></li>
+					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
+						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
+								KnowledgeConsumer</small></a></li>
+					<li><a href="#/homeconsumer">Overview</a></li>
+					<li><a href="#/account">Account</a></li>
+					<li><a href="#/logout">Logout</a></li>
+				</ul>
+			</div>
+			<div id="producer" data-ng-show="UserService.user.isProducer">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand sidebar-cdar"><a
+						href="#/homeproducer"><strong>CDAR</strong></a></li>
+					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
+						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
+								KnowledgeProducer</small></a></li>
+					<li><a href="#/homeproducer">Overview</a></li>
+					<li><a href="#/account">Account</a></li>
+					<li><a href="#/logout">Logout</a></li>
+				</ul>
+			</div>
 		</div>
 
 		<div id="page-content-wrapper">
@@ -21,23 +39,26 @@
 			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-4">
-						<form class="form-horizontal" data-ng-role="form" data-ng-submit="changePw()">
+						<form class="form-horizontal" data-ng-role="form"
+							data-ng-submit="changePw()">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Username</label>
 								<div class="col-sm-9">
-									<p class="form-control-static">{{user.username}}</p>
+									<p class="form-control-static">{{UserService.user.username}}</p>
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label for="inputPassword" class="col-sm-3 control-label">Password</label>
 								<div class="col-sm-9">
-									<input type="password" class="form-control" id="inputPassword" data-ng-model="newPw" placeholder="Password">
+									<input type="password" class="form-control" id="inputPassword"
+										data-ng-model="newPw" placeholder="Password">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-								<button class="btn btn-md btn-success btn-block" type="submit">change password</button>
+									<button class="btn btn-md btn-success btn-block" type="submit">change
+										password</button>
 								</div>
 							</div>
 						</form>
