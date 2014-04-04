@@ -139,6 +139,20 @@ app.factory('TreeService', function($resource) {
 				entity : 'links',
 				action : 'delete',
 			}
+		},
+		'getTemplates' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'templates'
+			}
+		},
+		'addTemplate' : {
+			method : 'POST',
+			params : {
+				entity : 'templates',
+				action : 'add'
+			}
 		}
 	});
 });
@@ -242,7 +256,8 @@ app
 								}, function(resNodes) {
 									drawExistingNodes(resNodes);
 									$scope.getLinks(TreeService);
-									dictionaryDataToArray(resDictionary, resNodes);
+									dictionaryDataToArray(resDictionary,
+											resNodes);
 								});
 
 							});
@@ -256,11 +271,13 @@ app
 								});
 							};
 
-							$scope.addNode = function() {
+							$scope.addNode = function(did) {
 								TreeService.addNode({
 									ktreeid : $routeParams.treeId
 								}, {
-									refTreeId : 1
+									refTreeId : 1,
+									did : did
+
 								}, function(response) {
 									createNode(response);
 								});
@@ -280,12 +297,13 @@ app
 								});
 							};
 
-							$scope.renameNode = function(id, newTitle) {
+							$scope.renameNode = function(id, newTitle, did) {
 								TreeService.renameNode({
 									ktreeid : $routeParams.treeId
 								}, {
 									id : id,
-									title : newTitle
+									title : newTitle,
+									did : did
 								});
 							};
 
@@ -332,7 +350,7 @@ app
 								});
 							};
 
-							$scope.deleteDictionary = function(id, newTitle) {
+							$scope.deleteDictionary = function(id) {
 								// TODO beachten mit cascade in datanbank oder
 								// ohne
 								TreeService.deleteDictionary({
@@ -387,6 +405,55 @@ app
 								}
 							};
 						} ]);
+
+app.controller("TemplatesController", [
+		'$scope',
+		'$routeParams',
+		'TreeService',
+		'AuthenticationService',
+		'WikiService',
+		'UserService',
+		'$route',
+		function($scope, $routeParams, TreeService, AuthenticationService,
+				WikiService, UserService, $route) {
+			$scope.knowledgetree;
+			$scope.templates;
+			$scope.template;
+			$scope.newTemplateName;
+
+			TreeService.getTree({
+				ktreeid : $routeParams.treeId
+			}, function(response) {
+				$scope.knowledgetree = response;
+			});
+
+			var reloadTemplates = function() {
+				TreeService.getTemplates({
+					ktreeid : $routeParams.treeId
+				}, function(response) {
+					$scope.templates = response;
+				});
+			};
+
+			reloadTemplates();
+
+			$scope.addNewTemplate = function() {
+				TreeService.addTemplate({
+					ktreeid : $routeParams.treeId
+				}, {
+					treeid : $routeParams.treeId,
+					title : $scope.newTemplateName
+				}, function(response) {
+					if (response.id != -1) {
+						alert(JSON.stringify(response));
+						reloadTemplates();
+						$scope.newTemplateName = '';
+					} else {
+						alert("exception");
+					}
+				});
+			};
+		} ]);
 
 /*
  * 

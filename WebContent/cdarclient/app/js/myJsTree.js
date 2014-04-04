@@ -33,8 +33,7 @@ $(function() {
 		id = id.replace(DICTIONARY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
-
-			scope.renameNode(id, data.text);
+			scope.renameNode(id, data.text, data.node.parent.replace(DICTIONARY, ""));
 		} else {
 			scope.renameDictionary(id, data.text);
 		}
@@ -46,9 +45,9 @@ $(function() {
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 
-			scope.deleteNode(id, data.text);
+			scope.deleteNode(id);
 		} else {
-			scope.renameDictionary(id, data.text);
+			scope.deleteDictionary(id);
 
 		}
 	});
@@ -70,7 +69,8 @@ $(function() {
 });
 
 function jstree_create() {
-	scope.addNode();
+	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
+	scope.addNode(sel[0].replace(DICTIONARY, ""));
 };
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
@@ -79,7 +79,6 @@ function jstree_rename() {
 	}
 	sel = sel[0];
 	ref.edit(sel);
-	console.log(sel);
 };
 function jstree_delete() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
