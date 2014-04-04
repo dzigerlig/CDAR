@@ -331,7 +331,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		}
 		
 		for (NodeLinkDao nodeLink : pdc.getNodeLinks(ktreeid)){
-			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodeLink.getSourceid()), nodeLink.getTargetid(), ptreeid);
+			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodeLink.getSourceid()), linkMapping.get(nodeLink.getTargetid()), ptreeid);
 			projectnodelink.setKpnsnid(nodeLink.getKsnid());
 			projectnodelink.create();
 		}
