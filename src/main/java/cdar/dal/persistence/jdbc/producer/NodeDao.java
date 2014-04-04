@@ -11,7 +11,7 @@ import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
 
-public class NodeDao extends CUDHelper<Object> implements CdarDao {
+public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -102,7 +102,7 @@ public class NodeDao extends CUDHelper<Object> implements CdarDao {
 
 	@Override
 	public NodeDao update() {
-		return (NodeDao) super.update();
+		return  super.update();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class NodeDao extends CUDHelper<Object> implements CdarDao {
 
 	@Override
 	public NodeDao create() {
-		return (NodeDao) super.create();
+		return  super.create();
 	}
 
 	@Override

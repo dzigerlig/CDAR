@@ -3,14 +3,16 @@ package cdar.dal.persistence.jdbc.producer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class TemplateDao extends CdarJdbcHelper implements CdarDao {
+public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	private int id;
 	private int ktrid;
 	private Date creationTime;
@@ -80,32 +82,7 @@ public class TemplateDao extends CdarJdbcHelper implements CdarDao {
 
 	@Override
 	public TemplateDao update() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
-			preparedStatement.setString(2, getTitle());
-			preparedStatement.setInt(3, getId());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
-		}
-		return this;
+		return  super.update();
 	}
 
 	@Override
@@ -114,33 +91,46 @@ public class TemplateDao extends CdarJdbcHelper implements CdarDao {
 	}
 
 	@Override
-	public CdarDao create() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
+	public TemplateDao create() {
+		return  super.create();
+	}
 
-		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getTitle());
-			preparedStatement.setString(2, getWikititle());
-			preparedStatement.setInt(3, getKtrid());
+	@Override
+	protected TemplateDao createVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection.prepareStatement(
+				"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
+				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setString(1, getTitle());
+		preparedStatement.setString(2, getWikititle());
+		preparedStatement.setInt(3, getKtrid());
 
-			preparedStatement.executeUpdate();
+		preparedStatement.executeUpdate();
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-			preparedStatement.close();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
 		}
-		return this;
+		preparedStatement.close();		return this;
+	}
+
+	@Override
+	protected TemplateDao updateVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
+		preparedStatement = connection.prepareStatement(
+				"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
+				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getTitle());
+		preparedStatement.setInt(3, getId());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}		return this;
 	}
 }

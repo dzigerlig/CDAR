@@ -287,7 +287,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
-		}
+		} 
 		return nodelinks;
 	}
 	
