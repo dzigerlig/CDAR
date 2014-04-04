@@ -46,4 +46,5 @@ public class BasicEntity {
 	public void setLastModified(Date modified) {
 		this.lastModification = modified;
 	}
+	
 }

@@ -29,24 +29,6 @@ app.config(function ($routeProvider,$httpProvider) {
         needsLogin: true
     });
     
-    $routeProvider.when('/tree', {
-        templateUrl: 'tree.html',
-        controller: 'TreeController',
-        needsLogin: false
-    });
-
-    $routeProvider.when('/wiki', {
-        templateUrl: 'wiki.html',
-        controller: 'WikiController',
-        needsLogin: false
-    });
-
-    $routeProvider.when('/wikiEdit', {
-        templateUrl: 'wikiEdit.html',
-        controller: 'WikiEditController',
-        needsLogin: false
-    });
-    
     $routeProvider.when('/projecttree/:treeId', {
     	templateUrl: 'knowledgeconsumer/projecttree.html',
     	controller: 'ProjectTreeController',
@@ -62,6 +44,12 @@ app.config(function ($routeProvider,$httpProvider) {
     $routeProvider.when('/knowledgetree/:treeId', {
     	templateUrl: 'knowledgeproducer/knowledgetree.html',
     	controller: 'KnowledgeTreeController',
+    	needsLogin: true
+    });
+    
+    $routeProvider.when('/knowledgetree/:treeId/templates', {
+    	templateUrl: 'knowledgeproducer/templates.html',
+    	controller: 'TemplatesController',
     	needsLogin: true
     });
     

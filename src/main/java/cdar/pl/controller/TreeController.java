@@ -19,8 +19,8 @@ import cdar.bll.model.NodeModel;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.NodeMapping;
 import cdar.bll.producer.SubNode;
+import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 
 @Path("{uid}/ktree")
@@ -55,8 +55,22 @@ public class TreeController {
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
-		System.out.println(ktreeid);
 		return ktm.getKnowledgeTreeById(ktreeid);
+	}
+	
+	//TEMPLATES
+	@GET
+	@Path("templates/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Template> getTemplates(@PathParam("ktreeid") int ktreeid) {
+		return ktm.getKnowledgeTemplates(ktreeid);
+	}
+	
+	@POST
+	@Path("templates/add/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Template addTemplate(Template template) {
+		return ktm.addKnowledgeTemplate(template);
 	}
 	
 	//Dictionary
@@ -126,7 +140,6 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node dropNode(int id) {
 		return nM.dropNode(id);
-		
 	}
 	
 	@POST
