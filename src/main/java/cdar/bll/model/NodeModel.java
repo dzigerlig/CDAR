@@ -37,6 +37,7 @@ public class NodeModel {
 	public Node renameNode(Node n) {
 		NodeDao node = pdc.getNode(n.getId());
 		node.setTitle(n.getTitle());
+		node.setDid(n.getDid());
 		return new Node(node.update());
 	}
 

@@ -303,7 +303,7 @@ app
 								}, {
 									id : id,
 									title : newTitle,
-									did : did
+									did :did
 								});
 							};
 
