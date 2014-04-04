@@ -105,6 +105,8 @@ app.controller("AccountController", function($scope, $location,
 	$scope.user = UserService.user;
 	$scope.newPw = '';
 	
+	alert("IS PRODUCER: " + $scope.user.isProducer);
+	
 	$scope.changePw = function() {
 		console.log($scope.user);
 		$scope.user.password = md5.createHash($scope.newPw);
@@ -112,7 +114,6 @@ app.controller("AccountController", function($scope, $location,
 			if (response.id != -1) {
 				alert("pw changed!");
 				$scope.newPw = '';
-				//$location.path('/login');
 			} else {
 				alert("pw change failed!");
 			}
