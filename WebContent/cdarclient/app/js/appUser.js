@@ -14,6 +14,13 @@ app.factory('AuthenticationService', function($log, $resource, $location) {
 				isArray: false
 			}
 		}),
+		edit: $resource('../webapi/users/edit', {}, {
+			changepw: {
+				method: 'POST',
+				params: {},
+				isArray: false
+			}
+		}),
 		logout: function() {
 			$.removeCookie('cdar');
 			$location.path('/login');
@@ -57,6 +64,7 @@ app.controller("LoginController", function($scope, $location,
 				$.cookie('cdar', response, {
 					expires : 7
 				});
+				console.log(response);
 				UserService.user = $.cookie('cdar');
 				if (UserService.user.isProducer) {
 					$location.path('/homeproducer');
@@ -94,12 +102,20 @@ app.controller("RegistrationController", function($scope, $location,
 
 app.controller("AccountController", function($scope, $location,
 		AuthenticationService, md5, UserService) {
+	$scope.user = UserService.user;
+	$scope.newPw = '';
 	
-	
-});
-
-app.controller("SwitchRoleController", function($scope, $location,
-		AuthenticationService, md5, UserService) {
-	alert("ok nice");
-	
+	$scope.changePw = function() {
+		console.log($scope.user);
+		$scope.user.password = md5.createHash($scope.newPw);
+		AuthenticationService.edit.changepw($scope.user, function(response) {
+			if (response.id != -1) {
+				alert("pw changed!");
+				$scope.newPw = '';
+				//$location.path('/login');
+			} else {
+				alert("pw change failed!");
+			}
+		});
+	};
 });

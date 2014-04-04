@@ -6,13 +6,13 @@ app.config(function ($routeProvider,$httpProvider) {
     $.cookie.json = true;
     
     $routeProvider.when('/login', {
-        templateUrl: 'login.html',
+        templateUrl: 'user/login.html',
         controller: 'LoginController',
         needsLogin: false
     });
 
     $routeProvider.when('/registration', {
-        templateUrl: 'register.html',
+        templateUrl: 'user/register.html',
         controller: 'RegistrationController',
         needsLogin: false
     });
