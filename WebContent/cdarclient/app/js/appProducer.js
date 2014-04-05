@@ -275,7 +275,7 @@ app
 								TreeService.addNode({
 									ktreeid : $routeParams.treeId
 								}, {
-									refTreeId : 1,
+									refTreeId : $routeParams.treeId,
 									did : did
 
 								}, function(response) {
@@ -339,6 +339,17 @@ app
 								TreeService.deleteLink({
 									ktreeid : $routeParams.treeId
 								}, id);
+							};
+							
+							$scope.addDictionary = function(parentid) {
+								TreeService.addDictionary({
+									ktreeid : $routeParams.treeId
+								}, {
+									ktrid:$routeParams.treeId,
+									parentid : parentid
+								}, function(response) {
+									createDictionary(response);
+								});
 							};
 
 							$scope.renameDictionary = function(id, newTitle) {

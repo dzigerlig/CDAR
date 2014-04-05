@@ -2,6 +2,20 @@ var DICTIONARY = 'dictionary';
 var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
 
+var mouseOverJsTreeFlag = false;
+var eleme = $("#jstree-container");
+eleme.mouseover(function() {
+	mouseOverJsTreeFlag = true;
+}).mouseout(function() {
+	mouseOverJsTreeFlag = false;
+});
+
+$('html').click(function() {
+	if (!mouseOverJsTreeFlag) {
+		$("#jstree").jstree("deselect_all");
+	}
+});
+
 $(function() {
 
 	$('#jstree').jstree('get_selected');
@@ -28,16 +42,19 @@ $(function() {
 		}
 	});
 
-	$('#jstree').on("rename_node.jstree", function(e, data) {
-		var id = data.node.id;
-		id = id.replace(DICTIONARY, "");
-		if (data.node.type !== 'default') {
-			id = id.replace(NODE, "");
-			scope.renameNode(id, data.text, data.node.parent.replace(DICTIONARY, ""));
-		} else {
-			scope.renameDictionary(id, data.text);
-		}
-	});
+	$('#jstree').on(
+			"rename_node.jstree",
+			function(e, data) {
+				var id = data.node.id;
+				id = id.replace(DICTIONARY, "");
+				if (data.node.type !== 'default') {
+					id = id.replace(NODE, "");
+					scope.renameNode(id, data.text, data.node.parent.replace(
+							DICTIONARY, ""));
+				} else {
+					scope.renameDictionary(id, data.text);
+				}
+			});
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		var id = data.node.id;
@@ -68,10 +85,24 @@ $(function() {
 	});
 });
 
-function jstree_create() {
+function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	scope.addNode(sel[0].replace(DICTIONARY, ""));
+	if (!sel.length) {
+		return false;
+	} else {
+		scope.addNode(sel[0].replace(DICTIONARY, ""));
+	}
 };
+
+function jstree_createFolder() {
+	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
+	if (!sel.length) {
+		scope.addDictionary(0);
+	} else {
+		scope.addDictionary(sel[0].replace(DICTIONARY, ""));
+	}
+};
+
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
@@ -152,14 +183,36 @@ function dictionaryDataToArray(resDictionary, resNodes) {
 
 function createNode(response) {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length) {
-		return false;
-	}
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
 		"id" : "dictionarynode" + response.id
 	});
+	if (sel) {
+		ref.edit(sel);
+	}
+};
+
+function createDictionary(response) {
+	var sel;
+	var ref = $('#jstree').jstree(true);
+
+	if (response.parentid === 0) {
+		sel = $("#jstree").jstree('create_node', '#', {
+			"id" : "dictionary" + response.id,
+			'type' : "default",
+			'text': 'new Folder'
+
+		}, 'last');
+	} else {
+		sel = ref.get_selected();
+		sel = sel[0];
+		sel = ref.create_node(sel, {
+			"type" : "default",
+			'text': 'new Folder',
+			"id" : "dictionary" + response.id
+		});
+	}
 	if (sel) {
 		ref.edit(sel);
 	}

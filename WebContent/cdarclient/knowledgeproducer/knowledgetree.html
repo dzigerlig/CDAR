@@ -44,11 +44,15 @@
 			</div>
 			<div class="page-content inset">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-3" id="jstree-container">
 						<h3>STATIC TREE</h3>
 						<button type="button" class="btn btn-success btn-sm"
-							onclick="jstree_create();">
-							<i class="glyphicon glyphicon-asterisk"></i> Create
+							onclick="jstree_createNode();">
+							<i class="glyphicon glyphicon-asterisk"></i> Create Node
+						</button>
+						<button type="button" class="btn btn-success btn-sm"
+							onclick="jstree_createFolder();">
+							<i class="glyphicon glyphicon-asterisk"></i> Create Folder
 						</button>
 						<button type="button" class="btn btn-warning btn-sm"
 							onclick="jstree_rename();">

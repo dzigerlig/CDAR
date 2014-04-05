@@ -20,7 +20,6 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 	private Date lastModificationTime;
 	private int parentid;
 	private int ktrid;
-	private int knid;
 	private String title;
 
 	public DirectoryDao(int treeid) {
@@ -65,14 +64,6 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 
 	public void setKtrid(int ktrid) {
 		this.ktrid = ktrid;
-	}
-
-	public int getKnid() {
-		return knid;
-	}
-
-	public void setKnid(int knid) {
-		this.knid = knid;
 	}
 
 	public String getTitle() {

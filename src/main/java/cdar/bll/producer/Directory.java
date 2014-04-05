@@ -9,7 +9,6 @@ public class Directory extends BasicEntity {
 	private int parentid;
 	private int ktrid;
 	private String title;
-	private int knid;
 
 
 	public Directory() {
@@ -17,7 +16,7 @@ public class Directory extends BasicEntity {
 	}
 
 	public Directory(int id, Date creationTime, Date lastModificationTime,
-			int parentid,int ktrid,int knid, String title) {
+			int parentid,int ktrid, String title) {
 		super(id, creationTime, lastModificationTime);
 		this.setParentid(parentid);
 		this.setKtrid(ktrid);
@@ -25,7 +24,7 @@ public class Directory extends BasicEntity {
 	}
 
 	public Directory(DirectoryDao directoryDao) {
-		this(directoryDao.getId(), directoryDao.getCreationTime(),directoryDao.getLastModificationTime(), directoryDao.getParentid(), directoryDao.getKtrid(), directoryDao.getKnid(), directoryDao.getTitle());
+		this(directoryDao.getId(), directoryDao.getCreationTime(),directoryDao.getLastModificationTime(), directoryDao.getParentid(), directoryDao.getKtrid(), directoryDao.getTitle());
 	}
 
 	public int getParentid() {
@@ -50,13 +49,5 @@ public class Directory extends BasicEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public int getKnid() {
-		return knid;
-	}
-
-	public void setKnid(int knid) {
-		this.knid = knid;
 	}
 }
