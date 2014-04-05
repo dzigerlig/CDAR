@@ -1,4 +1,4 @@
-var DICTIONARY = 'dictionary';
+var DIRECTORY = 'directory';
 var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
 
@@ -37,7 +37,7 @@ $(function() {
 			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 			// }
-			id = id.replace(DICTIONARY, "");
+			id = id.replace(DIRECTORY, "");
 			scope.changeNode(id);
 		}
 	});
@@ -46,33 +46,33 @@ $(function() {
 			"rename_node.jstree",
 			function(e, data) {
 				var id = data.node.id;
-				id = id.replace(DICTIONARY, "");
+				id = id.replace(DIRECTORY, "");
 				if (data.node.type !== 'default') {
 					id = id.replace(NODE, "");
 					scope.renameNode(id, data.text, data.node.parent.replace(
-							DICTIONARY, ""));
+							DIRECTORY, ""));
 				} else {
-					scope.renameDictionary(id, data.text);
+					scope.renameDirectory(id, data.text);
 				}
 			});
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		var id = data.node.id;
-		id = id.replace(DICTIONARY, "");
+		id = id.replace(DIRECTORY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 
 			scope.deleteNode(id);
 		} else {
-			scope.deleteDictionary(id);
+			scope.deleteDirectory(id);
 
 		}
 	});
 
 	$('#jstree').on("create_node.jstree", function(e, data) {
 		var id = data.node.id;
-		var parentId = data.parent.replace(DICTIONARY, "");
-		id = id.replace(DICTIONARY, "");
+		var parentId = data.parent.replace(DIRECTORY, "");
+		id = id.replace(DIRECTORY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 			scope.moveNode(id, parentId);
@@ -80,7 +80,7 @@ $(function() {
 			if (parentId === '#') {
 				parentId = id;
 			}
-			scope.moveDictionary(id, parentId);
+			scope.moveDirectory(id, parentId);
 		}
 	});
 });
@@ -90,16 +90,16 @@ function jstree_createNode() {
 	if (!sel.length) {
 		return false;
 	} else {
-		scope.addNode(sel[0].replace(DICTIONARY, ""));
+		scope.addNode(sel[0].replace(DIRECTORY, ""));
 	}
 };
 
-function jstree_createFolder() {
+function jstree_createDirectory() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
-		scope.addDictionary(0);
+		scope.addDirectory(0);
 	} else {
-		scope.addDictionary(sel[0].replace(DICTIONARY, ""));
+		scope.addDirectory(sel[0].replace(DIRECTORY, ""));
 	}
 };
 
@@ -119,7 +119,7 @@ function jstree_delete() {
 	ref.delete_node(sel);
 };
 
-function drawDictionary(treeArray) {
+function drawDirectory(treeArray) {
 	$('#jstree').jstree(
 			{
 				'core' : {
@@ -153,18 +153,18 @@ function drawDictionary(treeArray) {
 			});
 }
 
-function dictionaryDataToArray(resDictionary, resNodes) {
+function directoryDataToArray(resDirectory, resNodes) {
 	var treeArray = [];
 	var parentId;
 
-	resDictionary.forEach(function(entry) {
+	resDirectory.forEach(function(entry) {
 		if (entry.parentid === 0) {
 			parentId = "#";
 		} else {
-			parentId = "dictionary" + entry.parentid;
+			parentId = DIRECTORY + entry.parentid;
 		}
 		treeArray.push({
-			"id" : "dictionary" + entry.id,
+			"id" : DIRECTORY + entry.id,
 			"parent" : parentId,
 			"text" : entry.title,
 		});
@@ -172,13 +172,13 @@ function dictionaryDataToArray(resDictionary, resNodes) {
 
 	resNodes.forEach(function(node) {
 		treeArray.push({
-			"id" : "dictionarynode" + node.id,
-			"parent" : "dictionary" + node.did,
+			"id" : DIRECTORY+NODE + node.id,
+			"parent" : DIRECTORY + node.did,
 			"text" : node.title,
 			"type" : "file"
 		});
 	});
-	drawDictionary(treeArray);
+	drawDirectory(treeArray);
 };
 
 function createNode(response) {
@@ -186,20 +186,20 @@ function createNode(response) {
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
-		"id" : "dictionarynode" + response.id
+		"id" : DIRECTORY+NODE+ response.id
 	});
 	if (sel) {
 		ref.edit(sel);
 	}
 };
 
-function createDictionary(response) {
+function createDirectory(response) {
 	var sel;
 	var ref = $('#jstree').jstree(true);
 
 	if (response.parentid === 0) {
 		sel = $("#jstree").jstree('create_node', '#', {
-			"id" : "dictionary" + response.id,
+			"id" : DIRECTORY + response.id,
 			'type' : "default",
 			'text': 'new Folder'
 
@@ -210,7 +210,7 @@ function createDictionary(response) {
 		sel = ref.create_node(sel, {
 			"type" : "default",
 			'text': 'new Folder',
-			"id" : "dictionary" + response.id
+			"id" : DIRECTORY + response.id
 		});
 	}
 	if (sel) {

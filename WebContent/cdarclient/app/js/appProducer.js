@@ -33,35 +33,35 @@ app.factory('TreeService', function($resource) {
 			method : 'GET',
 			isArray : true,
 			params : {
-				entity : 'dictionaries',
+				entity : 'directories',
 			}
 		},
-		'addDictionary' : {
+		'addDirectory' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaries',
+				entity : 'directories',
 				action : 'add',
 			}
 		},
-		'deleteDictionary' : {
+		'deleteDirectory' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaries',
+				entity : 'directories',
 				action : 'delete',
 			}
 		},
-		'renameDictionary' : {
+		'renameDirectory' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaries',
+				entity : 'directories',
 				action : 'rename',
 			}
 		},
 
-		'moveDictionary' : {
+		'moveDirectory' : {
 			method : 'POST',
 			params : {
-				entity : 'dictionaries',
+				entity : 'directories',
 				action : 'move',
 			}
 		},
@@ -250,13 +250,13 @@ app
 
 							TreeService.getDictionaries({
 								ktreeid : $routeParams.treeId
-							}, function(resDictionary) {
+							}, function(resDirectory) {
 								TreeService.getNodes({
 									ktreeid : $routeParams.treeId
 								}, function(resNodes) {
 									drawExistingNodes(resNodes);
 									$scope.getLinks(TreeService);
-									dictionaryDataToArray(resDictionary,
+									directoryDataToArray(resDirectory,
 											resNodes);
 								});
 
@@ -341,19 +341,19 @@ app
 								}, id);
 							};
 							
-							$scope.addDictionary = function(parentid) {
-								TreeService.addDictionary({
+							$scope.addDirectory = function(parentid) {
+								TreeService.addDirectory({
 									ktreeid : $routeParams.treeId
 								}, {
 									ktrid:$routeParams.treeId,
 									parentid : parentid
 								}, function(response) {
-									createDictionary(response);
+									createDirectory(response);
 								});
 							};
 
-							$scope.renameDictionary = function(id, newTitle) {
-								TreeService.renameDictionary({
+							$scope.renameDirectory = function(id, newTitle) {
+								TreeService.renameDirectory({
 									ktreeid : $routeParams.treeId
 								}, {
 									id : id,
@@ -361,16 +361,16 @@ app
 								});
 							};
 
-							$scope.deleteDictionary = function(id) {
+							$scope.deleteDirectory = function(id) {
 								// TODO beachten mit cascade in datanbank oder
 								// ohne
-								TreeService.deleteDictionary({
+								TreeService.deleteDirectory({
 									ktreeid : $routeParams.treeId
 								}, id);
 							};
 
-							$scope.moveDictionary = function(id, newParentId) {
-								TreeService.moveDictionary({
+							$scope.moveDirectory = function(id, newParentId) {
+								TreeService.moveDirectory({
 									ktreeid : $routeParams.treeId
 								}, {
 									id : id,
