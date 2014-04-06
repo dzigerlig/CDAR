@@ -55,9 +55,8 @@
 											<tr
 												data-ng-repeat="template in templates | orderBy:'id':false">
 												<td>{{$index+1}}</td>
-												<td><a href="#/knowledgetree/{{tree.id}}">{{template.title}}</a></td>
-												<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
-														Template</a></td>
+												<td><a href="#/knowledgetree/{{template.id}}">{{template.title}}</a></td>
+												<td><a data-ng-click="deleteTemplate(template.id)" href="">Delete Template</a></td>
 											</tr>
 											<tr>
 												<td></td>

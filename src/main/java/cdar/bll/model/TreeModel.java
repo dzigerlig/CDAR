@@ -63,10 +63,16 @@ public class TreeModel {
 
 	public Template addKnowledgeTemplate(Template template) {
 		try {
-		TemplateDao templatedao = new TemplateDao(template.getTreeid(), template.getTitle());
-		return new Template(templatedao.create());
-		} catch(Exception ex) {
+			TemplateDao templatedao = new TemplateDao(template.getTreeid(),
+					template.getTitle());
+			return new Template(templatedao.create());
+		} catch (Exception ex) {
 			return new Template(-1);
 		}
+	}
+
+	public boolean deleteTemplate(int id) {
+		TemplateDao templatedao = pdc.getTemplate(id);
+		return templatedao.delete();
 	}
 }
