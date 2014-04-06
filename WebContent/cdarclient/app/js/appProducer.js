@@ -164,6 +164,13 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'subnodes'
 			}
+		},
+		'deleteTemplate' : {
+			method : 'POST',
+			params : {
+				entity : 'templates',
+				action : 'delete'
+			}
 		}
 	});
 });
@@ -440,54 +447,6 @@ app
 							};
 						} ]);
 
-app.controller("TemplatesController", [
-		'$scope',
-		'$routeParams',
-		'TreeService',
-		'AuthenticationService',
-		'WikiService',
-		'UserService',
-		'$route',
-		function($scope, $routeParams, TreeService, AuthenticationService,
-				WikiService, UserService, $route) {
-			$scope.knowledgetree;
-			$scope.templates;
-			$scope.template;
-			$scope.newTemplateName;
-
-			TreeService.getTree({
-				ktreeid : $routeParams.treeId
-			}, function(response) {
-				$scope.knowledgetree = response;
-			});
-
-			var reloadTemplates = function() {
-				TreeService.getTemplates({
-					ktreeid : $routeParams.treeId
-				}, function(response) {
-					$scope.templates = response;
-				});
-			};
-
-			reloadTemplates();
-
-			$scope.addNewTemplate = function() {
-				TreeService.addTemplate({
-					ktreeid : $routeParams.treeId
-				}, {
-					treeid : $routeParams.treeId,
-					title : $scope.newTemplateName
-				}, function(response) {
-					if (response.id != -1) {
-						alert(JSON.stringify(response));
-						reloadTemplates();
-						$scope.newTemplateName = '';
-					} else {
-						alert("exception");
-					}
-				});
-			};
-		} ]);
 
 /*
  * 

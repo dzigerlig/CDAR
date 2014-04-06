@@ -73,6 +73,13 @@ public class TreeController {
 		return ktm.addKnowledgeTemplate(template);
 	}
 	
+	@POST
+	@Path("templates/delete/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean deleteTemplate(int id) {
+		return new Boolean(ktm.deleteTemplate(id));
+	}
+	
 	//Directory
 	@GET
 	@Path("/directories/{ktreeid}")
