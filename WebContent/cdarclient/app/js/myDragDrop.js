@@ -1,4 +1,4 @@
-var DICTIONARY = 'dictionary';
+var DIRECTORY = 'directory';
 var NODE = 'node';
 
 var scope = angular.element(document.getElementById("treeControllerDiv"));
@@ -20,7 +20,7 @@ $(document).bind('dnd_stop.vakata', function(e, data) {
 	var type =data.data.origin._model.data[id].type;	
 	if (isMouseOverContainer()&&type!=='default') {
 		id = id.replace(NODE, "");
-		id = id.replace(DICTIONARY, "");
+		id = id.replace(DIRECTORY, "");
 		scope.dropNode(data.event, id);
 	}
 });
@@ -28,8 +28,8 @@ $(document).bind('dnd_stop.vakata', function(e, data) {
 
 $('#jstree').on("move_node.jstree", function(e, data) {
 	var id = data.node.id;
-	var parentId=data.parent.replace(DICTIONARY, "");
-	id = id.replace(DICTIONARY, "");
+	var parentId=data.parent.replace(DIRECTORY, "");
+	id = id.replace(DIRECTORY, "");
 	if (data.node.type !== 'default') {
 		console.log(id);
 		id = id.replace(NODE, "");

@@ -73,41 +73,41 @@ public class TreeController {
 		return ktm.addKnowledgeTemplate(template);
 	}
 	
-	//Dictionary
+	//Directory
 	@GET
-	@Path("/dictionaries/{ktreeid}")
+	@Path("/directories/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Directory> getDictionaries(@PathParam("ktreeid") int ktreeid) {
+	public Set<Directory> getDirectory(@PathParam("ktreeid") int ktreeid) {
 		return dM.getDirectories(ktreeid);
 	}
 	
 	@POST
-	@Path("dictionaries/add/{ktreeid}")
+	@Path("directories/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Directory addDictionary(Directory d) {
+	public Directory addDirectory(Directory d) {
 		return dM.addDirectory(d);
 	}
 	
 	@POST
-	@Path("dictionaries/delete/{ktreeid}")
+	@Path("directories/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeDictionary(int id) {
+	public Response removeDirectory(int id) {
 		dM.removeDirectoryById(id);
 		return Response.status(200).build();
 	}
 	
 	@POST
-	@Path("dictionaries/rename/{ktreeid}")
+	@Path("directories/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameDictionary(Directory d) {
+	public Response renameDirectory(Directory d) {
 		dM.renameDirectory(d);
 		return Response.status(200).build();
 	}
 	
 	@POST
-	@Path("dictionaries/move/{ktreeid}")
+	@Path("directories/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response moveDictionay(Directory d) {
+	public Response moveDirectory(Directory d) {
 		dM.moveDirectory(d);
 		return Response.status(200).build();
 	}	

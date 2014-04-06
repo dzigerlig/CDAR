@@ -1,6 +1,20 @@
-var DICTIONARY = 'dictionary';
+var DIRECTORY = 'directory';
 var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
+
+var mouseOverJsTreeFlag = false;
+var eleme = $("#jstree-container");
+eleme.mouseover(function() {
+	mouseOverJsTreeFlag = true;
+}).mouseout(function() {
+	mouseOverJsTreeFlag = false;
+});
+
+$('html').click(function() {
+	if (!mouseOverJsTreeFlag) {
+		$("#jstree").jstree("deselect_all");
+	}
+});
 
 $(function() {
 
@@ -23,39 +37,42 @@ $(function() {
 			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 			// }
-			id = id.replace(DICTIONARY, "");
+			id = id.replace(DIRECTORY, "");
 			scope.changeNode(id);
 		}
 	});
 
-	$('#jstree').on("rename_node.jstree", function(e, data) {
-		var id = data.node.id;
-		id = id.replace(DICTIONARY, "");
-		if (data.node.type !== 'default') {
-			id = id.replace(NODE, "");
-			scope.renameNode(id, data.text, data.node.parent.replace(DICTIONARY, ""));
-		} else {
-			scope.renameDictionary(id, data.text);
-		}
-	});
+	$('#jstree').on(
+			"rename_node.jstree",
+			function(e, data) {
+				var id = data.node.id;
+				id = id.replace(DIRECTORY, "");
+				if (data.node.type !== 'default') {
+					id = id.replace(NODE, "");
+					scope.renameNode(id, data.text, data.node.parent.replace(
+							DIRECTORY, ""));
+				} else {
+					scope.renameDirectory(id, data.text);
+				}
+			});
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		var id = data.node.id;
-		id = id.replace(DICTIONARY, "");
+		id = id.replace(DIRECTORY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 
 			scope.deleteNode(id);
 		} else {
-			scope.deleteDictionary(id);
+			scope.deleteDirectory(id);
 
 		}
 	});
 
 	$('#jstree').on("create_node.jstree", function(e, data) {
 		var id = data.node.id;
-		var parentId = data.parent.replace(DICTIONARY, "");
-		id = id.replace(DICTIONARY, "");
+		var parentId = data.parent.replace(DIRECTORY, "");
+		id = id.replace(DIRECTORY, "");
 		if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
 			scope.moveNode(id, parentId);
@@ -63,15 +80,29 @@ $(function() {
 			if (parentId === '#') {
 				parentId = id;
 			}
-			scope.moveDictionary(id, parentId);
+			scope.moveDirectory(id, parentId);
 		}
 	});
 });
 
-function jstree_create() {
+function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	scope.addNode(sel[0].replace(DICTIONARY, ""));
+	if (!sel.length) {
+		return false;
+	} else {
+		scope.addNode(sel[0].replace(DIRECTORY, ""));
+	}
 };
+
+function jstree_createDirectory() {
+	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
+	if (!sel.length) {
+		scope.addDirectory(0);
+	} else {
+		scope.addDirectory(sel[0].replace(DIRECTORY, ""));
+	}
+};
+
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
@@ -88,7 +119,7 @@ function jstree_delete() {
 	ref.delete_node(sel);
 };
 
-function drawDictionary(treeArray) {
+function drawDirectory(treeArray) {
 	$('#jstree').jstree(
 			{
 				'core' : {
@@ -122,18 +153,18 @@ function drawDictionary(treeArray) {
 			});
 }
 
-function dictionaryDataToArray(resDictionary, resNodes) {
+function directoryDataToArray(resDirectory, resNodes) {
 	var treeArray = [];
 	var parentId;
 
-	resDictionary.forEach(function(entry) {
+	resDirectory.forEach(function(entry) {
 		if (entry.parentid === 0) {
 			parentId = "#";
 		} else {
-			parentId = "dictionary" + entry.parentid;
+			parentId = DIRECTORY + entry.parentid;
 		}
 		treeArray.push({
-			"id" : "dictionary" + entry.id,
+			"id" : DIRECTORY + entry.id,
 			"parent" : parentId,
 			"text" : entry.title,
 		});
@@ -141,25 +172,47 @@ function dictionaryDataToArray(resDictionary, resNodes) {
 
 	resNodes.forEach(function(node) {
 		treeArray.push({
-			"id" : "dictionarynode" + node.id,
-			"parent" : "dictionary" + node.did,
+			"id" : DIRECTORY+NODE + node.id,
+			"parent" : DIRECTORY + node.did,
 			"text" : node.title,
 			"type" : "file"
 		});
 	});
-	drawDictionary(treeArray);
+	drawDirectory(treeArray);
 };
 
 function createNode(response) {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length) {
-		return false;
-	}
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
-		"id" : "dictionarynode" + response.id
+		"id" : DIRECTORY+NODE+ response.id
 	});
+	if (sel) {
+		ref.edit(sel);
+	}
+};
+
+function createDirectory(response) {
+	var sel;
+	var ref = $('#jstree').jstree(true);
+
+	if (response.parentid === 0) {
+		sel = $("#jstree").jstree('create_node', '#', {
+			"id" : DIRECTORY + response.id,
+			'type' : "default",
+			'text': 'new Folder'
+
+		}, 'last');
+	} else {
+		sel = ref.get_selected();
+		sel = sel[0];
+		sel = ref.create_node(sel, {
+			"type" : "default",
+			'text': 'new Folder',
+			"id" : DIRECTORY + response.id
+		});
+	}
 	if (sel) {
 		ref.edit(sel);
 	}

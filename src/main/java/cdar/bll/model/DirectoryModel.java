@@ -30,7 +30,7 @@ public class DirectoryModel {
 	{ 
 		DirectoryDao directory = new DirectoryDao(d.getKtrid());
 		directory.setParentid(d.getParentid());
-		directory.setTitle(d.getTitle());
+		directory.setTitle(null);
 		return new Directory(directory.create());
 	}
 
