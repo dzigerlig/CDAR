@@ -153,6 +153,13 @@ app.factory('TreeService', function($resource) {
 				entity : 'templates',
 				action : 'add'
 			}
+		},
+		'deleteTemplate' : {
+			method : 'POST',
+			params : {
+				entity : 'templates',
+				action : 'delete'
+			}
 		}
 	});
 });
@@ -443,6 +450,14 @@ app.controller("TemplatesController", [
 					ktreeid : $routeParams.treeId
 				}, function(response) {
 					$scope.templates = response;
+				});
+			};
+			
+			$scope.deleteTemplate = function(id) {
+				alert("Deleting: " + id);
+				//deleteTemplate
+				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
+					console.log(response);
 				});
 			};
 
