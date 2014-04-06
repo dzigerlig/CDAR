@@ -454,10 +454,9 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.deleteTemplate = function(id) {
-				alert("Deleting: " + id);
-				//deleteTemplate
 				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
 					console.log(response);
+					reloadTemplates();
 				});
 			};
 
@@ -471,7 +470,6 @@ app.controller("TemplatesController", [
 					title : $scope.newTemplateName
 				}, function(response) {
 					if (response.id != -1) {
-						alert(JSON.stringify(response));
 						reloadTemplates();
 						$scope.newTemplateName = '';
 					} else {
