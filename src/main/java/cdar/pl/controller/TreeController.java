@@ -191,7 +191,7 @@ public class TreeController {
 	
 	//Subnodes
 	@GET
-	@Path("subnode/{ktreeid}")
+	@Path("subnodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<SubNode> getSubNodes(@PathParam("ktreeid") int ktreeid) {
 		return sNM.getSubNodes(ktreeid);
@@ -199,14 +199,14 @@ public class TreeController {
 
 	
 	@POST
-	@Path("subnode/add/{ktreeid}")
+	@Path("subnodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public SubNode addSubNode(SubNode sN) {		 
 		return sNM.addSubNode(sN);
 	}
 
 	@POST
-	@Path("subnode/delete/{ktreeid}")
+	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeSubNode(int id) {
 		sNM.removeSubNodeById(id);

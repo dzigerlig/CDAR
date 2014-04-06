@@ -537,4 +537,9 @@ public class KnowledgeProducerDaoController {
 			ex.printStackTrace();
 		}
 	}
+
+	public void deleteSubNode(int id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

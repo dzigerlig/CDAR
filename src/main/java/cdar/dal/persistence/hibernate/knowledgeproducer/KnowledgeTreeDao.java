@@ -168,4 +168,9 @@ public class KnowledgeTreeDao {
 	public void deleteDictionary(DictionaryDao dictionary) {
 		getDictionaries().remove(dictionary);
 	}
+
+	public Object getKnowledgeSubNodes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
