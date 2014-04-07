@@ -52,7 +52,8 @@ function drawExistingNodes(data, resSubNodes) {
 
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
-			var newState = $('<div>').attr('id', NODE + this.id).addClass('w').data("subNodes", {subNodes: map[this.id]});
+			console.log(map[this.id]);
+			var newState = $('<div>').attr('id', NODE + this.id).addClass('w').data("subNode", {subNode: map[this.id]});
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
 			newState.css({
@@ -67,7 +68,6 @@ function drawExistingNodes(data, resSubNodes) {
 			makeSource(connect, newState);
 
 			appendElements(title, connect, newState);
-			console.log(newState);
 		}
 
 	});
@@ -255,7 +255,13 @@ function bindConnection() {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
 	        $('#popup-box-1').show();
-
+	        //console.log(info.connection.source);
+	        console.log(info.connection.source.data("subNode").subNode);
+	       
+	        $.each(info.connection.source.data("subNode").subNode, function (object) {
+	            $('#radio-form').append("<input type=\"radio\" name=\"option\">" + this.title + "<br>");
+	        });
+	        
 			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
 					.replace(NODE, ""), info.connection);
 		}
