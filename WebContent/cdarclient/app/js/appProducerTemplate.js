@@ -15,6 +15,8 @@ app.controller("TemplatesController", [
 			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
+			
+			$scope.UserService = UserService;
 
 			TreeService.getTree({
 				ktreeid : $routeParams.treeId
