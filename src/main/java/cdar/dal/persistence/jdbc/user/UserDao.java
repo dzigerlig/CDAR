@@ -36,7 +36,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 	public UserDao(User user) {
 		setId(user.getId());
 		setCreationTime(user.getCreationTime());
-		setLastModificationTime(user.getLastModified());
+		setLastModificationTime(user.getLastModificationTime());
 		setUsername(user.getUsername());
 		setPassword(user.getPassword());
 		setAccesstoken(user.getAccesstoken());

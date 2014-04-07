@@ -36,7 +36,7 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 	public ProjectNodeDao(ProjectNode projectnode) {
 		setId(projectnode.getId());
 		setCreationTime(projectnode.getCreationTime());
-		setLastModificationTime(projectnode.getLastModified());
+		setLastModificationTime(projectnode.getLastModificationTime());
 		setKptid(projectnode.getRefProjectTreeId());
 		setTitle(projectnode.getTitle());
 		setWikititle(projectnode.getWikiTitle());

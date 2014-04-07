@@ -30,7 +30,7 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	public TreeDao(Tree tree) {
 		setId(tree.getId());
 		setCreationTime(tree.getCreationTime());
-		setLastModificationTime(tree.getLastModified());
+		setLastModificationTime(tree.getLastModificationTime());
 		setName(tree.getName());
 	}
 	

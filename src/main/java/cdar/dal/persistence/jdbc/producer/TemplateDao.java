@@ -33,7 +33,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		setId(template.getId());
 		setKtrid(template.getTreeid());
 		setCreationTime(template.getCreationTime());
-		setLastModificationTime(template.getLastModified());
+		setLastModificationTime(template.getLastModificationTime());
 		setTitle(template.getTitle());
 		setTemplatetext(template.getTemplatetexthtml());
 	}

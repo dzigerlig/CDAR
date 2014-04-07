@@ -5,7 +5,7 @@ import java.util.Date;
 public class BasicEntity {
 	private int id;
 	private Date creationTime;
-	private Date lastModification;
+	private Date lastModificationTime;
 	
 	public BasicEntity() {
 		super();
@@ -20,7 +20,7 @@ public class BasicEntity {
 		super();
 		setId(id);
 		setCreationTime(creationTime);
-		setLastModified(lastModificationTime);
+		setLastModificationTime(lastModificationTime);
 	}
 	
 	public int getId() {
@@ -38,13 +38,12 @@ public class BasicEntity {
 	public void setCreationTime(Date created) {
 		this.creationTime = created;
 	}
-	
-	public Date getLastModified() {
-		return lastModification;
+
+	public Date getLastModificationTime() {
+		return lastModificationTime;
 	}
-	
-	public void setLastModified(Date modified) {
-		this.lastModification = modified;
+
+	public void setLastModificationTime(Date lastModificationTime) {
+		this.lastModificationTime = lastModificationTime;
 	}
-	
 }

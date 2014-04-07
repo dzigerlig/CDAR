@@ -33,7 +33,7 @@ public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
 	public SubNodeDao(SubNode subnode) {
 		setId(subnode.getId());
 		setCreationTime(subnode.getCreationTime());
-		setLastModificationTime(subnode.getLastModified());
+		setLastModificationTime(subnode.getLastModificationTime());
 		setKnid(subnode.getKnid());
 		setTitle(subnode.getTitle());
 		setWikititle(subnode.getWikiTitle());

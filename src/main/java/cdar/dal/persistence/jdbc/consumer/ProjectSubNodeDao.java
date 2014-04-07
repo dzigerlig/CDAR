@@ -33,7 +33,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 	public ProjectSubNodeDao(ProjectSubNode projectsubnode) {
 		setId(projectsubnode.getId());
 		setCreationTime(projectsubnode.getCreationTime());
-		setLastModificationTime(projectsubnode.getLastModified());
+		setLastModificationTime(projectsubnode.getLastModificationTime());
 		setKpnid(projectsubnode.getRefProjectNodeId());
 		setTitle(projectsubnode.getTitle());
 		setWikititle(projectsubnode.getWikiTitle());

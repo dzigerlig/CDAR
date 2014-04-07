@@ -27,7 +27,7 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 	public DirectoryDao(Directory directory) {
 		setId(directory.getId());
 		setCreationTime(directory.getCreationTime());
-		setLastModificationTime(directory.getLastModified());
+		setLastModificationTime(directory.getLastModificationTime());
 		setParentid(directory.getParentid());
 		setKtrid(directory.getKtrid());
 		setTitle(directory.getTitle());

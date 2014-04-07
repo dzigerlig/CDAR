@@ -40,7 +40,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	public NodeDao(Node node) {
 		setId(node.getId());
 		setCreationTime(node.getCreationTime());
-		setLastModificationTime(node.getLastModified());
+		setLastModificationTime(node.getLastModificationTime());
 		setKtrid(node.getRefTreeId());
 		setTitle(node.getTitle());
 		setWikititle(node.getWikiTitle());

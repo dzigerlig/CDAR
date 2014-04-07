@@ -28,7 +28,7 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	public CommentDao(UserComment comment) {
 		setId(comment.getId());
 		setCreationTime(comment.getCreationTime());
-		setLastModificationTime(comment.getLastModified());
+		setLastModificationTime(comment.getLastModificationTime());
 		setUid(comment.getRefUserId());
 		setKpnid(comment.getRefProjectNode());
 		setComment(comment.getComment());

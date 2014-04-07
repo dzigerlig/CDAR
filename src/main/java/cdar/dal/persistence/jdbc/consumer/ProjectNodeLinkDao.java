@@ -37,7 +37,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 	public ProjectNodeLinkDao(ProjectNodeLink projectnodelink) {
 		setId(projectnodelink.getId());
 		setCreationTime(projectnodelink.getCreationTime());
-		setLastModificationTime(projectnodelink.getLastModified());
+		setLastModificationTime(projectnodelink.getLastModificationTime());
 		setSourceid(projectnodelink.getSourceId());
 		setTargetid(projectnodelink.getTargetId());
 		setKpnsnid(projectnodelink.getRefProjectSubNodeId());
