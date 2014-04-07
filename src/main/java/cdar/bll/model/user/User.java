@@ -18,9 +18,9 @@ public class User extends BasicEntity {
 	public User(int id, Date creationTime, Date lastModificationTime,
 			String username, String password, String accessToken) {
 		super(id, creationTime, lastModificationTime);
-		this.setUsername(username);
-		this.setPassword(password);
-		this.setAccesstoken(accessToken);
+		setUsername(username);
+		setPassword(password);
+		setAccesstoken(accessToken);
 	}
 	
 	public User(int id) {

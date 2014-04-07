@@ -15,7 +15,7 @@ public class ProjectTree extends BasicEntity {
 	public ProjectTree(int id, Date creationDate, Date lastModification,
 			String name) {
 		super(id, creationDate, lastModification);
-		this.name = name;
+		setName(name);
 	}
 
 	public ProjectTree(ProjectTreeDao tree) {

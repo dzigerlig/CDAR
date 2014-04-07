@@ -16,8 +16,8 @@ public class ProjectNode extends WikiEntity {
 	public ProjectNode(int id, Date creationDate, Date lastModification,
 			String title, String wikititle, int nodeStatus, int refProjectTreeId) {
 		super(id, creationDate, lastModification, title, wikititle);
-		this.setNodeStatus(nodeStatus);
-		this.setRefProjectTreeId(refProjectTreeId);
+		setNodeStatus(nodeStatus);
+		setRefProjectTreeId(refProjectTreeId);
 	}
 
 	public ProjectNode(ProjectNodeDao projectNodeDao) {

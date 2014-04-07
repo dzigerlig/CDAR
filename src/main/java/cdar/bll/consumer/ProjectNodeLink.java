@@ -18,10 +18,10 @@ public class ProjectNodeLink extends BasicEntity {
 			int sourceId, int targetId, int refProjectSubNodeId,
 			int refProjectTreeId) {
 		super(id, creationDate, lastModification);
-		this.sourceId = sourceId;
-		this.targetId = targetId;
-		this.setRefProjectSubNodeId(refProjectSubNodeId);
-		this.setRefProjectTreeId(refProjectTreeId);
+		setSourceId(sourceId);
+		setTargetId(targetId);
+		setRefProjectSubNodeId(refProjectSubNodeId);
+		setRefProjectTreeId(refProjectTreeId);
 	}
 
 	public int getSourceId() {

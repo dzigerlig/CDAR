@@ -18,9 +18,9 @@ public class Directory extends BasicEntity {
 	public Directory(int id, Date creationTime, Date lastModificationTime,
 			int parentid,int ktrid, String title) {
 		super(id, creationTime, lastModificationTime);
-		this.setParentid(parentid);
-		this.setKtrid(ktrid);
-		this.setTitle(title);
+		setParentid(parentid);
+		setKtrid(ktrid);
+		setTitle(title);
 	}
 
 	public Directory(DirectoryDao directoryDao) {

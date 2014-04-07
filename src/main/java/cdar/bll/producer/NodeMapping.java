@@ -6,8 +6,8 @@ public class NodeMapping {
 	
 	public NodeMapping(int did, int knid) {
 		super();
-		this.did = did;
-		this.knid = knid;
+		setDid(did);
+		setKnid(knid);
 	}
 	
 	public int getDid() {

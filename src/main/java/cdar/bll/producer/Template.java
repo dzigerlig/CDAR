@@ -24,7 +24,7 @@ public class Template extends BasicEntity {
 	public Template(int id, Date creationTime, Date lastModificationTime,
 			String title, String templatetext, int treeid) {
 		super(id, creationTime, lastModificationTime);
-		this.setTreeid(treeid);
+		setTreeid(treeid);
 		setTitle(title);
 		setTemplatetext(templatetext);
 		if (getTemplatetext()!=null) {

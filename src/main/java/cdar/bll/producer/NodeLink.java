@@ -20,8 +20,8 @@ public class NodeLink extends BasicEntity {
 	public NodeLink(int id, Date creationDate, Date lastModification,
 			int sourceId, int targetId, int subnodeid, int treeid) {
 		super(id, creationDate, lastModification);
-		this.sourceId = sourceId;
-		this.targetId = targetId;
+		setSourceId(sourceId);
+		setTargetId(targetId);
 	}
 	
 	public NodeLink(NodeLinkDao nld) {

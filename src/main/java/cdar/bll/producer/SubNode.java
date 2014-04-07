@@ -15,7 +15,7 @@ public class SubNode extends WikiEntity {
 	public SubNode(int id, Date creationDate, Date lastModification,
 			String title, String wikititle, int knid) {
 		super(id, creationDate, lastModification, title, wikititle);
-		this.knid = knid;
+		setKnid(knid);
 	}
 
 	public SubNode(SubNodeDao snd) {

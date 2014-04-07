@@ -15,8 +15,8 @@ public class UserComment extends BasicEntity {
 	public UserComment(int id, Date creationDate, Date lastModification,
 			int refUserId, int refProjectNode) {
 		super(id, creationDate, lastModification);
-		this.setRefUserId(refUserId);
-		this.setRefProjectNode(refProjectNode);
+		setRefUserId(refUserId);
+		setRefProjectNode(refProjectNode);
 	}
 
 	public int getRefUserId() {

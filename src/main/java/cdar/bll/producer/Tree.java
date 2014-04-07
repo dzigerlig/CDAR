@@ -16,7 +16,7 @@ public class Tree extends BasicEntity {
 	public Tree(int id, Date creationDate, Date lastModification,
 			String name) {
 		super(id, creationDate, lastModification);
-		this.name = name;
+		setName(name);
 	}
 
 	public String getName() {

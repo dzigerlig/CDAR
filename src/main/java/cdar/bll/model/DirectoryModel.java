@@ -10,7 +10,6 @@ import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 public class DirectoryModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
-
 	public Set<Directory> getDirectories(int treeid) {
 		Set<Directory> ln = new HashSet<Directory>();
 		for (DirectoryDao dd : pdc.getDirectories(treeid)) {
