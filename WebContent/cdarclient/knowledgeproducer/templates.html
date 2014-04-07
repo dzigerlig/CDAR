@@ -82,15 +82,17 @@
 				<div class="row">
 				<div class="col-lg-12" class="well">
 					<h3>WikiEntry of Current node</h3>
-					<tabset justified="true" class="well"> <tab heading="READ"
-						id="wikiread">
-					<p data-ng-bind-html="templateHtml">no wiki entry selected</p>
-					</tab> <tab heading="WRITE" id="wikiwrite">
-					<form data-role="form" data-ng-submit="saveTemplate()">
-						<textarea id="templateArea" name="templateArea" cols="80" rows="10"></textarea>
-						<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-					</form>
-					</tab> </tabset>
+					<tabset justified="true" class="well">
+						<tab heading="READ" id="wikiread">
+							<p data-ng-bind-html="templateHtml">no wiki entry selected</p>
+						</tab>
+						<tab heading="WRITE" id="wikiwrite">
+						<form data-role="form" data-ng-submit="saveTemplate()">
+							<textarea id="templateArea" name="templateArea" cols="80" rows="10"></textarea>
+							<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+						</form>
+						</tab>
+					</tabset>
 				</div>
 				</div>
 			</div>

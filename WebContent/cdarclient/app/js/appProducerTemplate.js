@@ -76,11 +76,11 @@ app.controller("TemplatesController", [
 			
 			
 			$scope.saveTemplate = function() {
+				$scope.readTab();
 				if ($scope.selectedTemplate.id != 0) {
 					$scope.templatePlain = $("#templateArea").val();
 					$scope.selectedTemplate.templatetext = $scope.templatePlain;
 					setLoading();
-					alert(JSON.stringify($scope.selectedTemplate));
 					TreeService.editTemplate({
 						entityid : $scope.selectedTemplate.id
 					}, $scope.selectedTemplate, function(response) {
