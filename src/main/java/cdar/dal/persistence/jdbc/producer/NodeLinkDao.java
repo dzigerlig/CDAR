@@ -10,8 +10,6 @@ import java.util.Date;
 
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
 
 public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 	private int id;
@@ -21,6 +19,9 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 	private int targetid;
 	private int ksnid;
 	private int ktrid;
+	
+	public NodeLinkDao() {
+	}
 	
 	public NodeLinkDao(int sourceid, int targetid, int ktrid) {
 		setSourceid(sourceid);
@@ -35,10 +36,6 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		setKsnid(ksnid);
 	}
 	
-	public NodeLinkDao() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public int getId() {
 		return id;
 	}

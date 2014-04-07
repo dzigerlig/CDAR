@@ -5,7 +5,6 @@ import javax.security.auth.login.LoginException;
 
 import org.wikipedia.Wiki;
 
-import cdar.bll.model.wiki.WikiEntry;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeConsumerDaoController;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;
 

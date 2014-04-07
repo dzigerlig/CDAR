@@ -9,9 +9,6 @@ import java.util.Date;
 
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 
 public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	private int id;

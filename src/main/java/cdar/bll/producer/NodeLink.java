@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 
 public class NodeLink extends BasicEntity {

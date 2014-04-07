@@ -10,9 +10,6 @@ import java.util.Date;
 
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
-import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
 
 public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 	private int id;

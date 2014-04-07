@@ -9,8 +9,6 @@ import java.util.Date;
 
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
 
 public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 		CdarDao {
