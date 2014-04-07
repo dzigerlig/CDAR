@@ -16,6 +16,14 @@ function initializeJsPlumb() {
 	$('#tree-container').dblclick(function(e) {
 		// scope.addNode(e);
 	});
+	$('#radio-form').on('change', '.radio_item', function(element) {
+		var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
+		jQuery.each(connections, function(object) {
+			if (this.id === lastConnectionID) {
+				this.getOverlay("label").setLabel($(element.currentTarget).val());
+			}
+		});
+	});
 };
 
 function addHTMLNode(response, e) {
@@ -53,7 +61,10 @@ function drawExistingNodes(data, resSubNodes) {
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
 			console.log(map[this.id]);
-			var newState = $('<div>').attr('id', NODE + this.id).addClass('w').data("subNode", {subNode: map[this.id]});
+			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
+					.data("subNode", {
+						subNode : map[this.id]
+					});
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
 			newState.css({
@@ -85,7 +96,6 @@ function setDefaultSettings() {
 			length : 14,
 			foldback : 0.8
 		} ], [ "Label", {
-			label : "Not Set",
 			id : "label",
 			cssClass : "aLabel"
 		} ] ]
@@ -134,7 +144,7 @@ function makeSource(connect, newState) {
 			length : 14,
 			foldback : 0.8
 		} ], [ "Label", {
-			label : "Not Set Yet",
+			//label : "Not Set Yet",
 			id : "label",
 			cssClass : "aLabel"
 		} ] ]
@@ -192,10 +202,11 @@ function makeNodesDraggable(newState) {
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("dblclick", function(c) {
 		jsPlumb.detach(c);
-		if (c.id !== lastConnectionID) {
-			lastConnectionID = c.id;
-			scope.deleteLink(c.id.replace(LINK, ""));
-		}
+		
+		 // if (c.id !== lastConnectionID) { lastConnectionID = c.id;
+		  scope.deleteLink(c.id.replace(LINK, ""));
+		  //}
+		 
 	});
 };
 
@@ -247,6 +258,7 @@ function makeNodeHierarchy(data) {
 
 function setLinkId(connection, id) {
 	connection.id = LINK + id;
+	lastConnectionID = LINK + id;
 };
 
 function bindConnection() {
@@ -254,16 +266,19 @@ function bindConnection() {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
-	        $('#popup-box-1').show();
-	        //console.log(info.connection.source);
-	        console.log(info.connection.source.data("subNode").subNode);
-	       
-	        $.each(info.connection.source.data("subNode").subNode, function (object) {
-	            $('#radio-form').append("<input type=\"radio\" name=\"option\">" + this.title + "<br>");
-	        });
-	        
+			console.log(info.connection.source.data("subNode").subNode);
+
+			$.each(info.connection.source.data("subNode").subNode, function(
+					object) {
+				$('#radio-form').append(
+						"<input type=\"radio\" name=\"option\" class=\"radio_item\" value=\""
+								+ this.title + "\">" + this.title + "<br>");
+			});
+			
 			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
 					.replace(NODE, ""), info.connection);
+			$('#popup-box-1').show();
+
 		}
 	});
 };
