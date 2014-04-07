@@ -108,11 +108,12 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGEPROJECTSUBNODE (KPNID, TITLE, WIKITITLE) VALUES (?, ?, ?)",
+						"INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setInt(1, getKpnid());
-		preparedStatement.setString(2, getTitle());
-		preparedStatement.setString(3, getWikititle());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setInt(2, getKpnid());
+		preparedStatement.setString(3, getTitle());
+		preparedStatement.setString(4, getWikititle());
 
 		preparedStatement.executeUpdate();
 
@@ -120,7 +121,8 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
@@ -141,6 +143,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }

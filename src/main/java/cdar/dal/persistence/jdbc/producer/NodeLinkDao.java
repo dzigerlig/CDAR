@@ -123,16 +123,17 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO NODELINK (SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?)",
+				"INSERT INTO NODELINK (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setInt(1, getSourceid());
-		preparedStatement.setInt(2, getTargetid());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setInt(2, getSourceid());
+		preparedStatement.setInt(3, getTargetid());
 		if (getKsnid()!=0) {
-			preparedStatement.setInt(3, getKsnid());
+			preparedStatement.setInt(4, getKsnid());
 		} else {
-			preparedStatement.setNull(3, Types.INTEGER);
+			preparedStatement.setNull(4, Types.INTEGER);
 		}
-		preparedStatement.setInt(4, getKtrid());
+		preparedStatement.setInt(5, getKtrid());
 
 		preparedStatement.executeUpdate();
 
@@ -140,7 +141,8 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
@@ -166,6 +168,7 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }

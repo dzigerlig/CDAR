@@ -102,11 +102,12 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO USERCOMMENT (UID, KPNID, COMMENT) VALUES (?, ?, ?)",
+				"INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setInt(1, getUid());
-		preparedStatement.setInt(2, getKpnid());
-		preparedStatement.setString(3, getComment());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setInt(2, getUid());
+		preparedStatement.setInt(3, getKpnid());
+		preparedStatement.setString(4, getComment());
 
 		preparedStatement.executeUpdate();
 
@@ -114,7 +115,8 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
@@ -135,6 +137,7 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }

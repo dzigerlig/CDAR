@@ -120,16 +120,17 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTNODELINK (SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?)",
+				"INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setInt(1, getSourceid());
-		preparedStatement.setInt(2, getTargetid());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setInt(2, getSourceid());
+		preparedStatement.setInt(3, getTargetid());
 		if (getKpnsnid()!=0) {
-			preparedStatement.setInt(3, getKpnsnid());
+			preparedStatement.setInt(4, getKpnsnid());
 		} else {
-			preparedStatement.setNull(3, Types.INTEGER);
+			preparedStatement.setNull(4, Types.INTEGER);
 		}
-		preparedStatement.setInt(4, getKptid());
+		preparedStatement.setInt(5, getKptid());
 
 		preparedStatement.executeUpdate();
 
@@ -137,7 +138,8 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
@@ -163,6 +165,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }

@@ -94,9 +94,10 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTTREE (NAME) VALUES (?)",
+				"INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, NAME) VALUES (?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, getName());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getName());
 
 		preparedStatement.executeUpdate();
 

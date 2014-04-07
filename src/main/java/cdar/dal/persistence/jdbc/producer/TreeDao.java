@@ -93,9 +93,10 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGETREE (NAME) VALUES (?)",
+				"INSERT INTO KNOWLEDGETREE (CREATION_TIME, NAME) VALUES (?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, getName());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getName());
 
 		preparedStatement.executeUpdate();
 
@@ -107,7 +108,8 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
 		preparedStatement.setInt(1, getUid());
 		preparedStatement.setInt(2, getId());
-		preparedStatement.executeUpdate();		return this;
+		preparedStatement.executeUpdate();
+		return this;
 	}
 
 	@Override

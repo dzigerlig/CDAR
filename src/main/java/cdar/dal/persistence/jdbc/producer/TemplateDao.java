@@ -107,11 +107,12 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGETEMPLATE (TITLE, TEMPLATETEXT, KTRID) VALUES (?, ?, ?)",
+						"INSERT INTO KNOWLEDGETEMPLATE (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, getTitle());
-		preparedStatement.setString(2, getTemplatetext());
-		preparedStatement.setInt(3, getKtrid());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getTitle());
+		preparedStatement.setString(3, getTemplatetext());
+		preparedStatement.setInt(4, getKtrid());
 
 		preparedStatement.executeUpdate();
 

@@ -102,15 +102,16 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO DIRECTORY (PARENTID, KTRID, TITLE) VALUES (?, ?, ?)",
+						"INSERT INTO DIRECTORY (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(0));
 		if (getParentid() != 0) {
-			preparedStatement.setInt(1, getParentid());
+			preparedStatement.setInt(2, getParentid());
 		} else {
-			preparedStatement.setNull(1, Types.INTEGER);
+			preparedStatement.setNull(2, Types.INTEGER);
 		}
-		preparedStatement.setInt(2, getKtrid());
-		preparedStatement.setString(3, getTitle());
+		preparedStatement.setInt(3, getKtrid());
+		preparedStatement.setString(4, getTitle());
 		preparedStatement.executeUpdate();
 
 		generatedKeys = preparedStatement.getGeneratedKeys();

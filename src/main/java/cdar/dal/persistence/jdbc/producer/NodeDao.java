@@ -133,12 +133,13 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGENODE (TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?)",
+						"INSERT INTO KNOWLEDGENODE (CREATION_TIME, TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, getTitle());
-		preparedStatement.setString(2, getWikititle());
-		preparedStatement.setInt(3, getKtrid());
-		preparedStatement.setInt(4, getDynamicTreeFlag());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getTitle());
+		preparedStatement.setString(3, getWikititle());
+		preparedStatement.setInt(4, getKtrid());
+		preparedStatement.setInt(5, getDynamicTreeFlag());
 
 		preparedStatement.executeUpdate();
 

@@ -98,10 +98,11 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement(
-					"INSERT INTO USER (USERNAME, PASSWORD) VALUES (?, ?)",
+					"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, getUsername());
-			preparedStatement.setString(2, getPassword());
+			preparedStatement.setDate(1, new java.sql.Date(0));
+			preparedStatement.setString(2, getUsername());
+			preparedStatement.setString(3, getPassword());
 
 			preparedStatement.executeUpdate();
 
@@ -150,8 +151,6 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		return this;
 	}
 	
-	
-
 	@Override
 	public boolean delete() {
 		ProducerDaoController kpdc = new ProducerDaoController();

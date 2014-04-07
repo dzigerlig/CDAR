@@ -119,12 +119,13 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTNODE (TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?)",
+				"INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, getTitle());
-		preparedStatement.setString(2, getWikititle());
-		preparedStatement.setInt(3, getKptid());
-		preparedStatement.setInt(4, getNodestatus());
+		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setString(2, getTitle());
+		preparedStatement.setString(3, getWikititle());
+		preparedStatement.setInt(4, getKptid());
+		preparedStatement.setInt(5, getNodestatus());
 
 		preparedStatement.executeUpdate();
 
@@ -132,7 +133,8 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
@@ -152,6 +154,7 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }
