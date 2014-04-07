@@ -38,7 +38,7 @@ $(function() {
 			id = id.replace(NODE, "");
 			// }
 			id = id.replace(DIRECTORY, "");
-			scope.changeNode(id);
+			scope.changeNode(id, data.node.text);
 		}
 	});
 
