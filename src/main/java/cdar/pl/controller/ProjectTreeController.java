@@ -14,26 +14,25 @@ import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.model.ProjectTreeModel;
 
-@Path("ptree")
+@Path("{uid}/ptree")
 public class ProjectTreeController {
 	private ProjectTreeModel ptm = new ProjectTreeModel();
 	
 	@GET
-	@Path("{uid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<ProjectTree> getProjectTreesByUid(@PathParam("uid") int uid) {
 		return ptm.getProjectTreesByUid(uid);
 	}
 	
 	@GET
-	@Path("delete/{uid}/{ptreeid}")
+	@Path("delete/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
 		return ptm.removeProjectTreeById(uid, ptreeid);
 	}
 	
 	@GET
-	@Path("copy/{uid}/{ptreeid}/{ktreeid}")
+	@Path("copy/{ptreeid}/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public int addKnowledgeTreeToProjectTree(@PathParam("ktreeid") int ktreeid, @PathParam("ptreeid") int ptreeid) {
 		ptm.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
@@ -41,21 +40,20 @@ public class ProjectTreeController {
 	}
 	
 	@POST
-	@Path("{uid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ProjectTree addProjectTree(String treeName, @PathParam("uid") int uid) {
 		return ptm.addProjectTreeByUid(uid, treeName);
 	}
 	
 	@GET
-	@Path("{uid}/{ptreeid}")
+	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ProjectTree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @PathParam("uid") int uid) {
 		return ptm.getProjectTreeById(ptreeid);
 	}
 	
 	@GET
-	@Path("nodes/{uid}/{ptreeid}")
+	@Path("nodes/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<ProjectNode> getNodes(@PathParam("ptreeid") int ptreeid) {
 		return ptm.getProjectNodes(ptreeid);

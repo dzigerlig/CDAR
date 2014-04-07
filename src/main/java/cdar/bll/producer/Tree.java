@@ -26,40 +26,4 @@ public class Tree extends BasicEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/*
-	private List<Template> knowledgeTemplates;
-	private List<KnowledgeNode> knowledgeNodes;
-	private String name;
-	
-	public Tree(KnowledgeTreeDao ktd) {
-		setId(ktd.getId());
-		setCreationDate(ktd.getCreationTime());
-		setLastModified(ktd.getModificationTime());
-		setName(ktd.getName());
-	}
-	
-	public List<Template> getKnowledgeTemplates() {
-		return knowledgeTemplates;
-	}
-	
-	public void setKnowledgeTemplates(List<Template> knowledgeTemplates) {
-		this.knowledgeTemplates = knowledgeTemplates;
-	}
-	
-	public List<KnowledgeNode> getKnowledgeNodes() {
-		return knowledgeNodes;
-	}
-	
-	public void setKnowledgeNodes(List<KnowledgeNode> knowledgeNodes) {
-		this.knowledgeNodes = knowledgeNodes;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}*/
 }

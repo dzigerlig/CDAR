@@ -12,7 +12,7 @@ import cdar.bll.model.TreeModel;
 import cdar.bll.model.ProjectTreeModel;
 import cdar.bll.model.wiki.WikiEntry;
 
-@Path("wiki")
+@Path("{uid}/wiki")
 public class WikiController {
 	@GET
 	@Path("/consumer/node/{nodeid}")

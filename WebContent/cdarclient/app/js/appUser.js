@@ -1,4 +1,4 @@
-app.controller("LoginController", function($scope, $location,
+app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
 		AuthenticationService, md5, UserService) {
 	$.removeCookie('cdar');
 	UserService.user = '';
@@ -28,9 +28,9 @@ app.controller("LoginController", function($scope, $location,
 			}
 		});
 	};
-});
+}]);
 
-app.controller("RegistrationController", function($scope, $location,
+app.controller("RegistrationController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
 		AuthenticationService, md5, UserService) {
 	$.removeCookie('cdar');
 	UserService.user = '';
@@ -50,9 +50,9 @@ app.controller("RegistrationController", function($scope, $location,
 			}
 		});
 	};
-});
+}]);
 
-app.controller("AccountController", function($scope, $location,
+app.controller("AccountController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
 		AuthenticationService, md5, UserService) {
 	$scope.UserService = UserService;
 	$scope.newPw = '';
@@ -69,4 +69,4 @@ app.controller("AccountController", function($scope, $location,
 			}
 		});
 	};
-});
+}]);

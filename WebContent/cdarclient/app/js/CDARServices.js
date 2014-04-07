@@ -1,5 +1,5 @@
-app.factory('ProjectTreeService', function($resource) {
-	return $resource('../webapi/ptree/:action/1/:treeid/:ktreeid/', {}, {
+app.factory('ProjectTreeService', ['$resource', function($resource) {
+	return $resource('../webapi/1/ptree/:action/:treeid/:ktreeid/', {}, {
 		'query' : {
 			method : 'GET',
 			isArray : true
@@ -32,10 +32,10 @@ app.factory('ProjectTreeService', function($resource) {
 			}
 		}
 	});
-});
+}]);
 
-app.factory('WikiService', function($resource) {
-	return $resource('../webapi/wiki/:role/:entity/:nodeid/', {}, {
+app.factory('WikiService', ['$resource', function($resource) {
+	return $resource('../webapi/1/wiki/:role/:entity/:nodeid/', {}, {
 		'getWikiEntry' : {
 			method : 'GET'
 		},
@@ -43,9 +43,9 @@ app.factory('WikiService', function($resource) {
 			method : 'POST'
 		}
 	});
-});
+}]);
 
-app.factory('TreeService', function($resource) {
+app.factory('TreeService', ['$resource', function($resource) {
 	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
 		// Tree
 
@@ -224,9 +224,9 @@ app.factory('TreeService', function($resource) {
 			}
 		}
 	});
-});
+}]);
 
-app.factory('AuthenticationService', function($log, $resource, $location) {
+app.factory('AuthenticationService', ['$log', '$resource', '$location', function($log, $resource, $location) {
 	return {
 		addUser: $resource('../webapi/users/registration', {}, {
 			post:
@@ -254,7 +254,7 @@ app.factory('AuthenticationService', function($log, $resource, $location) {
 			$location.path('/login');
 		}
 	};
-});
+}]);
 
 app.factory('UserService', ['$location', function ($location) {
 	return {

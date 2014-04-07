@@ -1,13 +1,11 @@
 package cdar.bll.producer;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 
-public class Node extends WikiEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Node extends WikiEntity {
 	private int refTreeId;
 	private int dynamicTreeFlag;
 	private int did;
