@@ -1,39 +1,3 @@
-app.factory('ProjectTreeService', function($resource) {
-	return $resource('../webapi/ptree/:action/1/:treeid/:ktreeid/', {}, {
-		'query' : {
-			method : 'GET',
-			isArray : true
-		},
-		'postEntry' : {
-			method : 'POST'
-		},
-		'removeTree' : {
-			method : 'GET',
-			params: {
-				action: 'delete'
-					}
-		},
-		'getTree' : {
-			method : 'GET',
-			isArray : false
-		},
-		'getNodes' : {
-			method : 'GET',
-			params: {
-				action: "nodes"
-			},
-			isArray : true
-		},
-		'copyTree' : {
-			method : 'GET',
-			isArray : false,
-			params: {
-				action: 'copy'
-			}
-		}
-	});
-});
-
 app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'ProjectTreeService', 'UserService', function ($scope, AuthenticationService, ProjectTreeService, UserService) {
 	$scope.projectTrees;
 	$scope.newTreeName = "";
@@ -69,17 +33,6 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
         AuthenticationService.logout();
     };
 }]);
-
-app.factory('WikiService', function($resource) {
-	return $resource('../webapi/wiki/:role/:entity/:nodeid/', {}, {
-		'getWikiEntry' : {
-			method : 'GET'
-		},
-		'postEntry' : {
-			method : 'POST'
-		}
-	});
-});
 
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'TreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, TreeService, UserService, WikiService) {
 	$scope.UserService = UserService;
