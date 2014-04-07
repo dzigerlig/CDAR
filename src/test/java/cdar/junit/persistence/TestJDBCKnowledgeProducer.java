@@ -84,7 +84,7 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate");
+		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate", "MyText");
 		template.create();
 		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 	}
@@ -93,16 +93,21 @@ public class TestJDBCKnowledgeProducer {
 	public void TestKnowledgeTemplateUpdate() {
 		final String templateName = "MyTemplate";
 		final String updatedTemplateName = "MyTemplate2";
+		final String templateText = "MyText";
+		final String updatedTemplateText = "My New Text";
 		UserDao user = udc.getUserByName(testUsername);
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), templateName);
+		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText);
 		template.create();
 		assertEquals(templateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
+		assertEquals(templateText, kpdc.getTemplates(tree.getId()).get(0).getTemplatetext());
 		template.setTitle(updatedTemplateName);
+		template.setTemplatetext(updatedTemplateText);
 		template.update();
 		assertEquals(updatedTemplateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
+		assertEquals(updatedTemplateText, kpdc.getTemplates(tree.getId()).get(0).getTemplatetext());
 	}
 	
 	@Test
@@ -111,7 +116,7 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate");
+		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate", "TEXT");
 		template.create();
 		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 		template.delete();

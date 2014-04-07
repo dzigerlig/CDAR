@@ -9,8 +9,6 @@ import java.util.Date;
 
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
 
 public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	private int id;
@@ -18,20 +16,18 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	private Date creationTime;
 	private Date lastModificationTime;
 	private String title;
-	private String wikititle;
-	
-	
+	private String templatetext;
+
 	public TemplateDao(int ktrid) {
 		setKtrid(ktrid);
-		setWikititle(String.format("TEMPLATE_%d", getId()));
 	}
-	
-	public TemplateDao(int ktrid, String title) {
+
+	public TemplateDao(int ktrid, String title, String templatetext) {
 		setKtrid(ktrid);
 		setTitle(title);
-		setWikititle(String.format("TEMPLATE_%d", getId()));
+		setTemplatetext(templatetext);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -39,7 +35,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getKtrid() {
 		return ktrid;
 	}
@@ -72,17 +68,17 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		this.title = title;
 	}
 
-	public String getWikititle() {
-		return wikititle;
+	public String getTemplatetext() {
+		return templatetext;
 	}
 
-	public void setWikititle(String wikititle) {
-		this.wikititle = wikititle;
+	public void setTemplatetext(String templatetext) {
+		this.templatetext = templatetext;
 	}
 
 	@Override
 	public TemplateDao update() {
-		return  super.update();
+		return super.update();
 	}
 
 	@Override
@@ -92,18 +88,19 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 
 	@Override
 	public TemplateDao create() {
-		return  super.create();
+		return super.create();
 	}
 
 	@Override
 	protected TemplateDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGETEMPLATE (TITLE, WIKITITLE, KTRID) VALUES (?, ?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGETEMPLATE (TITLE, TEMPLATETEXT, KTRID) VALUES (?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setString(1, getTitle());
-		preparedStatement.setString(2, getWikititle());
+		preparedStatement.setString(2, getTemplatetext());
 		preparedStatement.setInt(3, getKtrid());
 
 		preparedStatement.executeUpdate();
@@ -112,25 +109,29 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();		return this;
+		preparedStatement.close();
+		return this;
 	}
 
 	@Override
 	protected TemplateDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(0));
 		preparedStatement.setString(2, getTitle());
-		preparedStatement.setInt(3, getId());
+		preparedStatement.setString(3, getTemplatetext());
+		preparedStatement.setInt(4, getId());
 
 		preparedStatement.executeUpdate();
 
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
-		}		return this;
+		}
+		return this;
 	}
 }

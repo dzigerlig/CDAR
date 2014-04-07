@@ -10,8 +10,10 @@ app.controller("TemplatesController", [
 				WikiService, UserService, $route) {
 			$scope.knowledgetree;
 			$scope.templates;
-			$scope.template;
 			$scope.newTemplateName;
+			$scope.selectedTemplate = 0;
+			$scope.wikiHtmlText = "no wiki entry selected";
+			$scope.wikiEntry;
 
 			TreeService.getTree({
 				ktreeid : $routeParams.treeId
@@ -29,7 +31,6 @@ app.controller("TemplatesController", [
 			
 			$scope.deleteTemplate = function(id) {
 				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
-					console.log(response);
 					reloadTemplates();
 				});
 			};
@@ -50,5 +51,30 @@ app.controller("TemplatesController", [
 						alert("exception");
 					}
 				});
+			};
+			
+			$scope.changeTemplate = function(id) {
+				setLoading();
+
+				$scope.selectedTemplate = id;
+
+				WikiService.getWikiEntry({
+					role : 'producer',
+					entity : 'template',
+					templateid : $scope.selectedTemplate
+				}, function(response) {
+					changeWikiFields(response);
+				});
+			};
+			
+			var changeWikiFields = function(response) {
+				$scope.wikiEntry = response;
+				$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
+				$("#wikiArea").val(
+						$scope.wikiEntry.wikiContentPlain);
+			};
+			
+			var setLoading = function() {
+				$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 			};
 		} ]);

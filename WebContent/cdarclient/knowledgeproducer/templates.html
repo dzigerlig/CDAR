@@ -1,7 +1,7 @@
 
 <body>
-    <div id="wrapper">
-        <div id="sidebar-wrapper">
+	<div id="wrapper">
+		<div id="sidebar-wrapper">
 			<div id="consumer" data-ng-hide="UserService.user.isProducer">
 				<ul class="sidebar-nav">
 					<li class="sidebar-brand sidebar-cdar"><a
@@ -28,57 +28,78 @@
 			</div>
 		</div>
 
-        <div id="page-content-wrapper">
-            <div class="content-header">
-                <h1>
-                    <a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
-                    CDAR - Knowledge Producer
-                </h1>
-            </div>
-            <div class="page-content inset">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p class="lead">Manage Templates for tree: {{knowledgetree.name}}</p>
-                    </div>
-                    <div class="col-md-6">
-                    	<form id="formTemplates" data-role="form"
-									data-ng-submit="addNewTemplate()">
-									<table class="table table-striped">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>Name</th>
-												<th>Delete</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr
-												data-ng-repeat="template in templates | orderBy:'id':false">
-												<td>{{$index+1}}</td>
-												<td><a href="#/knowledgetree/{{template.id}}">{{template.title}}</a></td>
-												<td><a data-ng-click="deleteTemplate(template.id)" href="">Delete Template</a></td>
-											</tr>
-											<tr>
-												<td></td>
-												<td><div class="input-append">
-														<input class="form-horizontal" placeholder="template name"
-															required autofocus data-ng-model="newTemplateName" />
-														<button class="btn btn-success" type="submit">Add template</button>
-													</div></td>
-												<td></td>
-											</tr>
-										</tbody>
-									</table>
-								</form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div id="page-content-wrapper">
+			<div class="content-header">
+				<h1>
+					<a id="menu-toggle" class="btn btn-default"><i
+						class="icon-reorder"></i></a> CDAR - Knowledge Producer
+				</h1>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="lead">Manage Templates for tree:
+							{{knowledgetree.name}}</p>
+					</div>
+					<div class="col-md-2">
+						<a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{knowledgetree.id}}">back to tree</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<form id="formTemplates" data-role="form"
+							data-ng-submit="addNewTemplate()">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Name</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="template in templates | orderBy:'id':false">
+										<td>{{$index+1}}</td>
+										<td><a data-ng-click="changeTemplate(template.id)">{{template.title}}</a></td>
+										<td><a data-ng-click="deleteTemplate(template.id)"
+											href="">Delete Template</a></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><div class="input-append">
+												<input class="form-horizontal" placeholder="template name"
+													required autofocus data-ng-model="newTemplateName" />
+												<button class="btn btn-success" type="submit">Add
+													template</button>
+											</div></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-lg-12" class="well">
+					<h3>WikiEntry of Current node</h3>
+					<tabset justified="true" class="well"> <tab heading="READ"
+						id="wikiread">
+					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
+					</tab> <tab heading="WRITE" id="wikiwrite">
+					<form data-role="form" data-ng-submit="saveWikiEntry()">
+						<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
+						<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+					</form>
+					</tab> </tabset>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-    });
-    </script>
- </body>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>
+</body>

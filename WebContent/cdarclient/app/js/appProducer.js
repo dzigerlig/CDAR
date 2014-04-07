@@ -403,6 +403,7 @@ app
 
 								WikiService.getWikiEntry({
 									role : 'producer',
+									entity : 'node',
 									nodeid : $scope.selectedNode
 								}, function(response) {
 									changeWikiFields(response);
@@ -416,7 +417,8 @@ app
 									$scope.wikiEntry.wikiContentPlain = $scope.wikiMarkupText;
 									setLoading();
 									WikiService.postEntry({
-										role : 'producer'
+										role : 'producer',
+										entity: 'node'
 									}, $scope.wikiEntry, function(response) {
 										changeWikiFields(response);
 									});

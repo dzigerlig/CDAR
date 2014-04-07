@@ -15,7 +15,7 @@ import cdar.bll.model.wiki.WikiEntry;
 @Path("wiki")
 public class WikiController {
 	@GET
-	@Path("/consumer/{nodeid}")
+	@Path("/consumer/node/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getProjectNodeWikiEntry(@PathParam("nodeid") int nodeid) {
 		ProjectTreeModel ptm = new ProjectTreeModel();
@@ -23,7 +23,7 @@ public class WikiController {
 	}
 	
 	@GET
-	@Path("/producer/{nodeid}")
+	@Path("/producer/node/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeid) {
 		TreeModel ktm = new TreeModel();
@@ -31,7 +31,7 @@ public class WikiController {
 	}
 	
 	@POST
-	@Path("/producer")
+	@Path("/producer/node")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry postKnowledgeNodeWikiEntry(WikiEntry wikiEntry) {

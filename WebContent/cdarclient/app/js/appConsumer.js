@@ -71,7 +71,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 }]);
 
 app.factory('WikiService', function($resource) {
-	return $resource('../webapi/wiki/:role/:nodeid/', {}, {
+	return $resource('../webapi/wiki/:role/:entity/:nodeid/:templateid/', {}, {
 		'getWikiEntry' : {
 			method : 'GET'
 		},
@@ -102,7 +102,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	$scope.changeNode = function(id) {
 		$scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
-		WikiService.getWikiEntry({role:'consumer', nodeid: id}, function(response) {
+		WikiService.getWikiEntry({role:'consumer', entity:'node', nodeid: id}, function(response) {
 			$scope.wikiText = response.wikiContentHtml;
 		});
 	};
