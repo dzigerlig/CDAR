@@ -89,12 +89,14 @@ app
 								alert($scope.newSubNodeName);
 							};
 							
-							TreeService.getSubNodes({
-								ktreeid : 1,
-								entityid : 1
-							}, function(response) {
-								alert(JSON.stringify(response));
-							});
+							var getSubNodes = function() {
+								TreeService.getSubNodes({
+									ktreeid : $scope.knowledgetree.id,
+									entityid : $scope.selectedNodeId
+								}, function(response) {
+									$scope.subnodes = response;
+								});
+							};
 							
 							// END SUBNODES //
 
@@ -110,6 +112,10 @@ app
 								               { title:"READ" },
 								               { title:"WRITE" }
 							];
+							
+							$scope.changeSubNode = function(id, name) {
+								alert("changed: " + id + " name: " + name);
+							};
 							
 							var showNodeTitle = function() {
 								if ($scope.selectedNodeId!=0) {
@@ -150,7 +156,7 @@ app
 								$scope.selectedNodeId = id;
 								$scope.selectedNodeName = name;
 								showNodeTitle();
-								
+								getSubNodes();
 								WikiService.getWikiEntry({
 									role : 'producer',
 									entity : 'node',

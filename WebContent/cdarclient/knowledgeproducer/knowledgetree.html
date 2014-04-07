@@ -111,9 +111,9 @@
 											<th>Delete subnode</th>
 									    </tr>
 									    </thead>
-									<tr>
-										<th>1</th>
-										<th>MySubnode</th>
+									<tr data-ng-repeat="subnode in subnodes | orderBy:'id':false">
+										<th>{{$index+1}}</th>
+										<th><a data-ng-click="changeSubNode(subnode.id, subnode.title)" href="">{{subnode.title}}</a></th>
 										<th>Delete</th>
 									</tr>
 									<tr>
