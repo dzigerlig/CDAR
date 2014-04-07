@@ -267,7 +267,7 @@ app
 
 							$scope.wikiHtmlText = "no wiki entry selected";
 							$scope.wikiEntry;
-
+							
 							TreeService.getTree({
 								ktreeid : $routeParams.treeId
 							}, function(response) {

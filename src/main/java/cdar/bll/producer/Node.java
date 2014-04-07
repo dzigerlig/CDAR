@@ -49,7 +49,6 @@ public class Node extends WikiEntity implements Serializable {
 	}
 
 	public void setDid(int did) {
-		System.out.println(did);
 		this.did = did;
 	}
 }
