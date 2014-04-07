@@ -22,13 +22,13 @@ public class SubNodeModel {
 
 	//whole tree
 	public Set<SubNode> getSubNodes(int treeId) {
-		Set<SubNode> ln = new HashSet<SubNode>();
+		Set<SubNode> subnodes = new HashSet<SubNode>();
 
-		for (NodeDao knd : pdc.getNodes(treeId)) {
-			for (SubNodeDao nd : pdc.getSubNodes(knd.getId())) {
-				ln.add(new SubNode(nd));
+		for (NodeDao node : pdc.getNodes(treeId)) {
+			for (SubNodeDao subnode : pdc.getSubNodes(node.getId())) {
+				subnodes.add(new SubNode(subnode));
 			}
 		}
-		return ln;
+		return subnodes;
 	}
 }

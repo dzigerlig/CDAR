@@ -11,11 +11,11 @@ public class NodeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public Set<Node> getNodes(int treeid) {
-		Set<Node> ln = new HashSet<Node>();
-		for (NodeDao knd : pdc.getNodes(treeid)) {
-			ln.add(new Node(knd));
+		Set<Node> nodes = new HashSet<Node>();
+		for (NodeDao node : pdc.getNodes(treeid)) {
+			nodes.add(new Node(node));
 		}
-		return ln;
+		return nodes;
 	}
 
 	public boolean deleteNodeById(int id) {

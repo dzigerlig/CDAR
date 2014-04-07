@@ -49,12 +49,12 @@ public class ProjectTreeModel {
 	}
 
 	public Set<ProjectNode> getProjectNodes(int ptreeid) {
-		Set<ProjectNode> set = new HashSet<ProjectNode>();
+		Set<ProjectNode> projectnodes = new HashSet<ProjectNode>();
 		
 		for (ProjectNodeDao pnd : cdc.getProjectNodes(ptreeid)) {
-			set.add(new ProjectNode(pnd));
+			projectnodes.add(new ProjectNode(pnd));
 		}
 		
-		return set;
+		return projectnodes;
 	}
 }
