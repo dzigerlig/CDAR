@@ -74,7 +74,6 @@ app.controller("TemplatesController", [
 				$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 			};
 			
-			
 			$scope.saveTemplate = function() {
 				$scope.readTab();
 				if ($scope.selectedTemplate.id != 0) {
