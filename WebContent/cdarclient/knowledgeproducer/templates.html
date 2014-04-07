@@ -60,7 +60,7 @@
 								<tbody>
 									<tr data-ng-repeat="template in templates | orderBy:'id':false">
 										<td>{{$index+1}}</td>
-										<td><a data-ng-click="changeTemplate(template.id)">{{template.title}}</a></td>
+										<td><a data-ng-click="changeTemplate(template.id)" href="">{{template.title}}</a></td>
 										<td><a data-ng-click="deleteTemplate(template.id)"
 											href="">Delete Template</a></td>
 									</tr>
@@ -84,10 +84,10 @@
 					<h3>WikiEntry of Current node</h3>
 					<tabset justified="true" class="well"> <tab heading="READ"
 						id="wikiread">
-					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
+					<p data-ng-bind-html="templateHtml">no wiki entry selected</p>
 					</tab> <tab heading="WRITE" id="wikiwrite">
-					<form data-role="form" data-ng-submit="saveWikiEntry()">
-						<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
+					<form data-role="form" data-ng-submit="saveTemplate()">
+						<textarea id="templateArea" name="templateArea" cols="80" rows="10"></textarea>
 						<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
 					</form>
 					</tab> </tabset>

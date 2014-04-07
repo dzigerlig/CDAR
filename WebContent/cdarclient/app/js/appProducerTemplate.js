@@ -11,9 +11,10 @@ app.controller("TemplatesController", [
 			$scope.knowledgetree;
 			$scope.templates;
 			$scope.newTemplateName;
-			$scope.selectedTemplate = 0;
-			$scope.wikiHtmlText = "no wiki entry selected";
-			$scope.wikiEntry;
+			$scope.selectedTemplate;
+			
+			$scope.templateHtml = '';
+			$scope.templatePlain = '';
 
 			TreeService.getTree({
 				ktreeid : $routeParams.treeId
@@ -55,26 +56,36 @@ app.controller("TemplatesController", [
 			
 			$scope.changeTemplate = function(id) {
 				setLoading();
-
-				$scope.selectedTemplate = id;
-
-				WikiService.getWikiEntry({
-					role : 'producer',
-					entity : 'template',
-					templateid : $scope.selectedTemplate
+				TreeService.getTemplate({
+					ktreeid : $routeParams.treeId,
+					entityid : id
 				}, function(response) {
-					changeWikiFields(response);
+					changeTemplateFields(response);
 				});
 			};
 			
-			var changeWikiFields = function(response) {
-				$scope.wikiEntry = response;
-				$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
-				$("#wikiArea").val(
-						$scope.wikiEntry.wikiContentPlain);
+			var changeTemplateFields = function(response) {
+				$scope.selectedTemplate = response;
+				$scope.templateHtml = $scope.selectedTemplate.templatetexthtml;
+				$("#templateArea").val($scope.selectedTemplate.templatetext);
 			};
 			
 			var setLoading = function() {
 				$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+			};
+			
+			
+			$scope.saveTemplate = function() {
+				if ($scope.selectedTemplate.id != 0) {
+					$scope.templatePlain = $("#templateArea").val();
+					$scope.selectedTemplate.templatetext = $scope.templatePlain;
+					setLoading();
+					alert(JSON.stringify($scope.selectedTemplate));
+					TreeService.editTemplate({
+						entityid : $scope.selectedTemplate.id
+					}, $scope.selectedTemplate, function(response) {
+						changeTemplateFields(response);
+					});
+				}
 			};
 		} ]);

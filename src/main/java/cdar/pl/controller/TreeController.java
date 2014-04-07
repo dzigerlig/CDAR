@@ -22,6 +22,8 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.SubNode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 @Path("{uid}/ktree")
 public class TreeController {
@@ -66,11 +68,29 @@ public class TreeController {
 		return ktm.getKnowledgeTemplates(ktreeid);
 	}
 	
+	@GET
+	@Path("templates/{ktreeid}/{templateid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Template getTemplate(@PathParam("ktreeid") int ktreeid, @PathParam("templateid") int templateid) {
+		return ktm.getKnowledgeTemplate(templateid);
+	}
+	
 	@POST
 	@Path("templates/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
 		return ktm.addKnowledgeTemplate(template);
+	}
+	
+	@POST
+	@Path("templates/edit/{templateid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Template editTemplate(Template template) {
+		ProducerDaoController pdc = new ProducerDaoController();
+		TemplateDao templatedao = pdc.getTemplate(template.getId());
+		templatedao.setTemplatetext(template.getTemplatetext());
+		templatedao.setTitle(template.getTitle());
+		return new Template(templatedao.update());
 	}
 	
 	@POST

@@ -7,7 +7,7 @@ function setReload(value) {
 }
 
 app.factory('TreeService', function($resource) {
-	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/', {}, {
+	return $resource('../webapi/1/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
 		// Tree
 
 		'getTrees' : {
@@ -140,11 +140,17 @@ app.factory('TreeService', function($resource) {
 				action : 'delete',
 			}
 		},
-
 		// Templates
 		'getTemplates' : {
 			method : 'GET',
 			isArray : true,
+			params : {
+				entity : 'templates'
+			}
+		},
+		'getTemplate' : {
+			method : 'GET',
+			isArray : false,
 			params : {
 				entity : 'templates'
 			}
@@ -156,7 +162,13 @@ app.factory('TreeService', function($resource) {
 				action : 'add'
 			}
 		},
-
+		'editTemplate' : {
+			method : 'POST',
+			params : {
+				entity : 'templates',
+				action : 'edit'
+			}
+		},
 		// Subnodes
 		'getSubNodes' : {
 			method : 'GET',

@@ -1,5 +1,7 @@
 package cdar.bll.producer;
 
+import info.bliki.wiki.model.WikiModel;
+
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
@@ -9,6 +11,7 @@ public class Template extends BasicEntity {
 	private int treeid;
 	private String title;
 	private String templatetext;
+	private String templatetexthtml;
 	
 	public Template() {
 		
@@ -24,6 +27,9 @@ public class Template extends BasicEntity {
 		this.setTreeid(treeid);
 		setTitle(title);
 		setTemplatetext(templatetext);
+		if (getTemplatetext()!=null) {
+			setTemplatetexthtml(WikiModel.toHtml(getTemplatetext()));
+		}
 	}
 
 	public Template(int id) {
@@ -52,5 +58,13 @@ public class Template extends BasicEntity {
 
 	public void setTemplatetext(String templatetext) {
 		this.templatetext = templatetext;
+	}
+
+	public String getTemplatetexthtml() {
+		return templatetexthtml;
+	}
+
+	public void setTemplatetexthtml(String templatetexthtml) {
+		this.templatetexthtml = templatetexthtml;
 	}
 }
