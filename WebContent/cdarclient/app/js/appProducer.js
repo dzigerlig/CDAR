@@ -74,15 +74,27 @@ app
 							$scope.knowledgetree;
 							$scope.nodes;
 							$scope.UserService = UserService;
-							$scope.selectedNode = 0;
+							$scope.selectedNode;
+							$scope.selectedNodeId = 0;
+							$scope.selectedNodeName = '';
 
-							$scope.wikiHtmlText = "no wiki entry selected";
-							$scope.wikiEntry;
+							$scope.nodeTitle;
+							$scope.wikiHtmlText = "";
 							
 							$scope.tabs = [
 							               { title:"READ" },
 							               { title:"WRITE" }
 							             ];
+							
+							var showNodeTitle = function() {
+								if ($scope.selectedNodeId!=0) {
+									$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
+								} else {
+									$scope.nodeTitle = "Selected node: no node selected";
+								}
+							};
+							
+							showNodeTitle();
 							
 							var switchToRead = function() {
 								$scope.tabs[0].active = true;
@@ -245,24 +257,25 @@ app
 								$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 							};
 
-							var changeWikiFields = function(response) {
-								$scope.wikiEntry = response;
-								$scope.wikiHtmlText = $scope.wikiEntry.wikiContentHtml;
+							var changeWikiFields = function() {
+								$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
 								$("#wikiArea").val(
-										$scope.wikiEntry.wikiContentPlain);
+										$scope.selectedNode.wikiContentPlain);
 							};
 
-							$scope.changeNode = function(id) {
+							$scope.changeNode = function(id, name) {
 								setLoading();
-
-								$scope.selectedNode = id;
-
+								$scope.selectedNodeId = id;
+								$scope.selectedNodeName = name;
+								showNodeTitle();
+								
 								WikiService.getWikiEntry({
 									role : 'producer',
 									entity : 'node',
-									nodeid : $scope.selectedNode
+									nodeid : id
 								}, function(response) {
-									changeWikiFields(response);
+									$scope.selectedNode = response;
+									changeWikiFields();
 								});
 							};
 
@@ -270,16 +283,16 @@ app
 								if ($scope.selectedNode != 0) {
 									$scope.wikiMarkupText = $("#wikiArea")
 											.val();
-									$scope.wikiEntry.wikiContentPlain = $scope.wikiMarkupText;
+									$scope.selectedNode.wikiContentPlain = $scope.wikiMarkupText;
 									switchToRead();
 									setLoading();
 									WikiService.postEntry({
 										role : 'producer',
 										entity: 'node'
-									}, $scope.wikiEntry, function(response) {
+									}, $scope.selectedNode, function(response) {
 										changeWikiFields(response);
 									});
-								}
+								};
 							};
 							
 						} ]);
