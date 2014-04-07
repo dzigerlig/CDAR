@@ -99,8 +99,4 @@ app.controller("TemplatesController", [
 				$scope.tabs[0].active = true;
 				$scope.tabs[1].active = true;
 			};
-			
-			
-//			$scope.readactive = true;
-//			$scope.editactive = false;
 		} ]);
