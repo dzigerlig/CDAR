@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.producer.Template;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -26,6 +27,15 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		setKtrid(ktrid);
 		setTitle(title);
 		setTemplatetext(templatetext);
+	}
+	
+	public TemplateDao(Template template) {
+		setId(template.getId());
+		setKtrid(template.getTreeid());
+		setCreationTime(template.getCreationTime());
+		setLastModificationTime(template.getLastModified());
+		setTitle(template.getTitle());
+		setTemplatetext(template.getTemplatetexthtml());
 	}
 
 	public int getId() {

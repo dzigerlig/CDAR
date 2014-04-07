@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.model.user.User;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
@@ -30,6 +31,15 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 	public UserDao(String username, String password) {
 		setUsername(username);
 		setPassword(password);
+	}
+	
+	public UserDao(User user) {
+		setId(user.getId());
+		setCreationTime(user.getCreationTime());
+		setLastModificationTime(user.getLastModified());
+		setUsername(user.getUsername());
+		setPassword(user.getPassword());
+		setAccesstoken(user.getAccesstoken());
 	}
 	
 	public int getId() {

@@ -7,6 +7,7 @@ import cdar.bll.BasicEntity;
 public class UserComment extends BasicEntity {
 	private int refUserId;
 	private int refProjectNodeId;
+	private String comment;
 	
 	public UserComment() {
 		super();
@@ -35,5 +36,11 @@ public class UserComment extends BasicEntity {
 		this.refProjectNodeId = refProjectNode;
 	}
 
-	
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 }

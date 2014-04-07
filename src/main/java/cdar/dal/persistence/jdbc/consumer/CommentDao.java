@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.consumer.UserComment;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -22,6 +23,15 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		setKpnid(kpnid);
 		setUid(uid);
 		setComment(comment);
+	}
+	
+	public CommentDao(UserComment comment) {
+		setId(comment.getId());
+		setCreationTime(comment.getCreationTime());
+		setLastModificationTime(comment.getLastModified());
+		setUid(comment.getRefUserId());
+		setKpnid(comment.getRefProjectNode());
+		setComment(comment.getComment());
 	}
 
 	public int getId() {
@@ -76,17 +86,6 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	public CommentDao create() {
 		return super.create();
 	}
-	
-//	CREATE TABLE IF NOT EXISTS cdar.UserComment (
-//	  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-//	  creation_time DATETIME NULL,
-//	  last_modification_time DATETIME NULL,
-//	  uid INT,
-//	  kpnid INT,
-//	  comment VARCHAR(200) NOT NULL,
-//	  FOREIGN KEY (uid) REFERENCES cdar.User (id),
-//	  FOREIGN KEY (kpnid) REFERENCES cdar.KnowledgeProjectNode (id)
-//	);
 
 	@Override
 	public CommentDao update() {

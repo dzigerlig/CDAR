@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
 
+import cdar.bll.producer.NodeLink;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -34,6 +35,16 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		setTargetid(targetid);
 		setKtrid(ktrid);
 		setKsnid(ksnid);
+	}
+	
+	public NodeLinkDao(NodeLink nodelink) {
+		setId(nodelink.getId());
+		setCreationTime(nodelink.getCreationTime());
+		setLastModificationTime(nodelink.getLastModified());
+		setSourceid(nodelink.getSourceId());
+		setTargetid(nodelink.getTargetId());
+		setKsnid(nodelink.getRefSubNodeId());
+		setKtrid(nodelink.getRefTreeId());
 	}
 	
 	public int getId() {

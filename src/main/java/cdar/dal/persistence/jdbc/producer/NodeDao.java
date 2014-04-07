@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.producer.Node;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -34,6 +35,17 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 		setDid(did);
+	}
+	
+	public NodeDao(Node node) {
+		setId(node.getId());
+		setCreationTime(node.getCreationTime());
+		setLastModificationTime(node.getLastModified());
+		setKtrid(node.getRefTreeId());
+		setTitle(node.getTitle());
+		setWikititle(node.getWikiTitle());
+		setDynamicTreeFlag(node.getDynamicTreeFlag());
+		setDid(node.getDid());
 	}
 
 	public int getId() {

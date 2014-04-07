@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.consumer.ProjectNode;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -30,6 +31,16 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		setTitle(title);
 		setWikititle(String.format("NODE_%d", getId()));
 		setNodestatus(0);
+	}
+	
+	public ProjectNodeDao(ProjectNode projectnode) {
+		setId(projectnode.getId());
+		setCreationTime(projectnode.getCreationTime());
+		setLastModificationTime(projectnode.getLastModified());
+		setKptid(projectnode.getRefProjectTreeId());
+		setTitle(projectnode.getTitle());
+		setWikititle(projectnode.getWikiTitle());
+		setNodestatus(projectnode.getNodeStatus());
 	}
 	
 	public int getId() {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.consumer.ProjectTree;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -25,6 +26,13 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 	public ProjectTreeDao(int uid, String name) {
 		setUid(uid);
 		setName(name);
+	}
+	
+	public ProjectTreeDao(ProjectTree projecttree) {
+		setId(projecttree.getId());
+		setCreationTime(projecttree.getCreationTime());
+		setLastModificationTime(projecttree.getLastModified());
+		setName(projecttree.getName());
 	}
 
 	public int getId() {

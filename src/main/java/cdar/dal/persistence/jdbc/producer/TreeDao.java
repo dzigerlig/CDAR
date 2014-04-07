@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import cdar.bll.producer.Tree;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -24,6 +25,13 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	public TreeDao(int uid, String name) {
 		setUid(uid);
 		setName(name);
+	}
+	
+	public TreeDao(Tree tree) {
+		setId(tree.getId());
+		setCreationTime(tree.getCreationTime());
+		setLastModificationTime(tree.getLastModified());
+		setName(tree.getName());
 	}
 	
 	public int getId() {

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
 
+import cdar.bll.producer.Directory;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -21,6 +22,15 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 
 	public DirectoryDao(int treeid) {
 		setKtrid(treeid);
+	}
+	
+	public DirectoryDao(Directory directory) {
+		setId(directory.getId());
+		setCreationTime(directory.getCreationTime());
+		setLastModificationTime(directory.getLastModified());
+		setParentid(directory.getParentid());
+		setKtrid(directory.getKtrid());
+		setTitle(directory.getTitle());
 	}
 
 	public int getId() {

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
 
+import cdar.bll.consumer.ProjectNodeLink;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -31,6 +32,16 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		setTargetid(targetid);
 		setKptid(kptid);
 		setKpnsnid(kpnsnid);
+	}
+	
+	public ProjectNodeLinkDao(ProjectNodeLink projectnodelink) {
+		setId(projectnodelink.getId());
+		setCreationTime(projectnodelink.getCreationTime());
+		setLastModificationTime(projectnodelink.getLastModified());
+		setSourceid(projectnodelink.getSourceId());
+		setTargetid(projectnodelink.getTargetId());
+		setKpnsnid(projectnodelink.getRefProjectSubNodeId());
+		setKptid(projectnodelink.getRefProjectTreeId());
 	}
 	
 	public int getId() {
