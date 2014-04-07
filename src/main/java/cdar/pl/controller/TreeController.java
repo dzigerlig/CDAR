@@ -178,7 +178,7 @@ public class TreeController {
 	@Path("links/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
-		return lM.getLinks();
+		return lM.getLinks(ktreeid);
 	}		
 	
 	@POST

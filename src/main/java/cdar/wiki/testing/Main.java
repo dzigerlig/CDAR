@@ -3,6 +3,8 @@ import java.io.IOException;
 
 import javax.security.auth.login.LoginException;
 
+import org.wikipedia.Wiki;
+
 import cdar.bll.model.wiki.WikiEntry;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeConsumerDaoController;
 import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectNodeDao;
@@ -12,9 +14,10 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, LoginException {
 
-//	Wiki c = new Wiki();
-	//c.login("admin", "password");
-	//c.edit("Test", "edit(Articletitle, Text below your summary, [[Summarytitle]], minor (t/f), bot ,-1<-- for a new summary ,timestamp null means i dont care);", "How to Add a new Summary", false, true,-1,null);
+	Wiki c = new Wiki();
+	c.login("admin", "password");
+	c.edit("Test", "edit(Articletitle, Text below your summary, [[Summarytitle]], minor (t/f), bot ,-1<-- for a new summary ,timestamp null means i dont care);", "How to Add a new Summary", false, true,-1,null);
+	
 	//System.out.println(c.getSectionText("Test", 4));
 	//String[] map = c.listPages("", null, 0);
 	

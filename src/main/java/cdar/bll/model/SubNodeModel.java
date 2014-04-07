@@ -3,12 +3,7 @@ package cdar.bll.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.producer.Node;
-import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.SubNode;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeSubNodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.SubNodeDao;

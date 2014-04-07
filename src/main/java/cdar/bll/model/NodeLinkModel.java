@@ -1,37 +1,38 @@
 package cdar.bll.model;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import cdar.bll.producer.NodeLink;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class NodeLinkModel {
-	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
+	private ProducerDaoController pdc = new ProducerDaoController();
 
 
-	public Set<NodeLink> getLinks() {
+	public Set<NodeLink> getLinks(int treeid) {
 		Set<NodeLink>  kl= new HashSet<NodeLink>();
 
-		for (KnowledgeNodeLinkDao knd : kpdc.getKnowledgeTreeById(1).getKnowledgeNodeLinks()) {
-			kl.add(new NodeLink(knd));
+		for (NodeLinkDao nld : pdc.getNodeLinks(treeid)) {
+			kl.add(new NodeLink(nld));
 		}
 		return kl;
 	}
 	
 	public void removeLinkById(int id)
 	{
-		System.out.println("remove link"+id);
-
-		kpdc.removeKnowledgeNodeLink(id);
+		NodeLinkDao nld = pdc.getNodeLink(id);
+		nld.delete();
 	}
 	
 	public NodeLink addLink(NodeLink nl)
 	{
-		return new NodeLink(kpdc.addKnowledgeNodeLink(nl.getSourceId(), nl.getTargetId(), nl.getRefTreeId()));
+		NodeLinkDao nld = new NodeLinkDao();
+		nld.setKsnid(nl.getRefSubNodeId());
+		nld.setKtrid(nl.getRefTreeId());
+		nld.setSourceid(nl.getSourceId());
+		nld.setTargetid(nl.getTargetId());
+		return new NodeLink(nld.create());
 	}
 }

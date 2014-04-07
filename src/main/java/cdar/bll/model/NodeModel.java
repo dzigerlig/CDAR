@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
-import cdar.bll.producer.NodeMapping;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 

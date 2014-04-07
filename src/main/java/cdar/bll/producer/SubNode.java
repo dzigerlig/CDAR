@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeSubNodeDao;
 import cdar.dal.persistence.jdbc.producer.SubNodeDao;
 
 public class SubNode extends WikiEntity {

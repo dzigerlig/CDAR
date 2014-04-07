@@ -35,6 +35,10 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		setKsnid(ksnid);
 	}
 	
+	public NodeLinkDao() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}

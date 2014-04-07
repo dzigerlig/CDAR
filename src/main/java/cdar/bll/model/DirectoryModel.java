@@ -4,9 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Directory;
-import cdar.dal.persistence.hibernate.knowledgeproducer.DictionaryDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 

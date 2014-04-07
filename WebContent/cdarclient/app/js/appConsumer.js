@@ -71,7 +71,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 }]);
 
 app.factory('WikiService', function($resource) {
-	return $resource('../webapi/wiki/:role/:entity/:nodeid/:templateid/', {}, {
+	return $resource('../webapi/wiki/:role/:entity/:nodeid/', {}, {
 		'getWikiEntry' : {
 			method : 'GET'
 		},

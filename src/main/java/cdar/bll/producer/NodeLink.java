@@ -4,6 +4,7 @@ import java.util.Date;
 
 import cdar.bll.BasicEntity;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeLinkDao;
+import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 
 public class NodeLink extends BasicEntity {
 	private int sourceId;
@@ -18,15 +19,16 @@ public class NodeLink extends BasicEntity {
 	
 	
 	public NodeLink(int id, Date creationDate, Date lastModification,
-			int sourceId, int targetId) {
+			int sourceId, int targetId, int subnodeid, int treeid) {
 		super(id, creationDate, lastModification);
 		this.sourceId = sourceId;
 		this.targetId = targetId;
 	}
 	
-	public NodeLink(KnowledgeNodeLinkDao klcd) {
-		this(klcd.getId(), klcd.getCreationTime(),klcd.getLastModificationTime(),klcd.getKnowledgeSourceNode().getId(),klcd.getKnowledgeTargetNode().getId());
+	public NodeLink(NodeLinkDao nld) {
+		this(nld.getId(), nld.getCreationTime(), nld.getLastModificationTime(), nld.getSourceid(), nld.getTargetid(), nld.getKsnid(), nld.getKtrid());
 	}
+
 
 	public int getSourceId() {
 		return sourceId;
