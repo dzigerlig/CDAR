@@ -5,8 +5,8 @@ var NODE = 'node';
 var LINK = 'link';
 
 function initializeJsPlumb() {
-    //$('html[manifest=saveappoffline.appcache]').attr('content', '');
-    scope = angular.element(document.getElementById("wrapper")).scope();
+	// $('html[manifest=saveappoffline.appcache]').attr('content', '');
+	scope = angular.element(document.getElementById("wrapper")).scope();
 	setDefaultSettings();
 	makePopupEvents();
 	bindDetachConnectorEvent();
@@ -37,11 +37,22 @@ function addHTMLNode(response, e) {
 }
 
 // imported Nodes
-function drawExistingNodes(data) {
+function drawExistingNodes(data, resSubNodes) {
 	isInizialized = false;
+	var map = {};
+	jQuery.each(resSubNodes, function(object) {
+		if (map[this.knid] === undefined) {
+			var arr = [ this ];
+			map[this.knid] = arr;
+		} else {
+			var arr = map[this.knid];
+			arr.push(this);
+		}
+	});
+
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
-			var newState = $('<div>').attr('id', NODE + this.id).addClass('w');
+			var newState = $('<div>').attr('id', NODE + this.id).addClass('w').data("subNodes", {subNodes: map[this.id]});
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
 			newState.css({
@@ -56,6 +67,7 @@ function drawExistingNodes(data) {
 			makeSource(connect, newState);
 
 			appendElements(title, connect, newState);
+			console.log(newState);
 		}
 
 	});
@@ -237,12 +249,13 @@ function setLinkId(connection, id) {
 	connection.id = LINK + id;
 };
 
-// Code not Tested
 function bindConnection() {
 	jsPlumb.bind("connection", function(info) {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
+	        $('#popup-box-1').show();
+
 			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
 					.replace(NODE, ""), info.connection);
 		}

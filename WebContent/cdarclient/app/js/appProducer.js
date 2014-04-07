@@ -119,8 +119,6 @@ app
 								TreeService.getSubNodes({
 									ktreeid : $routeParams.treeId
 								},resNodes, function(resSubNodes) {
-									console.log(resNodes);
-									console.log(resSubNodes);
 									drawExistingNodes(resNodes, resSubNodes);
 									$scope.getLinks(TreeService);
 

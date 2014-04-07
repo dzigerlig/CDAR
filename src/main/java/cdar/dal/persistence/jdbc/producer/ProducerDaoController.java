@@ -292,7 +292,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public NodeLinkDao getNodeLink(int id) {
-		String getNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
