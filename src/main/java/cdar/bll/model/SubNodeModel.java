@@ -9,24 +9,31 @@ import cdar.bll.producer.SubNode;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeNodeDao;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeProducerDaoController;
 import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeSubNodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.SubNodeDao;
 
 public class SubNodeModel {
-	private KnowledgeProducerDaoController kpdc = new KnowledgeProducerDaoController();
-
+	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public void removeSubNodeById(int id) {
-		//kpdc.removeKnowledgeSubNode(1,id);		
+		pdc.getSubNode(id).delete();
 	}
 
 	public SubNode addSubNode(SubNode sN) {
-		return new SubNode(kpdc.addKnowledgeSubNode(sN.getId(), sN.getTitle()));
+		SubNodeDao subnode = new SubNodeDao(sN.getKnid(), sN.getTitle());
+		return new SubNode(subnode.create());
 	}
 
+	//whole tree
 	public Set<SubNode> getSubNodes(int treeId) {
-		Set<SubNode> sN = new HashSet<SubNode>();
-		/*for (KnowledgeSubNodeDao ksnd : kpdc.getKnowledgeTreeById(treeId).getKnowledgeSubNodes())) {
-			sN.add(new SubNode(ksnd));
-		}*/
-		return sN;
+		Set<SubNode> ln = new HashSet<SubNode>();
+
+		for (NodeDao knd : pdc.getNodes(treeId)) {
+			for (SubNodeDao nd : pdc.getSubNodes(knd.getId())) {
+				ln.add(new SubNode(nd));
+			}
+		}
+		return ln;
 	}
 }

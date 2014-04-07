@@ -140,6 +140,8 @@ app.factory('TreeService', function($resource) {
 				action : 'delete',
 			}
 		},
+
+		// Templates
 		'getTemplates' : {
 			method : 'GET',
 			isArray : true,
@@ -152,6 +154,15 @@ app.factory('TreeService', function($resource) {
 			params : {
 				entity : 'templates',
 				action : 'add'
+			}
+		},
+
+		// Subnodes
+		'getSubNodes' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'subnodes'
 			}
 		},
 		'deleteTemplate' : {
@@ -260,14 +271,26 @@ app
 							}, function(resDirectory) {
 								TreeService.getNodes({
 									ktreeid : $routeParams.treeId
-								}, function(resNodes) {
-									drawExistingNodes(resNodes);
-									$scope.getLinks(TreeService);
-									directoryDataToArray(resDirectory,
-											resNodes);
-								});
+								},
+										function(resNodes) {
+
+											$scope.getLinks(TreeService);
+											directoryDataToArray(resDirectory,
+													resNodes);
+											$scope.getSubNodes(resNodes, TreeService);
+										});
 
 							});
+
+							$scope.getSubNodes = function(resNodes, TreeService) {
+								TreeService.getSubNodes({
+									ktreeid : $routeParams.treeId
+								},resNodes, function(resSubNodes) {
+									console.log(resNodes);
+									console.log(resSubNodes);
+									drawExistingNodes(resNodes, resSubNodes);
+								});
+							};
 
 							$scope.getLinks = function(TreeService) {
 								TreeService.getLinks({
@@ -310,7 +333,7 @@ app
 								}, {
 									id : id,
 									title : newTitle,
-									did :did
+									did : did
 								});
 							};
 
@@ -347,12 +370,12 @@ app
 									ktreeid : $routeParams.treeId
 								}, id);
 							};
-							
+
 							$scope.addDirectory = function(parentid) {
 								TreeService.addDirectory({
 									ktreeid : $routeParams.treeId
 								}, {
-									ktrid:$routeParams.treeId,
+									ktrid : $routeParams.treeId,
 									parentid : parentid
 								}, function(response) {
 									createDirectory(response);
