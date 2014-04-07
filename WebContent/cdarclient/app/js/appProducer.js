@@ -107,10 +107,10 @@ app
 								},
 										function(resNodes) {
 
-											$scope.getLinks(TreeService);
 											directoryDataToArray(resDirectory,
 													resNodes);
 											$scope.getSubNodes(resNodes, TreeService);
+
 										});
 
 							});
@@ -122,6 +122,8 @@ app
 									console.log(resNodes);
 									console.log(resSubNodes);
 									drawExistingNodes(resNodes, resSubNodes);
+									$scope.getLinks(TreeService);
+
 								});
 							};
 

@@ -166,7 +166,7 @@ function directoryDataToArray(resDirectory, resNodes) {
 		treeArray.push({
 			"id" : DIRECTORY + entry.id,
 			"parent" : parentId,
-			"text" : entry.title,
+			"text" : entry.title
 		});
 	});
 
