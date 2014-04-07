@@ -216,6 +216,20 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				entity : 'subnodes'
 			}
 		},
+		'addSubNode' : {
+			method : 'POST',
+			params : {
+				entity: 'subnodes',
+				action : 'add'
+			}
+		},
+		'deleteSubNode' : {
+			method : 'POST',
+			params : {
+				entity: 'subnodes',
+				action : 'delete'
+			}
+		},
 		'deleteTemplate' : {
 			method : 'POST',
 			params : {

@@ -83,11 +83,7 @@ app
 							$scope.selectedSubnode;
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
-							$scope.newSubNodeName = '',
-							
-							$scope.addNewSubNode = function() {
-								alert($scope.newSubNodeName);
-							};
+							$scope.newSubNodeName = '';
 							
 							var getSubNodes = function() {
 								TreeService.getSubNodes({
@@ -113,8 +109,28 @@ app
 								               { title:"WRITE" }
 							];
 							
+							$scope.addNewSubNode = function() {
+								TreeService.addSubNode({
+									ktreeid : $scope.knowledgetree.id
+								}, {
+									knid : $scope.selectedNodeId,
+									title : $scope.newSubNodeName
+								}, function(response) {
+									getSubNodes();
+									$scope.newSubNodeName = '';
+								});
+							};
+							
 							$scope.changeSubNode = function(id, name) {
 								alert("changed: " + id + " name: " + name);
+							};
+							
+							$scope.deleteSubNode = function(id) {
+								TreeService.deleteSubNode({
+									ktreeid : $routeParams.treeId
+								}, id, function(response) {
+									getSubNodes();
+								});
 							};
 							
 							var showNodeTitle = function() {
@@ -166,7 +182,7 @@ app
 									changeWikiFields();
 								});
 							};
-
+							
 							$scope.saveWikiEntry = function() {
 								if ($scope.selectedNode != 0) {
 									$scope.wikiMarkupText = $("#wikiArea")
