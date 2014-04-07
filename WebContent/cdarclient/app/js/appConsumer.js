@@ -9,6 +9,8 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 		});
 	};
 	
+	alert(UserService.user.id);
+	
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
