@@ -77,10 +77,10 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.saveTemplate = function() {
-				$scope.readTab();
 				if ($scope.selectedTemplate.id != 0) {
 					$scope.templatePlain = $("#templateArea").val();
 					$scope.selectedTemplate.templatetext = $scope.templatePlain;
+					switchToRead();
 					setLoading();
 					TreeService.editTemplate({
 						entityid : $scope.selectedTemplate.id
@@ -89,4 +89,18 @@ app.controller("TemplatesController", [
 					});
 				}
 			};
+			
+			$scope.tabs = [
+			               { title:"READ" },
+			               { title:"WRITE" }
+			             ];
+			
+			var switchToRead = function() {
+				$scope.tabs[0].active = true;
+				$scope.tabs[1].active = true;
+			};
+			
+			
+//			$scope.readactive = true;
+//			$scope.editactive = false;
 		} ]);
