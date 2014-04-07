@@ -268,6 +268,16 @@ app
 							$scope.wikiHtmlText = "no wiki entry selected";
 							$scope.wikiEntry;
 							
+							$scope.tabs = [
+							               { title:"READ" },
+							               { title:"WRITE" }
+							             ];
+							
+							var switchToRead = function() {
+								$scope.tabs[0].active = true;
+								$scope.tabs[1].active = true;
+							};
+							
 							TreeService.getTree({
 								ktreeid : $routeParams.treeId
 							}, function(response) {
@@ -450,6 +460,7 @@ app
 									$scope.wikiMarkupText = $("#wikiArea")
 											.val();
 									$scope.wikiEntry.wikiContentPlain = $scope.wikiMarkupText;
+									switchToRead();
 									setLoading();
 									WikiService.postEntry({
 										role : 'producer',
@@ -459,6 +470,7 @@ app
 									});
 								}
 							};
+							
 						} ]);
 
 

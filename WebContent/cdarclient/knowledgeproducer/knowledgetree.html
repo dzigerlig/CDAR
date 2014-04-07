@@ -86,10 +86,10 @@
 				</div>
 				<div class="col-lg-12" class="well">
 					<h3>WikiEntry of Current node</h3>
-					<tabset justified="true" class="well"> <tab heading="READ" 
+					<tabset justified="true" class="well"> <tab heading="{{tabs[0].title}}" active="tabs[0].active"
 						id="wikiread" >
 					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
-					</tab> <tab heading="WRITE" id="wikiwrite">
+					</tab> <tab heading="{{tabs[1].title}}" id="wikiwrite" active="tabs[1].active">
 					<form data-role="form" data-ng-submit="saveWikiEntry()">
 						<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
 						<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
