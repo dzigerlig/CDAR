@@ -84,7 +84,7 @@ public class UserDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		UserDao user = new UserDao();
+		UserDao user = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -92,6 +92,7 @@ public class UserDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getUserByIdStatement);
 			if (result.next()) {
+				user = new UserDao();
 				user.setId(result.getInt(1));
 				user.setCreationTime(result.getDate(2));
 				user.setLastModificationTime(result.getDate(3));
@@ -109,18 +110,20 @@ public class UserDaoController extends CdarJdbcHelper {
 
 	public UserDao loginUser(String username, String password) {
 		UserDao user = getUserByName(username);
-		if (user!=null && user.getPassword().equals(password)) {
+		if (user != null && user.getPassword().equals(password)) {
 			try {
-				user.setAccesstoken(sha1(String.format("%s%s",user.getPassword(),new Date().toString())));
+				user.setAccesstoken(sha1(String.format("%s%s",
+						user.getPassword(), new Date().toString())));
 				user.update();
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			return getUserByName(username);
 		}
+
 		return null;
 	}
-	
+
 	// SOURCE: http://www.sha1-online.com/sha1-java/
 	static String sha1(String input) throws NoSuchAlgorithmException {
 		MessageDigest mDigest = MessageDigest.getInstance("SHA1");
