@@ -109,7 +109,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	}
 
 	public void setDid(int did) {
-		System.out.println(getTitle() + ": setting did: " + did);
 		this.did = did;
 	}
 
