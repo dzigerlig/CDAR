@@ -253,7 +253,7 @@ app
 
 											directoryDataToArray(resDirectory,
 													resNodes);
-											$scope.getSubNodes(resNodes, TreeService);
+											$scope.getSubnodes(resNodes, TreeService);
 
 										});
 
@@ -264,25 +264,25 @@ app
 									ktreeid : $routeParams.treeId
 								},resNodes, function(resSubnodes) {
 									drawExistingNodes(resNodes, resSubnodes);
-									$scope.getLinks(TreeService, resSubNodes);
+									$scope.getLinks(TreeService, resSubnodes);
 								});
 							};
 
-							$scope.getLinks = function(TreeService, resSubNodes) {
+							$scope.getLinks = function(TreeService, resSubnodes) {
 								TreeService.getLinks({
 									ktreeid : $routeParams.treeId
-								}, resSubNodes, function(response) {
-									makeNodeHierarchy(response, resSubNodes);
+								}, resSubnodes, function(response) {
+									makeNodeHierarchy(response, resSubnodes);
 									w_launch();
 								});
 							};
 							
-							$scope.updateLink = function(linkId, subNodeId) {
+							$scope.updateLink = function(linkId, subnodeId) {
 								TreeService.getLinks({
 									ktreeid : $routeParams.treeId
 								}, {
 									id : linkId,
-									ksnid : subNodeId
+									ksnid : subnodeId
 								} );
 							};
 
