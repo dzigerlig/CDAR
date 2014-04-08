@@ -46,6 +46,7 @@ public class WikiEntry extends WikiEntity {
 			//Entry doesn't exist, create new and continue
 			try {
 				c.login("admin", "password");
+				setWikiContentPlain(getWikiTitle());
 				c.edit(getWikiTitle(), getWikiContentPlain(), "");
 			} catch (Exception ex) {
 				ex.printStackTrace();

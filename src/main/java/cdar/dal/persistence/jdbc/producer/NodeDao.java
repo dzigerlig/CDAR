@@ -24,7 +24,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	public NodeDao(int ktrid, int did) {
 		setKtrid(ktrid);
-		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 		setDid(did);
 	}
@@ -32,7 +31,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	public NodeDao(int ktrid, String title, int did) {
 		setKtrid(ktrid);
 		setTitle(title);
-		setWikititle(String.format("NODE_%d", getId()));
 		setDynamicTreeFlag(0);
 		setDid(did);
 	}
@@ -124,7 +122,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	@Override
 	public NodeDao create() {
-		return  super.create();
+		return super.create();
 	}
 
 	@Override
@@ -133,13 +131,12 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGENODE (CREATION_TIME, TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?, ?)",
+						"INSERT INTO KNOWLEDGENODE (CREATION_TIME, TITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
-		preparedStatement.setString(3, getWikititle());
-		preparedStatement.setInt(4, getKtrid());
-		preparedStatement.setInt(5, getDynamicTreeFlag());
+		preparedStatement.setInt(3, getKtrid());
+		preparedStatement.setInt(4, getDynamicTreeFlag());
 
 		preparedStatement.executeUpdate();
 
@@ -147,6 +144,12 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
+		preparedStatement.close();
+
+		//update wikititle
+		preparedStatement = connection.prepareStatement(String.format("UPDATE KNOWLEDGENODE SET WIKITITLE = ? where id = %d;", getId()));
+		preparedStatement.setString(1, String.format("NODE_%d", getId()));
+		preparedStatement.executeUpdate();
 		preparedStatement.close();
 
 		preparedStatement = connection
