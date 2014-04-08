@@ -7,12 +7,14 @@ var SUBNODE = 'subNode';
 
 
 function initializeJsPlumb() {
-	// $('html[manifest=saveappoffline.appcache]').attr('content', '');
 	scope = angular.element(document.getElementById("wrapper")).scope();
 	setDefaultSettings();
 	makePopupEvents();
 	bindDetachConnectorEvent();
 	bindConnection();
+	$('html').click(function () {
+        $('[id^=popup-box-]').hide();
+    });
 };
 
 function addHTMLNode(response, e) {
@@ -302,7 +304,7 @@ function bindConnection() {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
-			console.log(info.connection.source.data(SUBNODE).subNode);
+	        $('#radio-form').empty();
 			$.each(info.connection.source.data(SUBNODE).subNode, function(
 					object) {
 				$('#radio-form').append(
