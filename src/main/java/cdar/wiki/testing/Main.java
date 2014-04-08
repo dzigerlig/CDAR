@@ -10,14 +10,18 @@ import org.wikipedia.Wiki;
 public class Main {
 
 	public static void main(String[] args) throws IOException, LoginException {
-//		Wiki c = new Wiki();
-//		c.login("admin", "password");
-		// c.edit("MYWIKITITLE222 2", "TEST", "");
-//		c.getPageText("OK");
+		final String username = "mynewusername";
+		final String password = "mynewpassword";
 		
 		
-		Object param = new java.sql.Timestamp(new Date().getTime());
-		System.out.println(param);
+		Wiki c = new Wiki();
+		c.login(username, password);
+		//c.login("admin", "password");
+		
+		
+		
+		c.edit("MYWIKITITLE222 2", "TEST", "");
+		c.getPageText("OK");
 	}
 
 }

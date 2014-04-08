@@ -8,6 +8,7 @@ import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
@@ -26,7 +27,11 @@ public class TreeModel {
 
 	public Tree addKnowledgeTreeByUid(int uid, String treeName) {
 		TreeDao tree = new TreeDao(uid, treeName);
-		return new Tree(tree.create());
+		tree.create();
+		DirectoryDao directoryDao = new DirectoryDao(tree.getId());
+		directoryDao.setTitle(treeName);
+		directoryDao.create();
+		return new Tree(tree);
 	}
 
 	public boolean removeKnowledgeTreeById(int ktreeid) {
