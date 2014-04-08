@@ -31,8 +31,8 @@ public class UserController {
 	@Path("login")
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login(@QueryParam("username") String username,
-			@QueryParam("password") String password, @QueryParam("isProducer") boolean isProducer) {
-		return userModel.loginUser(username, password, isProducer);
+			@QueryParam("password") String password) {
+		return userModel.loginUser(username, password);
 	}
 	
 	@POST

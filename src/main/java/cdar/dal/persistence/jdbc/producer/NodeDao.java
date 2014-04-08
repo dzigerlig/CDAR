@@ -109,6 +109,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	}
 
 	public void setDid(int did) {
+		System.out.println(getTitle() + ": setting did: " + did);
 		this.did = did;
 	}
 
@@ -179,7 +180,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 		preparedStatement.close();
 		preparedStatement = connection
-				.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (DID, KNID) VALUES (?, ?)ON DUPLICATE KEY UPDATE DID = ?");
+				.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (DID, KNID) VALUES (?, ?) ON DUPLICATE KEY UPDATE DID = ?");
 		preparedStatement.setInt(1, getDid());
 		preparedStatement.setInt(2, getId());
 		preparedStatement.setInt(3, getDid());
