@@ -48,6 +48,7 @@ public class TreeController {
 	}
 	
 	@POST
+	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
 		return ktm.addKnowledgeTreeByUid(uid, treeName);
