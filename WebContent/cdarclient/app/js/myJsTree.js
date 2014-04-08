@@ -132,13 +132,13 @@ function drawDirectory(treeArray) {
 				},
 				"types" : {
 					"#" : {
-						"max_children" : 1,
-						"max_depth" : 4,
-						"valid_children" : [ "root" ]
+						//"max_children" : 1,
+						//"max_depth" : 4,
+					//	"valid_children" : [ "root" ]
 					},
 					"root" : {
-						"icon" : "http://jstree.com/tree.png",
-						"valid_children" : [ "default" ]
+					//	"icon" : "http://jstree.com/tree.png",
+					//	"valid_children" : [ "default" ]
 					},
 					"default" : {
 						"valid_children" : [ "default", "file" ]
@@ -198,12 +198,18 @@ function createDirectory(response) {
 	var ref = $('#jstree').jstree(true);
 
 	if (response.parentid === 0) {
-		sel = $("#jstree").jstree('create_node', '#', {
+
+	//sel = $("#jstree_demo").jstree('create_node', '#', {'id' : 'new Id', 'text' : 'new Name','type':'default'}, 'last');
+  //  sel = $("#jstree_demo").jstree('create_node', '#', { 'attr' : { 'id' : "newId" } , 'text' : "newName",'type':'default'}, 'last');
+		
+		/*sel = $("#jstree").jstree('create_node', '#', {
 			"id" : DIRECTORY + response.id,
 			'type' : "default",
 			'text': 'new Folder'
 
-		}, 'last');
+		}, 'last');*/
+	console.log(1);
+
 	} else {
 		sel = ref.get_selected();
 		sel = sel[0];

@@ -42,7 +42,6 @@ function drawExistingNodes(data, resSubNodes) {
 	isInizialized = false;
 	var map = {};
 	jQuery.each(resSubNodes, function(object) {
-		console.log(this);
 		if (map[this.knid] === undefined) {
 			var arr = [ this ];
 			map[this.knid] = arr;
