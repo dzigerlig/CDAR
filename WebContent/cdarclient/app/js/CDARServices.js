@@ -4,8 +4,11 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 			method : 'GET',
 			isArray : true
 		},
-		'postEntry' : {
-			method : 'POST'
+		'addTree' : {
+			method : 'POST',
+			params: {
+				action: 'add'
+			}
 		},
 		'removeTree' : {
 			method : 'GET',
@@ -53,8 +56,12 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 			method : 'GET',
 			isArray : true
 		},
-		'postEntry' : {
-			method : 'POST'
+		'addTree' : {
+			method : 'POST',
+			params: {
+				entity: 'tree',
+				action: 'add'
+			}
 		},
 		'removeTree' : {
 			method : 'GET',

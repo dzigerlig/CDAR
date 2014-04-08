@@ -12,7 +12,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
-		ProjectTreeService.postEntry($scope.newTreeName, function(response) {
+		ProjectTreeService.addTree($scope.newTreeName, function(response) {
 			if (response.id != -1) {
 				$scope.newTreeName = '';
 				reloadTrees();
