@@ -67,8 +67,8 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 			params : {}
 		},
 
-		// Dictionaries
-		'getDictionaries' : {
+		// Directories
+		'getDirectories' : {
 			method : 'GET',
 			isArray : true,
 			params : {

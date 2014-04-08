@@ -243,7 +243,7 @@ app
 								AuthenticationService.logout();
 							};
 
-							TreeService.getDictionaries({
+							TreeService.getDirectories({
 								ktreeid : $routeParams.treeId
 							}, function(resDirectory) {
 								TreeService.getNodes({
