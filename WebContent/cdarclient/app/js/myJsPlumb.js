@@ -302,7 +302,7 @@ function bindConnection() {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
-			console.log(info.connection.source.data(SUBNODE).subNode);
+	        $('#radio-form').empty();
 			$.each(info.connection.source.data(SUBNODE).subNode, function(
 					object) {
 				$('#radio-form').append(
