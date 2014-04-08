@@ -30,51 +30,58 @@
 		</div>
 
 		<div id="page-content-wrapper">
-			<div class="bs-example">
-				<div class="content-header">
+			<div class="content-header">
+				<div class="col-md-8">
 					<h1>
 						<a id="menu-toggle" class="btn btn-default"><i
 							class="icon-reorder"></i></a> CDAR - Knowledge Consumer
 					</h1>
 				</div>
-				<!-- Keep all page content within the page-content inset div! -->
-				<div class="page-content inset">
-					<div class="row">
-						<div class="col-md-12">
-							<p class="lead">Project overview</p>
-						</div>
-						<div class="col-md-12">
-							<form id="formAddTree" data-role="form"
-								data-ng-submit="addNewTree()">
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th>Name</th>
-											<th>Delete</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr data-ng-repeat="tree in projectTrees | orderBy:'id':false">
-											<td>{{$index+1}}</td>
-											<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
-											<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
-													Tree</a></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td><div class="input-append">
-													<input class="form-horizontal" placeholder="Treename"
-														required autofocus data-ng-model="newTreeName" />
-													<button class="btn btn-success" type="submit">Add
-														tree</button>
-												</div></td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
-							</form>
-						</div>
+				<div class="col-md-4" style="text-align: right">
+					<h3>
+						<a href="#/account" style="color: inherit; text-decoration: none;">
+							<span><img src="app/img/user.png" height="42" width="42" /></span>
+							<span>{{UserService.user.username}}</span>
+						</a>
+					</h3>
+				</div>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="lead">Project overview</p>
+					</div>
+					<div class="col-md-12">
+						<form id="formAddTree" data-role="form"
+							data-ng-submit="addNewTree()">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Name</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="tree in projectTrees | orderBy:'id':false">
+										<td>{{$index+1}}</td>
+										<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
+										<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
+												Tree</a></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><div class="input-append">
+												<input class="form-horizontal" placeholder="Treename"
+													required autofocus data-ng-model="newTreeName" />
+												<button class="btn btn-success" type="submit">Add
+													tree</button>
+											</div></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
 					</div>
 				</div>
 			</div>
