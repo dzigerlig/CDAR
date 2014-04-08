@@ -24,7 +24,7 @@ function initializeJsPlumb() {
 			if (this.id === lastConnectionID) {
 				this.getOverlay("label").setLabel($(element.currentTarget).val());
 				//console.log($(element.currentTarget).attr("id").replace(SUBNODE, ""));//SubNodeID
-				scope.updateLink(this.id, $(element.currentTarget).attr("id").replace(SUBNODE, ""));
+				scope.updateLink(this.id.replace(LINK, ""), $(element.currentTarget).attr("id").replace(SUBNODE, ""));
 			}
 		});
 	});

@@ -22,7 +22,6 @@ public class NodeLink extends BasicEntity {
 		setTargetId(targetId);
 		setKsnid(ksnid);
 		//setTargetId(treeid);
-		System.out.println(ksnid);
 	}
 	
 	public NodeLink(NodeLinkDao nld) {

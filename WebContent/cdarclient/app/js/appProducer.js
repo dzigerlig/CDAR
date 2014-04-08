@@ -278,7 +278,7 @@ app
 							};
 							
 							$scope.updateLink = function(linkId, subnodeId) {
-								TreeService.getLinks({
+								TreeService.updateLink({
 									ktreeid : $routeParams.treeId
 								}, {
 									id : linkId,
