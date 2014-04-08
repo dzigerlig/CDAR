@@ -30,10 +30,20 @@
 
         <div id="page-content-wrapper">
             <div class="content-header">
-                <h1>
-                    <a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
-                    CDAR - Knowledge Producer
-                </h1>
+	            <div class="col-md-8">
+	                <h1>
+	                    <a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
+	                    CDAR - Knowledge Producer
+	                </h1>
+	            </div>
+	            <div class="col-md-4" style="text-align: right">
+	            	<h3>
+		            	<a href="#/account" style="color: inherit; text-decoration: none;">
+		            		<span><img src="app/img/user.png" height="42" width="42"/></span>
+		            		<span>{{UserService.user.username}}</span>
+		            	</a>
+	            	</h3>
+	            </div>
             </div>
             <div class="page-content inset">
                 <div class="row">

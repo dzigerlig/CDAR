@@ -9,6 +9,7 @@ import org.wikipedia.Wiki;
 import cdar.bll.WikiEntity;
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.producer.Node;
+import cdar.bll.producer.Subnode;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;
@@ -25,6 +26,11 @@ public class WikiEntry extends WikiEntity {
 	
 	public WikiEntry(Node node) {
 		super(node.getId(), node.getCreationTime(), node.getLastModificationTime(), node.getTitle(), node.getWikiTitle());
+		fillWikiContent();
+	}
+
+	public WikiEntry(Subnode subnode) {
+		super(subnode.getId(), subnode.getCreationTime(), subnode.getLastModificationTime(), subnode.getTitle(), subnode.getWikiTitle());
 		fillWikiContent();
 	}
 

@@ -30,11 +30,26 @@ public class WikiController {
 		return new WikiEntry(ktm.getNodeById(nodeid));
 	}
 	
+	@GET
+	@Path("/producer/subnode/{subnodeid}")
+	public WikiEntry getKnowledgeSubnodeWikiEntry(@PathParam("subnodeid") int subnodeid) {
+		TreeModel ktm = new TreeModel();
+		return new WikiEntry(ktm.getSubnodeById(subnodeid));
+	}
+	
 	@POST
 	@Path("/producer/node")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry postKnowledgeNodeWikiEntry(WikiEntry wikiEntry) {
+		return wikiEntry.saveEntry();
+	}
+	
+	@POST
+	@Path("/producer/subnode")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public WikiEntry postKnowldgeSubnodeWikiEntry(WikiEntry wikiEntry) {
 		return wikiEntry.saveEntry();
 	}
 }

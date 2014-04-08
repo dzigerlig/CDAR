@@ -203,21 +203,21 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		return node;
 	}
 	
-	public List<SubNodeDao> getSubNodes(int nodeid) {
-		String getSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+	public List<SubnodeDao> getSubnodes(int nodeid) {
+		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		List<SubNodeDao> subnodes = new ArrayList<SubNodeDao>();
+		List<SubnodeDao> subnodes = new ArrayList<SubnodeDao>();
 
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getSubNodes);
+			result = statement.executeQuery(getSubnodes);
 			while (result.next()) {
-				SubNodeDao subnode = new SubNodeDao(nodeid);
+				SubnodeDao subnode = new SubnodeDao(nodeid);
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -233,21 +233,21 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		return subnodes;
 	}
 	
-	public SubNodeDao getSubNode(int id) {
-		String getSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+	public SubnodeDao getSubnode(int id) {
+		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		SubNodeDao subnode = null;
+		SubnodeDao subnode = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getSubNode);
+			result = statement.executeQuery(getSubnode);
 			while (result.next()) {
-				subnode = new SubNodeDao(result.getInt(4));
+				subnode = new SubnodeDao(result.getInt(4));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));

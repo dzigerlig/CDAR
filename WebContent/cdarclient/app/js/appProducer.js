@@ -71,9 +71,9 @@ app
 
 							initializeJsPlumb();
 
+							$scope.UserService = UserService;
 							$scope.knowledgetree;
 							$scope.nodes;
-							$scope.UserService = UserService;
 							$scope.selectedNode;
 							$scope.selectedNodeId = 0;
 							$scope.selectedNodeName = '';
@@ -83,18 +83,17 @@ app
 							$scope.selectedSubnode;
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
-							$scope.newSubNodeName = '',
+							$scope.newSubnodeName = '';
+							$scope.subnodeHtmlText;
 							
-							$scope.addNewSubNode = function() {
-								alert($scope.newSubNodeName);
+							var getSubnodes = function() {
+								TreeService.getSubnodes({
+									ktreeid : $scope.knowledgetree.id,
+									entityid : $scope.selectedNodeId
+								}, function(response) {
+									$scope.subnodes = response;
+								});
 							};
-							
-							TreeService.getSubNodes({
-								ktreeid : 1,
-								entityid : 1
-							}, function(response) {
-								alert(JSON.stringify(response));
-							});
 							
 							// END SUBNODES //
 
@@ -111,6 +110,61 @@ app
 								               { title:"WRITE" }
 							];
 							
+							$scope.addNewSubnode = function() {
+								TreeService.addSubnode({
+									ktreeid : $scope.knowledgetree.id
+								}, {
+									knid : $scope.selectedNodeId,
+									title : $scope.newSubnodeName
+								}, function(response) {
+									getSubnodes();
+									$scope.newSubnodeName = '';
+								});
+							};
+							
+							$scope.changeSubnode = function(id, name) {
+								setLoadingSubnode();
+								$scope.selectedSubnodeId = id;
+								$scope.selectedSubnodeName = name;
+								WikiService.getWikiEntry({
+									role : 'producer',
+									entity : 'subnode',
+									nodeid : id
+								}, function(response) {
+									$scope.selectedSubnode = response;
+									changeWikiFieldsSubnode();
+									//load wiki fields
+								});
+							};
+							
+							var changeWikiFieldsSubnode = function() {
+								$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
+								$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
+							};
+							
+							$scope.saveWikiSubnodeEntry = function() {
+								if ($scope.selectedSubnode != 0) {
+									$scope.selectedSubnode.wikiContentPlain = $("#wikiSubnodeArea").val();
+									switchSubnodeToRead();
+									setLoadingSubnode();
+									WikiService.postEntry({
+										role : 'producer',
+										entity: 'subnode'
+									}, $scope.selectedSubnode, function(response) {
+										$scope.selectedSubnode = response;
+										changeWikiFieldsSubnode();
+									});
+								};
+							};
+							
+							$scope.deleteSubnode = function(id) {
+								TreeService.deleteSubnode({
+									ktreeid : $routeParams.treeId
+								}, id, function(response) {
+									getSubnodes();
+								});
+							};
+							
 							var showNodeTitle = function() {
 								if ($scope.selectedNodeId!=0) {
 									$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
@@ -119,38 +173,37 @@ app
 								}
 							};
 							
-							var showSubNodeTitle = function() {
-								if ($scope.selectedSubNodeId!=0) {
-									$scope.subNodeTitle = "Selected subnode: " + $scope.selectedSubnodeName;
-								} else {
-									$scope.subNodeTitle = "Selected node: no subnode selected";
-								}
-							};
-							
 							showNodeTitle();
-							showSubNodeTitle();
 							
 							var switchNodeToRead = function() {
 								$scope.nodetabs[0].active = true;
-								$scope.nodetabs[1].active = true;
+								$scope.nodetabs[1].active = false;
 							};
 							
-							var setLoading = function() {
+							var switchSubnodeToRead = function() {
+								$scope.subnodetabs[0].active = true;
+								$scope.subnodetabs[1].active = false;
+							};
+							
+							var setLoadingNode = function() {
 								$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+							};
+							
+							var setLoadingSubnode = function() {
+								$scope.subnodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 							};
 
 							var changeWikiFields = function() {
 								$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
-								$("#wikiArea").val(
-										$scope.selectedNode.wikiContentPlain);
+								$("#wikiArea").val($scope.selectedNode.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id, name) {
-								setLoading();
+								setLoadingNode();
 								$scope.selectedNodeId = id;
 								$scope.selectedNodeName = name;
 								showNodeTitle();
-								
+								getSubnodes();
 								WikiService.getWikiEntry({
 									role : 'producer',
 									entity : 'node',
@@ -160,23 +213,21 @@ app
 									changeWikiFields();
 								});
 							};
-
-							$scope.saveWikiEntry = function() {
+							
+							$scope.saveWikiNodeEntry = function() {
 								if ($scope.selectedNode != 0) {
-									$scope.wikiMarkupText = $("#wikiArea")
-											.val();
-									$scope.selectedNode.wikiContentPlain = $scope.wikiMarkupText;
+									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
 									switchNodeToRead();
-									setLoading();
+									setLoadingNode();
 									WikiService.postEntry({
 										role : 'producer',
 										entity: 'node'
 									}, $scope.selectedNode, function(response) {
+										$scope.selectedNode = response;
 										changeWikiFields(response);
 									});
 								};
 							};
-							
 							
 							
 							
@@ -208,11 +259,11 @@ app
 
 							});
 
-							$scope.getSubNodes = function(resNodes, TreeService) {
-								TreeService.getSubNodes({
+							$scope.getSubnodes = function(resNodes, TreeService) {
+								TreeService.getSubnodes({
 									ktreeid : $routeParams.treeId
-								},resNodes, function(resSubNodes) {
-									drawExistingNodes(resNodes, resSubNodes);
+								},resNodes, function(resSubnodes) {
+									drawExistingNodes(resNodes, resSubnodes);
 									$scope.getLinks(TreeService, resSubNodes);
 								});
 							};
