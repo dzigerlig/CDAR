@@ -18,7 +18,7 @@ function isMouseOverContainer() {
 $(document).bind('dnd_stop.vakata', function(e, data) {
 	var id = data.data.nodes[0];
 	var type =data.data.origin._model.data[id].type;	
-	if (isMouseOverContainer()&&type!=='default') {
+	if (isMouseOverContainer()&&type!=='default'&&type!=='root') {
 		id = id.replace(NODE, "");
 		id = id.replace(DIRECTORY, "");
 		scope.dropNode(data.event, id);
@@ -28,9 +28,11 @@ $(document).bind('dnd_stop.vakata', function(e, data) {
 
 $('#jstree').on("move_node.jstree", function(e, data) {
 	var id = data.node.id;
+	var type = data.node.type;
+
 	var parentId=data.parent.replace(DIRECTORY, "");
 	id = id.replace(DIRECTORY, "");
-	if (data.node.type !== 'default') {
+	if (type !== 'default') {
 		console.log(id);
 		id = id.replace(NODE, "");
 		scope.moveNode(id, parentId);
@@ -44,7 +46,8 @@ $(document).bind(
 		'dnd_move.vakata',
 		function(e, data) {
 			var nodeId = data.data.nodes[0];
-			if (isMouseOverContainer()&&data.data.origin._model.data[nodeId].type!=='default') {
+			var type = data.data.origin._model.data[nodeId].type; 
+			if (isMouseOverContainer()&&type!=='default'&&type!=='root') {
 				data.helper.find('.jstree-icon:eq(0)').removeClass('jstree-er')
 						.addClass('jstree-ok');
 				return;

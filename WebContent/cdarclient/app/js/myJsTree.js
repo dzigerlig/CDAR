@@ -32,7 +32,7 @@ $(function() {
 	});
 
 	$('#jstree').on("select_node.jstree", function(e, data) {
-		if (data.node.type !== 'default') {
+		if (data.node.type !== 'default'&&data.node.type !== 'root') {
 			var id = data.selected[0];
 			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
@@ -63,6 +63,7 @@ $(function() {
 			id = id.replace(NODE, "");
 
 			scope.deleteNode(id);
+			scope.selectedNodeId=0;
 		} else {
 			scope.deleteDirectory(id);
 
@@ -88,6 +89,8 @@ $(function() {
 function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
+		alert('Please select a folder');
+
 		return false;
 	} else {
 		scope.addNode(sel[0].replace(DIRECTORY, ""));
@@ -97,7 +100,10 @@ function jstree_createNode() {
 function jstree_createDirectory() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
-		scope.addDirectory(0);
+		//scope.addDirectory(0);
+		alert('Please select a directory');
+
+		return false;
 	} else {
 		scope.addDirectory(sel[0].replace(DIRECTORY, ""));
 	}
@@ -106,6 +112,7 @@ function jstree_createDirectory() {
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
+		alert('Please select a folder or a node');
 		return false;
 	}
 	sel = sel[0];
@@ -114,12 +121,16 @@ function jstree_rename() {
 function jstree_delete() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
+		alert('Please select a folder or a node');
 		return false;
 	}
+	if(ref._model.data[sel[0]].parent==='#')
+		{alert("you can't delete a root node");
+		return false;}
 	ref.delete_node(sel);
 };
 
-function drawDirectory(treeArray) {
+function drawDirectory(treeArray,rootid) {
 	$('#jstree').jstree(
 			{
 				'core' : {
@@ -132,13 +143,12 @@ function drawDirectory(treeArray) {
 				},
 				"types" : {
 					"#" : {
-						//"max_children" : 1,
-						//"max_depth" : 4,
-					//	"valid_children" : [ "root" ]
+						"icon" : "http://jstree.com/tree.png",
+						"valid_children" : [ "default" ]
 					},
 					"root" : {
-					//	"icon" : "http://jstree.com/tree.png",
-					//	"valid_children" : [ "default" ]
+						"icon" : "http://jstree.com/tree.png",
+						"valid_children" : [ "default" ,"file"]
 					},
 					"default" : {
 						"valid_children" : [ "default", "file" ]
@@ -151,22 +161,30 @@ function drawDirectory(treeArray) {
 				"plugins" : [ "contextmenu", "dnd", "search", "sort", "types",
 						"themes" ]
 			});
+	$("#jstree").jstree("open_node", $("#"+rootid));
+
 }
 
 function directoryDataToArray(resDirectory, resNodes) {
 	var treeArray = [];
 	var parentId;
+	var type;
+	var rootid;
 
 	resDirectory.forEach(function(entry) {
 		if (entry.parentid === 0) {
 			parentId = "#";
+			type = "root";
+			rootid=DIRECTORY + entry.id;
 		} else {
 			parentId = DIRECTORY + entry.parentid;
-		}
+			type = "default";
+			}
 		treeArray.push({
 			"id" : DIRECTORY + entry.id,
 			"parent" : parentId,
-			"text" : entry.title
+			"text" : entry.title,
+			"type":type
 		});
 	});
 
@@ -178,7 +196,7 @@ function directoryDataToArray(resDirectory, resNodes) {
 			"type" : "file"
 		});
 	});
-	drawDirectory(treeArray);
+	drawDirectory(treeArray,rootid);
 };
 
 function createNode(response) {
@@ -197,20 +215,7 @@ function createDirectory(response) {
 	var sel;
 	var ref = $('#jstree').jstree(true);
 
-	if (response.parentid === 0) {
 
-	//sel = $("#jstree_demo").jstree('create_node', '#', {'id' : 'new Id', 'text' : 'new Name','type':'default'}, 'last');
-  //  sel = $("#jstree_demo").jstree('create_node', '#', { 'attr' : { 'id' : "newId" } , 'text' : "newName",'type':'default'}, 'last');
-		
-		/*sel = $("#jstree").jstree('create_node', '#', {
-			"id" : DIRECTORY + response.id,
-			'type' : "default",
-			'text': 'new Folder'
-
-		}, 'last');*/
-	console.log(1);
-
-	} else {
 		sel = ref.get_selected();
 		sel = sel[0];
 		sel = ref.create_node(sel, {
@@ -218,7 +223,7 @@ function createDirectory(response) {
 			'text': 'new Folder',
 			"id" : DIRECTORY + response.id
 		});
-	}
+	
 	if (sel) {
 		ref.edit(sel);
 	}
