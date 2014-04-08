@@ -109,7 +109,7 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setString(4, getWikititle());
@@ -131,7 +131,7 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setInt(4, getId());

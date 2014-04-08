@@ -104,7 +104,7 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 				.prepareStatement(
 						"INSERT INTO DIRECTORY (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		if (getParentid() != 0) {
 			preparedStatement.setInt(2, getParentid());
 		} else {
@@ -130,7 +130,7 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 				.prepareStatement(
 						"UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		if (getParentid() != 0) {
 			preparedStatement.setInt(2, getParentid());
 		} else {

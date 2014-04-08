@@ -135,7 +135,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 				.prepareStatement(
 						"INSERT INTO KNOWLEDGENODE (CREATION_TIME, TITLE, WIKITITLE, KTRID, DYNAMICTREEFLAG) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setString(3, getWikititle());
 		preparedStatement.setInt(4, getKtrid());
@@ -165,7 +165,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 				.prepareStatement(
 						"UPDATE KNOWLEDGENODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ?  WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setInt(3, getDynamicTreeFlag());
 		preparedStatement.setInt(4, getId());

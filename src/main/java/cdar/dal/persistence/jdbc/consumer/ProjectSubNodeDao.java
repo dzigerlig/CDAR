@@ -110,7 +110,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 				.prepareStatement(
 						"INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKpnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setString(4, getWikititle());
@@ -133,7 +133,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 				.prepareStatement(
 						"UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKpnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setInt(4, getId());

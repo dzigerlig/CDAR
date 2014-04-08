@@ -2,6 +2,7 @@ package cdar.bll.model.wiki;
 
 import info.bliki.wiki.model.WikiModel;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.wikipedia.Wiki;
@@ -38,8 +39,19 @@ public class WikiEntry extends WikiEntity {
 		Wiki c = new Wiki();
 		try {
 			setWikiContentPlain(c.getPageText(getWikiTitle()));
-			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
-		} catch (IOException e) {
+			if (getWikiContentPlain()!=null) {
+				setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+			}
+		} catch (FileNotFoundException e) {
+			//Entry doesn't exist, create new and continue
+			try {
+				c.login("admin", "password");
+				c.edit(getWikiTitle(), getWikiContentPlain(), "");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

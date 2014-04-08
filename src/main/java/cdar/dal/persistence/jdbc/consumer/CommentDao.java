@@ -104,7 +104,7 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getUid());
 		preparedStatement.setInt(3, getKpnid());
 		preparedStatement.setString(4, getComment());
@@ -126,7 +126,7 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getUid());
 		preparedStatement.setInt(3, getKpnid());
 		preparedStatement.setString(4, getComment());

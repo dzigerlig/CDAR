@@ -121,7 +121,7 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setString(3, getWikititle());
 		preparedStatement.setInt(4, getKptid());
@@ -144,7 +144,7 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		preparedStatement = connection.prepareStatement(
 				"UPDATE KNOWLEDGEPROJECTNODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?  WHERE id = ?",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setInt(3, getNodestatus());
 		preparedStatement.setInt(4, getId());

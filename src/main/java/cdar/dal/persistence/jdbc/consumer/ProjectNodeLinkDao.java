@@ -122,7 +122,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
 		if (getKpnsnid()!=0) {
@@ -149,7 +149,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		preparedStatement = connection.prepareStatement(
 				"UPDATE KNOWLEDGEPROJECTNODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
 		if (getKpnsnid()!=0) {

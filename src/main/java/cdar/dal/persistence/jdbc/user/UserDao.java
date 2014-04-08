@@ -100,7 +100,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 			preparedStatement = connection.prepareStatement(
 					"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
+			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, getUsername());
 			preparedStatement.setString(3, getPassword());
 
@@ -130,7 +130,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 			preparedStatement = connection.prepareStatement(
 					"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
 					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(0));
+			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, getUsername());
 			preparedStatement.setString(3, getPassword());
 			preparedStatement.setString(4, getAccesstoken());

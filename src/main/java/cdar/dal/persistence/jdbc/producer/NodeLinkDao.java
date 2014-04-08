@@ -125,7 +125,7 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO NODELINK (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
 		if (getKsnid()!=0) {
@@ -152,7 +152,7 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(
 				"UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
 		if (getKsnid()!=0) {

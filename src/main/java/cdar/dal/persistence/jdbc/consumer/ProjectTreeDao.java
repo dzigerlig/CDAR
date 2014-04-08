@@ -96,7 +96,7 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 		preparedStatement = connection.prepareStatement(
 				"INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, NAME) VALUES (?, ?)",
 				Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getName());
 
 		preparedStatement.executeUpdate();
@@ -122,7 +122,7 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 				.prepareStatement(
 						"UPDATE KNOWLEDGEPROJECTTREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, new java.sql.Date(0));
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getName());
 		preparedStatement.setInt(3, getId());
 
