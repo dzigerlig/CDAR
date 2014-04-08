@@ -179,6 +179,14 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action : 'delete',
 			}
 		},
+		'updateLink' : {
+			method : 'POST',
+			params : {
+				entity : 'links',
+				action : 'update',
+			}
+		},
+		
 		// Templates
 		'getTemplates' : {
 			method : 'GET',

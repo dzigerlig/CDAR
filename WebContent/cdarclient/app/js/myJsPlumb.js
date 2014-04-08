@@ -3,6 +3,8 @@ var scope;
 var isInizialized = false;
 var NODE = 'node';
 var LINK = 'link';
+var SUBNODE = 'subNode';
+
 
 function initializeJsPlumb() {
 	// $('html[manifest=saveappoffline.appcache]').attr('content', '');
@@ -21,6 +23,8 @@ function initializeJsPlumb() {
 		jQuery.each(connections, function(object) {
 			if (this.id === lastConnectionID) {
 				this.getOverlay("label").setLabel($(element.currentTarget).val());
+				//console.log($(element.currentTarget).attr("id").replace(SUBNODE, ""));//SubNodeID
+				scope.updateLink(this.id, $(element.currentTarget).attr("id").replace(SUBNODE, ""));
 			}
 		});
 	});
@@ -30,6 +34,7 @@ function addHTMLNode(response, e) {
 	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
+
 
 	newState.css({
 		// calculate coordinates of the cursor in element
@@ -49,6 +54,7 @@ function drawExistingNodes(data, resSubNodes) {
 	isInizialized = false;
 	var map = {};
 	jQuery.each(resSubNodes, function(object) {
+		console.log(this);
 		if (map[this.knid] === undefined) {
 			var arr = [ this ];
 			map[this.knid] = arr;
@@ -60,11 +66,11 @@ function drawExistingNodes(data, resSubNodes) {
 
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
-			console.log(map[this.id]);
 			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
-					.data("subNode", {
+					.data(SUBNODE, {
 						subNode : map[this.id]
 					});
+
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
 			newState.css({
@@ -162,7 +168,8 @@ function makeTarget(newState) {
 	});
 };
 
-function connectNodes(stateSource, stateTarget, id) {
+function connectNodes(stateSource, stateTarget, id, subNode) {
+	if(subNode===undefined){
 	jsPlumb.connect({
 		source : stateSource,
 		target : stateTarget,
@@ -184,7 +191,38 @@ function connectNodes(stateSource, stateTarget, id) {
 			radius : 2
 		} ]
 
-	});
+	});}
+	else{
+		jsPlumb.connect({
+			source : stateSource,
+			target : stateTarget,
+			parameters : {
+				"id" : id
+			},
+			anchors : 'Perimeter',
+			overlays : [ [ "Arrow", {
+				location : 1,
+				id : "arrow",
+				length : 14,
+				foldback : 0.8
+			} ],
+			 [ "Label", {
+					label :subNode.title,
+					id : "label",
+					cssClass : "aLabel"
+				} ] ],
+		
+			
+
+			connector : [ "StateMachine", {
+				curviness : 20
+			} ],
+			endpoint : [ "Dot", {
+				radius : 2
+			} ]
+
+		});
+	}
 };
 
 function appendElements(title, connect, newState) {
@@ -242,12 +280,17 @@ function removeNodeEvent(newState) {
 	});
 };
 
-function makeNodeHierarchy(data) {
+function makeNodeHierarchy(data, resSubNodes) {
+	var map = {};
+	jQuery.each(resSubNodes, function(object) {
+		map[this.id]= this;
+	});
+	
 	var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
 	jQuery.each(data,
 			function(object) {
-				connectNodes(NODE + this.sourceId, NODE + this.targetId,
-						this.id);
+						connectNodes(NODE + this.sourceId, NODE + this.targetId,
+						this.id, map[this.ksnid]);
 				direction += NODE + this.sourceId + " -> " + NODE
 						+ this.targetId + ";";
 			});
@@ -266,12 +309,11 @@ function bindConnection() {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 		} else {
-			console.log(info.connection.source.data("subNode").subNode);
-
-			$.each(info.connection.source.data("subNode").subNode, function(
+			console.log(info.connection.source.data(SUBNODE).subNode);
+			$.each(info.connection.source.data(SUBNODE).subNode, function(
 					object) {
 				$('#radio-form').append(
-						"<input type=\"radio\" name=\"option\" class=\"radio_item\" value=\""
+						"<input type=\"radio\" id=\""+SUBNODE+this.id+"\" name=\"option\" class=\"radio_item\" value=\""
 								+ this.title + "\">" + this.title + "<br>");
 			});
 			

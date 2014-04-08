@@ -43,8 +43,8 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		setLastModificationTime(nodelink.getLastModificationTime());
 		setSourceid(nodelink.getSourceId());
 		setTargetid(nodelink.getTargetId());
-		setKsnid(nodelink.getRefSubNodeId());
-		setKtrid(nodelink.getRefTreeId());
+		setKsnid(nodelink.getKsnid());
+		setKtrid(nodelink.getKtrid());
 	}
 	
 	public int getId() {

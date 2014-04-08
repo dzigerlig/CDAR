@@ -216,6 +216,14 @@ public class TreeController {
 		return Response.status(200).build();
 	}
 	
+	@POST
+	@Path("links/update/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateLink(NodeLink nl) {
+		lM.updateLink(nl);
+		return Response.status(200).build();
+	}
+	
 	//Subnodes
 	@GET
 	@Path("subnodes/{ktreeid}")

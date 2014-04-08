@@ -213,18 +213,26 @@ app
 									ktreeid : $routeParams.treeId
 								},resNodes, function(resSubNodes) {
 									drawExistingNodes(resNodes, resSubNodes);
-									$scope.getLinks(TreeService);
-
+									$scope.getLinks(TreeService, resSubNodes);
 								});
 							};
 
-							$scope.getLinks = function(TreeService) {
+							$scope.getLinks = function(TreeService, resSubNodes) {
 								TreeService.getLinks({
 									ktreeid : $routeParams.treeId
-								}, function(response) {
-									makeNodeHierarchy(response);
+								}, resSubNodes, function(response) {
+									makeNodeHierarchy(response, resSubNodes);
 									w_launch();
 								});
+							};
+							
+							$scope.updateLink = function(linkId, subNodeId) {
+								TreeService.getLinks({
+									ktreeid : $routeParams.treeId
+								}, {
+									id : linkId,
+									ksnid : subNodeId
+								} );
 							};
 
 							$scope.addNode = function(did) {
@@ -283,7 +291,7 @@ app
 								TreeService.addLink({
 									ktreeid : $routeParams.treeId
 								}, {
-									refTreeId : treeId,
+									ktrid : treeId,
 									sourceId : sourceId,
 									targetId : targetId
 								}, function(response) {

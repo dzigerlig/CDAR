@@ -8,18 +8,21 @@ import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 public class NodeLink extends BasicEntity {
 	private int sourceId;
 	private int targetId;
-	private int refSubNodeId;
-	private int refTreeId;
+	private int ksnid;
+	private int ktrid;
 	
 	public NodeLink() {
 		super();
 	}
 	
 	public NodeLink(int id, Date creationDate, Date lastModification,
-			int sourceId, int targetId, int subnodeid, int treeid) {
+			int sourceId, int targetId, int ksnid, int treeid) {
 		super(id, creationDate, lastModification);
 		setSourceId(sourceId);
 		setTargetId(targetId);
+		setKsnid(ksnid);
+		//setTargetId(treeid);
+		System.out.println(ksnid);
 	}
 	
 	public NodeLink(NodeLinkDao nld) {
@@ -42,19 +45,19 @@ public class NodeLink extends BasicEntity {
 		this.targetId = targetId;
 	}
 
-	public int getRefSubNodeId() {
-		return refSubNodeId;
+	public int getKsnid() {
+		return ksnid;
 	}
 
-	public void setRefSubNodeId(int refSubNodeId) {
-		this.refSubNodeId = refSubNodeId;
+	public void setKsnid(int knid) {
+		this.ksnid = knid;
 	}
 
-	public int getRefTreeId() {
-		return refTreeId;
+	public int getKtrid() {
+		return ktrid;
 	}
 
-	public void setRefTreeId(int refTreeId) {
-		this.refTreeId = refTreeId;
+	public void setKtrid(int ktrid) {
+		this.ktrid = ktrid;
 	}
 }
