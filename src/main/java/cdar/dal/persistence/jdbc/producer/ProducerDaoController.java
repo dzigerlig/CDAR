@@ -187,7 +187,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
-				node = new NodeDao(result.getInt(7),result.getInt(6));
+				node = new NodeDao(result.getInt(7),result.getInt(8));
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
