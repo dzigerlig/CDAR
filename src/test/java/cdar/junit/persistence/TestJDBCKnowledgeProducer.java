@@ -11,7 +11,7 @@ import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
-import cdar.dal.persistence.jdbc.producer.SubNodeDao;
+import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
@@ -178,7 +178,7 @@ public class TestJDBCKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestKnowledgeSubNodeCreate() {
+	public void TestKnowledgeSubnodeCreate() {
 		UserDao user = udc.getUserByName(testUsername);
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
@@ -187,14 +187,14 @@ public class TestJDBCKnowledgeProducer {
 		directory.create();
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
-		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
-		SubNodeDao subnode = new SubNodeDao(node.getId(), "MyKnowledgeSubNode");
+		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
+		SubnodeDao subnode = new SubnodeDao(node.getId(), "MyKnowledgeSubnode");
 		subnode.create();
-		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
+		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
 	}
 	
 	@Test
-	public void TestKnowledgeSubNodeUpdate() {
+	public void TestKnowledgeSubnodeUpdate() {
 		final String subnodeTitle = "MySubnode";
 		final String newSubnodeTitle = "NewSubnode";
 		UserDao user = udc.getUserByName(testUsername);
@@ -205,18 +205,18 @@ public class TestJDBCKnowledgeProducer {
 		directory.create();
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
-		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
-		SubNodeDao subnode = new SubNodeDao(node.getId(), subnodeTitle);
+		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
+		SubnodeDao subnode = new SubnodeDao(node.getId(), subnodeTitle);
 		subnode.create();
-		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
-		assertEquals(subnodeTitle, kpdc.getSubNode(subnode.getId()).getTitle());
+		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
+		assertEquals(subnodeTitle, kpdc.getSubnode(subnode.getId()).getTitle());
 		subnode.setTitle(newSubnodeTitle);
 		subnode.update();
-		assertEquals(newSubnodeTitle, kpdc.getSubNode(subnode.getId()).getTitle());
+		assertEquals(newSubnodeTitle, kpdc.getSubnode(subnode.getId()).getTitle());
 	}
 	
 	@Test
-	public void TestKnowledgeSubNodeDelete() {
+	public void TestKnowledgeSubnodeDelete() {
 		UserDao user = udc.getUserByName(testUsername);
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
@@ -225,12 +225,12 @@ public class TestJDBCKnowledgeProducer {
 		directory.create();
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
-		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
-		SubNodeDao subnode = new SubNodeDao(node.getId(), "MySubNode");
+		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
+		SubnodeDao subnode = new SubnodeDao(node.getId(), "MySubnode");
 		subnode.create();
-		assertEquals(1, kpdc.getSubNodes(node.getId()).size());
+		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
 		subnode.delete();
-		assertEquals(0, kpdc.getSubNodes(node.getId()).size());
+		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
 	}
 	
 	@Test

@@ -12,14 +12,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.model.DirectoryModel;
-import cdar.bll.model.SubNodeModel;
+import cdar.bll.model.SubnodeModel;
 import cdar.bll.model.TreeModel;
 import cdar.bll.model.NodeLinkModel;
 import cdar.bll.model.NodeModel;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.SubNode;
+import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
@@ -31,7 +31,7 @@ public class TreeController {
 	private NodeModel nM= new NodeModel();
 	private NodeLinkModel lM= new NodeLinkModel();
 	private DirectoryModel dM = new DirectoryModel();
-	private SubNodeModel sNM = new SubNodeModel();
+	private SubnodeModel sNM = new SubnodeModel();
 	
 	//Dynamic Tree
 	@GET
@@ -220,29 +220,29 @@ public class TreeController {
 	@GET
 	@Path("subnodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<SubNode> getSubNodesByTree(@PathParam("ktreeid") int ktreeid) {
-		return sNM.getSubNodes(ktreeid);
+	public Set<Subnode> getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
+		return sNM.getSubnodes(ktreeid);
 	}
 
 	@GET
 	@Path("subnodes/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<SubNode> getSubNodes(@PathParam("ktreeid") int ktreeid, @PathParam("nodeid") int nodeid) {
-		return sNM.getSubNodes(ktreeid, nodeid);
+	public Set<Subnode> getSubnodes(@PathParam("ktreeid") int ktreeid, @PathParam("nodeid") int nodeid) {
+		return sNM.getSubnodes(ktreeid, nodeid);
 	}
 	
 	@POST
 	@Path("subnodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public SubNode addSubNode(SubNode sN) {		 
-		return sNM.addSubNode(sN);
+	public Subnode addSubnode(Subnode sN) {		 
+		return sNM.addSubnode(sN);
 	}
 
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeSubNode(int id) {
-		sNM.removeSubNodeById(id);
+	public Response removeSubnode(int id) {
+		sNM.removeSubnodeById(id);
 		return Response.status(200).build();
 	}
 }

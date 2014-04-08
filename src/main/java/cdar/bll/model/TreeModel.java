@@ -5,7 +5,7 @@ import java.util.Set;
 
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
-import cdar.bll.producer.SubNode;
+import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
@@ -81,7 +81,7 @@ public class TreeModel {
 		return templatedao.delete();
 	}
 
-	public SubNode getSubNodeById(int subnodeid) {
-		return new SubNode(pdc.getSubNode(subnodeid));
+	public Subnode getSubnodeById(int subnodeid) {
+		return new Subnode(pdc.getSubnode(subnodeid));
 	}
 }

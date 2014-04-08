@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-import cdar.bll.producer.SubNode;
+import cdar.bll.producer.Subnode;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
+public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -19,18 +19,18 @@ public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
 	private String title;
 	private String wikititle;
 	
-	public SubNodeDao(int knid) {
+	public SubnodeDao(int knid) {
 		setKnid(knid);
 		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
 	
-	public SubNodeDao(int knid, String title) {
+	public SubnodeDao(int knid, String title) {
 		setKnid(knid);
 		setTitle(title);
 		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
 	
-	public SubNodeDao(SubNode subnode) {
+	public SubnodeDao(Subnode subnode) {
 		setId(subnode.getId());
 		setCreationTime(subnode.getCreationTime());
 		setLastModificationTime(subnode.getLastModificationTime());
@@ -88,12 +88,12 @@ public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
 	}
 
 	@Override
-	public SubNodeDao create() {
+	public SubnodeDao create() {
 		return super.create();
 	}
 
 	@Override
-	public SubNodeDao update() {
+	public SubnodeDao update() {
 		return  super.update();
 	}
 
@@ -103,7 +103,7 @@ public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
 	}
 
 	@Override
-	protected SubNodeDao createVisit(Connection connection,
+	protected SubnodeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(
@@ -125,7 +125,7 @@ public class SubNodeDao extends CUDHelper<SubNodeDao> implements CdarDao {
 	}
 
 	@Override
-	protected SubNodeDao updateVisit(Connection connection,
+	protected SubnodeDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection.prepareStatement(

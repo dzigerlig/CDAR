@@ -83,11 +83,11 @@ app
 							$scope.selectedSubnode;
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
-							$scope.newSubNodeName = '';
-							$scope.subNodeHtmlText;
+							$scope.newSubnodeName = '';
+							$scope.subnodeHtmlText;
 							
-							var getSubNodes = function() {
-								TreeService.getSubNodes({
+							var getSubnodes = function() {
+								TreeService.getSubnodes({
 									ktreeid : $scope.knowledgetree.id,
 									entityid : $scope.selectedNodeId
 								}, function(response) {
@@ -110,59 +110,58 @@ app
 								               { title:"WRITE" }
 							];
 							
-							$scope.addNewSubNode = function() {
-								TreeService.addSubNode({
+							$scope.addNewSubnode = function() {
+								TreeService.addSubnode({
 									ktreeid : $scope.knowledgetree.id
 								}, {
 									knid : $scope.selectedNodeId,
-									title : $scope.newSubNodeName
+									title : $scope.newSubnodeName
 								}, function(response) {
-									getSubNodes();
-									$scope.newSubNodeName = '';
+									getSubnodes();
+									$scope.newSubnodeName = '';
 								});
 							};
 							
-							$scope.changeSubNode = function(id, name) {
-								setLoadingSubNode();
+							$scope.changeSubnode = function(id, name) {
+								setLoadingSubnode();
 								$scope.selectedSubnodeId = id;
-								$scope.selectedSubNodeName = name;
+								$scope.selectedSubnodeName = name;
 								WikiService.getWikiEntry({
 									role : 'producer',
 									entity : 'subnode',
 									nodeid : id
 								}, function(response) {
 									$scope.selectedSubnode = response;
-									changeWikiFieldsSubNode();
+									changeWikiFieldsSubnode();
 									//load wiki fields
 								});
 							};
 							
-							var changeWikiFieldsSubNode = function() {
-								$scope.subNodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
-								$("#wikiSubNodeArea").val($scope.selectedSubnode.wikiContentPlain);
+							var changeWikiFieldsSubnode = function() {
+								$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
+								$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
 							};
 							
-							$scope.saveWikiSubNodeEntry = function() {
+							$scope.saveWikiSubnodeEntry = function() {
 								if ($scope.selectedSubnode != 0) {
-									$scope.selectedSubnode.wikiContentPlain = $("#wikiSubNodeArea").val();
+									$scope.selectedSubnode.wikiContentPlain = $("#wikiSubnodeArea").val();
 									switchSubnodeToRead();
-									setLoadingSubNode();
-									alert(JSON.stringify($scope.selectedSubnode));
+									setLoadingSubnode();
 									WikiService.postEntry({
 										role : 'producer',
 										entity: 'subnode'
 									}, $scope.selectedSubnode, function(response) {
 										$scope.selectedSubnode = response;
-										changeWikiFieldsSubNode();
+										changeWikiFieldsSubnode();
 									});
 								};
 							};
 							
-							$scope.deleteSubNode = function(id) {
-								TreeService.deleteSubNode({
+							$scope.deleteSubnode = function(id) {
+								TreeService.deleteSubnode({
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
-									getSubNodes();
+									getSubnodes();
 								});
 							};
 							
@@ -190,8 +189,8 @@ app
 								$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 							};
 							
-							var setLoadingSubNode = function() {
-								$scope.subNodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+							var setLoadingSubnode = function() {
+								$scope.subnodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 							};
 
 							var changeWikiFields = function() {
@@ -204,7 +203,7 @@ app
 								$scope.selectedNodeId = id;
 								$scope.selectedNodeName = name;
 								showNodeTitle();
-								getSubNodes();
+								getSubnodes();
 								WikiService.getWikiEntry({
 									role : 'producer',
 									entity : 'node',
@@ -254,17 +253,17 @@ app
 
 											directoryDataToArray(resDirectory,
 													resNodes);
-											$scope.getSubNodes(resNodes, TreeService);
+											$scope.getSubnodes(resNodes, TreeService);
 
 										});
 
 							});
 
-							$scope.getSubNodes = function(resNodes, TreeService) {
-								TreeService.getSubNodes({
+							$scope.getSubnodes = function(resNodes, TreeService) {
+								TreeService.getSubnodes({
 									ktreeid : $routeParams.treeId
-								},resNodes, function(resSubNodes) {
-									drawExistingNodes(resNodes, resSubNodes);
+								},resNodes, function(resSubnodes) {
+									drawExistingNodes(resNodes, resSubnodes);
 									$scope.getLinks(TreeService);
 
 								});

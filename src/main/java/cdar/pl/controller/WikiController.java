@@ -32,9 +32,9 @@ public class WikiController {
 	
 	@GET
 	@Path("/producer/subnode/{subnodeid}")
-	public WikiEntry getKnowledgeSubNodeWikiEntry(@PathParam("subnodeid") int subnodeid) {
+	public WikiEntry getKnowledgeSubnodeWikiEntry(@PathParam("subnodeid") int subnodeid) {
 		TreeModel ktm = new TreeModel();
-		return new WikiEntry(ktm.getSubNodeById(subnodeid));
+		return new WikiEntry(ktm.getSubnodeById(subnodeid));
 	}
 	
 	@POST
