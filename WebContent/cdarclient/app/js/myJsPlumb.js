@@ -13,21 +13,6 @@ function initializeJsPlumb() {
 	makePopupEvents();
 	bindDetachConnectorEvent();
 	bindConnection();
-
-	// not allowed
-	$('#tree-container').dblclick(function(e) {
-		// scope.addNode(e);
-	});
-	$('#radio-form').on('change', '.radio_item', function(element) {
-		var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
-		jQuery.each(connections, function(object) {
-			if (this.id === lastConnectionID) {
-				this.getOverlay("label").setLabel($(element.currentTarget).val());
-				//console.log($(element.currentTarget).attr("id").replace(SUBNODE, ""));//SubNodeID
-				scope.updateLink(this.id.replace(LINK, ""), $(element.currentTarget).attr("id").replace(SUBNODE, ""));
-			}
-		});
-	});
 };
 
 function addHTMLNode(response, e) {
@@ -44,6 +29,7 @@ function addHTMLNode(response, e) {
 
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
+	showNodeWikiEvent(newState);
 	makeTarget(newState);
 	makeSource(connect, newState);
 	appendElements(title, connect, newState, true);
@@ -81,6 +67,8 @@ function drawExistingNodes(data, resSubNodes) {
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
+			showNodeWikiEvent(newState);
+
 			makeTarget(newState);
 			makeSource(connect, newState);
 
@@ -109,17 +97,16 @@ function setDefaultSettings() {
 };
 
 function makePopupEvents() {
-	$('[class*=popup-box]').click(function(e) {
-		/* Stop the link working normally on click if it's linked to a popup */
-		e.stopPropagation();
-	});
-	$('html').click(function() {
-		$('#radio-form').empty();
-		var scrollPos = $(window).scrollTop();
-		/* Hide the popup and blackout when clicking outside the popup */
-		$('[id^=popup-box-]').hide();
-		$("html,body").css("overflow", "auto");
-		$('html').scrollTop(scrollPos);
+	$('#radio-form').on('change', '.radio_item', function(element) {
+		var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
+		jQuery.each(connections, function(object) {
+			if (this.id === lastConnectionID) {
+				this.getOverlay("label").setLabel($(element.currentTarget).val());
+				scope.updateLink(this.id.replace(LINK, ""), $(element.currentTarget).attr("id").replace(SUBNODE, ""));
+				$('[id^=popup-box-]').hide();
+
+			}
+		});
 	});
 };
 
@@ -277,6 +264,12 @@ function removeNodeEvent(newState) {
 		jsPlumb.detachAllConnections($(this));
 		$(this).remove();
 		e.stopPropagation();
+	});
+};
+
+function showNodeWikiEvent(newState) {
+	newState.click(function(e) {
+		scope.changeNode(newState[0].id.replace(NODE, ""), newState[0].textContent);
 	});
 };
 
