@@ -71,9 +71,9 @@ app
 
 							initializeJsPlumb();
 
+							$scope.UserService = UserService;
 							$scope.knowledgetree;
 							$scope.nodes;
-							$scope.UserService = UserService;
 							$scope.selectedNode;
 							$scope.selectedNodeId = 0;
 							$scope.selectedNodeName = '';
@@ -84,6 +84,7 @@ app
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
 							$scope.newSubNodeName = '';
+							$scope.subNodeHtmlText;
 							
 							var getSubNodes = function() {
 								TreeService.getSubNodes({
@@ -122,7 +123,39 @@ app
 							};
 							
 							$scope.changeSubNode = function(id, name) {
-								alert("changed: " + id + " name: " + name);
+								setLoadingSubNode();
+								$scope.selectedSubNodeId = id;
+								$scope.selectedSubNodeName = name;
+								WikiService.getWikiEntry({
+									role : 'producer',
+									entity : 'subnode',
+									nodeid : id
+								}, function(response) {
+									$scope.selectedSubnode = response;
+									changeWikiFieldsSubNode();
+									//load wiki fields
+								});
+							};
+							
+							var changeWikiFieldsSubNode = function() {
+								$scope.subNodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
+								$("#wikiSubNodeArea").val($scope.selectedSubnode.wikiContentPlain);
+							};
+							
+							$scope.saveWikiSubNodeEntry = function() {
+								if ($scope.selectedSubnode != 0) {
+									$scope.selectedSubnode.wikiContentPlain = $("#wikiSubNodeArea").val();
+									switchSubnodeToRead();
+									setLoadingSubNode();
+									alert(JSON.stringify($scope.selectedSubnode));
+									WikiService.postEntry({
+										role : 'producer',
+										entity: 'subnode'
+									}, $scope.selectedSubnode, function(response) {
+										$scope.selectedSubnode = response;
+										changeWikiFieldsSubNode();
+									});
+								};
 							};
 							
 							$scope.deleteSubNode = function(id) {
@@ -141,34 +174,33 @@ app
 								}
 							};
 							
-							var showSubNodeTitle = function() {
-								if ($scope.selectedSubNodeId!=0) {
-									$scope.subNodeTitle = "Selected subnode: " + $scope.selectedSubnodeName;
-								} else {
-									$scope.subNodeTitle = "Selected node: no subnode selected";
-								}
-							};
-							
 							showNodeTitle();
-							showSubNodeTitle();
 							
 							var switchNodeToRead = function() {
 								$scope.nodetabs[0].active = true;
-								$scope.nodetabs[1].active = true;
+								$scope.nodetabs[1].active = false;
 							};
 							
-							var setLoading = function() {
+							var switchSubnodeToRead = function() {
+								$scope.subnodetabs[0].active = true;
+								$scope.subnodetabs[1].active = false;
+							};
+							
+							var setLoadingNode = function() {
 								$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+							};
+							
+							var setLoadingSubNode = function() {
+								$scope.subNodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 							};
 
 							var changeWikiFields = function() {
 								$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
-								$("#wikiArea").val(
-										$scope.selectedNode.wikiContentPlain);
+								$("#wikiArea").val($scope.selectedNode.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id, name) {
-								setLoading();
+								setLoadingNode();
 								$scope.selectedNodeId = id;
 								$scope.selectedNodeName = name;
 								showNodeTitle();
@@ -183,22 +215,20 @@ app
 								});
 							};
 							
-							$scope.saveWikiEntry = function() {
+							$scope.saveWikiNodeEntry = function() {
 								if ($scope.selectedNode != 0) {
-									$scope.wikiMarkupText = $("#wikiArea")
-											.val();
-									$scope.selectedNode.wikiContentPlain = $scope.wikiMarkupText;
+									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
 									switchNodeToRead();
-									setLoading();
+									setLoadingNode();
 									WikiService.postEntry({
 										role : 'producer',
 										entity: 'node'
 									}, $scope.selectedNode, function(response) {
+										$scope.selectedNode = response;
 										changeWikiFields(response);
 									});
 								};
 							};
-							
 							
 							
 							

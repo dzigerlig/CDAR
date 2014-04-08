@@ -88,19 +88,19 @@
 					<h3>{{nodeTitle}}</h3>
 					<div class="col-md-12">
 						<tabset justified="true" class="well">
-							<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active" id="wikiread" >
+							<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active" id="nodewikiread" >
 								<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
 							</tab>
 							<tab heading="{{nodetabs[1].title}}" id="wikiwrite" active="nodetabs[1].active">
-								<form data-role="form" data-ng-submit="saveWikiEntry()">
+								<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
 									<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
 									<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
 								</form>
 							</tab>
 						</tabset>
 					</div>
+					<h3>Subnodes:</h3>
 					<div class="col-md-12" class="well">
-						<h4>Subnodes:</h4>
 						<div id="tableSubnodes">
 							<form id="formAddTree" data-role="form" data-ng-submit="addNewSubNode()">
 								<table class="table table-striped table-bordered table-condensed table-hover">
@@ -120,7 +120,7 @@
 										<td></td>
 										<td>
 										<div class="input-append">
-											<input class="form-horizontal" placeholder="subnode name" required autofocus data-ng-model="newSubNodeName" />
+											<input class="form-horizontal" placeholder="subnode name" required data-ng-model="newSubNodeName" />
 											<button class="btn btn-success" type="submit">Add subnode</button>
 										</div>
 										</td>
@@ -130,11 +130,11 @@
 						</div>
 						<tabset justified="true" class="well">
 							<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread" >
-								<p data-ng-bind-html="wikiHtmlText">no subnode selected</p>
+								<p data-ng-bind-html="subNodeHtmlText">no subnode selected</p>
 							</tab>
 							<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
-								<form data-role="form" data-ng-submit="saveWikiEntry()">
-									<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
+								<form data-role="form" data-ng-submit="saveWikiSubNodeEntry()">
+									<textarea id="wikiSubNodeArea" name="wikiSubNodeArea" cols="80" rows="30"></textarea>
 									<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
 								</form>
 							</tab>
