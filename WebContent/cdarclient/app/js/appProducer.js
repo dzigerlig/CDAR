@@ -124,7 +124,7 @@ app
 							
 							$scope.changeSubNode = function(id, name) {
 								setLoadingSubNode();
-								$scope.selectedSubNodeId = id;
+								$scope.selectedSubnodeId = id;
 								$scope.selectedSubNodeName = name;
 								WikiService.getWikiEntry({
 									role : 'producer',
