@@ -29,59 +29,11 @@ public class TreeModel {
 		return new Tree(tree);
 	}
 
-	public boolean removeKnowledgeTreeById(int ktreeid) {
+	public boolean deleteKnowledgeTree(int ktreeid) {
 		return pdc.getTreeById(ktreeid).delete();
 	}
 
-	public Tree getKnowledgeTreeById(int treeId) {
+	public Tree getKnowledgeTree(int treeId) {
 		return new Tree(pdc.getTreeById(treeId));
-	}
-
-	public Node getNodeById(int nodeid) {
-		return new Node(pdc.getNode(nodeid));
-	}
-
-	public Set<Node> getKnowledgeNodes(int ktreeid) {
-		Set<Node> set = new HashSet<Node>();
-
-		for (NodeDao pnd : pdc.getNodes(ktreeid)) {
-			set.add(new Node(pnd));
-		}
-		return set;
-	}
-
-	public Directory getDictionariesById(int dictionaryid) {
-		return new Directory(pdc.getDirectory(dictionaryid));
-	}
-
-	public Set<Template> getKnowledgeTemplates(int ktreeid) {
-		Set<Template> templates = new HashSet<Template>();
-		for (TemplateDao template : pdc.getTemplates(ktreeid)) {
-			templates.add(new Template(template));
-		}
-		return templates;
-	}
-	
-	public Template getKnowledgeTemplate(int templateid) {
-		return new Template(pdc.getTemplate(templateid));
-	}
-
-	public Template addKnowledgeTemplate(Template template) {
-		try {
-			TemplateDao templatedao = new TemplateDao(template.getTreeid(),
-					template.getTitle(), template.getTemplatetext());
-			return new Template(templatedao.create());
-		} catch (Exception ex) {
-			return new Template(-1);
-		}
-	}
-
-	public boolean deleteTemplate(int id) {
-		TemplateDao templatedao = pdc.getTemplate(id);
-		return templatedao.delete();
-	}
-
-	public Subnode getSubnodeById(int subnodeid) {
-		return new Subnode(pdc.getSubnode(subnodeid));
 	}
 }

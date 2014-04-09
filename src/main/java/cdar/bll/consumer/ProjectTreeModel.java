@@ -8,6 +8,7 @@ import java.util.Set;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.NodeLinkModel;
+import cdar.bll.producer.NodeModel;
 import cdar.bll.producer.TreeModel;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
@@ -55,10 +56,10 @@ public class ProjectTreeModel {
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
 		//cdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
-		TreeModel tm = new TreeModel();
+		NodeModel nm = new NodeModel();
 		NodeLinkModel nlm = new NodeLinkModel();
 		
-		for (Node node : tm.getKnowledgeNodes(ktreeid)) {
+		for (Node node : nm.getNodes(ktreeid)) {
 			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
 			projectnode.setTitle(node.getTitle());
 			projectnode.setWikititle(node.getWikiTitle());

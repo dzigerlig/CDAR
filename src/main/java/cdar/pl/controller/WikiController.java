@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import cdar.bll.consumer.ProjectTreeModel;
+import cdar.bll.producer.NodeModel;
+import cdar.bll.producer.SubnodeModel;
 import cdar.bll.producer.TreeModel;
 import cdar.bll.wiki.WikiEntry;
 
@@ -26,15 +28,15 @@ public class WikiController {
 	@Path("/producer/node/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeid) {
-		TreeModel ktm = new TreeModel();
-		return new WikiEntry(ktm.getNodeById(nodeid));
+		NodeModel nm = new NodeModel();
+		return new WikiEntry(nm.getNode(nodeid));
 	}
 	
 	@GET
 	@Path("/producer/subnode/{subnodeid}")
 	public WikiEntry getKnowledgeSubnodeWikiEntry(@PathParam("subnodeid") int subnodeid) {
-		TreeModel ktm = new TreeModel();
-		return new WikiEntry(ktm.getSubnodeById(subnodeid));
+		SubnodeModel sm = new SubnodeModel();
+		return new WikiEntry(sm.getSubnode(subnodeid));
 	}
 	
 	@POST

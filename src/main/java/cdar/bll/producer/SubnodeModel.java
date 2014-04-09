@@ -40,4 +40,8 @@ public class SubnodeModel {
 		
 		return subnodes;
 	}
+	
+	public Subnode getSubnode(int subnodeid) {
+		return new Subnode(pdc.getSubnode(subnodeid));
+	}
 }

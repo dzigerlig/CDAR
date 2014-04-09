@@ -16,6 +16,10 @@ public class NodeModel {
 		}
 		return nodes;
 	}
+	
+	public Node getNode(int nodeid) {
+		return new Node(pdc.getNode(nodeid));
+	}
 
 	public boolean deleteNodeById(int id) {
 		return pdc.getNode(id).delete();
