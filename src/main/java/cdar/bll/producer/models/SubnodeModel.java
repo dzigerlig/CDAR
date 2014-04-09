@@ -11,17 +11,13 @@ import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 public class SubnodeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
-	public void removeSubnodeById(int id) {
-		pdc.getSubnode(id).delete();
-	}
-
-	public Subnode addSubnode(Subnode sN) {
-		SubnodeDao subnode = new SubnodeDao(sN.getKnid(), sN.getTitle());
+	public Subnode addSubnode(int knid, String title) {
+		SubnodeDao subnode = new SubnodeDao(knid, title);
 		return new Subnode(subnode.create());
 	}
 
 	//whole tree
-	public Set<Subnode> getSubnodes(int treeId) {
+	public Set<Subnode> getSubnodesFromTree(int treeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
 		for (NodeDao node : pdc.getNodes(treeId)) {
@@ -32,7 +28,7 @@ public class SubnodeModel {
 		return subnodes;
 	}
 	
-	public Set<Subnode> getSubnodesOfNode(int nodeId) {
+	public Set<Subnode> getSubnodesFromNode(int nodeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		
 		for (SubnodeDao subnode : pdc.getSubnodes(nodeId)) {
@@ -44,5 +40,16 @@ public class SubnodeModel {
 	
 	public Subnode getSubnode(int subnodeid) {
 		return new Subnode(pdc.getSubnode(subnodeid));
+	}
+	
+	public Subnode updateSubnode(Subnode subnode) {
+		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
+		subnodedao.setKnid(subnode.getKnid());
+		subnodedao.setTitle(subnode.getTitle());
+		return new Subnode(subnodedao.update());
+	}
+	
+	public void removeSubnode(int id) {
+		pdc.getSubnode(id).delete();
 	}
 }

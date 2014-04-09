@@ -69,7 +69,7 @@ public class ProjectTreeModel {
 			linkMapping.put(node.getId(), projectnode.getId());
 		}
 		
-		for (NodeLink nodelink : nlm.getLinks(ktreeid)) {
+		for (NodeLink nodelink : nlm.getNodeLinks(ktreeid)) {
 			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodelink.getSourceId()), linkMapping.get(nodelink.getTargetId()), ptreeid);
 			projectnodelink.setKpnsnid(nodelink.getKsnid());
 			projectnodelink.create();

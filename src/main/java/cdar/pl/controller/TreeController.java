@@ -201,21 +201,21 @@ public class TreeController {
 	@Path("links/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
-		return lm.getLinks(ktreeid);
+		return lm.getNodeLinks(ktreeid);
 	}		
 	
 	@POST
 	@Path("links/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink addLink(NodeLink nl) {		 
-		return lm.addLink(nl.getKtrid(), nl.getSourceId(), nl.getTargetId(), nl.getKsnid());
+		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(), nl.getTargetId(), nl.getKsnid());
 	}
 
 	@POST
 	@Path("links/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeLink(int id) {
-		lm.removeLinkById(id);
+		lm.removeNodeLink(id);
 		return Response.status(200).build();
 	}
 	
@@ -232,28 +232,28 @@ public class TreeController {
 	@Path("subnodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
-		return sm.getSubnodes(ktreeid);
+		return sm.getSubnodesFromTree(ktreeid);
 	}
 
 	@GET
 	@Path("subnodes/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
-		return sm.getSubnodesOfNode(nodeid);
+		return sm.getSubnodesFromNode(nodeid);
 	}
 	
 	@POST
 	@Path("subnodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Subnode addSubnode(Subnode sN) {		 
-		return sm.addSubnode(sN);
+		return sm.addSubnode(sN.getKnid(), sN.getTitle());
 	}
 
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response removeSubnode(int id) {
-		sm.removeSubnodeById(id);
+		sm.removeSubnode(id);
 		return Response.status(200).build();
 	}
 }

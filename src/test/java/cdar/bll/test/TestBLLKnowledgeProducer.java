@@ -9,11 +9,13 @@ import org.junit.Test;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.producer.models.DirectoryModel;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
+import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
@@ -106,11 +108,13 @@ public class TestBLLKnowledgeProducer {
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(tree.getId(), nameNode1, directoryId);
 		Node node2 = nm.addNode(tree.getId(), nameNode2, directoryId);
-		assertEquals(0, nlm.getLinks(tree.getId()).size());
-		NodeLink nodelink = nlm.addLink(tree.getId(), node.getId(), node2.getId(), 0);
-		assertEquals(1, nlm.getLinks(tree.getId()).size());
+		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
+		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
+		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+		nlm.removeNodeLink(nodelink.getId());
+		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 	}
 	
 	@Test
@@ -124,9 +128,9 @@ public class TestBLLKnowledgeProducer {
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(tree.getId(), nameNode1, directoryId);
 		Node node2 = nm.addNode(tree.getId(), nameNode2, directoryId);
-		assertEquals(0, nlm.getLinks(tree.getId()).size());
-		NodeLink nodelink = nlm.addLink(tree.getId(), node.getId(), node2.getId(), 0);
-		assertEquals(1, nlm.getLinks(tree.getId()).size());
+		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
+		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
+		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
 		nodelink.setSourceId(node2.getId());
@@ -134,5 +138,43 @@ public class TestBLLKnowledgeProducer {
 		nlm.updateLink(nodelink);
 		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+	}
+	
+	@Test
+	public void testSubnode() {
+		final String subnodename = "My Subnode";
+		SubnodeModel snm = new SubnodeModel();
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), "Node", directoryId);
+		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
+		Subnode subnode = snm.addSubnode(node.getId(), subnodename);
+		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
+	}
+	
+	@Test
+	public void testSubnodeUpdate() {
+		final String subnodename = "My Subnode";
+		final String newSubnodename = "My New Subnode";
+		SubnodeModel snm = new SubnodeModel();
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), "Node", directoryId);
+		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
+		Subnode subnode = snm.addSubnode(node.getId(), subnodename);
+		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
+		subnode.setTitle(newSubnodename);
+		snm.updateSubnode(subnode);
+		assertEquals(newSubnodename, snm.getSubnode(subnode.getId()).getTitle());
 	}
 }

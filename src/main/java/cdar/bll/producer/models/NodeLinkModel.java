@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.NodeLink;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
@@ -12,8 +11,8 @@ public class NodeLinkModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 
-	public Set<NodeLink> getLinks(int treeid) {
-		Set<NodeLink>  nodelink= new HashSet<NodeLink>();
+	public Set<NodeLink> getNodeLinks(int treeid) {
+		Set<NodeLink> nodelink = new HashSet<NodeLink>();
 
 		for (NodeLinkDao nld : pdc.getNodeLinks(treeid)) {
 			nodelink.add(new NodeLink(nld));
@@ -21,13 +20,13 @@ public class NodeLinkModel {
 		return nodelink;
 	}
 	
-	public void removeLinkById(int id)
+	public void removeNodeLink(int id)
 	{
 		NodeLinkDao nld = pdc.getNodeLink(id);
 		nld.delete();
 	}
 	
-	public NodeLink addLink(int ktrid, int sourceid, int targetid, int ksnid)
+	public NodeLink addNodeLink(int ktrid, int sourceid, int targetid, int ksnid)
 	{
 		NodeLinkDao nld = new NodeLinkDao();
 		nld.setKtrid(ktrid);
