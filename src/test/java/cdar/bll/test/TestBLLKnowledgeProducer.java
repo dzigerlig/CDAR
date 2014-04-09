@@ -36,12 +36,12 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testTree() {
 		final String treeName = "MyTreeName";
-		int treeCount = tm.getKnowledgeTreesByUid(um.getUser(username).getId()).size();
-		Tree tree = tm.addKnowledgeTreeByUid(um.getUser(username).getId(), treeName);
-		assertEquals(treeCount+1, tm.getKnowledgeTreesByUid(um.getUser(username).getId()).size());
-		assertEquals(treeName, tm.getKnowledgeTree(tree.getId()).getName());
-		tm.deleteKnowledgeTree(tree.getId());
-		assertEquals(treeCount, tm.getKnowledgeTreesByUid(um.getUser(username).getId()).size());
+		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
+		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
+		assertEquals(treeName, tm.getTree(tree.getId()).getName());
+		tm.deleteTree(tree.getId());
+		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class TestBLLKnowledgeProducer {
 		final String templateName = "MyTemplate";
 		final String templateText = "MyTemplateText";
 		TemplateModel tplm = new TemplateModel();
-		Tree tree = tm.addKnowledgeTreeByUid(um.getUser(username).getId(), "MyTree");
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText);
 		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
@@ -65,7 +65,7 @@ public class TestBLLKnowledgeProducer {
 		final String nodeTitle = "Node";
 		NodeModel nm = new NodeModel();
 		DirectoryModel dm = new DirectoryModel();
-		Tree tree = tm.addKnowledgeTreeByUid(um.getUser(username).getId(), "MyTree");
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		assertEquals(0, nm.getNodes(tree.getId()).size());
 		Node node = nm.addNode(tree.getId(), nodeTitle, directoryId);
@@ -82,7 +82,7 @@ public class TestBLLKnowledgeProducer {
 		final String newNodeTitle = "MyNewTitle";
 		NodeModel nm = new NodeModel();
 		DirectoryModel dm = new DirectoryModel();
-		Tree tree = tm.addKnowledgeTreeByUid(um.getUser(username).getId(), "MyTree");
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(tree.getId(), nodeTitle, directoryId);
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());

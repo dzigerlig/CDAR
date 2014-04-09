@@ -13,7 +13,7 @@ import cdar.dal.persistence.jdbc.producer.TreeDao;
 public class TreeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
-	public Set<Tree> getKnowledgeTreesByUid(int uid) {
+	public Set<Tree> getTrees(int uid) {
 		Set<Tree> trees = new HashSet<Tree>();
 		for (TreeDao tree : pdc.getTrees(uid)) {
 			trees.add(new Tree(tree));
@@ -21,7 +21,7 @@ public class TreeModel {
 		return trees;
 	} 
 
-	public Tree addKnowledgeTreeByUid(int uid, String treeName) {
+	public Tree addTree(int uid, String treeName) {
 		TreeDao tree = new TreeDao(uid, treeName);
 		tree.create();
 		DirectoryDao directoryDao = new DirectoryDao(tree.getId());
@@ -30,11 +30,11 @@ public class TreeModel {
 		return new Tree(tree);
 	}
 
-	public boolean deleteKnowledgeTree(int ktreeid) {
-		return pdc.getTreeById(ktreeid).delete();
+	public boolean deleteTree(int ktreeid) {
+		return pdc.getTree(ktreeid).delete();
 	}
 
-	public Tree getKnowledgeTree(int treeId) {
-		return new Tree(pdc.getTreeById(treeId));
+	public Tree getTree(int treeId) {
+		return new Tree(pdc.getTree(treeId));
 	}
 }

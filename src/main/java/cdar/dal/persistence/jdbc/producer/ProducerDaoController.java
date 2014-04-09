@@ -52,7 +52,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		return trees;
 	}
 	
-	public TreeDao getTreeById(int id) {
+	public TreeDao getTree(int id) {
 		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;

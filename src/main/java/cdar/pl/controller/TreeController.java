@@ -39,28 +39,28 @@ public class TreeController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
-		return ktm.getKnowledgeTreesByUid(uid);
+		return ktm.getTrees(uid);
 	}
 	
 	@GET
 	@Path("delete/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
-		return ktm.deleteKnowledgeTree(ktreeid);
+		return ktm.deleteTree(ktreeid);
 	}
 	
 	@POST
 	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
-		return ktm.addKnowledgeTreeByUid(uid, treeName);
+		return ktm.addTree(uid, treeName);
 	}
 	
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
-		return ktm.getKnowledgeTree(ktreeid);
+		return ktm.getTree(ktreeid);
 	}
 	
 	//TEMPLATES

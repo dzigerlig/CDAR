@@ -39,26 +39,26 @@ public class TestJDBCKnowledgeProducer {
 		final String newTreeName = "newTreeName";
 		TreeDao tree = new TreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		tree.create();
-		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
+		assertEquals(testTreeName, kpdc.getTree(tree.getId()).getName());
 		tree.setName(newTreeName);
 		tree.update();
-		assertEquals(newTreeName, kpdc.getTreeById(tree.getId()).getName());
+		assertEquals(newTreeName, kpdc.getTree(tree.getId()).getName());
 	}
 	
 	@Test
 	public void TestGetTreeById() {
 		TreeDao tree = new TreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		tree = tree.create();
-		assertEquals(testTreeName, kpdc.getTreeById(tree.getId()).getName());
+		assertEquals(testTreeName, kpdc.getTree(tree.getId()).getName());
 	}
 	 
 	@Test
 	public void TestDeleteTree() {
 		final String treeName = "mytree";
 		TreeDao tree = new TreeDao(udc.getUserByName(testUsername).getId(), treeName).create();
-		assertEquals(treeName, kpdc.getTreeById(tree.getId()).getName());
+		assertEquals(treeName, kpdc.getTree(tree.getId()).getName());
 		tree.delete();
-		assertNull(kpdc.getTreeById(tree.getId()));
+		assertNull(kpdc.getTree(tree.getId()));
 	}
 	
 	@Test
