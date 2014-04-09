@@ -80,12 +80,16 @@ public class TestJDBCKnowledgeProducer {
 	
 	@Test
 	public void TestKnowledgeTemplateCreate() {
+		final String templateName = "MyTemplate";
+		final String templateText = "MyText";
 		UserDao user = udc.getUserByName(testUsername);
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate", "MyText");
+		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText);
 		template.create();
+		assertEquals(templateName, kpdc.getTemplate(template.getId()).getTitle());
+		assertEquals(templateText, kpdc.getTemplate(template.getId()).getTemplatetext());
 		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 	}
 	
@@ -248,6 +252,9 @@ public class TestJDBCKnowledgeProducer {
 		assertEquals(0, kpdc.getNodeLinks(tree.getId()).size());
 		NodeLinkDao nodelink = new NodeLinkDao(node.getId(), node2.getId(), tree.getId());
 		nodelink.create();
+		assertEquals(node.getId(), kpdc.getNodeLink(nodelink.getId()).getSourceid());
+		assertEquals(node2.getId(), kpdc.getNodeLink(nodelink.getId()).getTargetid());
+		assertEquals(tree.getId(), kpdc.getNodeLink(nodelink.getId()).getKtrid());
 		assertEquals(1, kpdc.getNodeLinks(tree.getId()).size());
 	}
 	

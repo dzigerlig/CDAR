@@ -23,7 +23,7 @@ public class TreeModel {
 			trees.add(new Tree(tree));
 		}
 		return trees;
-	}
+	} 
 
 	public Tree addKnowledgeTreeByUid(int uid, String treeName) {
 		TreeDao tree = new TreeDao(uid, treeName);

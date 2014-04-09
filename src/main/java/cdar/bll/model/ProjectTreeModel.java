@@ -1,13 +1,21 @@
 package cdar.bll.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
+import cdar.bll.producer.Node;
+import cdar.bll.producer.NodeLink;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class ProjectTreeModel {
 	
@@ -29,7 +37,7 @@ public class ProjectTreeModel {
 			ex.printStackTrace();
 		}
 		return new ProjectTree(-1);
-	}
+	} 
 
 	public boolean removeProjectTreeById(int uid, int ptreeid) {
 		ProjectTreeDao tree = cdc.getProjectTreeById(ptreeid);
@@ -45,7 +53,24 @@ public class ProjectTreeModel {
 	}
 
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
-		cdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
+		//cdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
+		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
+		TreeModel tm = new TreeModel();
+		NodeLinkModel nlm = new NodeLinkModel();
+		
+		for (Node node : tm.getKnowledgeNodes(ktreeid)) {
+			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
+			projectnode.setTitle(node.getTitle());
+			projectnode.setWikititle(node.getWikiTitle());
+			projectnode.create();
+			linkMapping.put(node.getId(), projectnode.getId());
+		}
+		
+		for (NodeLink nodelink : nlm.getLinks(ktreeid)) {
+			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodelink.getSourceId()), linkMapping.get(nodelink.getTargetId()), ptreeid);
+			projectnodelink.setKpnsnid(nodelink.getKsnid());
+			projectnodelink.create();
+		}
 	}
 
 	public Set<ProjectNode> getProjectNodes(int ptreeid) {

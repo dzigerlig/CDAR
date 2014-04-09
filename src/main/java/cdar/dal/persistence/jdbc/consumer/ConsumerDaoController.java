@@ -177,7 +177,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 	
 	public ProjectNodeLinkDao getProjectNodeLink(int id) {
-		String getProjectNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KSNID FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getProjectNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -318,23 +318,4 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return usercomment;
 	}
 
-	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
-		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
-		ProducerDaoController pdc = new ProducerDaoController();
-		for (NodeDao node : pdc.getNodes(ktreeid)) {
-			ProjectNodeDao projectnode = new ProjectNodeDao(ptreeid);
-			projectnode.setTitle(node.getTitle());
-			projectnode.setWikititle(node.getWikititle());
-			projectnode.create();
-			linkMapping.put(node.getId(), projectnode.getId());
-		}
-		
-		for (NodeLinkDao nodeLink : pdc.getNodeLinks(ktreeid)){
-			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(linkMapping.get(nodeLink.getSourceid()), linkMapping.get(nodeLink.getTargetid()), ptreeid);
-			projectnodelink.setKpnsnid(nodeLink.getKsnid());
-			projectnodelink.create();
-		}
-		
-		
-	}
 }

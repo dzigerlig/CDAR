@@ -451,25 +451,6 @@ public class KnowledgeProducerDaoController {
 	}
 	
 	public KnowledgeNodeDao updateNode(KnowledgeNodeDao node) {
-		//JDBC WORKAROUND
-//		try {
-//			Session session = HibernateUtil.getSessionFactory()
-//					.getCurrentSession();
-//			Transaction tx = session.beginTransaction();
-//			session.update(node);
-//			tx.commit();
-//			return node;
-//		} catch (RuntimeException e) {
-//			try {
-//				Session session = HibernateUtil.getSessionFactory()
-//						.getCurrentSession();
-//				if (session.getTransaction().isActive())
-//					session.getTransaction().rollback();
-//			} catch (HibernateException e1) {
-//				System.out.println("Error rolling back transaction");
-//			}
-//			throw e;
-//		}
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -495,8 +476,6 @@ public class KnowledgeProducerDaoController {
 	}
 	
 	public void moveKnowledgeNode(int nodeid, int newdictionaryid) {
-		//JDBC WORKAROUND
-		//update knowledgenodemapping knm SET did = 4 where knm.knid = 4;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet generatedKeys = null;
@@ -504,7 +483,6 @@ public class KnowledgeProducerDaoController {
 		try {
 			connection = JDBCUtil.getConnection();
 			preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (DID, KNID) VALUES (?, ?)ON DUPLICATE KEY UPDATE DID = ?",
-					//"UPDATE KNOWLEDGENODEMAPPING KNM SET DID = ? WHERE KNM.KNID = ?",
 					Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, newdictionaryid);
 			preparedStatement.setInt(2, nodeid);

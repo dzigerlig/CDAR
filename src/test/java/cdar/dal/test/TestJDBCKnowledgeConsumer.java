@@ -12,6 +12,8 @@ import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
@@ -132,6 +134,9 @@ public class TestJDBCKnowledgeConsumer {
 		assertEquals(0, cdc.getProjectNodeLinks(projecttree.getId()).size());
 		ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(projectnode.getId(), projectnode2.getId(), projecttree.getId());
 		projectnodelink.create();
+		assertEquals(projectnode.getId(), cdc.getProjectNodeLink(projectnodelink.getId()).getSourceid());
+		assertEquals(projectnode2.getId(), cdc.getProjectNodeLink(projectnodelink.getId()).getTargetid());
+		assertEquals(projecttree.getId(), cdc.getProjectNodeLink(projectnodelink.getId()).getKptid());
 		assertEquals(1, cdc.getProjectNodeLinks(projecttree.getId()).size());
 	}
 	

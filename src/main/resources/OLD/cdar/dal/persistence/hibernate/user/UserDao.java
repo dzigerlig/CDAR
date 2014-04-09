@@ -17,8 +17,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.persistence.NamedQuery;
 
-import cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao;
-import cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
+import OLD.cdar.dal.persistence.hibernate.knowledgeconsumer.KnowledgeProjectTreeDao;
+import OLD.cdar.dal.persistence.hibernate.knowledgeproducer.KnowledgeTreeDao;
 
 @Entity
 @Table(name = "user")
