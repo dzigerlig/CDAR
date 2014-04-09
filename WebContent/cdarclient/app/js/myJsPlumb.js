@@ -319,3 +319,7 @@ function bindConnection() {
 	});
 };
 
+function updateSubnodesOfNode(resSubnode, nodeId){
+	$("#node"+nodeId).data("subNode").subNode = resSubnode;
+};
+

@@ -32,7 +32,7 @@ public class SubnodeModel {
 		return subnodes;
 	}
 	
-	public Set<Subnode> getSubnodes(int treeId, int nodeId) {
+	public Set<Subnode> getSubnodesOfNode(int nodeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		
 		for (SubnodeDao subnode : pdc.getSubnodes(nodeId)) {
@@ -41,5 +41,4 @@ public class SubnodeModel {
 		
 		return subnodes;
 	}
-
 }

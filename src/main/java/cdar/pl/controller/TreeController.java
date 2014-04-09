@@ -236,8 +236,8 @@ public class TreeController {
 	@GET
 	@Path("subnodes/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Subnode> getSubnodes(@PathParam("ktreeid") int ktreeid, @PathParam("nodeid") int nodeid) {
-		return sNM.getSubnodes(ktreeid, nodeid);
+	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
+		return sNM.getSubnodesOfNode(nodeid);
 	}
 	
 	@POST

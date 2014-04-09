@@ -27,7 +27,7 @@ app.controller("HomeProducerController", [
 			reloadTrees();
 
 			$scope.addNewTree = function() {
-				TreeService.addTree($scope.newTreeName, function(response) {
+				TreeService.postEntry($scope.newTreeName, function(response) {
 					if (response.id != 0) {
 						$scope.newTreeName = '';
 						reloadTrees();
@@ -95,6 +95,16 @@ app
 								});
 							};
 							
+							var getSubnodesOfNode = function() {
+								TreeService.getSubnodes({
+									ktreeid : $scope.knowledgetree.id,
+									entityid : $scope.selectedNodeId
+								}, function(response) {
+									console.log(response);
+									updateSubnodesOfNode(response,$scope.selectedNodeId);
+								});
+							};
+							
 							// END SUBNODES //
 
 							$scope.nodeTitle;
@@ -117,6 +127,7 @@ app
 									knid : $scope.selectedNodeId,
 									title : $scope.newSubnodeName
 								}, function(response) {
+									getSubnodesOfNode();
 									getSubnodes();
 									$scope.newSubnodeName = '';
 								});
