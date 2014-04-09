@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import cdar.bll.model.user.User;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
@@ -42,6 +44,10 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		setAccesstoken(user.getAccesstoken());
 	}
 	
+	public UserDao(int id) {
+		setId(id);
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -111,8 +117,9 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 				setId(generatedKeys.getInt(1));
 			}
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		}
+		catch (Exception ex) {
+			return new UserDao(-1);
 		} finally {
 			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}

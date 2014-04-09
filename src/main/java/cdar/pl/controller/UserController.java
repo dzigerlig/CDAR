@@ -39,7 +39,7 @@ public class UserController {
 	@Path("/registration")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public User createUser(User user) {
-		return userModel.createUser(user);
+		return userModel.createUser(user.getUsername(), user.getPassword());
 	}
 	
 	@POST

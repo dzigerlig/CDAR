@@ -1,4 +1,4 @@
-package cdar.junit.persistence;
+package cdar.dal.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

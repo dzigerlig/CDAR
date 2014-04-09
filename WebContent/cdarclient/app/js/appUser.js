@@ -11,14 +11,15 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	};
 	
 	$scope.login = function() {
-		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password),isProducer: $scope.chkbKnowledgeProducer}, function(response) {
+		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password)}, function(response) {
 			if (response.id != -1 && response.accesstoken.length == 40) {
+				response.isProducer = $scope.chkbKnowledgeProducer;
 				$.cookie('cdar', response, {
 					expires : 7
 				});
 				console.log(response);
 				UserService.user = $.cookie('cdar');
-				if (UserService.user.isProducer) {
+				if ($scope.chkbKnowledgeProducer) {
 					$location.path('/homeproducer');
 				} else {
 					$location.path('/homeconsumer');

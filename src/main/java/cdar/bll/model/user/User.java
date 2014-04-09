@@ -9,7 +9,6 @@ public class User extends BasicEntity {
 	private String username;
 	private String password;
 	private String accesstoken;
-	private boolean isProducer;
 	
 	public User() {
 		
@@ -27,10 +26,9 @@ public class User extends BasicEntity {
 		super(id);
 	}
 	
-	public User(String username, String accesstoken, boolean isProducer) {
+	public User(String username, String password) {
 		setUsername(username);
-		setAccesstoken(accesstoken);
-		setIsProducer(isProducer);
+		setPassword(password);
 	}
 	
 	public User(UserDao userDao) {
@@ -59,13 +57,5 @@ public class User extends BasicEntity {
 
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
-	}
-
-	public boolean getIsProducer() {
-		return isProducer;
-	}
-
-	public void setIsProducer(boolean isProducer) {
-		this.isProducer = isProducer;
 	}
 }

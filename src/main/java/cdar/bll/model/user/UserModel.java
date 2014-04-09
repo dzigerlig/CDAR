@@ -20,23 +20,27 @@ public class UserModel {
 		return new User(-1);
 	}
 
-	public User createUser(User user) {
+	public User createUser(String username, String password) {
 		try {
 			UserDao userdao = new UserDao();
-			userdao.setUsername(user.getUsername());
-			userdao.setPassword(user.getPassword());
-			userdao.create();
-			return new User(userdao);
+			userdao.setUsername(username);
+			userdao.setPassword(password);
+			return new User(userdao.create());
 		} catch (Exception ex) {
 			return new User(-1);
 		}
 	}
 	
+	public void deleteUser(User user) {
+		UserDao userdao = new UserDao(getUser(user.getUsername()));
+		userdao.delete();
+	}
+	
 	public User updateUser(User user) {
 		try {
 			UserDao userdao = udc.getUserById(user.getId());
-			System.out.println(userdao.getUsername());
 			userdao.setPassword(user.getPassword());
+			userdao.setAccesstoken(user.getAccesstoken());
 			userdao.update();
 			return new User(userdao);
 		} catch (Exception ex) {
