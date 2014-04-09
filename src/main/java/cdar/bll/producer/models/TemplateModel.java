@@ -1,14 +1,15 @@
-package cdar.bll.producer;
+package cdar.bll.producer.models;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.producer.Template;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 public class TemplateModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
-	
+
 	public Set<Template> getKnowledgeTemplates(int ktreeid) {
 		Set<Template> templates = new HashSet<Template>();
 		for (TemplateDao template : pdc.getTemplates(ktreeid)) {
@@ -16,19 +17,14 @@ public class TemplateModel {
 		}
 		return templates;
 	}
-	
+
 	public Template getKnowledgeTemplate(int templateid) {
 		return new Template(pdc.getTemplate(templateid));
 	}
 
-	public Template addKnowledgeTemplate(Template template) {
-		try {
-			TemplateDao templatedao = new TemplateDao(template.getTreeid(),
-					template.getTitle(), template.getTemplatetext());
-			return new Template(templatedao.create());
-		} catch (Exception ex) {
-			return new Template(-1);
-		}
+	public Template addKnowledgeTemplate(int treeid, String title, String text) {
+		TemplateDao templatedao = new TemplateDao(treeid, title, text);
+		return new Template(templatedao.create());
 	}
 
 	public boolean deleteTemplate(int id) {
