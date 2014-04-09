@@ -177,4 +177,24 @@ public class TestBLLKnowledgeProducer {
 		snm.updateSubnode(subnode);
 		assertEquals(newSubnodename, snm.getSubnode(subnode.getId()).getTitle());
 	}
+	
+	@Test
+	public void testDirectory() {
+		final String treeName = "MyTree";
+		final String directoryName = "TestDirectory";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		nm.addNode(tree.getId(), "Node", directoryId);
+		assertEquals(1, dm.getDirectories(tree.getId()).size());
+		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
+		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
+		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
+	}
+	
+	@Test
+	public void testDirectoryUpdate() {
+		
+	}
 }

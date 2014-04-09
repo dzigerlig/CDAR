@@ -115,7 +115,7 @@ public class TreeController {
 	@Path("directories/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDirectory(Directory d) {
-		return dm.addDirectory(d);
+		return dm.addDirectory(d.getKtrid(), d.getParentid(), null);
 	}
 	
 	@POST
