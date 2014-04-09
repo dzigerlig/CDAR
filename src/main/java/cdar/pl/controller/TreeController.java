@@ -154,7 +154,7 @@ public class TreeController {
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
-		return nm.addNode(n);
+		return nm.addNode(n.getRefTreeId(), null, n.getDid());
 	}
 	
 	@POST
