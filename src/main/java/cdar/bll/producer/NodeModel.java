@@ -59,4 +59,13 @@ public class NodeModel {
 //		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
 //		return new Node(node);
 	}
+
+	public Node updateNode(Node node) {
+		NodeDao nodedao = pdc.getNode(node.getId());
+		nodedao.setDid(node.getDid());
+		nodedao.setDynamicTreeFlag(node.getDynamicTreeFlag());
+		nodedao.setTitle(node.getTitle());
+		nodedao.update();
+		return new Node(nodedao);
+	}
 }

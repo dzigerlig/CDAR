@@ -78,6 +78,16 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testUpdateNode() {
-		
+		final String nodeTitle = "Node";
+		final String newNodeTitle = "MyNewTitle";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		Tree tree = tm.addKnowledgeTreeByUid(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), nodeTitle, directoryId);
+		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
+		node.setTitle(newNodeTitle);
+		nm.updateNode(node);
+		assertEquals(newNodeTitle, nm.getNode(node.getId()).getTitle());
 	}
 }
