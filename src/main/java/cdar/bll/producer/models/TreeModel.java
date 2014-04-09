@@ -5,9 +5,7 @@ import java.util.Set;
 
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
-import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class TreeModel {

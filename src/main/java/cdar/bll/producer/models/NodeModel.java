@@ -1,8 +1,9 @@
-package cdar.bll.producer;
+package cdar.bll.producer.models;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.producer.Node;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
@@ -21,7 +22,7 @@ public class NodeModel {
 		return new Node(pdc.getNode(nodeid));
 	}
 
-	public boolean deleteNodeById(int id) {
+	public boolean deleteNode(int id) {
 		return pdc.getNode(id).delete();
 	}
 

@@ -8,10 +8,12 @@ import org.junit.Test;
 
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
-import cdar.bll.producer.NodeModel;
+import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.producer.models.DirectoryModel;
+import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
@@ -74,6 +76,8 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(directoryId, nm.getNode(node.getId()).getDid());
 		assertEquals(0, nm.getNode(node.getId()).getDynamicTreeFlag());
 		assertEquals(tree.getId(), nm.getNode(node.getId()).getRefTreeId());
+		nm.deleteNode(node.getId());
+		assertEquals(0, nm.getNodes(tree.getId()).size());
 	}
 	
 	@Test
@@ -89,5 +93,46 @@ public class TestBLLKnowledgeProducer {
 		node.setTitle(newNodeTitle);
 		nm.updateNode(node);
 		assertEquals(newNodeTitle, nm.getNode(node.getId()).getTitle());
+	}
+	
+	@Test
+	public void testNodeLink() {
+		final String nameNode1 = "Node1";
+		final String nameNode2 = "Node2";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		NodeLinkModel nlm = new NodeLinkModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), nameNode1, directoryId);
+		Node node2 = nm.addNode(tree.getId(), nameNode2, directoryId);
+		assertEquals(0, nlm.getLinks(tree.getId()).size());
+		NodeLink nodelink = nlm.addLink(tree.getId(), node.getId(), node2.getId(), 0);
+		assertEquals(1, nlm.getLinks(tree.getId()).size());
+		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+	}
+	
+	@Test
+	public void testNodeLinkUpdate() {
+		final String nameNode1 = "Node1";
+		final String nameNode2 = "Node2";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		NodeLinkModel nlm = new NodeLinkModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), nameNode1, directoryId);
+		Node node2 = nm.addNode(tree.getId(), nameNode2, directoryId);
+		assertEquals(0, nlm.getLinks(tree.getId()).size());
+		NodeLink nodelink = nlm.addLink(tree.getId(), node.getId(), node2.getId(), 0);
+		assertEquals(1, nlm.getLinks(tree.getId()).size());
+		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+		nodelink.setSourceId(node2.getId());
+		nodelink.setTargetId(node.getId());
+		nlm.updateLink(nodelink);
+		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
 	}
 }

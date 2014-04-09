@@ -14,12 +14,12 @@ import javax.ws.rs.core.Response;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.NodeModel;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.producer.models.DirectoryModel;
 import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
@@ -161,7 +161,7 @@ public class TreeController {
 	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNode(int id) {
-		nm.deleteNodeById(id);
+		nm.deleteNode(id);
 		return Response.status(200).build();
 	}
 
@@ -208,7 +208,7 @@ public class TreeController {
 	@Path("links/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink addLink(NodeLink nl) {		 
-		return lm.addLink(nl);
+		return lm.addLink(nl.getKtrid(), nl.getSourceId(), nl.getTargetId(), nl.getKsnid());
 	}
 
 	@POST

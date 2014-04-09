@@ -27,19 +27,26 @@ public class NodeLinkModel {
 		nld.delete();
 	}
 	
-	public NodeLink addLink(NodeLink nl)
+	public NodeLink addLink(int ktrid, int sourceid, int targetid, int ksnid)
 	{
 		NodeLinkDao nld = new NodeLinkDao();
-		nld.setKsnid(nl.getKsnid());
-		nld.setKtrid(nl.getKtrid());
-		nld.setSourceid(nl.getSourceId());
-		nld.setTargetid(nl.getTargetId());
+		nld.setKtrid(ktrid);
+		nld.setSourceid(sourceid);
+		nld.setTargetid(targetid);
+		nld.setKsnid(ksnid);
 		return new NodeLink(nld.create());
 	}
 
 	public NodeLink updateLink(NodeLink nl) {
 		NodeLinkDao nodeLink = pdc.getNodeLink(nl.getId());
+		nodeLink.setKtrid(nl.getKtrid());
+		nodeLink.setSourceid(nl.getSourceId());
+		nodeLink.setTargetid(nl.getTargetId());
 		nodeLink.setKsnid(nl.getKsnid());
 		return new NodeLink(nodeLink.update());	
+	}
+
+	public NodeLink getLink(int id) {
+		return new NodeLink(pdc.getNodeLink(id));
 	}
 }
