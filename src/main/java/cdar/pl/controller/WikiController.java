@@ -8,10 +8,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.consumer.ProjectTreeModel;
+import cdar.bll.consumer.models.ProjectTreeModel;
 import cdar.bll.producer.NodeModel;
-import cdar.bll.producer.SubnodeModel;
-import cdar.bll.producer.TreeModel;
+import cdar.bll.producer.models.SubnodeModel;
+import cdar.bll.producer.models.TreeModel;
 import cdar.bll.wiki.WikiEntry;
 
 @Path("{uid}/wiki")

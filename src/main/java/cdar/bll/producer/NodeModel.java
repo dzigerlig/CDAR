@@ -25,8 +25,8 @@ public class NodeModel {
 		return pdc.getNode(id).delete();
 	}
 
-	public Node addNode(Node n) {
-		NodeDao node = new NodeDao(n.getRefTreeId(), null, n.getDid());
+	public Node addNode(int treeid, String title, int did) {
+		NodeDao node = new NodeDao(treeid, title, did);
 		return new Node(node.create());
 	}
 

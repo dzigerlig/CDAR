@@ -12,17 +12,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.producer.Directory;
-import cdar.bll.producer.DirectoryModel;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.NodeLinkModel;
 import cdar.bll.producer.NodeModel;
 import cdar.bll.producer.Subnode;
-import cdar.bll.producer.SubnodeModel;
 import cdar.bll.producer.Template;
-import cdar.bll.producer.TemplateModel;
 import cdar.bll.producer.Tree;
-import cdar.bll.producer.TreeModel;
+import cdar.bll.producer.models.DirectoryModel;
+import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.models.SubnodeModel;
+import cdar.bll.producer.models.TemplateModel;
+import cdar.bll.producer.models.TreeModel;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
@@ -82,7 +82,7 @@ public class TreeController {
 	@Path("templates/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
-		return tm.addKnowledgeTemplate(template);
+		return tm.addKnowledgeTemplate(template.getTreeid(), template.getTitle(), template.getTemplatetext());
 	}
 	
 	@POST
@@ -154,7 +154,7 @@ public class TreeController {
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
-		return nm.addNode(n);
+		return nm.addNode(n.getRefTreeId(), null, n.getDid());
 	}
 	
 	@POST

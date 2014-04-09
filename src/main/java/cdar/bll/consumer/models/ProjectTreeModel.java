@@ -1,15 +1,17 @@
-package cdar.bll.consumer;
+package cdar.bll.consumer.models;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import cdar.bll.consumer.ProjectNode;
+import cdar.bll.consumer.ProjectTree;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.NodeLinkModel;
 import cdar.bll.producer.NodeModel;
-import cdar.bll.producer.TreeModel;
+import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.models.TreeModel;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
