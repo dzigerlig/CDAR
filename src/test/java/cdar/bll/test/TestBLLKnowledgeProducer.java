@@ -191,10 +191,26 @@ public class TestBLLKnowledgeProducer {
 		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
 		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
 		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
+		dm.removeDirectoryById(newDirectory.getId());
+		assertEquals(1, dm.getDirectories(tree.getId()).size());
 	}
 	
 	@Test
 	public void testDirectoryUpdate() {
-		
+		final String treeName = "MyTree";
+		final String directoryName = "TestDirectory";
+		final String newDirectoryName = "MyNewDirectory";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		nm.addNode(tree.getId(), "Node", directoryId);
+		assertEquals(1, dm.getDirectories(tree.getId()).size());
+		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
+		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
+		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
+		newDirectory.setTitle(newDirectoryName);
+		dm.updateDirectory(newDirectory);
+		assertEquals(newDirectoryName, dm.getDirectory(newDirectory.getId()).getTitle());
 	}
 }

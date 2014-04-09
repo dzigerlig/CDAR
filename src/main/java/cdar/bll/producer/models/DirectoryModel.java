@@ -35,9 +35,6 @@ public class DirectoryModel {
 	}
 
 	public Directory renameDirectory(Directory d) {
-//		DirectoryDao dd = pdc.getDirectory(d.getId());
-//		dd.setTitle(d.getTitle());
-//		return new Directory(dd.update());
 		return updateDirectory(d);
 	}
 	
