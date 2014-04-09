@@ -1,13 +1,8 @@
-package cdar.bll.model;
+package cdar.bll.producer;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.producer.Directory;
-import cdar.bll.producer.Node;
-import cdar.bll.producer.Subnode;
-import cdar.bll.producer.Template;
-import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;

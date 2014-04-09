@@ -2,7 +2,7 @@ package cdar.bll.test;
 
 import org.junit.Test;
 
-import cdar.bll.model.user.UserModel;
+import cdar.bll.user.UserModel;
 
 public class TestBLLKnowledgeProducer {
 	private UserModel um = new UserModel();

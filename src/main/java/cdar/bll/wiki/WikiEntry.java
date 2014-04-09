@@ -1,4 +1,4 @@
-package cdar.bll.model.wiki;
+package cdar.bll.wiki;
 
 import info.bliki.wiki.model.WikiModel;
 

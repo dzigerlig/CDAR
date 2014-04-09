@@ -1,10 +1,8 @@
-package cdar.bll.model;
+package cdar.bll.producer;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.producer.Node;
-import cdar.bll.producer.NodeLink;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;

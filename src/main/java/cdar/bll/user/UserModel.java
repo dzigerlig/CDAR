@@ -1,4 +1,4 @@
-package cdar.bll.model.user;
+package cdar.bll.user;
 
 import java.util.ArrayList;
 import java.util.List;

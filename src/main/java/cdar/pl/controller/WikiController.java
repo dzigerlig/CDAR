@@ -8,9 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.model.TreeModel;
-import cdar.bll.model.ProjectTreeModel;
-import cdar.bll.model.wiki.WikiEntry;
+import cdar.bll.consumer.ProjectTreeModel;
+import cdar.bll.producer.TreeModel;
+import cdar.bll.wiki.WikiEntry;
 
 @Path("{uid}/wiki")
 public class WikiController {

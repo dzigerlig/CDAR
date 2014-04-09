@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import cdar.bll.model.user.User;
-import cdar.bll.model.user.UserModel;
+import cdar.bll.user.User;
+import cdar.bll.user.UserModel;
 
 public class TestBLLUser {
 	private UserModel um = new UserModel();

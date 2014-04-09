@@ -11,17 +11,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.model.DirectoryModel;
-import cdar.bll.model.SubnodeModel;
-import cdar.bll.model.TreeModel;
-import cdar.bll.model.NodeLinkModel;
-import cdar.bll.model.NodeModel;
 import cdar.bll.producer.Directory;
+import cdar.bll.producer.DirectoryModel;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.NodeLinkModel;
+import cdar.bll.producer.NodeModel;
 import cdar.bll.producer.Subnode;
+import cdar.bll.producer.SubnodeModel;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
+import cdar.bll.producer.TreeModel;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 

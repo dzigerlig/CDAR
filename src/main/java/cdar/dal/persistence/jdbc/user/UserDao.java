@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
-import cdar.bll.model.user.User;
+import cdar.bll.user.User;
 import cdar.dal.persistence.CdarDao;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;

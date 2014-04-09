@@ -11,8 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.model.user.User;
-import cdar.bll.model.user.UserModel;
+import cdar.bll.user.User;
+import cdar.bll.user.UserModel;
 
 @Path("users")
 public class UserController {

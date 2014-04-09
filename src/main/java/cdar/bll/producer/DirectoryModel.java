@@ -1,9 +1,8 @@
-package cdar.bll.model;
+package cdar.bll.producer;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.producer.Directory;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 

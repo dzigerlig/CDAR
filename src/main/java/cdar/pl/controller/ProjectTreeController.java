@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
-import cdar.bll.model.ProjectTreeModel;
+import cdar.bll.consumer.ProjectTreeModel;
 
 @Path("{uid}/ptree")
 public class ProjectTreeController {
