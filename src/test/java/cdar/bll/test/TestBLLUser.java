@@ -19,7 +19,7 @@ public class TestBLLUser {
 		User user = um.createUser(username, password);
 		assertEquals(usercount+1, um.getUsers().size());
 		assertEquals(user.getId(), um.getUser(user.getUsername()).getId());
-		um.deleteUser(user);
+		um.deleteUser(user.getId());
 		assertEquals(usercount, um.getUsers().size());
 	}
 	
@@ -31,7 +31,7 @@ public class TestBLLUser {
 		assertNull(user2.getUsername());
 		assertNull(user2.getPassword());
 		assertNull(user2.getAccesstoken());
-		um.deleteUser(user);
+		um.deleteUser(user.getId());
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class TestBLLUser {
 		user.setPassword(newPassword);
 		um.updateUser(user);
 		assertEquals(newPassword, um.getUser(user.getUsername()).getPassword());
-		um.deleteUser(user);
+		um.deleteUser(user.getId());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class TestBLLUser {
 		assertNull(um.getUser(user.getUsername()).getAccesstoken());
 		um.loginUser(user.getUsername(), user.getPassword());
 		assert(um.getUser(user.getUsername()).getAccesstoken()!=null);
-		um.deleteUser(user);
+		um.deleteUser(user.getId());
 	}
 	
 	@Test
@@ -62,6 +62,6 @@ public class TestBLLUser {
 		assertNull(loggedInUser.getUsername());
 		assertNull(loggedInUser.getPassword());
 		assertNull(loggedInUser.getAccesstoken());
-		um.deleteUser(user);
+		um.deleteUser(user.getId());
 	}
 }
