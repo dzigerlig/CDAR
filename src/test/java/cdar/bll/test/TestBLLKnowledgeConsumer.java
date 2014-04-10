@@ -11,6 +11,7 @@ import cdar.bll.consumer.ProjectNodeLink;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.consumer.models.ProjectNodeLinkModel;
 import cdar.bll.consumer.models.ProjectNodeModel;
+import cdar.bll.consumer.models.ProjectSubnodeModel;
 import cdar.bll.consumer.models.ProjectTreeModel;
 import cdar.bll.user.UserModel;
 
@@ -159,11 +160,12 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
 		pnlm.removeProjectNodeLink(projectnodelink.getId());
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
-	
 	}
 	
 	@Test
 	public void testProjectSubnode() {
+		final String projectSubnodeName = "My project subnode";
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		
 	}
 	

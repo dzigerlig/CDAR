@@ -15,7 +15,7 @@ public class SubnodeModel {
 		SubnodeDao subnode = new SubnodeDao(knid, title);
 		return new Subnode(subnode.create());
 	}
-
+ 
 	//whole tree
 	public Set<Subnode> getSubnodesFromTree(int treeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
@@ -25,6 +25,7 @@ public class SubnodeModel {
 				subnodes.add(new Subnode(subnode));
 			}
 		}
+		
 		return subnodes;
 	}
 	
@@ -49,7 +50,7 @@ public class SubnodeModel {
 		return new Subnode(subnodedao.update());
 	}
 	
-	public void removeSubnode(int id) {
-		pdc.getSubnode(id).delete();
+	public boolean removeSubnode(int id) {
+		return pdc.getSubnode(id).delete();
 	}
 }
