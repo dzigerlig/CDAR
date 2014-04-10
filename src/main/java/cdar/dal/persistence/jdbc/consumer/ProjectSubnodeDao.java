@@ -124,6 +124,8 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements C
 		preparedStatement.close();
 		return this;
 	}
+	
+	
 
 	@Override
 	protected ProjectSubnodeDao updateVisit(Connection connection,
