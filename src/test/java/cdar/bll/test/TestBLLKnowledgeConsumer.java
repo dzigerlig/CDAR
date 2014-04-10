@@ -16,6 +16,14 @@ import cdar.bll.consumer.models.ProjectNodeLinkModel;
 import cdar.bll.consumer.models.ProjectNodeModel;
 import cdar.bll.consumer.models.ProjectSubnodeModel;
 import cdar.bll.consumer.models.ProjectTreeModel;
+import cdar.bll.producer.Directory;
+import cdar.bll.producer.Node;
+import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.Tree;
+import cdar.bll.producer.models.DirectoryModel;
+import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.models.NodeModel;
+import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
 
 public class TestBLLKnowledgeConsumer {
@@ -64,28 +72,52 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testKnowledgeTreeToProjectTreeZeroEntries() {
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
-		
-
+		NodeModel nm = new NodeModel();
+		TreeModel tm = new TreeModel();
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
+		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		assertEquals(0, nm.getNodes(tree.getId()).size());
+		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
+		ptm.addKnowledgeTreeToProjectTree(tree.getId(), projectTree.getId());
+		assertEquals(0, nm.getNodes(tree.getId()).size());
+		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeNodes() {
-		
+	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() {
+		final String nodeTitle1 = "MyNode 1";
+		final String nodeTitle2 = "MyNode 2";
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		TreeModel tm = new TreeModel();
+		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		NodeLinkModel nlm = new NodeLinkModel();
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
+		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node1 = nm.addNode(tree.getId(), nodeTitle1, directoryId);
+		Node node2 = nm.addNode(tree.getId(), nodeTitle2, directoryId);
+		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node1.getId(), node2.getId(), 0);
+		assertEquals(2, nm.getNodes(tree.getId()).size());
+		assertEquals(node1.getId(), nlm.getNodeLink(nodelink.getId()).getSourceId());
+		assertEquals(node2.getId(), nlm.getNodeLink(nodelink.getId()).getTargetId());
+		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
+		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
+		assertEquals(0, pnlm.getProjectNodeLinks(projectTree.getId()).size());
+		ptm.addKnowledgeTreeToProjectTree(tree.getId(), projectTree.getId());
+		assertEquals(2, pnm.getProjectNodes(projectTree.getId()).size());
+		assertEquals(1, pnlm.getProjectNodeLinks(projectTree.getId()).size());
+		int projectNodeLinkId = ((ProjectNodeLink)pnlm.getProjectNodeLinks(projectTree.getId()).toArray()[0]).getId();
+		int projectNodeId1 = pnlm.getProjectNodeLink(projectNodeLinkId).getSourceId();
+		int projectNodeId2 = pnlm.getProjectNodeLink(projectNodeLinkId).getTargetId();
+		assertEquals(nodeTitle1, pnm.getProjectNode(projectNodeId1).getTitle());
+		assertEquals(nodeTitle2, pnm.getProjectNode(projectNodeId2).getTitle());
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeLinks() {
-		
-	}
-	
-	@Test
-	public void testKnowledgeTreeToProjectTreeSubnodes() {
-		
-	}
-	
-	@Test
-	public void testKnowledgeTreeToProjectTreeMultipleCopies() {
+	public void testKnowledgeTreeToProjectTreeCompleteMultiple() {
 		
 	}
 	

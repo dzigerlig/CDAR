@@ -52,7 +52,6 @@ public class TestBLLKnowledgeProducer {
 	public void testTreeUpdate() {
 		final String treeName = "MyTreeName";
 		final String newTreeName = "My new tree";
-		
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
@@ -100,7 +99,6 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(newTemplateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(newTemplateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
 		assertTrue(tplm.getKnowledgeTemplate(template.getId()).getTemplatetext().length() < tplm.getKnowledgeTemplate(template.getId()).getTemplatetexthtml().length());
-		
 		tplm.deleteTemplate(template.getId());
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 	}
@@ -152,8 +150,8 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
 		nlm.removeNodeLink(nodelink.getId());
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 	}
@@ -172,13 +170,13 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
 		nodelink.setSourceId(node2.getId());
 		nodelink.setTargetId(node.getId());
-		nlm.updateLink(nodelink);
-		assertEquals(nameNode2, nm.getNode(nlm.getLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode1, nm.getNode(nlm.getLink(nodelink.getId()).getTargetId()).getTitle());
+		nlm.updateNodeLink(nodelink);
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
 	}
 	
 	@Test
