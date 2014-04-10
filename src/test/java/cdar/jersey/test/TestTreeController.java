@@ -1,6 +1,6 @@
 package cdar.jersey.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Set;
 
@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,26 +61,26 @@ public class TestTreeController extends JerseyTest {
 		user.setPassword(PASSWORD);
 		int quantityOfTreesBefore = target(userId + "/ktree").request()
 				.get(Set.class).size();
-		boolean isTreeDeleted = target(userId + "/ktree/delete")
-				.request()
+		boolean isTreeDeleted = target(userId + "/ktree/delete").request()
 				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
 						boolean.class);
 		int quantityOfTreesAfter = target(userId + "/ktree").request()
 				.get(Set.class).size();
-		
+
 		target("users/delete").request().post(
-				Entity.entity(userId, MediaType.APPLICATION_JSON), Boolean.class);
-		
-assertEquals(true, isTreeDeleted);
+				Entity.entity(userId, MediaType.APPLICATION_JSON),
+				Boolean.class);
+
+		assertEquals(true, isTreeDeleted);
 		assertEquals(quantityOfTreesBefore - 1, quantityOfTreesAfter);
 
 	}
 
 	@Test
-	public void testAddTree() {
-		// Tree tree = target(userId+"/ktree/tree/add").queryParam("uid",
-		// userId).request().post(
-		// Entity.entity(TREENAME, MediaType.APPLICATION_JSON), Tree.class);
+	public void testGetTree() {
+		Tree testTree = target(userId + "/ktree/"+treeid).request()
+				.get(Tree.class);
+		assertEquals(TREENAME, testTree.getName());
 	}
 
 }
