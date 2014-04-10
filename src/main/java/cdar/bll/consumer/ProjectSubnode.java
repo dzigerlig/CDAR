@@ -14,7 +14,9 @@ public class ProjectSubnode extends WikiEntity {
 	
 	public ProjectSubnode(int id, Date creationDate, Date lastModification,
 			String title, String wikititle, int refProjectNodeId) {
+		
 		super(id, creationDate, lastModification, title, wikititle);
+		
 		setRefProjectNodeId(refProjectNodeId);
 	}
 
