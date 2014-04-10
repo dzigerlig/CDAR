@@ -27,7 +27,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@After
 	public void deleteUser() {
-		um.deleteUser(um.getUser(username));
+		um.deleteUser(um.getUser(username).getId());
 	}
 	
 	@Test
