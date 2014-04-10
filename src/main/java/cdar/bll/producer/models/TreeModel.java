@@ -35,4 +35,10 @@ public class TreeModel {
 	public Tree getTree(int treeId) {
 		return new Tree(pdc.getTree(treeId));
 	}
+
+	public Tree updateTree(Tree tree) {
+		TreeDao treedao = pdc.getTree(tree.getId());
+		treedao.setName(tree.getName());
+		return new Tree(treedao.update());
+	}
 }

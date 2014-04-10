@@ -8,10 +8,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.consumer.models.ProjectTreeModel;
+import cdar.bll.consumer.models.ProjectNodeModel;
 import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
-import cdar.bll.producer.models.TreeModel;
 import cdar.bll.wiki.WikiEntry;
 
 @Path("{uid}/wiki")
@@ -20,8 +19,8 @@ public class WikiController {
 	@Path("/consumer/node/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getProjectNodeWikiEntry(@PathParam("nodeid") int nodeid) {
-		ProjectTreeModel ptm = new ProjectTreeModel();
-		return new WikiEntry(ptm.getProjectNodeById(nodeid));
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		return new WikiEntry(pnm.getProjectNode(nodeid));
 	}
 	
 	@GET

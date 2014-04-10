@@ -56,7 +56,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projecttrees;
 	}
 	
-	public ProjectTreeDao getProjectTreeById(int id) {
+	public ProjectTreeDao getProjectTree(int id) {
 		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;
@@ -132,7 +132,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
 				projectnode = new ProjectNodeDao(result.getInt(7));
-				projectnode.setId(result.getInt(7));
+				projectnode.setId(result.getInt(1));
 				projectnode.setCreationTime(result.getDate(2));
 				projectnode.setLastModificationTime(result.getDate(3));
 				projectnode.setTitle(result.getString(4));
