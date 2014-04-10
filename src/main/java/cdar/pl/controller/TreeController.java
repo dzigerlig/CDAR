@@ -42,10 +42,10 @@ public class TreeController {
 		return ktm.getTrees(uid);
 	}
 	
-	@GET
-	@Path("delete/{ktreeid}")
+	@POST
+	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ktreeid") int ktreeid) {
+	public boolean deleteTreeById(int ktreeid) {
 		return ktm.deleteTree(ktreeid);
 	}
 	

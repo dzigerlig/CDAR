@@ -8,6 +8,10 @@ import cdar.dal.persistence.jdbc.producer.TreeDao;
 public class Tree extends BasicEntity {
 
 	private String name;
+	
+	public Tree() {
+		super();
+	}
 
 	public Tree(TreeDao tree) {
 		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getName());

@@ -27,12 +27,6 @@ public class TestUserController extends JerseyTest {
 		return new ResourceConfig(UserController.class);
 	}
 
-	/*
-	 * @Test public void testGetUser() { final int users =
-	 * target("users").request().get(Set.class).size();
-	 * assertEquals("Hello World!", users); }
-	 */
-	
 	@Before
 	public void createUser() {
 		int users = target("users").request().get(Set.class).size();
