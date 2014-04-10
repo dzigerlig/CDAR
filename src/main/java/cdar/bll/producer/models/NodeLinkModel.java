@@ -12,18 +12,19 @@ public class NodeLinkModel {
 
 
 	public Set<NodeLink> getNodeLinks(int treeid) {
-		Set<NodeLink> nodelink = new HashSet<NodeLink>();
+		Set<NodeLink> nodeLinks = new HashSet<NodeLink>();
 
 		for (NodeLinkDao nld : pdc.getNodeLinks(treeid)) {
-			nodelink.add(new NodeLink(nld));
+			nodeLinks.add(new NodeLink(nld));
 		}
-		return nodelink;
+		
+		return nodeLinks;
 	}
 	
-	public void removeNodeLink(int id)
+	public boolean removeNodeLink(int id)
 	{
 		NodeLinkDao nld = pdc.getNodeLink(id);
-		nld.delete();
+		return nld.delete();
 	}
 	
 	public NodeLink addNodeLink(int ktrid, int sourceid, int targetid, int ksnid)
