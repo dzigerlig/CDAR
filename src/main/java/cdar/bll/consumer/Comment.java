@@ -3,21 +3,26 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
+import cdar.dal.persistence.jdbc.consumer.CommentDao;
 
-public class UserComment extends BasicEntity {
+public class Comment extends BasicEntity {
 	private int refUserId;
 	private int refProjectNodeId;
 	private String comment;
 	
-	public UserComment() {
+	public Comment() {
 		super();
 	}
 
-	public UserComment(int id, Date creationDate, Date lastModification,
+	public Comment(int id, Date creationDate, Date lastModification,
 			int refUserId, int refProjectNode) {
 		super(id, creationDate, lastModification);
 		setRefUserId(refUserId);
 		setRefProjectNode(refProjectNode);
+	}
+
+	public Comment(CommentDao uc) {
+		this(uc.getId(), uc.getCreationTime(), uc.getLastModificationTime(), uc.getUid(), uc.getKpnid());
 	}
 
 	public int getRefUserId() {

@@ -15,7 +15,7 @@ public class ProjectNodeModel {
 		
 		for (ProjectNodeDao pnd : cdc.getProjectNodes(ptreeid)) {
 			projectnodes.add(new ProjectNode(pnd));
-		}
+		} 
 		
 		return projectnodes;
 	}

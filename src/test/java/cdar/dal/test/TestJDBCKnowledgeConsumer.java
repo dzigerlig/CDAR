@@ -231,10 +231,10 @@ public class TestJDBCKnowledgeConsumer {
 		projecttree.create();
 		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
 		projectnode.create();
-		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
+		assertEquals(0, cdc.getComments(projectnode.getId()).size());
 		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), "This is a comment");
 		usercomment.create();
-		assertEquals(1, cdc.getUserComments(projectnode.getId()).size());
+		assertEquals(1, cdc.getComments(projectnode.getId()).size());
 	}
 	
 	@Test
@@ -248,10 +248,10 @@ public class TestJDBCKnowledgeConsumer {
 		projectnode.create();
 		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), comment1);
 		usercomment.create();
-		assertEquals(comment1, cdc.getUserComment(usercomment.getId()).getComment());
+		assertEquals(comment1, cdc.getComment(usercomment.getId()).getComment());
 		usercomment.setComment(comment2);
 		usercomment.update();
-		assertEquals(comment2, cdc.getUserComment(usercomment.getId()).getComment());
+		assertEquals(comment2, cdc.getComment(usercomment.getId()).getComment());
 	}
 	
 	@Test
@@ -261,11 +261,11 @@ public class TestJDBCKnowledgeConsumer {
 		projecttree.create();
 		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
 		projectnode.create();
-		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
+		assertEquals(0, cdc.getComments(projectnode.getId()).size());
 		CommentDao usercomment = new CommentDao(projectnode.getId(), user.getId(), "This is a comment");
 		usercomment.create();
-		assertEquals(1, cdc.getUserComments(projectnode.getId()).size());
+		assertEquals(1, cdc.getComments(projectnode.getId()).size());
 		usercomment.delete();
-		assertEquals(0, cdc.getUserComments(projectnode.getId()).size());
+		assertEquals(0, cdc.getComments(projectnode.getId()).size());
 	}
 }
