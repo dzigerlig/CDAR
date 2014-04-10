@@ -56,7 +56,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projecttrees;
 	}
 	
-	public ProjectTreeDao getProjectTreeById(int id) {
+	public ProjectTreeDao getProjectTree(int id) {
 		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;

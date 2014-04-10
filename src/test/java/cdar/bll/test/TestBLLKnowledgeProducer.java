@@ -49,6 +49,22 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
+	public void testTreeUpdate() {
+		final String treeName = "MyTreeName";
+		final String newTreeName = "My new tree";
+		
+		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
+		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
+		assertEquals(treeName, tm.getTree(tree.getId()).getName());
+		tree.setName(newTreeName);
+		tm.updateTree(tree);
+		assertEquals(newTreeName, tm.getTree(tree.getId()).getName());
+		tm.deleteTree(tree.getId());
+		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
+	}
+	
+	@Test
 	public void testTemplate() {
 		final String templateName = "MyTemplate";
 		final String templateText = "MyTemplateText";
@@ -60,6 +76,31 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
 		assertTrue(tplm.getKnowledgeTemplate(template.getId()).getTemplatetext().length() < tplm.getKnowledgeTemplate(template.getId()).getTemplatetexthtml().length());
+		tplm.deleteTemplate(template.getId());
+		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
+	}
+	
+	@Test
+	public void testTemplateUpdate() {
+		final String templateName = "MyTemplate";
+		final String newTemplateName = "My new template name";
+		final String templateText = "MyTemplateText";
+		final String newTemplateText = "My new template text";
+		TemplateModel tplm = new TemplateModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
+		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText);
+		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
+		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
+		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
+		assertTrue(tplm.getKnowledgeTemplate(template.getId()).getTemplatetext().length() < tplm.getKnowledgeTemplate(template.getId()).getTemplatetexthtml().length());
+		template.setTitle(newTemplateName);
+		template.setTemplatetext(newTemplateText);
+		tplm.updateTemplate(template);
+		assertEquals(newTemplateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
+		assertEquals(newTemplateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
+		assertTrue(tplm.getKnowledgeTemplate(template.getId()).getTemplatetext().length() < tplm.getKnowledgeTemplate(template.getId()).getTemplatetexthtml().length());
+		
 		tplm.deleteTemplate(template.getId());
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 	}

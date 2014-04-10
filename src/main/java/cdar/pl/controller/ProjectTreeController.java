@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
+import cdar.bll.consumer.models.ProjectNodeModel;
 import cdar.bll.consumer.models.ProjectTreeModel;
 
 @Path("{uid}/ptree")
@@ -28,7 +29,7 @@ public class ProjectTreeController {
 	@Path("delete/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
-		return ptm.removeProjectTree(ptreeid);
+		return ptm.deleteProjectTree(ptreeid);
 	}
 	
 	@GET
@@ -57,6 +58,7 @@ public class ProjectTreeController {
 	@Path("nodes/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<ProjectNode> getNodes(@PathParam("ptreeid") int ptreeid) {
-		return ptm.getProjectNodes(ptreeid);
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		return pnm.getProjectNodes(ptreeid);
 	}
 }

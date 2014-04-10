@@ -31,4 +31,12 @@ public class TemplateModel {
 		TemplateDao templatedao = pdc.getTemplate(id);
 		return templatedao.delete();
 	}
+
+	public Template updateTemplate(Template template) {
+		TemplateDao templatedao = pdc.getTemplate(template.getId());
+		templatedao.setKtrid(template.getTreeid());
+		templatedao.setTemplatetext(template.getTemplatetext());
+		templatedao.setTitle(template.getTitle());
+		return new Template(templatedao.update());
+	}
 }

@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -36,23 +35,13 @@ public class ProjectTreeModel {
 			ex.printStackTrace();
 		}
 		return new ProjectTree(-1);
-	} 
-
-	public boolean removeProjectTree(int ptreeid) {
-		ProjectTreeDao tree = cdc.getProjectTreeById(ptreeid);
-		return tree.delete();
-	}
-	
-	public ProjectNode getProjectNode(int nodeid) {
-		return new ProjectNode(cdc.getProjectNode(nodeid));
 	}
 	
 	public ProjectTree getProjectTree(int ptreeid) {
-		return new ProjectTree(cdc.getProjectTreeById(ptreeid));
+		return new ProjectTree(cdc.getProjectTree(ptreeid));
 	}
 
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
-		//cdc.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		NodeModel nm = new NodeModel();
 		NodeLinkModel nlm = new NodeLinkModel();
@@ -72,13 +61,13 @@ public class ProjectTreeModel {
 		}
 	}
 
-	public Set<ProjectNode> getProjectNodes(int ptreeid) {
-		Set<ProjectNode> projectnodes = new HashSet<ProjectNode>();
-		
-		for (ProjectNodeDao pnd : cdc.getProjectNodes(ptreeid)) {
-			projectnodes.add(new ProjectNode(pnd));
-		}
-		
-		return projectnodes;
+	public boolean deleteProjectTree(int ptreeid) {
+		return cdc.getProjectTree(ptreeid).delete();
+	}
+
+	public ProjectTree updateProjectTree(ProjectTree tree) {
+		ProjectTreeDao projectTreeDao = cdc.getProjectTree(tree.getId());
+		projectTreeDao.setName(tree.getName());
+		return new ProjectTree(projectTreeDao.update());
 	}
 }
