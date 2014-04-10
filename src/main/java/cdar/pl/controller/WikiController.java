@@ -21,7 +21,7 @@ public class WikiController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry getProjectNodeWikiEntry(@PathParam("nodeid") int nodeid) {
 		ProjectTreeModel ptm = new ProjectTreeModel();
-		return new WikiEntry(ptm.getProjectNodeById(nodeid));
+		return new WikiEntry(ptm.getProjectNode(nodeid));
 	}
 	
 	@GET

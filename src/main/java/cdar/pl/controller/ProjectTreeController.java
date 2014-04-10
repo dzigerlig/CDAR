@@ -21,14 +21,14 @@ public class ProjectTreeController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<ProjectTree> getProjectTreesByUid(@PathParam("uid") int uid) {
-		return ptm.getProjectTreesByUid(uid);
+		return ptm.getProjectTrees(uid);
 	}
 	
 	@GET
 	@Path("delete/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
-		return ptm.removeProjectTreeById(uid, ptreeid);
+		return ptm.removeProjectTree(ptreeid);
 	}
 	
 	@GET
@@ -43,14 +43,14 @@ public class ProjectTreeController {
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ProjectTree addProjectTree(String treeName, @PathParam("uid") int uid) {
-		return ptm.addProjectTreeByUid(uid, treeName);
+		return ptm.addProjectTree(uid, treeName);
 	}
 	
 	@GET
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ProjectTree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @PathParam("uid") int uid) {
-		return ptm.getProjectTreeById(ptreeid);
+		return ptm.getProjectTree(ptreeid);
 	}
 	
 	@GET

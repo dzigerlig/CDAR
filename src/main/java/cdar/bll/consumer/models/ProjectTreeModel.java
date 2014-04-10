@@ -11,28 +11,24 @@ import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.TreeModel;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class ProjectTreeModel {
 	
 	private ConsumerDaoController cdc = new ConsumerDaoController();
 	
-	public Set<ProjectTree> getProjectTreesByUid(int uid) {
+	public Set<ProjectTree> getProjectTrees(int uid) {
 		Set<ProjectTree> trees = new HashSet<ProjectTree>();
 		for (ProjectTreeDao tree : cdc.getProjectTrees(uid)) {
 			trees.add(new ProjectTree(tree));
 		}
 		return trees;
-	}
+	} 
 
-	public ProjectTree addProjectTreeByUid(int uid, String treeName) {
+	public ProjectTree addProjectTree(int uid, String treeName) {
 		try {
 			ProjectTreeDao tree = new ProjectTreeDao(uid, treeName);
 			return new ProjectTree(tree.create());
@@ -42,16 +38,16 @@ public class ProjectTreeModel {
 		return new ProjectTree(-1);
 	} 
 
-	public boolean removeProjectTreeById(int uid, int ptreeid) {
+	public boolean removeProjectTree(int ptreeid) {
 		ProjectTreeDao tree = cdc.getProjectTreeById(ptreeid);
 		return tree.delete();
 	}
 	
-	public ProjectNode getProjectNodeById(int nodeid) {
+	public ProjectNode getProjectNode(int nodeid) {
 		return new ProjectNode(cdc.getProjectNode(nodeid));
 	}
 	
-	public ProjectTree getProjectTreeById(int ptreeid) {
+	public ProjectTree getProjectTree(int ptreeid) {
 		return new ProjectTree(cdc.getProjectTreeById(ptreeid));
 	}
 
