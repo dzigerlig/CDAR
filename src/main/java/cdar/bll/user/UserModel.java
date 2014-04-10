@@ -35,6 +35,7 @@ public class UserModel {
 
 	public User updateUser(User user) {
 		UserDao userdao = udc.getUserById(user.getId());
+		userdao.setUsername(user.getUsername());
 		userdao.setPassword(user.getPassword());
 		userdao.setAccesstoken(user.getAccesstoken());
 		userdao.update();
