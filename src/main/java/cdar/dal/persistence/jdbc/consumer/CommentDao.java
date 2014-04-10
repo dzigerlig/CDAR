@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-import cdar.bll.consumer.UserComment;
+import cdar.bll.consumer.Comment;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
@@ -25,7 +25,7 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		setComment(comment);
 	}
 	
-	public CommentDao(UserComment comment) {
+	public CommentDao(Comment comment) {
 		setId(comment.getId());
 		setCreationTime(comment.getCreationTime());
 		setLastModificationTime(comment.getLastModificationTime());

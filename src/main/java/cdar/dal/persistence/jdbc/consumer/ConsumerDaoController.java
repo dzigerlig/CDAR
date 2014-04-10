@@ -5,15 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class ConsumerDaoController extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {
@@ -263,7 +258,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projectsubnode;
 	}
 	
-	public List<CommentDao> getUserComments(int kpnid) {
+	public List<CommentDao> getComments(int kpnid) {
 		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM USERCOMMENT WHERE KPNID = %d;", kpnid);
 
 		Connection connection = null;
@@ -291,7 +286,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return usercomments;
 	}
 	
-	public CommentDao getUserComment(int id) {
+	public CommentDao getComment(int id) {
 		String getUserComment = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM USERCOMMENT WHERE ID = %d;", id);
 
 		Connection connection = null;

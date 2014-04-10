@@ -37,7 +37,7 @@ public class NodeLinkModel {
 		return new NodeLink(nld.create());
 	}
 
-	public NodeLink updateLink(NodeLink nl) {
+	public NodeLink updateNodeLink(NodeLink nl) {
 		NodeLinkDao nodeLink = pdc.getNodeLink(nl.getId());
 		nodeLink.setKtrid(nl.getKtrid());
 		nodeLink.setSourceid(nl.getSourceId());
@@ -46,7 +46,7 @@ public class NodeLinkModel {
 		return new NodeLink(nodeLink.update());	
 	}
 
-	public NodeLink getLink(int id) {
+	public NodeLink getNodeLink(int id) {
 		return new NodeLink(pdc.getNodeLink(id));
 	}
 }

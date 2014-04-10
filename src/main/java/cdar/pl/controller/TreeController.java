@@ -223,7 +223,7 @@ public class TreeController {
 	@Path("links/update/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateLink(NodeLink nl) {
-		lm.updateLink(nl);
+		lm.updateNodeLink(nl);
 		return Response.status(200).build();
 	}
 	
