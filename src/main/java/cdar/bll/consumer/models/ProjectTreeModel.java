@@ -8,11 +8,14 @@ import java.util.Set;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
+import cdar.bll.producer.Subnode;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
+import cdar.bll.producer.models.SubnodeModel;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTreeModel {
@@ -44,6 +47,7 @@ public class ProjectTreeModel {
 	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		NodeModel nm = new NodeModel();
+		SubnodeModel snm = new SubnodeModel();
 		NodeLinkModel nlm = new NodeLinkModel();
 		
 		for (Node node : nm.getNodes(ktreeid)) {
@@ -52,6 +56,13 @@ public class ProjectTreeModel {
 			projectnode.setWikititle(node.getWikiTitle());
 			projectnode.create();
 			linkMapping.put(node.getId(), projectnode.getId());
+		}
+
+		for (Subnode subnode : snm.getSubnodesFromTree(ktreeid)) {
+			ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(linkMapping.get(subnode.getKnid()));
+			projectsubnode.setTitle(subnode.getTitle());
+			projectsubnode.setWikititle(subnode.getWikiTitle());
+			projectsubnode.create();
 		}
 		
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeid)) {
