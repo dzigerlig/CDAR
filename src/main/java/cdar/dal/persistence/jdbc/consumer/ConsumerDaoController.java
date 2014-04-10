@@ -204,13 +204,13 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projectnodelink;
 	}
 	
-	public List<ProjectSubNodeDao> getProjectSubNodes(int kpnid) {
+	public List<ProjectSubnodeDao> getProjectSubnodes(int kpnid) {
 		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = %d;", kpnid);
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		List<ProjectSubNodeDao> projectsubnodes = new ArrayList<ProjectSubNodeDao>();
+		List<ProjectSubnodeDao> projectsubnodes = new ArrayList<ProjectSubnodeDao>();
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -218,7 +218,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getProjectSubNodes);
 			while (result.next()) {
-				ProjectSubNodeDao projectsubnode = new ProjectSubNodeDao(kpnid);
+				ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(kpnid);
 				projectsubnode.setId(result.getInt(1));
 				projectsubnode.setCreationTime(result.getDate(2));
 				projectsubnode.setLastModificationTime(result.getDate(3));
@@ -234,13 +234,13 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projectsubnodes;
 	}
 	
-	public ProjectSubNodeDao getProjectSubNode(int id) {
+	public ProjectSubnodeDao getProjectSubnode(int id) {
 		String getProjectSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ProjectSubNodeDao projectsubnode = null;
+		ProjectSubnodeDao projectsubnode = null;
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -248,7 +248,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getProjectSubNode);
 			while (result.next()) {
-				projectsubnode = new ProjectSubNodeDao(result.getInt(4));
+				projectsubnode = new ProjectSubnodeDao(result.getInt(4));
 				projectsubnode.setId(result.getInt(1));
 				projectsubnode.setCreationTime(result.getDate(2));
 				projectsubnode.setLastModificationTime(result.getDate(3));

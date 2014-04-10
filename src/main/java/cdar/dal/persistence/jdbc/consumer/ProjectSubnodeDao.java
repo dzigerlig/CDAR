@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-import cdar.bll.consumer.ProjectSubNode;
+import cdar.bll.consumer.ProjectSubnode;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements CdarDao {
+public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -19,18 +19,18 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 	private String title;
 	private String wikititle;
 
-	public ProjectSubNodeDao(int kpnid) {
+	public ProjectSubnodeDao(int kpnid) {
 		setKpnid(kpnid);
 		setWikititle(String.format("PROJECTSUBNODE_%d", getId()));
 	}
 
-	public ProjectSubNodeDao(int kpnid, String title) {
+	public ProjectSubnodeDao(int kpnid, String title) {
 		setKpnid(kpnid);
 		setTitle(title);
 		setWikititle(String.format("PROJECTSUBNODE_%d", getId()));
 	}
 	
-	public ProjectSubNodeDao(ProjectSubNode projectsubnode) {
+	public ProjectSubnodeDao(ProjectSubnode projectsubnode) {
 		setId(projectsubnode.getId());
 		setCreationTime(projectsubnode.getCreationTime());
 		setLastModificationTime(projectsubnode.getLastModificationTime());
@@ -88,12 +88,12 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 	}
 
 	@Override
-	public ProjectSubNodeDao create() {
+	public ProjectSubnodeDao create() {
 		return super.create();
 	}
 
 	@Override
-	public ProjectSubNodeDao update() {
+	public ProjectSubnodeDao update() {
 		return super.update();
 	}
 
@@ -103,7 +103,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 	}
 
 	@Override
-	protected ProjectSubNodeDao createVisit(Connection connection,
+	protected ProjectSubnodeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection
@@ -126,7 +126,7 @@ public class ProjectSubNodeDao extends CUDHelper<ProjectSubNodeDao> implements C
 	}
 
 	@Override
-	protected ProjectSubNodeDao updateVisit(Connection connection,
+	protected ProjectSubnodeDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
 		preparedStatement = connection

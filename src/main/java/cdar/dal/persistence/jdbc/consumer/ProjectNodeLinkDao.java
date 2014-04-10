@@ -44,6 +44,9 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		setKptid(projectnodelink.getRefProjectTreeId());
 	}
 	
+	public ProjectNodeLinkDao() {
+	}
+
 	public int getId() {
 		return id;
 	}
