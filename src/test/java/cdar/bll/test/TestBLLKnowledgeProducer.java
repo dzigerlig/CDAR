@@ -196,6 +196,9 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
 		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
+		snm.removeSubnode(subnode.getId());
+		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
 	}
 	
 	@Test

@@ -6,9 +6,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.bll.consumer.Comment;
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectNodeLink;
+import cdar.bll.consumer.ProjectSubnode;
 import cdar.bll.consumer.ProjectTree;
+import cdar.bll.consumer.models.CommentModel;
 import cdar.bll.consumer.models.ProjectNodeLinkModel;
 import cdar.bll.consumer.models.ProjectNodeModel;
 import cdar.bll.consumer.models.ProjectSubnodeModel;
@@ -166,12 +169,74 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectSubnode() {
 		final String projectSubnodeName = "My project subnode";
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
+		ProjectSubnode subnode = psm.addProjectSubnode(pnode.getId(), projectSubnodeName);
+		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
+		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		psm.removeProjectSubnode(subnode.getId());
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 	}
 	
 	@Test
 	public void testProjectSubnodeUpdate() {
-		
+		final String projectSubnodeName = "My project subnode";
+		final String newProjectSubnodeName = "Another project subnode name";
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
+		ProjectSubnode subnode = psm.addProjectSubnode(pnode.getId(), projectSubnodeName);
+		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
+		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		subnode.setTitle(newProjectSubnodeName);
+		psm.updateProjectSubnode(subnode);
+		assertEquals(newProjectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		psm.removeProjectSubnode(subnode.getId());
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
+	}
+	
+	@Test
+	public void testComment() {
+		final String commentString = "This is a comment";
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
+		CommentModel cm = new CommentModel();
+		assertEquals(0, cm.getComments(pnode.getId()).size());
+		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
+		assertEquals(1, cm.getComments(pnode.getId()).size());
+		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
+		cm.deleteComment(comment.getId());
+		assertEquals(0, cm.getComments(pnode.getId()).size());
+	}
+	
+	@Test
+	public void testCommentUpdate() {
+		final String commentString = "This is a comment";
+		final String newCommentString = "This is another comment";
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
+		CommentModel cm = new CommentModel();
+		assertEquals(0, cm.getComments(pnode.getId()).size());
+		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
+		assertEquals(1, cm.getComments(pnode.getId()).size());
+		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
+		comment.setComment(newCommentString);
+		cm.updateComment(comment);
+		assertEquals(newCommentString, cm.getComment(comment.getId()).getComment());
+		cm.deleteComment(comment.getId());
+		assertEquals(0, cm.getComments(pnode.getId()).size());
 	}
 }
 

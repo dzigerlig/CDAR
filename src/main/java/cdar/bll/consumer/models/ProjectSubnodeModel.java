@@ -16,7 +16,7 @@ public class ProjectSubnodeModel {
 		return new ProjectSubnode(projectSubnodeDao.create());
 	}
 	
-	public Set<ProjectSubnode> getProjectSubnodesFromTree(int projectTreeId) {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
 		for (ProjectNodeDao node : cdc.getProjectNodes(projectTreeId)) {
@@ -28,7 +28,7 @@ public class ProjectSubnodeModel {
 		return projectSubnodes;
 	}
 	
-	public Set<ProjectSubnode> getSubnodesFromProjectNode(int projectNodeId) {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(int projectNodeId) {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
 		for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(projectNodeId)) {

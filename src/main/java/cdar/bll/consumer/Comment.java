@@ -15,14 +15,15 @@ public class Comment extends BasicEntity {
 	}
 
 	public Comment(int id, Date creationDate, Date lastModification,
-			int refUserId, int refProjectNode) {
+			int refUserId, int refProjectNode, String comment) {
 		super(id, creationDate, lastModification);
 		setRefUserId(refUserId);
 		setRefProjectNode(refProjectNode);
+		setComment(comment);
 	}
 
 	public Comment(CommentDao uc) {
-		this(uc.getId(), uc.getCreationTime(), uc.getLastModificationTime(), uc.getUid(), uc.getKpnid());
+		this(uc.getId(), uc.getCreationTime(), uc.getLastModificationTime(), uc.getUid(), uc.getKpnid(), uc.getComment());
 	}
 
 	public int getRefUserId() {
