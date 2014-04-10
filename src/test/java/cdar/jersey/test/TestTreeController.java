@@ -66,6 +66,10 @@ public class TestTreeController extends JerseyTest {
 						boolean.class);
 		int quantityOfTreesAfter = target(userId + "/ktree").request()
 				.get(Set.class).size();
+		
+		target("users/delete").request().post(
+				Entity.entity(userId, MediaType.APPLICATION_JSON), Boolean.class);
+		
 assertEquals(true, isTreeDeleted);
 		assertEquals(quantityOfTreesBefore - 1, quantityOfTreesAfter);
 

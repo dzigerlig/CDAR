@@ -86,6 +86,8 @@ public class TestUserController extends JerseyTest {
 	
 	@Test
 	public void testUserEdit() {
+		int quantityOfUsersBefore = target("users").request().get(Set.class).size();
+
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
@@ -104,7 +106,10 @@ public class TestUserController extends JerseyTest {
 		beforUser.setUsername(USERNAME);
 		beforUser.setPassword(PASSWORD);
 		
-		target("users/registration").request().post(
-				Entity.entity(beforUser, MediaType.APPLICATION_JSON), User.class);			
+		target("users/edit").request().post(
+				Entity.entity(beforUser, MediaType.APPLICATION_JSON), User.class);	
+		int quantityOfUsersAfter = target("users").request().get(Set.class).size();
+		assertEquals(quantityOfUsersBefore, quantityOfUsersAfter);
+
 	}
 }
