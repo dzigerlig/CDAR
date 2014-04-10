@@ -27,9 +27,10 @@ public class UserModel {
 		return new User(userdao.create());
 	}
 
-	public void deleteUser(User user) {
-		UserDao userdao = new UserDao(getUser(user.getUsername()));
-		userdao.delete();
+	public Boolean deleteUser(int userid) {
+		UserDao userdao = udc.getUserById(userid);
+		//UserDao userdao = new UserDao(getUser(user.getUsername()));
+		return new Boolean(userdao.delete());
 	}
 
 	public User updateUser(User user) {
@@ -42,6 +43,10 @@ public class UserModel {
 
 	public User getUser(String username) {
 		return new User(udc.getUserByName(username));
+	}
+	
+	public User getUser(int userid) {
+		return new User(udc.getUserById(userid));
 	}
 
 	public List<User> getUsers() {

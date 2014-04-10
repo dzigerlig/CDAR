@@ -48,4 +48,12 @@ public class UserController {
 	public User editUser(User user) {
 		return userModel.updateUser(user);
 	}
+	
+	
+	@POST
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean deleteUser(int userid) {
+		return userModel.deleteUser(userid);
+	}
 }

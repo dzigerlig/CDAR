@@ -34,7 +34,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@After
 	public void deleteUser() {
-		um.deleteUser(um.getUser(username));
+		um.deleteUser(um.getUser(username).getId());
 	}
 	
 	@Test
