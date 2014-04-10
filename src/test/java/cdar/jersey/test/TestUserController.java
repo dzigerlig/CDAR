@@ -51,7 +51,7 @@ public class TestUserController extends JerseyTest {
 		}
 	
 	@After
-	public void deleteUser() {
+	public void testDeleteUser() {
 		int users = target("users").request().get(Set.class).size();
 		User user = new User();
 		user.setUsername(USERNAME);
@@ -65,14 +65,52 @@ public class TestUserController extends JerseyTest {
 		assertEquals(users - 1, usersNew);
 		}
 	
-
+	
 	@Test
-	public void userlogin() {
+	public void testRegisteruserTwice() {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
+		User postResponse = target("users/registration").request().post(
+				Entity.entity(user, MediaType.APPLICATION_JSON), User.class);
+		assertEquals(-1, postResponse.getId());
+	}
+
+	@Test
+	public void testUserLogin() {
 		User loginUser = target("users/login").queryParam("password", PASSWORD).queryParam("username", USERNAME).request().get(
 				User.class);
 		assertEquals(USERNAME, loginUser.getUsername());
+	}
+	
+	@Test
+	public void testUserWrongLogin() {
+		User loginUser = target("users/login").queryParam("password", "wrongPassword").queryParam("username", USERNAME).request().get(
+				User.class);
+		assertEquals(-1, loginUser.getId());
+	}
+	
+	@Test
+	public void testUserEdit() {
+		User user = new User();
+		user.setUsername(USERNAME);
+		user.setPassword(PASSWORD);
+		User beforUser = target("users/login").queryParam("password", PASSWORD).queryParam("username", USERNAME).request().get(
+				User.class);
+		
+		beforUser.setUsername("hans");
+		beforUser.setPassword("123456");
+		
+		User afterUser = target("users/edit").request().post(
+				Entity.entity(beforUser, MediaType.APPLICATION_JSON), User.class);
+		
+		assertEquals(beforUser.getUsername(), afterUser.getUsername());
+		assertEquals(beforUser.getPassword(), afterUser.getPassword());
+		
+		beforUser.setUsername(USERNAME);
+		beforUser.setPassword(PASSWORD);
+		
+		target("users/registration").request().post(
+				Entity.entity(beforUser, MediaType.APPLICATION_JSON), User.class);			
 	}
 }
