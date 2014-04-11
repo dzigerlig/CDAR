@@ -18,6 +18,9 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	private Date lastModificationTime;
 	private String name;
 	
+	public TreeDao() {
+	}
+	
 	public TreeDao(int uid) {
 		setUid(uid);
 	}

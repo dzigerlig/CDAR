@@ -10,11 +10,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sun.security.krb5.internal.tools.Ktab;
+import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
 import cdar.pl.controller.TreeController;
@@ -73,7 +74,14 @@ public class TestTreeController extends JerseyTest {
 
 		assertEquals(true, isTreeDeleted);
 		assertEquals(quantityOfTreesBefore - 1, quantityOfTreesAfter);
-
+	}
+	
+	@Test
+	public void testDeleteNotExistingTree() {
+		boolean isTreeDeleted = target(userId + "/ktree/delete").request()
+				.post(Entity.entity(999999, MediaType.APPLICATION_JSON),
+						boolean.class);
+		assertEquals(false, isTreeDeleted);
 	}
 
 	@Test
@@ -81,6 +89,46 @@ public class TestTreeController extends JerseyTest {
 		Tree testTree = target(userId + "/ktree/"+treeid).request()
 				.get(Tree.class);
 		assertEquals(TREENAME, testTree.getName());
+		assertNotEquals(testTree.getId(), -1);
+	}
+	
+	@Test
+	public void testAllTrees() {		
+		Set testTree = target(userId + "/ktree").request()
+				.get(Set.class);
+		int quantityOfTreesBefore = testTree.size(); 
+		Tree tree = target(userId + "/ktree/tree/add").request()
+				.post(Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
+						Tree.class);		
+		int quantityOfTreesAfter = target(userId + "/ktree").request()
+				.get(Set.class).size();
+		assertEquals(quantityOfTreesBefore+1, quantityOfTreesAfter);
+		boolean isTreeDeleted = target(userId + "/ktree/delete").request()
+				.post(Entity.entity(tree.getId(), MediaType.APPLICATION_JSON),
+						boolean.class);
+		assertTrue(isTreeDeleted);
+		assertTrue(testTree.size()>0);
+	}
+	
+	@Test
+	public void testGetTemplates() {
+		Template addTestTemplate = new Template();
+		addTestTemplate.setTreeid(treeid);
+		addTestTemplate.setTitle("TestTemplate");
+		addTestTemplate.setTemplatetext("TemplateText");
+		Set template = target(userId + "/ktree/templates/"+treeid).request()
+				.get(Set.class);
+		int quantityOfTemplatesBefore = template.size(); 
+		Template addedTemplates = target(userId + "/ktree/templates/add/"+treeid).request()
+				.post(Entity.entity(addTestTemplate, MediaType.APPLICATION_JSON),
+						Template.class);	
+		int quantityOfTemplateAfter=target(userId + "/ktree/templates/"+treeid).request()
+				.get(Set.class).size();		
+		assertEquals(quantityOfTemplatesBefore+1, quantityOfTemplateAfter);
+		boolean isTemplateDeleted = target(userId + "/ktree/templates/delete/"+treeid).request()
+				.post(Entity.entity(addedTemplates.getId(), MediaType.APPLICATION_JSON),
+						boolean.class);
+		assertTrue(isTemplateDeleted);
 	}
 
 }

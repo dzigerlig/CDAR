@@ -58,7 +58,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		TreeDao tree = null;
+		TreeDao tree = new TreeDao();
+		tree.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -78,6 +79,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
+		
 		return tree;
 	}
 	
