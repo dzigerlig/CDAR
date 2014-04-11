@@ -23,7 +23,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 	};
 	
 	$scope.deleteTree = function(id) {
-		ProjectTreeService.removeTree({treeid : id}, function(response) {
+		ProjectTreeService.removeTree(id, function(response) {
 			reloadTrees();
 		});
 	};
