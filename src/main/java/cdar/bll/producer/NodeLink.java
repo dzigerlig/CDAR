@@ -48,8 +48,8 @@ public class NodeLink extends BasicEntity {
 		return ksnid;
 	}
 
-	public void setKsnid(int knid) {
-		this.ksnid = knid;
+	public void setKsnid(int ksnid) {
+		this.ksnid = ksnid;
 	}
 
 	public int getKtrid() {

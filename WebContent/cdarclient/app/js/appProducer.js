@@ -398,7 +398,7 @@ app
 									ktreeid : $routeParams.treeId
 								}, {
 									id : id,
-									parentId : newParentId
+									parentid : newParentId
 								});
 							};
 } ]);

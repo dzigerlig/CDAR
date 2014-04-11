@@ -183,6 +183,7 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
+		System.out.println(this.ksnid);
 		return this;
 	}
 }

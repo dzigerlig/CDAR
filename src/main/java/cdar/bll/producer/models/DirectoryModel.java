@@ -47,10 +47,8 @@ public class DirectoryModel {
 	}
 
 	public void moveDirectory(Directory d) {
-		System.out.println(d.getParentid());
 		DirectoryDao dd = pdc.getDirectory(d.getId());
 		dd.setParentid(d.getParentid());
 		dd.update();
-		System.out.println("dictionary moved");		
 	}
 }
