@@ -134,6 +134,7 @@ public class TreeController {
 	@Path("directories/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveDirectory(Directory d) {
+		System.out.println(d.getParentid());
 		dm.moveDirectory(d);
 		return Response.status(200).build();
 	}	

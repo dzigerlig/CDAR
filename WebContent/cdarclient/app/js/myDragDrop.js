@@ -38,7 +38,7 @@ $('#jstree').on("move_node.jstree", function(e, data) {
 		scope.moveNode(id, parentId);
 	} else {
 		if(parentId==='#'){parentId=id;}
-		scope.moveDictionary(id, parentId);
+		scope.moveDirectory(id, parentId);
 	}
 });
 

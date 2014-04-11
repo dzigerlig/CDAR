@@ -205,6 +205,8 @@ public class TestTreeController extends JerseyTest {
 		assertTrue(isTemplateDeleted);
 	}
 	
+	
+	
 	@Test
 	public void testGetDirectories() {
 		int quantityOfDirectoriesBefore = target(userId + "/ktree/directories/"+treeid).request()
