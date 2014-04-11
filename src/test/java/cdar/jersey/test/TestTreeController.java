@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.bll.producer.Directory;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
@@ -203,5 +204,20 @@ public class TestTreeController extends JerseyTest {
 						boolean.class);
 		assertTrue(isTemplateDeleted);
 	}
-
+	
+	@Test
+	public void testGetDirectories() {
+		int quantityOfDirectoriesBefore = target(userId + "/ktree/directories/"+treeid).request()
+				.get(Set.class).size();
+		Directory addTestDirectory = new Directory();
+		addTestDirectory.setKtrid(treeid);
+		addTestDirectory.setParentid(0);
+		Directory addedDirectory = target(userId + "/ktree/directories/add/"+treeid).request()
+				.post(Entity.entity(addTestDirectory, MediaType.APPLICATION_JSON),
+						Directory.class);
+		int quantityOfDirectoriesAfter= target(userId + "/ktree/directories/"+treeid).request()
+				.get(Set.class).size();
+		assertEquals(quantityOfDirectoriesBefore+1, quantityOfDirectoriesAfter);
+		assertTrue(addedDirectory.getId()>0);
+	}
 }
