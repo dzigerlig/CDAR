@@ -9,3 +9,17 @@
 .sidebar-cdar-role {
 	margin-top: -45px;
 }
+
+body.dragging,body.dragging * {
+	cursor: move !important;
+}
+
+.dragged {
+	position: absolute;
+	opacity: 0.5;
+	z-index: 2000;
+}
+
+.cdarList {
+	list-style: none;
+}

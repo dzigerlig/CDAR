@@ -29,7 +29,6 @@ public class UserModel {
 
 	public Boolean deleteUser(int userid) {
 		UserDao userdao = udc.getUserById(userid);
-		//UserDao userdao = new UserDao(getUser(user.getUsername()));
 		return new Boolean(userdao.delete());
 	}
 

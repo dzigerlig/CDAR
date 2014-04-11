@@ -53,9 +53,10 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
-    $routeProvider.when('/switchrole', {
-    	controller: 'SwitchRoleController',
-    	needsLogin: true
+    $routeProvider.when('/sortable', {
+    	templateUrl: 'sortable.html',
+    	controller: 'SortableController',
+    	needsLogin: false
     });
 
     $routeProvider.otherwise({

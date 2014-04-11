@@ -25,16 +25,16 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 	private String username;
 	private String password;
 	private String accesstoken;
-	
+
 	public UserDao() {
-		
+
 	}
-	
+
 	public UserDao(String username, String password) {
 		setUsername(username);
 		setPassword(password);
 	}
-	
+
 	public UserDao(User user) {
 		setId(user.getId());
 		setCreationTime(user.getCreationTime());
@@ -43,7 +43,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		setPassword(user.getPassword());
 		setAccesstoken(user.getAccesstoken());
 	}
-	
+
 	public UserDao(int id) {
 		setId(id);
 	}
@@ -103,10 +103,12 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 
 		try {
 			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement = connection
+					.prepareStatement(
+							"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDate(1,
+					new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, getUsername());
 			preparedStatement.setString(3, getPassword());
 
@@ -117,8 +119,7 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 				setId(generatedKeys.getInt(1));
 			}
 
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return new UserDao(-1);
 		} finally {
 			closeConnections(connection, preparedStatement, null, generatedKeys);
@@ -134,10 +135,12 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 
 		try {
 			connection = JDBCUtil.getConnection();
-			preparedStatement = connection.prepareStatement(
-					"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
-					Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement = connection
+					.prepareStatement(
+							"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+							Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setDate(1,
+					new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, getUsername());
 			preparedStatement.setString(3, getPassword());
 			preparedStatement.setString(4, getAccesstoken());
@@ -157,20 +160,20 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public boolean delete() {
 		ProducerDaoController kpdc = new ProducerDaoController();
 		ConsumerDaoController cdc = new ConsumerDaoController();
-		
+
 		for (TreeDao tree : kpdc.getTrees(getId())) {
 			tree.delete();
 		}
-		
+
 		for (ProjectTreeDao projecttree : cdc.getProjectTrees(getId())) {
 			projecttree.delete();
 		}
-		
+
 		return delete("USER", getId());
-	}	
+	}
 }

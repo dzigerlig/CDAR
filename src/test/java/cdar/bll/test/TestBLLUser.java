@@ -1,6 +1,7 @@
 package cdar.bll.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
@@ -32,6 +33,23 @@ public class TestBLLUser {
 		assertNull(user2.getPassword());
 		assertNull(user2.getAccesstoken());
 		um.deleteUser(user.getId());
+	}
+	
+	@Test
+	public void testGetUnknownUserByUsername() {
+		User user = um.getUser("Bill Gates");
+		assertEquals(-1, user.getId());
+	}
+	
+	@Test
+	public void testGetUnknownUserById() {
+		User user = um.getUser(-13);
+		assertEquals(-1, user.getId());
+	}
+	
+	@Test
+	public void testDeleteUnknownUser() {
+		assertFalse(um.deleteUser(-13));
 	}
 	
 	@Test

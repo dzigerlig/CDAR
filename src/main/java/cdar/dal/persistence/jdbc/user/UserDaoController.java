@@ -53,7 +53,7 @@ public class UserDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		UserDao user = null;
+		UserDao user = new UserDao(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -84,7 +84,7 @@ public class UserDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		UserDao user = null;
+		UserDao user = new UserDao(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
