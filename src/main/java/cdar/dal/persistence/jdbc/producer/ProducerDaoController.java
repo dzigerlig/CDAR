@@ -119,7 +119,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		TemplateDao template = null;
+		TemplateDao template = new TemplateDao();
+		template.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();

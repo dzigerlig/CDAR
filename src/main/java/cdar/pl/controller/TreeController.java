@@ -89,11 +89,7 @@ public class TreeController {
 	@Path("templates/edit/{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template editTemplate(Template template) {
-		ProducerDaoController pdc = new ProducerDaoController();
-		TemplateDao templatedao = pdc.getTemplate(template.getId());
-		templatedao.setTemplatetext(template.getTemplatetext());
-		templatedao.setTitle(template.getTitle());
-		return new Template(templatedao.update());
+		return tm.updateTemplate(template);
 	}
 	
 	@POST

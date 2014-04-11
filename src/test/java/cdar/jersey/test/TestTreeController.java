@@ -14,7 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sun.security.krb5.internal.tools.Ktab;
+import cdar.bll.producer.Directory;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
@@ -79,7 +79,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDeleteNotExistingTree() {
 		boolean isTreeDeleted = target(userId + "/ktree/delete").request()
-				.post(Entity.entity(999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
 						boolean.class);
 		assertEquals(false, isTreeDeleted);
 	}
@@ -94,7 +94,7 @@ public class TestTreeController extends JerseyTest {
 	
 	@Test
 	public void testAllTrees() {		
-		Set testTree = target(userId + "/ktree").request()
+		Set<?> testTree = target(userId + "/ktree").request()
 				.get(Set.class);
 		int quantityOfTreesBefore = testTree.size(); 
 		Tree tree = target(userId + "/ktree/tree/add").request()
@@ -111,12 +111,45 @@ public class TestTreeController extends JerseyTest {
 	}
 	
 	@Test
-	public void testGetTemplates() {
+	public void testaddAndDeleteTemplate() {		
 		Template addTestTemplate = new Template();
 		addTestTemplate.setTreeid(treeid);
 		addTestTemplate.setTitle("TestTemplate");
 		addTestTemplate.setTemplatetext("TemplateText");
-		Set template = target(userId + "/ktree/templates/"+treeid).request()
+		int quantityOfTemplatesBefore = target(userId + "/ktree/templates/"+treeid).request()
+				.get(Set.class).size();
+		
+		Template addedTemplate = target(userId + "/ktree/templates/add/"+treeid).request()
+				.post(Entity.entity(addTestTemplate, MediaType.APPLICATION_JSON),
+						Template.class);	
+		int quantityOfTemplatesAfter= target(userId + "/ktree/templates/"+treeid).request()
+				.get(Set.class).size();
+		assertEquals(quantityOfTemplatesBefore+1, quantityOfTemplatesAfter);
+	
+		boolean isTemplateDeleted = target(userId + "/ktree/templates/delete/"+treeid).request()
+				.post(Entity.entity(addedTemplate.getId(), MediaType.APPLICATION_JSON),
+						boolean.class);		
+		assertTrue(isTemplateDeleted);
+		int quantityOfTemplatesAfterDelete = target(userId + "/ktree/templates/"+treeid).request()
+				.get(Set.class).size();
+		assertEquals(quantityOfTemplatesBefore, quantityOfTemplatesAfterDelete);
+	}
+	
+	@Test
+	public void testDeleteNotExistingTemplate() {		
+		boolean isTemplateDeleted = target(userId + "/ktree/templates/delete/"+treeid).request()
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						boolean.class);		
+		assertFalse(isTemplateDeleted);
+	}
+	
+	@Test
+	public void testGetAllTemplates() {
+		Template addTestTemplate = new Template();
+		addTestTemplate.setTreeid(treeid);
+		addTestTemplate.setTitle("TestTemplate");
+		addTestTemplate.setTemplatetext("TemplateText");
+		Set<?> template = target(userId + "/ktree/templates/"+treeid).request()
 				.get(Set.class);
 		int quantityOfTemplatesBefore = template.size(); 
 		Template addedTemplates = target(userId + "/ktree/templates/add/"+treeid).request()
@@ -130,5 +163,61 @@ public class TestTreeController extends JerseyTest {
 						boolean.class);
 		assertTrue(isTemplateDeleted);
 	}
-
+	
+	@Test
+	public void testGetTemplate() {
+		Template addTestTemplate = new Template();
+		addTestTemplate.setTreeid(treeid);
+		addTestTemplate.setTitle("TestTemplate");
+		addTestTemplate.setTemplatetext("TemplateText");
+		Template addedTemplate = target(userId + "/ktree/templates/add/"+treeid).request()
+				.post(Entity.entity(addTestTemplate, MediaType.APPLICATION_JSON),
+						Template.class);	
+		Template getTemplate=target(userId + "/ktree/templates/"+treeid+"/"+addedTemplate.getId()).request()
+				.get(Template.class);	
+		assertNotEquals(-1,getTemplate.getId());
+		boolean isTemplateDeleted = target(userId + "/ktree/templates/delete/"+treeid).request()
+				.post(Entity.entity(addedTemplate.getId(), MediaType.APPLICATION_JSON),
+						boolean.class);
+		assertTrue(isTemplateDeleted);
+	}
+	
+	
+	@Test
+	public void testEditTemplate() {
+		Template addTestTemplate = new Template();
+		addTestTemplate.setTreeid(treeid);
+		addTestTemplate.setTitle("TestTemplate");
+		addTestTemplate.setTemplatetext("TemplateText");
+		Template addedTemplate = target(userId + "/ktree/templates/add/"+treeid).request()
+				.post(Entity.entity(addTestTemplate, MediaType.APPLICATION_JSON),
+						Template.class);
+		addedTemplate.setTemplatetext(TREENAME);
+		addedTemplate.setTitle(USERNAME);		
+		Template editTemplate=target(userId + "/ktree/templates/edit/"+addedTemplate.getId()).request()
+				.post(Entity.entity(addedTemplate, MediaType.APPLICATION_JSON),
+						Template.class);
+		assertEquals(TREENAME, editTemplate.getTemplatetext());
+		assertEquals(USERNAME, editTemplate.getTitle());
+		boolean isTemplateDeleted = target(userId + "/ktree/templates/delete/"+treeid).request()
+				.post(Entity.entity(addedTemplate.getId(), MediaType.APPLICATION_JSON),
+						boolean.class);
+		assertTrue(isTemplateDeleted);
+	}
+	
+	@Test
+	public void testGetDirectories() {
+		int quantityOfDirectoriesBefore = target(userId + "/ktree/directories/"+treeid).request()
+				.get(Set.class).size();
+		Directory addTestDirectory = new Directory();
+		addTestDirectory.setKtrid(treeid);
+		addTestDirectory.setParentid(0);
+		Directory addedDirectory = target(userId + "/ktree/directories/add/"+treeid).request()
+				.post(Entity.entity(addTestDirectory, MediaType.APPLICATION_JSON),
+						Directory.class);
+		int quantityOfDirectoriesAfter= target(userId + "/ktree/directories/"+treeid).request()
+				.get(Set.class).size();
+		assertEquals(quantityOfDirectoriesBefore+1, quantityOfDirectoriesAfter);
+		assertTrue(addedDirectory.getId()>0);
+	}
 }
