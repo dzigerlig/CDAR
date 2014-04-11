@@ -11,7 +11,8 @@ import cdar.bll.consumer.ProjectNode;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao {
+public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements
+		CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -19,20 +20,20 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 	private String title;
 	private String wikititle;
 	private int nodestatus;
-	
+
 	public ProjectNodeDao(int kptid) {
 		setKptid(kptid);
 		setWikititle(String.format("NODE_%d", getId()));
 		setNodestatus(0);
 	}
-	
+
 	public ProjectNodeDao(int kptid, String title) {
 		setKptid(kptid);
 		setTitle(title);
 		setWikititle(String.format("NODE_%d", getId()));
 		setNodestatus(0);
 	}
-	
+
 	public ProjectNodeDao(ProjectNode projectnode) {
 		setId(projectnode.getId());
 		setCreationTime(projectnode.getCreationTime());
@@ -42,7 +43,11 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 		setWikititle(projectnode.getWikiTitle());
 		setNodestatus(projectnode.getNodeStatus());
 	}
-	
+
+	public ProjectNodeDao() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -66,7 +71,7 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 	public void setLastModificationTime(Date lastModificationTime) {
 		this.lastModificationTime = lastModificationTime;
 	}
-	
+
 	public int getKptid() {
 		return kptid;
 	}
@@ -101,12 +106,24 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 
 	@Override
 	public ProjectNodeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			ProjectNodeDao projectNodeDao = new ProjectNodeDao();
+			projectNodeDao.setId(-1);
+			return projectNodeDao;
+		}
 	}
 
 	@Override
 	public ProjectNodeDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			ProjectNodeDao projectNodeDao = new ProjectNodeDao();
+			projectNodeDao.setId(-1);
+			return projectNodeDao;
+		}
 	}
 
 	@Override
@@ -118,9 +135,10 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 	protected ProjectNodeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setString(3, getWikititle());
@@ -141,9 +159,10 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements CdarDao
 	protected ProjectNodeDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE KNOWLEDGEPROJECTNODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?  WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE KNOWLEDGEPROJECTNODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?  WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
 		preparedStatement.setInt(3, getNodestatus());

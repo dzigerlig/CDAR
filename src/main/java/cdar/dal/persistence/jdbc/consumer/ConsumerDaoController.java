@@ -57,7 +57,8 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ProjectTreeDao projecttree = null;
+		ProjectTreeDao projecttree = new ProjectTreeDao();
+		projecttree.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();

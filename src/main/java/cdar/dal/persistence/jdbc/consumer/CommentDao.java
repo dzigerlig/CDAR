@@ -18,13 +18,13 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	private int uid;
 	private int kpnid;
 	private String comment;
-	
+
 	public CommentDao(int kpnid, int uid, String comment) {
 		setKpnid(kpnid);
 		setUid(uid);
 		setComment(comment);
 	}
-	
+
 	public CommentDao(Comment comment) {
 		setId(comment.getId());
 		setCreationTime(comment.getCreationTime());
@@ -32,6 +32,10 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 		setUid(comment.getRefUserId());
 		setKpnid(comment.getRefProjectNode());
 		setComment(comment.getComment());
+	}
+
+	public CommentDao(int id) {
+		setId(id);
 	}
 
 	public int getId() {
@@ -84,12 +88,20 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 
 	@Override
 	public CommentDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			return new CommentDao(-1);
+		}
 	}
 
 	@Override
 	public CommentDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			return new CommentDao(-1);
+		}
 	}
 
 	@Override
@@ -101,9 +113,10 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	protected CommentDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getUid());
 		preparedStatement.setInt(3, getKpnid());
@@ -123,9 +136,10 @@ public class CommentDao extends CUDHelper<CommentDao> implements CdarDao {
 	protected CommentDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getUid());
 		preparedStatement.setInt(3, getKpnid());

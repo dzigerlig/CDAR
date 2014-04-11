@@ -17,26 +17,26 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	private Date creationTime;
 	private Date lastModificationTime;
 	private String name;
-	
+
 	public TreeDao() {
 	}
-	
+
 	public TreeDao(int uid) {
 		setUid(uid);
 	}
-	
+
 	public TreeDao(int uid, String name) {
 		setUid(uid);
 		setName(name);
 	}
-	
+
 	public TreeDao(Tree tree) {
 		setId(tree.getId());
 		setCreationTime(tree.getCreationTime());
 		setLastModificationTime(tree.getLastModificationTime());
 		setName(tree.getName());
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -44,7 +44,7 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getUid() {
 		return uid;
 	}
@@ -79,7 +79,13 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 
 	@Override
 	public TreeDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			TreeDao treeDao = new TreeDao();
+			treeDao.setId(-1);
+			return treeDao;
+		}
 	}
 
 	public boolean delete() {
@@ -88,16 +94,23 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 
 	@Override
 	public TreeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			TreeDao treeDao = new TreeDao();
+			treeDao.setId(-1);
+			return treeDao;
+		}
 	}
 
 	@Override
 	protected TreeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGETREE (CREATION_TIME, NAME) VALUES (?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGETREE (CREATION_TIME, NAME) VALUES (?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getName());
 
@@ -108,7 +121,8 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 			setId(generatedKeys.getInt(1));
 		}
 		preparedStatement.close();
-		preparedStatement = connection.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
+		preparedStatement = connection
+				.prepareStatement("INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)");
 		preparedStatement.setInt(1, getUid());
 		preparedStatement.setInt(2, getId());
 		preparedStatement.executeUpdate();
@@ -119,9 +133,10 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	protected TreeDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getName());
 		preparedStatement.setInt(3, getId());

@@ -11,7 +11,8 @@ import cdar.bll.consumer.ProjectSubnode;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements CdarDao {
+public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
+		CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -29,7 +30,7 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements C
 		setTitle(title);
 		setWikititle(String.format("PROJECTSUBNODE_%d", getId()));
 	}
-	
+
 	public ProjectSubnodeDao(ProjectSubnode projectsubnode) {
 		setId(projectsubnode.getId());
 		setCreationTime(projectsubnode.getCreationTime());
@@ -37,6 +38,10 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements C
 		setKpnid(projectsubnode.getRefProjectNodeId());
 		setTitle(projectsubnode.getTitle());
 		setWikititle(projectsubnode.getWikiTitle());
+	}
+
+	public ProjectSubnodeDao() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -89,12 +94,24 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements C
 
 	@Override
 	public ProjectSubnodeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao();
+			projectSubnodeDao.setId(-1);
+			return projectSubnodeDao;
+		}
 	}
 
 	@Override
 	public ProjectSubnodeDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao();
+			projectSubnodeDao.setId(-1);
+			return projectSubnodeDao;
+		}
 	}
 
 	@Override
@@ -124,8 +141,6 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements C
 		preparedStatement.close();
 		return this;
 	}
-	
-	
 
 	@Override
 	protected ProjectSubnodeDao updateVisit(Connection connection,

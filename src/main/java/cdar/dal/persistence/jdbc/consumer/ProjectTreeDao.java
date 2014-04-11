@@ -27,12 +27,15 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 		setUid(uid);
 		setName(name);
 	}
-	
+
 	public ProjectTreeDao(ProjectTree projecttree) {
 		setId(projecttree.getId());
 		setCreationTime(projecttree.getCreationTime());
 		setLastModificationTime(projecttree.getLastModificationTime());
 		setName(projecttree.getName());
+	}
+
+	public ProjectTreeDao() {
 	}
 
 	public int getId() {
@@ -77,7 +80,13 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 
 	@Override
 	public ProjectTreeDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			ProjectTreeDao projectTreeDao = new ProjectTreeDao();
+			projectTreeDao.setId(-1);
+			return projectTreeDao;
+		}
 	}
 
 	public boolean delete() {
@@ -86,16 +95,23 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 
 	@Override
 	public ProjectTreeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			ProjectTreeDao projectTreeDao = new ProjectTreeDao();
+			projectTreeDao.setId(-1);
+			return projectTreeDao;
+		}
 	}
 
 	@Override
 	protected ProjectTreeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, NAME) VALUES (?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, NAME) VALUES (?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getName());
 

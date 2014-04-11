@@ -11,7 +11,6 @@ import cdar.bll.producer.Node;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-
 public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	private int id;
 	private Date creationTime;
@@ -34,7 +33,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		setDynamicTreeFlag(0);
 		setDid(did);
 	}
-	
+
 	public NodeDao(Node node) {
 		setId(node.getId());
 		setCreationTime(node.getCreationTime());
@@ -44,6 +43,10 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		setWikititle(node.getWikiTitle());
 		setDynamicTreeFlag(node.getDynamicTreeFlag());
 		setDid(node.getDid());
+	}
+
+	public NodeDao() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -112,7 +115,13 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	@Override
 	public NodeDao update() {
-		return  super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			NodeDao nodeDao = new NodeDao();
+			nodeDao.setId(-1);
+			return nodeDao;
+		}
 	}
 
 	@Override
@@ -122,7 +131,13 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	@Override
 	public NodeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			NodeDao nodeDao = new NodeDao();
+			nodeDao.setId(-1);
+			return nodeDao;
+		}
 	}
 
 	@Override
@@ -146,8 +161,10 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		}
 		preparedStatement.close();
 
-		//update wikititle
-		preparedStatement = connection.prepareStatement(String.format("UPDATE KNOWLEDGENODE SET WIKITITLE = ? where id = %d;", getId()));
+		// update wikititle
+		preparedStatement = connection.prepareStatement(String.format(
+				"UPDATE KNOWLEDGENODE SET WIKITITLE = ? where id = %d;",
+				getId()));
 		preparedStatement.setString(1, String.format("NODE_%d", getId()));
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
@@ -155,7 +172,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement = connection
 				.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (knid, did) VALUES (?, ?)");
 		preparedStatement.setInt(1, getId());
-		preparedStatement.setInt(2, getDid());	
+		preparedStatement.setInt(2, getDid());
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
 		return this;
@@ -163,7 +180,8 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	@Override
 	protected NodeDao updateVisit(Connection connection,
-			PreparedStatement preparedStatement, ResultSet generatedKeys) throws SQLException {
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
 						"UPDATE KNOWLEDGENODE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ?  WHERE id = ?",

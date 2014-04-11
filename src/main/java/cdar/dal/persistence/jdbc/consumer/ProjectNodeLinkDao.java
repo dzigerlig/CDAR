@@ -12,7 +12,8 @@ import cdar.bll.consumer.ProjectNodeLink;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
 
-public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implements CdarDao {
+public class ProjectNodeLinkDao extends CUDHelper<ProjectNodeLinkDao> implements
+		CdarDao {
 	private int id;
 	private Date creationTime;
 	private Date lastModificationTime;
@@ -20,20 +21,20 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 	private int targetid;
 	private int kpnsnid;
 	private int kptid;
-	
+
 	public ProjectNodeLinkDao(int sourceid, int targetid, int kptid) {
 		setSourceid(sourceid);
 		setTargetid(targetid);
 		setKptid(kptid);
 	}
-	
+
 	public ProjectNodeLinkDao(int sourceid, int targetid, int kptid, int kpnsnid) {
 		setSourceid(sourceid);
 		setTargetid(targetid);
 		setKptid(kptid);
 		setKpnsnid(kpnsnid);
 	}
-	
+
 	public ProjectNodeLinkDao(ProjectNodeLink projectnodelink) {
 		setId(projectnodelink.getId());
 		setCreationTime(projectnodelink.getCreationTime());
@@ -43,7 +44,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 		setKpnsnid(projectnodelink.getRefProjectSubNodeId());
 		setKptid(projectnodelink.getRefProjectTreeId());
 	}
-	
+
 	public ProjectNodeLinkDao() {
 	}
 
@@ -70,7 +71,7 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 	public void setLastModificationTime(Date lastModificationTime) {
 		this.lastModificationTime = lastModificationTime;
 	}
-	
+
 	public int getSourceid() {
 		return sourceid;
 	}
@@ -105,12 +106,24 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 
 	@Override
 	public ProjectNodeLinkDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			ProjectNodeLinkDao projectNodeLinkDao = new ProjectNodeLinkDao();
+			projectNodeLinkDao.setId(-1);
+			return projectNodeLinkDao;
+		}
 	}
 
 	@Override
 	public ProjectNodeLinkDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			ProjectNodeLinkDao projectNodeLinkDao = new ProjectNodeLinkDao();
+			projectNodeLinkDao.setId(-1);
+			return projectNodeLinkDao;
+		}
 	}
 
 	@Override
@@ -122,13 +135,14 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 	protected ProjectNodeLinkDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
-		if (getKpnsnid()!=0) {
+		if (getKpnsnid() != 0) {
 			preparedStatement.setInt(4, getKpnsnid());
 		} else {
 			preparedStatement.setNull(4, Types.INTEGER);
@@ -149,13 +163,14 @@ public class ProjectNodeLinkDao extends  CUDHelper<ProjectNodeLinkDao>  implemen
 	protected ProjectNodeLinkDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE KNOWLEDGEPROJECTNODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE KNOWLEDGEPROJECTNODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getSourceid());
 		preparedStatement.setInt(3, getTargetid());
-		if (getKpnsnid()!=0) {
+		if (getKpnsnid() != 0) {
 			preparedStatement.setInt(4, getKpnsnid());
 		} else {
 			preparedStatement.setNull(4, Types.INTEGER);

@@ -23,7 +23,7 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 	public DirectoryDao(int treeid) {
 		setKtrid(treeid);
 	}
-	
+
 	public DirectoryDao(Directory directory) {
 		setId(directory.getId());
 		setCreationTime(directory.getCreationTime());
@@ -31,6 +31,10 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 		setParentid(directory.getParentid());
 		setKtrid(directory.getKtrid());
 		setTitle(directory.getTitle());
+	}
+
+	public DirectoryDao() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -83,12 +87,24 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 
 	@Override
 	public DirectoryDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			DirectoryDao directoryDao = new DirectoryDao();
+			directoryDao.setId(-1);
+			return directoryDao;
+		}
 	}
 
 	@Override
 	public DirectoryDao update() {
-		return super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			DirectoryDao directoryDao = new DirectoryDao();
+			directoryDao.setId(-1);
+			return directoryDao;
+		}
 	}
 
 	@Override

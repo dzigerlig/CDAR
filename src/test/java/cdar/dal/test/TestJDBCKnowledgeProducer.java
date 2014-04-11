@@ -58,7 +58,7 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(udc.getUserByName(testUsername).getId(), treeName).create();
 		assertEquals(treeName, kpdc.getTree(tree.getId()).getName());
 		tree.delete();
-		assertNull(kpdc.getTree(tree.getId()));
+		assertEquals(-1, kpdc.getTree(tree.getId()).getId());
 	}
 	
 	@Test

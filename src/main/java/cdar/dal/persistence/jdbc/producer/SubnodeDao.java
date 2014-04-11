@@ -18,18 +18,18 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	private int knid;
 	private String title;
 	private String wikititle;
-	
+
 	public SubnodeDao(int knid) {
 		setKnid(knid);
 		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
-	
+
 	public SubnodeDao(int knid, String title) {
 		setKnid(knid);
 		setTitle(title);
 		setWikititle(String.format("SUBNODE_%d", getId()));
 	}
-	
+
 	public SubnodeDao(Subnode subnode) {
 		setId(subnode.getId());
 		setCreationTime(subnode.getCreationTime());
@@ -38,7 +38,11 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 		setTitle(subnode.getTitle());
 		setWikititle(subnode.getWikiTitle());
 	}
-	
+
+	public SubnodeDao() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -46,7 +50,7 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getKnid() {
 		return knid;
 	}
@@ -89,12 +93,24 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 
 	@Override
 	public SubnodeDao create() {
-		return super.create();
+		try {
+			return super.create();
+		} catch (Exception ex) {
+			SubnodeDao subnodeDao = new SubnodeDao();
+			subnodeDao.setId(-1);
+			return subnodeDao;
+		}
 	}
 
 	@Override
 	public SubnodeDao update() {
-		return  super.update();
+		try {
+			return super.update();
+		} catch (Exception ex) {
+			SubnodeDao subnodeDao = new SubnodeDao();
+			subnodeDao.setId(-1);
+			return subnodeDao;
+		}
 	}
 
 	@Override
@@ -106,9 +122,10 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	protected SubnodeDao createVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());
@@ -128,9 +145,10 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	protected SubnodeDao updateVisit(Connection connection,
 			PreparedStatement preparedStatement, ResultSet generatedKeys)
 			throws SQLException {
-		preparedStatement = connection.prepareStatement(
-				"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
-				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());

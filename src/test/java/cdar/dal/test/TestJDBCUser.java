@@ -52,7 +52,7 @@ public class TestJDBCUser {
 		UserDao user = new UserDao(username, password).create();
 		assertEquals(password, udc.getUserByName(username).getPassword());
 		user.delete();
-		assertNull(udc.getUserById(user.getId()));
+		assertEquals(-1, udc.getUserById(user.getId()).getId());
 	}
 	
 	@Test

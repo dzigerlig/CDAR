@@ -24,7 +24,11 @@ public class UserModel {
 		UserDao userdao = new UserDao();
 		userdao.setUsername(username);
 		userdao.setPassword(password);
-		return new User(userdao.create());
+		try {
+			return new User(userdao.create());
+		} catch (Exception e) {
+			return new User(-1);
+		}
 	}
 
 	public Boolean deleteUser(int userid) {
@@ -37,8 +41,11 @@ public class UserModel {
 		userdao.setUsername(user.getUsername());
 		userdao.setPassword(user.getPassword());
 		userdao.setAccesstoken(user.getAccesstoken());
-		userdao.update();
-		return new User(userdao);
+		try {
+			return new User(userdao.update());
+		} catch (Exception e) {
+			return new User(-1);
+		}
 	}
 
 	public User getUser(String username) {

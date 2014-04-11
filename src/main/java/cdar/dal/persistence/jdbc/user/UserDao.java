@@ -7,15 +7,14 @@ import java.sql.Statement;
 import java.util.Date;
 
 import cdar.bll.user.User;
+import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.CdarJdbcHelper;
-import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
-public class UserDao extends CdarJdbcHelper implements CdarDao {
+public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 
 	private int id;
 	private Date creationTime;
@@ -94,69 +93,22 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 		this.accesstoken = accesstoken;
 	}
 
+	@Override
 	public UserDao create() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
 		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection
-					.prepareStatement(
-							"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
-							Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
-			preparedStatement.setString(2, getUsername());
-			preparedStatement.setString(3, getPassword());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
+			return super.create();
 		} catch (Exception ex) {
 			return new UserDao(-1);
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
 		}
-		return this;
 	}
 
 	@Override
 	public UserDao update() {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet generatedKeys = null;
-
 		try {
-			connection = JDBCUtil.getConnection();
-			preparedStatement = connection
-					.prepareStatement(
-							"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
-							Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
-			preparedStatement.setString(2, getUsername());
-			preparedStatement.setString(3, getPassword());
-			preparedStatement.setString(4, getAccesstoken());
-			preparedStatement.setInt(5, getId());
-
-			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				setId(generatedKeys.getInt(1));
-			}
-
+			return super.update();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			closeConnections(connection, preparedStatement, null, generatedKeys);
+			return new UserDao(-1);
 		}
-		return this;
 	}
 
 	@Override
@@ -174,4 +126,49 @@ public class UserDao extends CdarJdbcHelper implements CdarDao {
 
 		return delete("USER", getId());
 	}
+
+	@Override
+	protected UserDao createVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws Exception {
+		preparedStatement = connection
+				.prepareStatement(
+						"INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
+						Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.setString(3, getPassword());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}
+		return this;
+	}
+
+	@Override
+	protected UserDao updateVisit(Connection connection,
+			PreparedStatement preparedStatement, ResultSet generatedKeys)
+			throws Exception {
+		preparedStatement = connection
+				.prepareStatement(
+						"UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+						Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.setString(3, getPassword());
+		preparedStatement.setString(4, getAccesstoken());
+		preparedStatement.setInt(5, getId());
+
+		preparedStatement.executeUpdate();
+
+		generatedKeys = preparedStatement.getGeneratedKeys();
+		if (generatedKeys.next()) {
+			setId(generatedKeys.getInt(1));
+		}
+		return this;
+	}
+
 }

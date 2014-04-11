@@ -58,7 +58,7 @@ public class TestJDBCKnowledgeConsumer {
 		ProjectTreeDao tree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), treeName).create();
 		assertEquals(treeName, cdc.getProjectTree(tree.getId()).getName());
 		tree.delete();
-		assertNull(cdc.getProjectTree(tree.getId()));
+		assertEquals(-1, cdc.getProjectTree(tree.getId()).getId());
 	}
 	
 	@Test

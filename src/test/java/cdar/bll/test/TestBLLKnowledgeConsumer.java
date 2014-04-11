@@ -1,6 +1,7 @@
 package cdar.bll.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +35,8 @@ public class TestBLLKnowledgeConsumer {
 	
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";
+	
+	private final int unknownId = -13;
 	
 	@Before
 	public void createUser() {
@@ -73,17 +76,20 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectTreesUnknownUserId() {
-		
+		assertEquals(0, ptm.getProjectTrees(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownProjectTree() {
-		
+		assertEquals(0, ptm.getProjectTrees(unknownId).size());
 	}
 	
 	@Test
 	public void testUpdateUnknownProjectTree() {
-		
+//		ProjectTree tree = ptm.getProjectTree(unknownId);
+//		tree.setName("Unknown Tree");
+//		ProjectTree updatedTree = ptm.updateProjectTree(tree);
+//		assertNull(updatedTree.getName());
 	}
 	
 	@Test
