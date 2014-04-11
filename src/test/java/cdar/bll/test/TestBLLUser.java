@@ -53,6 +53,11 @@ public class TestBLLUser {
 	}
 	
 	@Test
+	public void testUpdateUnknownUser() {
+		assertEquals(-1, um.updateUser(new User(-12)).getId());
+	}
+	
+	@Test
 	public void updateUser() {
 		final String newPassword = "newpassword";
 		User user = um.createUser(username, password);
