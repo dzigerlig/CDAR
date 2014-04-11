@@ -28,7 +28,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		setTitle(title);
 		setTemplatetext(templatetext);
 	}
-	
+
 	public TemplateDao(Template template) {
 		setId(template.getId());
 		setKtrid(template.getTreeid());
@@ -36,6 +36,10 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		setLastModificationTime(template.getLastModificationTime());
 		setTitle(template.getTitle());
 		setTemplatetext(template.getTemplatetexthtml());
+	}
+
+	public TemplateDao() {
+		super();
 	}
 
 	public int getId() {
