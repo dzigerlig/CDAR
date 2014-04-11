@@ -49,6 +49,26 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
+	public void testGetTreesUnknownUserId() {
+		
+	}
+	
+	@Test
+	public void testGetUknownTree() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownTree() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownTree() {
+		
+	}
+	
+	@Test
 	public void testTreeUpdate() {
 		final String treeName = "MyTreeName";
 		final String newTreeName = "My new tree";
@@ -102,7 +122,27 @@ public class TestBLLKnowledgeProducer {
 		tplm.deleteTemplate(template.getId());
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 	}
-
+	
+	@Test
+	public void testGetTemplatesUnknownUserId() {
+		
+	}
+	
+	@Test
+	public void testGetUnknownTemplate() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownTemplate() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownTemplate() {
+		
+	}
+	
 	@Test
 	public void testNode() {
 		final String nodeTitle = "Node";
@@ -134,6 +174,26 @@ public class TestBLLKnowledgeProducer {
 		node.setTitle(newNodeTitle);
 		nm.updateNode(node);
 		assertEquals(newNodeTitle, nm.getNode(node.getId()).getTitle());
+	}
+	
+	@Test
+	public void testGetNodesUnknownTreeId() {
+		
+	}
+	
+	@Test
+	public void testGetUnknownNode() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownNode() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownNode() {
+		
 	}
 	
 	@Test
@@ -180,6 +240,26 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
+	public void testGetNodeLinksUnknownTreeId() {
+		
+	}
+	
+	@Test
+	public void testGetUnknownNodeLink() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownNodeLink() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownNodeLink() {
+		
+	}
+	
+	@Test
 	public void testSubnode() {
 		final String subnodename = "My Subnode";
 		SubnodeModel snm = new SubnodeModel();
@@ -221,6 +301,31 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
+	public void testGetSubnodesUnknownTree() {
+		
+	}
+	
+	@Test
+	public void testGetSubnodesUnknownNode() {
+		
+	}
+	
+	@Test
+	public void testGetUnknownSubnode() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownSubnode() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownSubnode() {
+		
+	}
+	
+	@Test
 	public void testDirectory() {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
@@ -254,5 +359,24 @@ public class TestBLLKnowledgeProducer {
 		newDirectory.setTitle(newDirectoryName);
 		dm.updateDirectory(newDirectory);
 		assertEquals(newDirectoryName, dm.getDirectory(newDirectory.getId()).getTitle());
+	}
+	
+	public void testDirectoryUnknownTreeId() {
+		
+	}
+	
+	@Test
+	public void testGetUnknownDirectory() {
+		
+	}
+	
+	@Test
+	public void testUpdateUnknownDirectory() {
+		
+	}
+	
+	@Test
+	public void testDeleteUnknownDirectory() {
+		
 	}
 }
