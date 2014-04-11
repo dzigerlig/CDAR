@@ -11,7 +11,7 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 			}
 		},
 		'removeTree' : {
-			method : 'GET',
+			method : 'POST',
 			params: {
 				action: 'delete'
 					}
@@ -64,7 +64,7 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 			}
 		},
 		'removeTree' : {
-			method : 'GET',
+			method : 'POST',
 			params : {
 				entity : 'delete',
 			}

@@ -25,10 +25,10 @@ public class ProjectTreeController {
 		return ptm.getProjectTrees(uid);
 	}
 	
-	@GET
-	@Path("delete/{ptreeid}")
+	@POST
+	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteTreeById(@PathParam("uid") int uid, @PathParam("ptreeid") int ptreeid) {
+	public boolean deleteTreeById(int ptreeid) {
 		return ptm.deleteProjectTree(ptreeid);
 	}
 	

@@ -27,7 +27,7 @@ app.controller("HomeProducerController", [
 			reloadTrees();
 
 			$scope.addNewTree = function() {
-				TreeService.postEntry($scope.newTreeName, function(response) {
+				TreeService.addTree($scope.newTreeName, function(response) {
 					if (response.id != 0) {
 						$scope.newTreeName = '';
 						reloadTrees();
@@ -38,9 +38,7 @@ app.controller("HomeProducerController", [
 			};
 
 			$scope.deleteTree = function(id) {
-				TreeService.removeTree({
-					ktreeid : id
-				}, function(response) {
+				TreeService.removeTree(id, function(response) {
 					reloadTrees();
 				});
 			};
