@@ -39,10 +39,6 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	}
 
 	public TemplateDao() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public TemplateDao() {
 		super();
 	}
 
