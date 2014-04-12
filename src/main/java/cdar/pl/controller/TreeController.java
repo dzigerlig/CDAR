@@ -34,122 +34,124 @@ public class TreeController {
 	private DirectoryModel dm = new DirectoryModel();
 	private SubnodeModel sm = new SubnodeModel();
 	private TemplateModel tm = new TemplateModel();
-	
-	//Dynamic Tree
+
+	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
 		return ktm.getTrees(uid);
 	}
-	
+
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean deleteTreeById(int ktreeid) {
 		return ktm.deleteTree(ktreeid);
 	}
-	
+
 	@POST
 	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
 		return ktm.addTree(uid, treeName);
 	}
-	
+
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
 		return ktm.getTree(ktreeid);
 	}
-	
-	//TEMPLATES
+
+	// TEMPLATES
 	@GET
 	@Path("templates/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Template> getTemplates(@PathParam("ktreeid") int ktreeid) {
 		return tm.getKnowledgeTemplates(ktreeid);
 	}
-	
+
 	@GET
 	@Path("templates/{ktreeid}/{templateid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Template getTemplate(@PathParam("ktreeid") int ktreeid, @PathParam("templateid") int templateid) {
+	public Template getTemplate(@PathParam("ktreeid") int ktreeid,
+			@PathParam("templateid") int templateid) {
 		return tm.getKnowledgeTemplate(templateid);
 	}
-	
+
 	@POST
 	@Path("templates/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
-		return tm.addKnowledgeTemplate(template.getTreeid(), template.getTitle(), template.getTemplatetext());
+		return tm.addKnowledgeTemplate(template.getTreeid(),
+				template.getTitle(), template.getTemplatetext());
 	}
-	
+
 	@POST
 	@Path("templates/edit/{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template editTemplate(Template template) {
 		return tm.updateTemplate(template);
 	}
-	
+
 	@POST
 	@Path("templates/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Boolean deleteTemplate(int id) {
 		return new Boolean(tm.deleteTemplate(id));
 	}
-	
-	//Directory
+
+	// Directory
 	@GET
 	@Path("/directories/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Directory> getDirectory(@PathParam("ktreeid") int ktreeid) {
 		return dm.getDirectories(ktreeid);
 	}
-	
+
 	@POST
 	@Path("directories/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDirectory(Directory d) {
 		return dm.addDirectory(d.getKtrid(), d.getParentid(), null);
 	}
-	
+
 	@POST
 	@Path("directories/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Boolean deleteDirectory(int id) {
 		return dm.deleteDirectory(id);
 	}
-	
+
 	@POST
 	@Path("directories/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory renameDirectory(Directory d) {
 		return dm.renameDirectory(d);
 	}
-	
+
 	@POST
 	@Path("directories/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory moveDirectory(Directory d) {
 		return dm.moveDirectory(d);
-	}	
-	
-	//Nodes
+	}
+
+	// Nodes
 	@GET
 	@Path("/nodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
 		return nm.getNodes(ktreeid);
 	}
-	
+
 	@POST
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
 		return nm.addNode(n.getKtrid(), null, n.getDid());
 	}
-	
+
 	@POST
 	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -163,63 +165,59 @@ public class TreeController {
 	public Node dropNode(int id) {
 		return nm.dropNode(id);
 	}
-	
+
 	@POST
 	@Path("nodes/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameNode(Node n) {
-		nm.renameNode(n);
-		return Response.status(200).build();
+	public Node renameNode(Node n) {
+		return nm.renameNode(n);
 	}
-	
+
 	@POST
 	@Path("nodes/undrop/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response undropNode(int id) {
-		nm.undropNode(id);
-		return Response.status(200).build();
+	public Node undropNode(int id) {
+		return nm.undropNode(id);
 	}
-	
+
 	@POST
 	@Path("nodes/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response moveNode(Node n) {
-		nm.moveNode(n);
-		return Response.status(200).build();
+	public Node moveNode(Node n) {
+		return nm.moveNode(n);
 	}
-	
-	//Links
+
+	// Links
 	@GET
 	@Path("links/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
 		return lm.getNodeLinks(ktreeid);
-	}		
-	
+	}
+
 	@POST
 	@Path("links/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public NodeLink addNodeLink(NodeLink nl) {		 
-		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(), nl.getTargetId(), nl.getKsnid());
+	public NodeLink addNodeLink(NodeLink nl) {
+		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
+				nl.getTargetId(), nl.getKsnid());
 	}
 
 	@POST
 	@Path("links/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNodeLink(int id) {
-		lm.deleteNodeLink(id);
-		return Response.status(200).build();
+	public boolean deleteNodeLink(int id) {
+		return lm.deleteNodeLink(id);
 	}
-	
+
 	@POST
 	@Path("links/update/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNodeLink(NodeLink nl) {
-		lm.updateNodeLink(nl);
-		return Response.status(200).build();
+	public NodeLink updateNodeLink(NodeLink nl) {
+		return lm.updateNodeLink(nl);
 	}
-	
-	//Subnodes
+
+	// Subnodes
 	@GET
 	@Path("subnodes/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -233,19 +231,18 @@ public class TreeController {
 	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
 		return sm.getSubnodesFromNode(nodeid);
 	}
-	
+
 	@POST
 	@Path("subnodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Subnode addSubnode(Subnode sN) {		 
+	public Subnode addSubnode(Subnode sN) {
 		return sm.addSubnode(sN.getKnid(), sN.getTitle());
 	}
 
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteSubnode(int id) {
-		sm.deleteSubnode(id);
-		return Response.status(200).build();
+	public boolean deleteSubnode(int id) {
+		return sm.deleteSubnode(id);
 	}
 }

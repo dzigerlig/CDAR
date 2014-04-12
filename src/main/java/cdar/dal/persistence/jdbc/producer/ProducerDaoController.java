@@ -302,7 +302,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		NodeLinkDao nodelink = null;
+		NodeLinkDao nodelink = new NodeLinkDao();
+		nodelink.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
