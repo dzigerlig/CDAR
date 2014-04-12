@@ -50,7 +50,7 @@ public class SubnodeModel {
 		return new Subnode(subnodedao.update());
 	}
 	
-	public boolean removeSubnode(int id) {
+	public boolean deleteSubnode(int id) {
 		return pdc.getSubnode(id).delete();
 	}
 }

@@ -299,7 +299,7 @@ app
 								TreeService.addNode({
 									ktreeid : $routeParams.treeId
 								}, {
-									refTreeId : $routeParams.treeId,
+									ktrid : $routeParams.treeId,
 									did : did
 
 								}, function(response) {

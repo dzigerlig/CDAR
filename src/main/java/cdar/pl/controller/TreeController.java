@@ -117,25 +117,22 @@ public class TreeController {
 	@POST
 	@Path("directories/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeDirectory(int id) {
-		dm.removeDirectoryById(id);
-		return Response.status(200).build();
+	public Boolean deleteDirectory(int id) {
+		return dm.deleteDirectory(id);
 	}
 	
 	@POST
 	@Path("directories/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameDirectory(Directory d) {
-		dm.renameDirectory(d);
-		return Response.status(200).build();
+	public Directory renameDirectory(Directory d) {
+		return dm.renameDirectory(d);
 	}
 	
 	@POST
 	@Path("directories/move/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response moveDirectory(Directory d) {
-		dm.moveDirectory(d);
-		return Response.status(200).build();
+	public Directory moveDirectory(Directory d) {
+		return dm.moveDirectory(d);
 	}	
 	
 	//Nodes
@@ -150,15 +147,14 @@ public class TreeController {
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
-		return nm.addNode(n.getRefTreeId(), null, n.getDid());
+		return nm.addNode(n.getKtrid(), null, n.getDid());
 	}
 	
 	@POST
 	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNode(int id) {
-		nm.deleteNode(id);
-		return Response.status(200).build();
+	public boolean deleteNode(int id) {
+		return nm.deleteNode(id);
 	}
 
 	@POST
@@ -203,22 +199,22 @@ public class TreeController {
 	@POST
 	@Path("links/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public NodeLink addLink(NodeLink nl) {		 
+	public NodeLink addNodeLink(NodeLink nl) {		 
 		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(), nl.getTargetId(), nl.getKsnid());
 	}
 
 	@POST
 	@Path("links/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeLink(int id) {
-		lm.removeNodeLink(id);
+	public Response deleteNodeLink(int id) {
+		lm.deleteNodeLink(id);
 		return Response.status(200).build();
 	}
 	
 	@POST
 	@Path("links/update/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateLink(NodeLink nl) {
+	public Response updateNodeLink(NodeLink nl) {
 		lm.updateNodeLink(nl);
 		return Response.status(200).build();
 	}
@@ -248,8 +244,8 @@ public class TreeController {
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response removeSubnode(int id) {
-		sm.removeSubnode(id);
+	public Response deleteSubnode(int id) {
+		sm.deleteSubnode(id);
 		return Response.status(200).build();
 	}
 }

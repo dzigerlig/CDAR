@@ -21,7 +21,7 @@ public class NodeLinkModel {
 		return nodeLinks;
 	}
 	
-	public boolean removeNodeLink(int id)
+	public boolean deleteNodeLink(int id)
 	{
 		NodeLinkDao nld = pdc.getNodeLink(id);
 		return nld.delete();

@@ -182,7 +182,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		NodeDao node = null;
+		NodeDao node = new NodeDao();
+		node.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -242,7 +243,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		SubnodeDao subnode = null;
+		SubnodeDao subnode = new SubnodeDao();
+		subnode.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -358,7 +360,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		DirectoryDao directory = null;
+		DirectoryDao directory = new DirectoryDao();
+		directory.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();

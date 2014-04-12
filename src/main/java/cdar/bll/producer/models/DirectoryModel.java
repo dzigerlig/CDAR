@@ -22,7 +22,7 @@ public class DirectoryModel {
 		return new Directory(pdc.getDirectory(id));
 	}
 
-	public boolean removeDirectoryById(int id) {
+	public boolean deleteDirectory(int id) {
 		return pdc.getDirectory(id).delete();
 	}
 
@@ -46,9 +46,9 @@ public class DirectoryModel {
 		return new Directory(dd.update());
 	}
 
-	public void moveDirectory(Directory d) {
+	public Directory moveDirectory(Directory d) {
 		DirectoryDao dd = pdc.getDirectory(d.getId());
 		dd.setParentid(d.getParentid());
-		dd.update();
+		return new Directory(dd.update());
 	}
 }

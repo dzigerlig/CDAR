@@ -6,7 +6,7 @@ import cdar.bll.WikiEntity;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 
 public class Node extends WikiEntity {
-	private int refTreeId;
+	private int ktrid;
 	private int dynamicTreeFlag;
 	private int did;
 
@@ -15,9 +15,9 @@ public class Node extends WikiEntity {
 	}
 
 	public Node(int id, Date creationDate, Date lastModification,
-			String title, String wikititle, int refTreeId, int dynamicTreeFlag, int did) {
+			String title, String wikititle, int ktrid, int dynamicTreeFlag, int did) {
 		super(id, creationDate, lastModification, title, wikititle);
-		setRefTreeId(refTreeId);
+		setKtrid(ktrid);
 		setDynamicTreeFlag(dynamicTreeFlag);
 		setDid(did);
 	}
@@ -26,12 +26,12 @@ public class Node extends WikiEntity {
 		this(nodeDao.getId(), nodeDao.getCreationTime(),nodeDao.getLastModificationTime(),nodeDao.getTitle(),nodeDao.getWikititle(),nodeDao.getKtrid(),nodeDao.getDynamicTreeFlag(), nodeDao.getDid());
 	}
 
-	public int getRefTreeId() {
-		return refTreeId;
+	public int getKtrid() {
+		return ktrid;
 	}
 
-	public void setRefTreeId(int refTreeId) {
-		this.refTreeId = refTreeId;
+	public void setKtrid(int ktrid) {
+		this.ktrid = ktrid;
 	}
 
 	public int getDynamicTreeFlag() {

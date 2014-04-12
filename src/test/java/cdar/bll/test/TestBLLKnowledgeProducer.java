@@ -156,7 +156,7 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
 		assertEquals(directoryId, nm.getNode(node.getId()).getDid());
 		assertEquals(0, nm.getNode(node.getId()).getDynamicTreeFlag());
-		assertEquals(tree.getId(), nm.getNode(node.getId()).getRefTreeId());
+		assertEquals(tree.getId(), nm.getNode(node.getId()).getKtrid());
 		nm.deleteNode(node.getId());
 		assertEquals(0, nm.getNodes(tree.getId()).size());
 	}
@@ -212,7 +212,7 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
-		nlm.removeNodeLink(nodelink.getId());
+		nlm.deleteNodeLink(nodelink.getId());
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 	}
 	
@@ -274,7 +274,7 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
 		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
-		snm.removeSubnode(subnode.getId());
+		snm.deleteSubnode(subnode.getId());
 		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
 	}
@@ -338,7 +338,7 @@ public class TestBLLKnowledgeProducer {
 		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
 		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
 		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
-		dm.removeDirectoryById(newDirectory.getId());
+		dm.deleteDirectory(newDirectory.getId());
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
 	}
 	
