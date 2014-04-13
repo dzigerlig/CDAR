@@ -27,6 +27,12 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 			},
 			isArray : true
 		},
+		'getNode' : {
+			method : 'GET',
+			params : {
+				entity : 'nodes',
+			}
+		},
 		'copyTree' : {
 			method : 'GET',
 			isArray : false,

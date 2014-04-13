@@ -98,7 +98,6 @@ app
 									ktreeid : $scope.knowledgetree.id,
 									entityid : $scope.selectedNodeId
 								}, function(response) {
-									console.log(response);
 									updateSubnodesOfNode(response,$scope.selectedNodeId);
 								});
 							};
@@ -311,6 +310,15 @@ app
 								TreeService.deleteNode({
 									ktreeid : $routeParams.treeId
 								}, id);
+							};
+							
+							$scope.getNode = function(id) {
+								TreeService.deleteNode({
+									ktreeid : $routeParams.treeId,
+									nodeid: id
+								}, function(node){
+									setMovedNode(node);
+								});
 							};
 
 							$scope.dropNode = function(e, id) {

@@ -328,6 +328,17 @@ public class TestTreeController extends JerseyTest {
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(quantityOfNodesBeforeAdd + 2, quantityOfNodesAfterAdd);
 	}
+	
+	@Test
+	public void testGetNodes() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		Node receivedNode  = target(userId + "/ktree/nodes/" + treeid+"/"+addedNode.getId())
+				.request().get(Node.class);
+		deleteNode(addedNode.getId());
+		deleteDirectory(addedDirectory.getId());
+		assertNotEquals(-1,receivedNode.getId());
+	}
 
 	@Test
 	public void testDropNode() {

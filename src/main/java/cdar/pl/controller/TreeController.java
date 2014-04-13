@@ -144,6 +144,13 @@ public class TreeController {
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
 		return nm.getNodes(ktreeid);
 	}
+	
+	@GET
+	@Path("/nodes/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Node getNode(@PathParam("nodeid") int nodeid) {
+		return nm.getNode(nodeid);
+	}
 
 	@POST
 	@Path("nodes/add/{ktreeid}")
