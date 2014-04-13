@@ -20,18 +20,14 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 			method : 'GET',
 			isArray : false
 		},
+		
+		//action: nodes?
 		'getNodes' : {
 			method : 'GET',
 			params: {
 				action: "nodes"
 			},
 			isArray : true
-		},
-		'getNode' : {
-			method : 'GET',
-			params : {
-				entity : 'nodes',
-			}
 		},
 		'copyTree' : {
 			method : 'GET',
@@ -122,6 +118,12 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 		'getNodes' : {
 			method : 'GET',
 			isArray : true,
+			params : {
+				entity : 'nodes',
+			}
+		},
+		'getNode' : {
+			method : 'GET',
 			params : {
 				entity : 'nodes',
 			}

@@ -11,7 +11,6 @@ function getMovedNode() {
 
 function setMovedNode(node) {
 	movedNode = node;
-	console.log(node);
 };
 
 eleme.mouseover(function() {
@@ -25,9 +24,11 @@ function isMouseOverContainer() {
 }
 
 $(document).bind('dnd_start.vakata', function(e, data) {
+	var id = data.data.nodes[0];
 	var type = data.data.origin._model.data[id].type;
 	if (type !== 'default' && type !== 'root') {
-		var id = data.data.nodes[0];
+		id = id.replace(NODE, "");
+		id = id.replace(DIRECTORY, "");
 		scope.getNode(id);
 	}
 });

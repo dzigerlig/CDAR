@@ -313,9 +313,9 @@ app
 							};
 							
 							$scope.getNode = function(id) {
-								TreeService.deleteNode({
+								TreeService.getNode({
 									ktreeid : $routeParams.treeId,
-									nodeid: id
+									entityid: id
 								}, function(node){
 									setMovedNode(node);
 								});

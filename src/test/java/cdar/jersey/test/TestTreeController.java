@@ -337,6 +337,8 @@ public class TestTreeController extends JerseyTest {
 				.request().get(Node.class);
 		deleteNode(addedNode.getId());
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(treeid, addedNode.getKtrid());
+		assertEquals(addedDirectory.getId(), addedNode.getDid());
 		assertNotEquals(-1,receivedNode.getId());
 	}
 
