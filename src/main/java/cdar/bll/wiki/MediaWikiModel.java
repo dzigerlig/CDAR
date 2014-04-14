@@ -14,13 +14,13 @@ public class MediaWikiModel extends Thread{
 	private int ktrid; 
 	private String title;
 	private String templateContent;
-	private NodeModel nodeModel;
+	private WikiEntryConcurrentHelper wikiHelper;
 	
-	public MediaWikiModel(int ktrid, String title, String templateContent, NodeModel nodeModel) {
+	public MediaWikiModel(int ktrid, String title, String templateContent, WikiEntryConcurrentHelper wikiHelper) {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
-		setNodeModel(nodeModel);
+		setWikiHeper(wikiHelper);
 	}
 
 	public int getKtrid() {
@@ -39,8 +39,8 @@ public class MediaWikiModel extends Thread{
 		this.title = title;
 	}
 
-	public void setNodeModel(NodeModel nodeModel) {
-		this.nodeModel = nodeModel;
+	public void setWikiHeper(WikiEntryConcurrentHelper wikiHelper) {
+		this.wikiHelper = wikiHelper;
 	}
 
 	public void createNewWikiEntry() {
@@ -71,6 +71,6 @@ public class MediaWikiModel extends Thread{
 
 	public void run() {
 		createNewWikiEntry();
-		this.nodeModel.removeWikiEntry(getTitle());
+		this.wikiHelper.removeWikiEntry(getTitle());
 	}
 }

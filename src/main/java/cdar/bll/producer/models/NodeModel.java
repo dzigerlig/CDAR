@@ -7,13 +7,14 @@ import java.util.Set;
 
 import cdar.bll.producer.Node;
 import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class NodeModel {
-	private static volatile Map<String, String> wikiList = new HashMap<String, String>();
-	
+
 	private ProducerDaoController pdc = new ProducerDaoController();
+	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
 
 	public Set<Node> getNodes(int treeid) {
 		Set<Node> nodes = new HashSet<Node>();
@@ -37,8 +38,8 @@ public class NodeModel {
 		
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
-		addWikiEntry(node.getWikititle(), templateContent);
-		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), templateContent, this);
+		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
+		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), templateContent, wikiHelper);
 		mwm.start();
 		return new Node(node);
 	}
@@ -81,13 +82,5 @@ public class NodeModel {
 		nodedao.setTitle(node.getTitle());
 		nodedao.update();
 		return new Node(nodedao);
-	}
-	
-	private synchronized void addWikiEntry(String wikiTitle, String wikiText) {
-		wikiList.put(wikiTitle, wikiText);
-	}
-
-	public synchronized void removeWikiEntry(String title) {
-		wikiList.remove(title);
 	}
 }
