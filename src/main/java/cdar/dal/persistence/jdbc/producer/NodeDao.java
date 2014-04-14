@@ -21,6 +21,9 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 	private int dynamictreeflag;
 	private int did;
 
+	public NodeDao() {
+	}
+	
 	public NodeDao(int ktrid, int did) {
 		setKtrid(ktrid);
 		setDynamicTreeFlag(0);
@@ -43,10 +46,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		setWikititle(node.getWikiTitle());
 		setDynamicTreeFlag(node.getDynamicTreeFlag());
 		setDid(node.getDid());
-	}
-
-	public NodeDao() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -158,6 +157,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
+			setWikititle(String.format("NODE_%d", getId()));
 		}
 		preparedStatement.close();
 
@@ -165,7 +165,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement = connection.prepareStatement(String.format(
 				"UPDATE KNOWLEDGENODE SET WIKITITLE = ? where id = %d;",
 				getId()));
-		preparedStatement.setString(1, String.format("NODE_%d", getId()));
+		preparedStatement.setString(1, getWikititle());
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
 

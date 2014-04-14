@@ -2,9 +2,6 @@ package cdar.bll.wiki;
 
 import info.bliki.wiki.model.WikiModel;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.wikipedia.Wiki;
 
 import cdar.bll.WikiEntity;
@@ -15,53 +12,46 @@ import cdar.bll.producer.Subnode;
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;
 	private String wikicontenthtml;
-	
+
 	public WikiEntry() {
-		
+
 	}
-	
+
 	public WikiEntry(ProjectNode node) {
-		super(node.getId(), node.getCreationTime(), node.getLastModificationTime(), node.getTitle(), node.getWikiTitle());
+		super(node.getId(), node.getCreationTime(), node
+				.getLastModificationTime(), node.getTitle(), node
+				.getWikiTitle());
 		fillWikiContent();
 	}
-	
+
 	public WikiEntry(Node node) {
-		super(node.getId(), node.getCreationTime(), node.getLastModificationTime(), node.getTitle(), node.getWikiTitle());
+		super(node.getId(), node.getCreationTime(), node
+				.getLastModificationTime(), node.getTitle(), node
+				.getWikiTitle());
 		fillWikiContent();
 	}
 
 	public WikiEntry(Subnode subnode) {
-		super(subnode.getId(), subnode.getCreationTime(), subnode.getLastModificationTime(), subnode.getTitle(), subnode.getWikiTitle());
+		super(subnode.getId(), subnode.getCreationTime(), subnode
+				.getLastModificationTime(), subnode.getTitle(), subnode
+				.getWikiTitle());
 		fillWikiContent();
 	}
 
 	private void fillWikiContent() {
-		Wiki c = new Wiki();
-
+		Wiki wiki = new Wiki();
 		try {
-			setWikiContentPlain(c.getPageText(getWikiTitle()));
-			if (getWikiContentPlain()!=null) {
-				setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
-			}
-		} catch (FileNotFoundException e) {
-			//Entry doesn't exist, create new and continue
-			try {
-				c.login("admin", "password");
-				setWikiContentPlain(getWikiTitle());
-				c.edit(getWikiTitle(), getWikiContentPlain(), "");
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		catch (IOException e) {
+			setWikiContentPlain(wiki.getPageText(getWikiTitle()));
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getWikiContentPlain() {
 		return wikicontentplain;
 	}
-	
+
 	public void setWikiContentPlain(String wikicontentplain) {
 		this.wikicontentplain = wikicontentplain;
 	}

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
+import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
@@ -27,8 +28,11 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
+		MediaWikiModel mwm = new MediaWikiModel();
 		NodeDao node = new NodeDao(treeid, title, did);
-		return new Node(node.create());
+		node.create();
+		mwm.createNewWikiEntry(treeid, node.getWikititle());
+		return new Node(node);
 	}
 
 	public Node dropNode(int id) {
