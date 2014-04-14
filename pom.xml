@@ -33,8 +33,7 @@
           		</property>
        		 </systemProperties>
        		 <includes>
-             	<include>TestTreeController</include>
-             	<include>TestUserController</include>
+             	<include>**/*Controller.java</include>
           	 </includes>
     	 </configuration>
 	</plugin>
