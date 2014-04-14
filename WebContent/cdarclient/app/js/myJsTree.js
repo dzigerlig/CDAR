@@ -32,7 +32,7 @@ $(function() {
 	});
 
 	$('#jstree').on("select_node.jstree", function(e, data) {
-		if (data.node.type !== 'default'&&data.node.type !== 'root') {
+		if (data.node.type !== 'default' && data.node.type !== 'root') {
 			var id = data.selected[0];
 			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
@@ -45,7 +45,9 @@ $(function() {
 	$('#jstree').on(
 			"rename_node.jstree",
 			function(e, data) {
-				if(data.text===""){return false;}
+				if (data.text === "") {
+					return false;
+				}
 				var id = data.node.id;
 				id = id.replace(DIRECTORY, "");
 				if (data.node.type !== 'default') {
@@ -64,7 +66,7 @@ $(function() {
 			id = id.replace(NODE, "");
 
 			scope.deleteNode(id);
-			scope.selectedNodeId=0;
+			scope.selectedNodeId = 0;
 		} else {
 			scope.deleteDirectory(id);
 
@@ -89,7 +91,7 @@ $(function() {
 
 function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length||ref._model.data[sel].type!=="default") {
+	if (!sel.length || ref._model.data[sel].type !== "default") {
 		alert('Please select a folder');
 
 		return false;
@@ -100,7 +102,8 @@ function jstree_createNode() {
 
 function jstree_createDirectory() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length||ref._model.data[sel].type!=="default"&&ref._model.data[sel].type!=="root") {
+	if (!sel.length || ref._model.data[sel].type !== "default"
+			&& ref._model.data[sel].type !== "root") {
 		alert('Please select a directory');
 		return false;
 	} else {
@@ -123,13 +126,18 @@ function jstree_delete() {
 		alert('Please select a folder or a node');
 		return false;
 	}
-	if(ref._model.data[sel[0]].parent==='#')
-		{alert("you can't delete a root node");
-		return false;}
-	ref.delete_node(sel);
+	if (ref._model.data[sel[0]].parent === '#') {
+		alert("you can't delete a root node");
+		return false;
+	}
+
+	var selected = sel.slice(0);
+	selected.forEach(function(name) {
+		ref.delete_node(name);
+	});
 };
 
-function drawDirectory(treeArray,rootid) {
+function drawDirectory(treeArray, rootid) {
 	$('#jstree').jstree(
 			{
 				'core' : {
@@ -147,7 +155,7 @@ function drawDirectory(treeArray,rootid) {
 					},
 					"root" : {
 						"icon" : "http://jstree.com/tree.png",
-						"valid_children" : [ "default" ,"file"]
+						"valid_children" : [ "default", "file" ]
 					},
 					"default" : {
 						"valid_children" : [ "default", "file" ]
@@ -160,7 +168,7 @@ function drawDirectory(treeArray,rootid) {
 				"plugins" : [ "contextmenu", "dnd", "search", "sort", "types",
 						"themes" ]
 			});
-	$("#jstree").jstree("open_node", $("#"+rootid));
+	$("#jstree").jstree("open_node", $("#" + rootid));
 
 }
 
@@ -168,34 +176,34 @@ function directoryDataToArray(resDirectory, resNodes) {
 	var treeArray = [];
 	var parentId;
 	var type;
-	var rootid=null;
+	var rootid = null;
 
 	resDirectory.forEach(function(entry) {
 		if (entry.parentid === 0) {
 			parentId = "#";
 			type = "root";
-			rootid=DIRECTORY + entry.id;
+			rootid = DIRECTORY + entry.id;
 		} else {
 			parentId = DIRECTORY + entry.parentid;
 			type = "default";
-			}
+		}
 		treeArray.push({
 			"id" : DIRECTORY + entry.id,
 			"parent" : parentId,
 			"text" : entry.title,
-			"type":type
+			"type" : type
 		});
 	});
 
 	resNodes.forEach(function(node) {
 		treeArray.push({
-			"id" : DIRECTORY+NODE + node.id,
+			"id" : DIRECTORY + NODE + node.id,
 			"parent" : DIRECTORY + node.did,
 			"text" : node.title,
 			"type" : "file"
 		});
 	});
-	drawDirectory(treeArray,rootid);
+	drawDirectory(treeArray, rootid);
 };
 
 function createNode(response) {
@@ -203,8 +211,8 @@ function createNode(response) {
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
-		"id" : DIRECTORY+NODE+ response.id,
-		"text":"new Node"
+		"id" : DIRECTORY + NODE + response.id,
+		"text" : "new Node"
 	});
 	if (sel) {
 		ref.edit(sel);
@@ -214,14 +222,14 @@ function createNode(response) {
 function createDirectory(response) {
 	var sel;
 	var ref = $('#jstree').jstree(true);
-		sel = ref.get_selected();
-		sel = sel[0];
-		sel = ref.create_node(sel, {
-			"type" : "default",
-			'text': 'new Folder',
-			"id" : DIRECTORY + response.id
-		});
-	
+	sel = ref.get_selected();
+	sel = sel[0];
+	sel = ref.create_node(sel, {
+		"type" : "default",
+		'text' : 'new Folder',
+		"id" : DIRECTORY + response.id
+	});
+
 	if (sel) {
 		ref.edit(sel);
 	}
