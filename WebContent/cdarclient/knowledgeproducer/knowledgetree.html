@@ -127,6 +127,7 @@
 											<tr>
 												<th>#</th>
 												<th>Subnode Name</th>
+												<th>Edit subnode title</th>
 												<th>Delete subnode</th>
 											</tr>
 										</thead>
@@ -135,6 +136,9 @@
 											<th><a
 												data-ng-click="changeSubnode(subnode.id, subnode.title)"
 												href="">{{subnode.title}}</a></th>
+											<th>
+												<a data-ng-click="editSubnodeTitle(subnode.id, subnode.title)" href="">edit title</a>
+											</th>
 											<th><a data-ng-click="deleteSubnode(subnode.id)" href="">Delete
 													Subnode</a></th>
 										</tr>
@@ -169,6 +173,25 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="subnodeModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-sm">
+	      <div class="modal-content">
+	
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title" id="modalLabel">Change subnode title</h4>
+	        </div>
+	        <div class="modal-body">
+		        <form id="formTemplateUpdate" data-role="form" data-ng-submit="saveSubnodeTitle()">
+		        	<input class="form-horizontal" placeholder="subnode title" required autofocus data-ng-model="updateSubnodeTitle" />
+					<button class="btn btn-success" type="submit">Save subnode title</button>
+				</form>
+	        </div>
+	      </div>
+	   </div>
+  	</div>
+	
 	<script>
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();

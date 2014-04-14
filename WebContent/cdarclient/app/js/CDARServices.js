@@ -65,6 +65,13 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action: 'add'
 			}
 		},
+		'renameTree' : {
+			method : 'POST',
+			params : {
+				entity : 'tree',
+				action : 'rename'
+			}
+		},
 		'removeTree' : {
 			method : 'POST',
 			params : {
@@ -259,6 +266,13 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 			params : {
 				entity: 'subnodes',
 				action : 'add'
+			}
+		},
+		'renameSubnode' : {
+			method : 'POST',
+			params : {
+				entity : 'subnodes',
+				action : 'rename'
 			}
 		},
 		'deleteSubnode' : {

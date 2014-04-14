@@ -32,11 +32,9 @@ public class WikiEntry extends WikiEntity {
 				.getWikiTitle());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
 		if (wec.isKeyInMap(node.getWikiTitle())) {
-			System.out.println("KEY IS IN MAP");
 			setWikiContentPlain(wec.getValue(node.getWikiTitle()));
 			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} else {
-			System.out.println("KEY IS NOT IN MAP");
 			fillWikiContent();
 		}
 	}

@@ -421,4 +421,21 @@ app
 									parentid : newParentId
 								});
 							};
+							
+							
+							$scope.updateSubnodeId;
+							$scope.updateSubnodeTitle;
+							
+							$scope.editSubnodeTitle = function(id, title) {
+								$scope.updateSubnodeId = id;
+								$scope.updateSubnodeTitle = title;
+								$('#subnodeModal').modal().show();
+							};
+							
+							$scope.saveSubnodeTitle = function() {
+								$('#subnodeModal').modal('hide');
+								TreeService.renameSubnode({ id : $scope.updateSubnodeId, title : $scope.updateSubnodeTitle }, function(response) {
+									getSubnodes();
+								});
+							};
 } ]);

@@ -53,7 +53,7 @@ public class TreeController {
 	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
 		return ktm.addTree(uid, treeName);
 	}
-
+	
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -249,6 +249,13 @@ public class TreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
 		return sm.getSubnodesFromNode(nodeid);
+	}
+	
+	@POST
+	@Path("subnodes/rename")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Subnode renameSubnode(Subnode subnode) {
+		return sm.renameSubnode(subnode);
 	}
 
 	@POST

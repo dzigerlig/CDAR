@@ -54,13 +54,13 @@ app.controller("TemplatesController", [
 			$scope.editTemplateTitle = function(id, title) {
 				$scope.updateTemplateId = id;
 				$scope.updateTemplateTitle = title;
-				$('#myModal').modal().show();
+				$('#templateModal').modal().show();
 			};
 			
 			$scope.updateTemplateName = function() {
 				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, { id : $scope.updateTemplateId, title : $scope.updateTemplateTitle }, function(response) {
 					reloadTemplates();
-					$('#myModal').modal('hide');
+					$('#templateModal').modal('hide');
 				});
 			};
 

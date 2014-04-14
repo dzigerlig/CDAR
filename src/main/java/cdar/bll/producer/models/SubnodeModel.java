@@ -53,4 +53,10 @@ public class SubnodeModel {
 	public boolean deleteSubnode(int id) {
 		return pdc.getSubnode(id).delete();
 	}
+
+	public Subnode renameSubnode(Subnode subnode) {
+		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
+		subnodedao.setTitle(subnode.getTitle());
+		return new Subnode(subnodedao.update());
+	}
 }
