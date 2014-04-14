@@ -13,10 +13,10 @@ import cdar.bll.producer.models.TemplateModel;
 public class MediaWikiModel extends Thread{	
 	private int ktrid; 
 	private String title;
+	private String templateContent;
 	private NodeModel nodeModel;
-	TemplateModel tm = new TemplateModel();
 	
-	public MediaWikiModel(int ktrid, String title,NodeModel nodeModel) {
+	public MediaWikiModel(int ktrid, String title, String templateContent, NodeModel nodeModel) {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
@@ -62,7 +62,6 @@ public class MediaWikiModel extends Thread{
 	private void createEntry(Wiki wiki) throws IOException,
 			FailedLoginException, LoginException {
 		wiki.login("admin", "password");
-		final String templateContent = tm.getDefaultKnowledgeTemplate(this.ktrid);
 		if (templateContent == null) {
 			wiki.edit(this.title, templateContent, "== CDAR ==");
 		} else {

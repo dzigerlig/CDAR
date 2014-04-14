@@ -1,8 +1,8 @@
 package cdar.bll.producer.models;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
@@ -11,7 +11,8 @@ import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class NodeModel {
-	private static volatile List<String> wikiList = new ArrayList<String>();
+	private static volatile Map<String, String> wikiList = new HashMap<String, String>();
+	
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public Set<Node> getNodes(int treeid) {
@@ -31,10 +32,13 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
+		TemplateModel tm = new TemplateModel();
+		final String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
+		
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
-		addWikiEntry(node.getWikititle());
-		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), this);
+		addWikiEntry(node.getWikititle(), templateContent);
+		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), templateContent, this);
 		mwm.start();
 		return new Node(node);
 	}
@@ -79,8 +83,8 @@ public class NodeModel {
 		return new Node(nodedao);
 	}
 	
-	private synchronized void addWikiEntry(String	wikiTitle) {
-		wikiList.add(wikiTitle);
+	private synchronized void addWikiEntry(String wikiTitle, String wikiText) {
+		wikiList.put(wikiTitle, wikiText);
 	}
 
 	public synchronized void removeWikiEntry(String title) {
