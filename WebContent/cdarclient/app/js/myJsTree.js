@@ -91,9 +91,8 @@ $(function() {
 
 function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length || ref._model.data[sel].type !== "default") {
+	if (!sel.length||sel.length>1 || ref._model.data[sel].type !== "default") {
 		alert('Please select a folder');
-
 		return false;
 	} else {
 		scope.addNode(sel[0].replace(DIRECTORY, ""));
@@ -102,8 +101,8 @@ function jstree_createNode() {
 
 function jstree_createDirectory() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length || ref._model.data[sel].type !== "default"
-			&& ref._model.data[sel].type !== "root") {
+	if (!sel.length||sel.length>1 || ref._model.data[sel].type !== "default"
+			&& ref._model.data[sel].type !== "root" ) {
 		alert('Please select a directory');
 		return false;
 	} else {
