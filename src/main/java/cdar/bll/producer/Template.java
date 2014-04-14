@@ -12,6 +12,7 @@ public class Template extends BasicEntity {
 	private String title;
 	private String templatetext;
 	private String templatetexthtml;
+	private boolean isDefault = false;
 	
 	public Template() {
 		
@@ -66,5 +67,13 @@ public class Template extends BasicEntity {
 
 	public void setTemplatetexthtml(String templatetexthtml) {
 		this.templatetexthtml = templatetexthtml;
+	}
+
+	public boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 }

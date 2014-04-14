@@ -65,6 +65,7 @@
 									<tr>
 										<th>#</th>
 										<th>Name</th>
+										<th>Default</th>
 										<th>Delete</th>
 									</tr>
 								</thead>
@@ -73,6 +74,11 @@
 										<td>{{$index+1}}</td>
 										<td><a data-ng-click="changeTemplate(template.id)"
 											href="">{{template.title}}</a></td>
+										<td>
+											<a data-ng-click="setDefaultTemplate(template.id, template.isDefault)" href="">
+												{{template.isDefault}}
+											</a>
+										</td>
 										<td><a data-ng-click="deleteTemplate(template.id)"
 											href="">Delete Template</a></td>
 									</tr>

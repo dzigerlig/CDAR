@@ -37,6 +37,7 @@ public class WikiEntry extends WikiEntity {
 
 	private void fillWikiContent() {
 		Wiki c = new Wiki();
+
 		try {
 			setWikiContentPlain(c.getPageText(getWikiTitle()));
 			if (getWikiContentPlain()!=null) {

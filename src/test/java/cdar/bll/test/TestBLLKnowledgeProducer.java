@@ -105,6 +105,16 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
+	public void testTemplateIsDefault() {
+		
+	}
+	
+	@Test
+	public void testTemplateDefaultChangeMultipleTemplates() {
+
+	}
+	
+	@Test
 	public void testTemplateUpdate() {
 		final String templateName = "MyTemplate";
 		final String newTemplateName = "My new template name";

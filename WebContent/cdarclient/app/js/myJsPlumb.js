@@ -38,10 +38,10 @@ function addHTMLNode(response, e) {
 }
 
 // imported Nodes
-function drawExistingNodes(data, resSubNodes) {
+function drawExistingNodes(data, resSubnodes) {
 	isInizialized = false;
 	var map = {};
-	jQuery.each(resSubNodes, function(object) {
+	jQuery.each(resSubnodes, function(object) {
 		if (map[this.knid] === undefined) {
 			var arr = [ this ];
 			map[this.knid] = arr;
@@ -55,7 +55,7 @@ function drawExistingNodes(data, resSubNodes) {
 		if (this.dynamicTreeFlag) {
 			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
 					.data(SUBNODE, {
-						subNode : map[this.id]
+						subnode : map[this.id]
 					});
 
 			var title = $('<div>').addClass('title').text(this.title);
@@ -156,8 +156,8 @@ function makeTarget(newState) {
 	});
 };
 
-function connectNodes(stateSource, stateTarget, id, subNode) {
-	if(subNode===undefined){
+function connectNodes(stateSource, stateTarget, id, subnode) {
+	if(subnode===undefined){
 	jsPlumb.connect({
 		source : stateSource,
 		target : stateTarget,
@@ -320,6 +320,6 @@ function bindConnection() {
 };
 
 function updateSubnodesOfNode(resSubnode, nodeId){
-	$("#node"+nodeId).data("subNode").subNode = resSubnode;
+	$("#node"+nodeId).data("subNode").subnode = resSubnode;
 };
 

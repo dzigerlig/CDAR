@@ -9,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
@@ -23,8 +22,6 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
-import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 @Path("{uid}/ktree")
 public class TreeController {

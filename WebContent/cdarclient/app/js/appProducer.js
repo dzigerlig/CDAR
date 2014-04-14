@@ -84,6 +84,24 @@ app
 							$scope.newSubnodeName = '';
 							$scope.subnodeHtmlText;
 							
+							// TEMPLATES //
+							$scope.templates;
+							$scope.templateid;
+							
+							TreeService.getTemplates({
+								ktreeid : $routeParams.treeId
+							}, function(response) {
+								$scope.templates = response;
+							});
+							
+							$scope.applyTemplate = function() {
+								alert($scope.listSelectedTemplateId);
+							};
+							
+							$scope.revertTemplate = function() {
+								alert($scope.listSelectedTemplateId);
+							};
+							
 							var getSubnodes = function() {
 								TreeService.getSubnodes({
 									ktreeid : $scope.knowledgetree.id,
@@ -236,10 +254,6 @@ app
 									});
 								};
 							};
-							
-							
-							
-							
 							
 							TreeService.getTree({
 								ktreeid : $routeParams.treeId
