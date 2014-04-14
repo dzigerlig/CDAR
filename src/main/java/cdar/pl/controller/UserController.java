@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import cdar.bll.CDAR_Boolean;
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
 
@@ -53,7 +54,7 @@ public class UserController {
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean deleteUser(int userid) {
-		return userModel.deleteUser(userid);
+	public CDAR_Boolean deleteUser(int userid) {
+		return new CDAR_Boolean(userModel.deleteUser(userid));
 	}
 }

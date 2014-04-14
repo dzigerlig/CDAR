@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -42,8 +43,8 @@ public class TreeController {
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteTreeById(int ktreeid) {
-		return ktm.deleteTree(ktreeid);
+	public CDAR_Boolean deleteTreeById(int ktreeid) {
+		return new CDAR_Boolean(ktm.deleteTree(ktreeid));
 	}
 
 	@POST
@@ -108,8 +109,8 @@ public class TreeController {
 	@POST
 	@Path("templates/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean deleteTemplate(int id) {
-		return new Boolean(tm.deleteTemplate(id));
+	public CDAR_Boolean deleteTemplate(int id) {
+		return new CDAR_Boolean(tm.deleteTemplate(id));
 	}
 
 	// Directory
@@ -130,8 +131,8 @@ public class TreeController {
 	@POST
 	@Path("directories/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean deleteDirectory(int id) {
-		return dm.deleteDirectory(id);
+	public CDAR_Boolean deleteDirectory(int id) {
+		return new CDAR_Boolean(dm.deleteDirectory(id));
 	}
 
 	@POST
@@ -173,8 +174,8 @@ public class TreeController {
 	@POST
 	@Path("nodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean deleteNode(int id) {
-		return nm.deleteNode(id);
+	public CDAR_Boolean deleteNode(int id) {
+		return new CDAR_Boolean(nm.deleteNode(id));
 	}
 
 	@POST
@@ -224,8 +225,8 @@ public class TreeController {
 	@POST
 	@Path("links/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean deleteNodeLink(int id) {
-		return lm.deleteNodeLink(id);
+	public CDAR_Boolean deleteNodeLink(int id) {
+		return new CDAR_Boolean(lm.deleteNodeLink(id));
 	}
 
 	@POST
@@ -260,7 +261,7 @@ public class TreeController {
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public boolean deleteSubnode(int id) {
-		return sm.deleteSubnode(id);
+	public CDAR_Boolean deleteSubnode(int id) {
+		return new CDAR_Boolean(sm.deleteSubnode(id));
 	}
 }
