@@ -5,6 +5,7 @@ import java.util.List;
 
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.pl.wiki.WikiRegister;
 
 public class UserModel {
 	private UserDaoController udc = new UserDaoController();
@@ -25,7 +26,9 @@ public class UserModel {
 		userdao.setUsername(username);
 		userdao.setPassword(password);
 		try {
-			return new User(userdao.create());
+			User user = new User(userdao.create());
+			//System.out.println(new WikiRegister().userRequest(userdao.getUsername(), userdao.getPassword()));
+			return user;
 		} catch (Exception e) {
 			return new User(-1);
 		}

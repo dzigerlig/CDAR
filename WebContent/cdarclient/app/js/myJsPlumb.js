@@ -3,8 +3,7 @@ var scope;
 var isInizialized = false;
 var NODE = 'node';
 var LINK = 'link';
-var SUBNODE = 'subNode';
-
+var SUBNODE = 'subnode';
 
 function initializeJsPlumb() {
 	scope = angular.element(document.getElementById("wrapper")).scope();
@@ -12,16 +11,15 @@ function initializeJsPlumb() {
 	makePopupEvents();
 	bindDetachConnectorEvent();
 	bindConnection();
-	$('html').click(function () {
-        $('[id^=popup-box-]').hide();
-    });
+	$('html').click(function() {
+		$('[id^=popup-box-]').hide();
+	});
 };
 
 function addHTMLNode(response, e) {
 	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
-
 
 	newState.css({
 		// calculate coordinates of the cursor in element
@@ -98,17 +96,24 @@ function setDefaultSettings() {
 };
 
 function makePopupEvents() {
-	$('#radio-form').on('change', '.radio_item', function(element) {
-		var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
-		jQuery.each(connections, function(object) {
-			if (this.id === lastConnectionID) {
-				this.getOverlay("label").setLabel($(element.currentTarget).val());
-				scope.updateLink(this.id.replace(LINK, ""), $(element.currentTarget).attr("id").replace(SUBNODE, ""));
-				$('[id^=popup-box-]').hide();
+	$('#radio-form')
+			.on(
+					'change',
+					'.radio_item',
+					function(element) {
+						var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
+						jQuery.each(connections, function(object) {
+							if (this.id === lastConnectionID) {
+								this.getOverlay("label").setLabel(
+										$(element.currentTarget).val());
+								scope.updateLink(this.id.replace(LINK, ""), $(
+										element.currentTarget).attr("id")
+										.replace(SUBNODE, ""));
+								$('[id^=popup-box-]').hide();
 
-			}
-		});
-	});
+							}
+						});
+					});
 };
 
 function makeSource(connect, newState) {
@@ -138,7 +143,7 @@ function makeSource(connect, newState) {
 			length : 14,
 			foldback : 0.8
 		} ], [ "Label", {
-			//label : "Not Set Yet",
+			// label : "Not Set Yet",
 			id : "label",
 			cssClass : "aLabel"
 		} ] ]
@@ -157,30 +162,7 @@ function makeTarget(newState) {
 };
 
 function connectNodes(stateSource, stateTarget, id, subnode) {
-	if(subnode===undefined){
-	jsPlumb.connect({
-		source : stateSource,
-		target : stateTarget,
-		parameters : {
-			"id" : id
-		},
-		anchors : 'Perimeter',
-		overlays : [ [ "Arrow", {
-			location : 1,
-			id : "arrow",
-			length : 14,
-			foldback : 0.8
-		} ] ],
-
-		connector : [ "StateMachine", {
-			curviness : 20
-		} ],
-		endpoint : [ "Dot", {
-			radius : 2
-		} ]
-
-	});}
-	else{
+	if (subnode === undefined) {
 		jsPlumb.connect({
 			source : stateSource,
 			target : stateTarget,
@@ -193,14 +175,34 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 				id : "arrow",
 				length : 14,
 				foldback : 0.8
+			} ] ],
+
+			connector : [ "StateMachine", {
+				curviness : 20
 			} ],
-			 [ "Label", {
-					label :subNode.title,
-					id : "label",
-					cssClass : "aLabel"
-				} ] ],
-		
-			
+			endpoint : [ "Dot", {
+				radius : 2
+			} ]
+
+		});
+	} else {
+		jsPlumb.connect({
+			source : stateSource,
+			target : stateTarget,
+			parameters : {
+				"id" : id
+			},
+			anchors : 'Perimeter',
+			overlays : [ [ "Arrow", {
+				location : 1,
+				id : "arrow",
+				length : 14,
+				foldback : 0.8
+			} ], [ "Label", {
+				label : subnode.title,
+				id : "label",
+				cssClass : "aLabel"
+			} ] ],
 
 			connector : [ "StateMachine", {
 				curviness : 20
@@ -228,11 +230,11 @@ function makeNodesDraggable(newState) {
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("dblclick", function(c) {
 		jsPlumb.detach(c);
-		
-		 // if (c.id !== lastConnectionID) { lastConnectionID = c.id;
-		  scope.deleteLink(c.id.replace(LINK, ""));
-		  //}
-		 
+
+		// if (c.id !== lastConnectionID) { lastConnectionID = c.id;
+		scope.deleteLink(c.id.replace(LINK, ""));
+		// }
+
 	});
 };
 
@@ -270,20 +272,21 @@ function removeNodeEvent(newState) {
 
 function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
-		scope.changeNode(newState[0].id.replace(NODE, ""), newState[0].textContent);
+		scope.changeNode(newState[0].id.replace(NODE, ""),
+				newState[0].textContent);
 	});
 };
 
 function makeNodeHierarchy(data, resSubNodes) {
 	var map = {};
 	jQuery.each(resSubNodes, function(object) {
-		map[this.id]= this;
+		map[this.id] = this;
 	});
-	
+
 	var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
 	jQuery.each(data,
 			function(object) {
-						connectNodes(NODE + this.sourceId, NODE + this.targetId,
+				connectNodes(NODE + this.sourceId, NODE + this.targetId,
 						this.id, map[this.ksnid]);
 				direction += NODE + this.sourceId + " -> " + NODE
 						+ this.targetId + ";";
@@ -299,27 +302,45 @@ function setLinkId(connection, id) {
 };
 
 function bindConnection() {
-	jsPlumb.bind("connection", function(info) {
-		if (!isInizialized) {
-			setLinkId(info.connection, info.connection.getParameter("id"));
-		} else {
-	        $('#radio-form').empty();
-			$.each(info.connection.source.data(SUBNODE).subNode, function(
-					object) {
-				$('#radio-form').append(
-						"<input type=\"radio\" id=\""+SUBNODE+this.id+"\" name=\"option\" class=\"radio_item\" value=\""
-								+ this.title + "\">" + this.title + "<br>");
-			});
-			
-			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
-					.replace(NODE, ""), info.connection);
-			$('#popup-box-1').show();
+	jsPlumb
+			.bind(
+					"connection",
+					function(info) {
+						if (!isInizialized) {
+							setLinkId(info.connection, info.connection
+									.getParameter("id"));
+						} else {
+							$('#radio-form').empty();
+							$
+									.each(
+											info.connection.source
+													.data(SUBNODE).subnode,
+											function(object) {
+												$('#radio-form')
+														.append(
+																"<input type=\"radio\" id=\""
+																		+ SUBNODE
+																		+ this.id
+																		+ "\" name=\"option\" class=\"radio_item\" value=\""
+																		+ this.title
+																		+ "\">"
+																		+ this.title
+																		+ "<br>");
+											});
 
-		}
-	});
+							scope.addLink(1, info.sourceId.replace(NODE, ""),
+									info.targetId.replace(NODE, ""),
+									info.connection);
+							$('#popup-box-1').show();
+
+						}
+					});
 };
 
-function updateSubnodesOfNode(resSubnode, nodeId){
-	$("#node"+nodeId).data("subNode").subnode = resSubnode;
+function updateSubnodesOfNode(resSubnode, nodeId) {
+	var options = $("#node" + nodeId).data("subnode");
+	if (options !== null) {
+		options.subnode = resSubnode;
+	}
 };
 
