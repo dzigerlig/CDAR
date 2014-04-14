@@ -85,6 +85,13 @@ public class TreeController {
 	}
 	
 	@POST
+	@Path("templates/rename/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Template renameTemplate(Template template) {
+		return tm.renameTemplate(template);
+	}
+	
+	@POST
 	@Path("templates/default/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid, int templateId) {

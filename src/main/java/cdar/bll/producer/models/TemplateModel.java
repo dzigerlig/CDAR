@@ -3,6 +3,7 @@ package cdar.bll.producer.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.producer.Node;
 import cdar.bll.producer.Template;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
@@ -61,5 +62,11 @@ public class TemplateModel {
 			}
 		}
 		return null;
+	}
+
+	public Template renameTemplate(Template template) {
+		TemplateDao templatedao = pdc.getTemplate(template.getId());
+		templatedao.setTitle(template.getTitle());
+		return new Template(templatedao.update());
 	}
 }

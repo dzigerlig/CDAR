@@ -47,6 +47,22 @@ app.controller("TemplatesController", [
 					};
 				});
 			};
+			
+			$scope.updateTemplateId;
+			$scope.updateTemplateTitle;
+			
+			$scope.editTemplateTitle = function(id, title) {
+				$scope.updateTemplateId = id;
+				$scope.updateTemplateTitle = title;
+				$('#myModal').modal().show();
+			};
+			
+			$scope.updateTemplateName = function() {
+				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, { id : $scope.updateTemplateId, title : $scope.updateTemplateTitle }, function(response) {
+					reloadTemplates();
+					$('#myModal').modal('hide');
+				});
+			};
 
 			reloadTemplates();
 

@@ -231,6 +231,13 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action : 'edit'
 			}
 		},
+		'renameTemplate' : {
+			method : 'POST',
+			params : {
+				entity : 'templates',
+				action : 'rename'
+			}
+		},
 		'setDefaultTemplate' : {
 			method : 'POST',
 			isArray : true,
