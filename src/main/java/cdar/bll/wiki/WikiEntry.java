@@ -10,6 +10,8 @@ import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 
 public class WikiEntry extends WikiEntity {
+	//private MediaWikiModel mwm = new MediaWikiModel();
+	
 	private String wikicontentplain;
 	private String wikicontenthtml;
 
@@ -28,6 +30,9 @@ public class WikiEntry extends WikiEntity {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikiTitle());
+		
+		System.out.println("getting wiki entry");
+		
 		fillWikiContent();
 	}
 
