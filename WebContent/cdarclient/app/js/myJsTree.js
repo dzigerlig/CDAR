@@ -155,7 +155,7 @@ function drawDirectory(treeArray, rootid) {
 					},
 					"root" : {
 						"icon" : "http://jstree.com/tree.png",
-						"valid_children" : [ "default", "file" ]
+						"valid_children" : [ "default"]
 					},
 					"default" : {
 						"valid_children" : [ "default", "file" ]

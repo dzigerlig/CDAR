@@ -257,7 +257,7 @@ public class TestTreeController extends JerseyTest {
 
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(USERNAME, renamedDirectory.getTitle());
-
+		assertEquals(treeid, renamedDirectory.getKtrid());
 	}
 
 	@Test

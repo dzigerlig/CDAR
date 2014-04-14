@@ -35,12 +35,14 @@ public class DirectoryModel {
 	}
 
 	public Directory renameDirectory(Directory d) {
-		return updateDirectory(d);
+		DirectoryDao dd = pdc.getDirectory(d.getId());
+		dd.setTitle(d.getTitle());
+		return new Directory(dd.update());
 	}
 	
+	//unused except tests
 	public Directory updateDirectory(Directory d) {
 		DirectoryDao dd = pdc.getDirectory(d.getId());
-		dd.setKtrid(d.getKtrid());
 		dd.setParentid(d.getParentid());
 		dd.setTitle(d.getTitle());
 		return new Directory(dd.update());
