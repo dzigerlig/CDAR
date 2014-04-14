@@ -29,30 +29,31 @@
 		</div>
 
 		<div id="page-content-wrapper">
-            <div class="content-header">
-	            <div class="col-md-8">
-	                <h1>
-	                    <a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
-	                    CDAR - Knowledge Producer
-	                </h1>
-	            </div>
-	            <div class="col-md-4" style="text-align: right">
-	            	<h3>
-		            	<a href="#/account" style="color: inherit; text-decoration: none;">
-		            		<span><img src="app/img/user.png" height="42" width="42"/></span>
-		            		<span>{{UserService.user.username}}</span>
-		            	</a>
-	            	</h3>
-	            </div>
-            </div>
-            <div class="page-content inset">
+			<div class="content-header">
+				<div class="col-md-8">
+					<h1>
+						<a id="menu-toggle" class="btn btn-default"><i
+							class="icon-reorder"></i></a> CDAR - Knowledge Producer
+					</h1>
+				</div>
+				<div class="col-md-4" style="text-align: right">
+					<h3>
+						<a href="#/account" style="color: inherit; text-decoration: none;">
+							<span><img src="app/img/user.png" height="42" width="42" /></span>
+							<span>{{UserService.user.username}}</span>
+						</a>
+					</h3>
+				</div>
+			</div>
+			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-12">
 						<p class="lead">Manage Templates for tree:
 							{{knowledgetree.name}}</p>
 					</div>
 					<div class="col-md-2">
-						<a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{knowledgetree.id}}">back to tree</a>
+						<a class="btn btn-md btn-primary btn-block"
+							href="#/knowledgetree/{{knowledgetree.id}}">back to tree</a>
 					</div>
 				</div>
 				<div class="row">
@@ -70,7 +71,8 @@
 								<tbody>
 									<tr data-ng-repeat="template in templates | orderBy:'id':false">
 										<td>{{$index+1}}</td>
-										<td><a data-ng-click="changeTemplate(template.id)" href="">{{template.title}}</a></td>
+										<td><a data-ng-click="changeTemplate(template.id)"
+											href="">{{template.title}}</a></td>
 										<td><a data-ng-click="deleteTemplate(template.id)"
 											href="">Delete Template</a></td>
 									</tr>
@@ -90,20 +92,26 @@
 					</div>
 				</div>
 				<div class="row">
-				<div class="col-lg-12" class="well">
-					<h3>WikiEntry of Current node</h3>
-					<tabset justified="true" class="well">
-						<tab heading="{{tabs[0].title}}" id="wikiread" active="tabs[0].active">
-							<p data-ng-bind-html="templateHtml">no wiki entry selected</p>
-						</tab>
-						<tab heading="{{tabs[1].title}}" id="wikiwrite" active="tabs[1].active">
-						<form data-role="form" data-ng-submit="saveTemplate()">
-							<textarea id="templateArea" name="templateArea" cols="80" rows="10"></textarea>
-							<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-						</form>
-						</tab>
-					</tabset>
-				</div>
+					<div class="col-lg-12" class="well">
+						<h3>Selected template:</h3>
+						<div id="wiki" data-ng-show="selectedTemplateId">
+							<tabset justified="true" class="well"> <tab
+								heading="{{tabs[0].title}}" id="wikiread"
+								active="tabs[0].active">
+							<p data-ng-bind-html="templateHtml" />
+							</tab> <tab heading="{{tabs[1].title}}" id="wikiwrite"
+								active="tabs[1].active">
+							<form data-role="form" data-ng-submit="saveTemplate()">
+								<textarea id="templateArea" name="templateArea" cols="80"
+									rows="10"></textarea>
+								<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+							</form>
+							</tab> </tabset>
+						</div>
+						<div id="wikiNoEntry" data-ng-hide="selectedTemplateId">
+							<p class="well">no wiki entry selected</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

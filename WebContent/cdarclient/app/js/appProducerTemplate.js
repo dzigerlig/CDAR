@@ -12,6 +12,7 @@ app.controller("TemplatesController", [
 			$scope.templates;
 			$scope.newTemplateName;
 			$scope.selectedTemplate;
+			$scope.selectedTemplateId = 0;
 			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
@@ -35,6 +36,7 @@ app.controller("TemplatesController", [
 			$scope.deleteTemplate = function(id) {
 				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
 					reloadTemplates();
+					$scope.selectedTemplateId = 0;
 				});
 			};
 
@@ -57,6 +59,7 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.changeTemplate = function(id) {
+				$scope.selectedTemplateId = id;
 				setLoading();
 				TreeService.getTemplate({
 					ktreeid : $routeParams.treeId,
