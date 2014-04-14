@@ -36,7 +36,9 @@ app.controller("TemplatesController", [
 			$scope.deleteTemplate = function(id) {
 				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
 					reloadTemplates();
-					$scope.selectedTemplateId = 0;
+					if ($scope.selectedTemplateId==id) {
+						$scope.selectedTemplateId = 0;
+					};
 				});
 			};
 
