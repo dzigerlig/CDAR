@@ -83,7 +83,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<TemplateDao> getTemplates(int treeid) {
-		String getTemplates = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT FROM KNOWLEDGETEMPLATE WHERE KTRID = %d;", treeid);
+		String getTemplates = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE KTRID = %d;", treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -102,6 +102,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				template.setLastModificationTime(result.getDate(3));
 				template.setTitle(result.getString(4));
 				template.setTemplatetext(result.getString(5));
+				template.setIsDefault(result.getInt(6)==1);
 				templates.add(template);
 			}
 		} catch (SQLException e) {
@@ -113,7 +114,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public TemplateDao getTemplate(int id) {
-		String getTemplate = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
+		String getTemplate = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -133,6 +134,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				template.setLastModificationTime(result.getDate(3));
 				template.setTitle(result.getString(4));
 				template.setTemplatetext(result.getString(5));
+				template.setIsDefault(result.getInt(7)==1);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

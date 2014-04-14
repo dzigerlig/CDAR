@@ -39,4 +39,18 @@ public class TemplateModel {
 		templatedao.setTitle(template.getTitle());
 		return new Template(templatedao.update());
 	}
+
+	public Set<Template> setDefaultTemplate(int treeid, int templateId) {
+		if (pdc.getTemplate(templateId).getIsDefault()) {
+			TemplateDao templatedao = pdc.getTemplate(templateId);
+			templatedao.setIsDefault(false);
+			templatedao.update();
+		} else {
+			for (TemplateDao templatedao : pdc.getTemplates(treeid)) {
+				templatedao.setIsDefault(templatedao.getId() == templateId);
+				templatedao.update();
+			}
+		}
+		return getKnowledgeTemplates(treeid);
+	}
 }

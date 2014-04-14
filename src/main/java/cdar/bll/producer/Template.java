@@ -19,11 +19,11 @@ public class Template extends BasicEntity {
 	}
 
 	public Template(TemplateDao template) {
-		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getTemplatetext(), template.getKtrid());
+		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getTemplatetext(), template.getKtrid(), template.getIsDefault());
 	}
 
 	public Template(int id, Date creationTime, Date lastModificationTime,
-			String title, String templatetext, int treeid) {
+			String title, String templatetext, int treeid, boolean isDefault) {
 		super(id, creationTime, lastModificationTime);
 		setTreeid(treeid);
 		setTitle(title);
@@ -31,6 +31,7 @@ public class Template extends BasicEntity {
 		if (getTemplatetext()!=null) {
 			setTemplatetexthtml(WikiModel.toHtml(getTemplatetext()));
 		}
+		setIsDefault(isDefault);
 	}
 
 	public Template(int id) {
