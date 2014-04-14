@@ -23,7 +23,7 @@ public class TestJDBCKnowledgeConsumer {
 	private final String testUsername = "UnitTestUser";
 	private final String testPassword = "UnitTestPassword";
 	private final String testTreeName = "UnitTestTreeName";
-	
+	 
 	@Before
 	public void createTestUser() {
 		new UserDao(testUsername, testPassword).create();
