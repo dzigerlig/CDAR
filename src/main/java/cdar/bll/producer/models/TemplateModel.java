@@ -53,4 +53,13 @@ public class TemplateModel {
 		}
 		return getKnowledgeTemplates(treeid);
 	}
+
+	public String getDefaultKnowledgeTemplate(int ktrid) {
+		for (TemplateDao templatedao : pdc.getTemplates(ktrid)) {
+			if (templatedao.getIsDefault()) {
+				return templatedao.getTemplatetext();
+			}
+		}
+		return null;
+	}
 }
