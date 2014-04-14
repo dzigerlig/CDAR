@@ -17,7 +17,6 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 				$.cookie('cdar', response, {
 					expires : 7
 				});
-				console.log(response);
 				UserService.user = $.cookie('cdar');
 				if ($scope.chkbKnowledgeProducer) {
 					$location.path('/homeproducer');
