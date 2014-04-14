@@ -408,8 +408,6 @@ app
 							};
 
 							$scope.deleteDirectory = function(id) {
-								// TODO beachten mit cascade in datanbank oder
-								// ohne
 								TreeService.deleteDirectory({
 									ktreeid : $routeParams.treeId
 								}, id);

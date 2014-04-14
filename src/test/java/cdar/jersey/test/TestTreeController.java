@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -71,7 +72,7 @@ public class TestTreeController extends JerseyTest {
 
 		target("users/delete").request().post(
 				Entity.entity(userId, MediaType.APPLICATION_JSON),
-				Boolean.class);
+				CDAR_Boolean.class);
 
 		assertEquals(true, isTreeDeleted);
 		assertEquals(quantityOfTreesBeforeDelete - 1,
@@ -614,7 +615,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteTree(int treeid) {
 		return target(userId + "/ktree/delete").request().post(
 				Entity.entity(treeid, MediaType.APPLICATION_JSON),
-				boolean.class);
+				CDAR_Boolean.class).isBool();
 	}
 
 	private Template addTemplate(int treeid, String title, String templatetext) {
@@ -632,7 +633,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteTemplate(int templateid) {
 		return target(userId + "/ktree/templates/delete/" + treeid).request()
 				.post(Entity.entity(templateid, MediaType.APPLICATION_JSON),
-						boolean.class);
+						CDAR_Boolean.class).isBool();
 	};
 
 	private Directory addDirectory(int treeid, int parentid) {
@@ -649,7 +650,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteDirectory(int directoryid) {
 		return target(userId + "/ktree/directories/delete/" + treeid).request()
 				.post(Entity.entity(directoryid, MediaType.APPLICATION_JSON),
-						Boolean.class);
+						CDAR_Boolean.class).isBool();
 	}
 
 	private Node addNode(int treeid, int did) {
@@ -664,7 +665,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteNode(int nodeid) {
 		return target(userId + "/ktree/nodes/delete/" + treeid).request().post(
 				Entity.entity(nodeid, MediaType.APPLICATION_JSON),
-				boolean.class);
+				CDAR_Boolean.class).isBool();
 	}
 
 	private NodeLink addNodeLink(int treeid, int sourceid, int targetid) {
@@ -682,7 +683,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteNodeLink(int nodeLinkId) {
 		return target(userId + "/ktree/links/delete/" + treeid).request().post(
 				Entity.entity(nodeLinkId, MediaType.APPLICATION_JSON),
-				boolean.class);
+				CDAR_Boolean.class).isBool();
 	}
 
 	private Subnode addSubnode(int knid, String title) {
@@ -698,7 +699,7 @@ public class TestTreeController extends JerseyTest {
 	private boolean deleteSubnode(int subnodeId) {
 		return target(userId + "/ktree/subnodes/delete/" + treeid).request()
 				.post(Entity.entity(subnodeId, MediaType.APPLICATION_JSON),
-						boolean.class);
+						CDAR_Boolean.class).isBool();
 	}
 
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Set;
 
 
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cdar.bll.CDAR_Boolean;
 import cdar.bll.user.User;
 import cdar.pl.controller.UserController;
 
@@ -53,7 +55,7 @@ public class TestUserController extends JerseyTest {
 		User loginUser = target("users/login").queryParam("password", PASSWORD).queryParam("username", USERNAME).request().get(
 				User.class);
 		Boolean boolDelete = target("users/delete").request().post(
-				Entity.entity(loginUser.getId(), MediaType.APPLICATION_JSON), Boolean.class);
+				Entity.entity(loginUser.getId(), MediaType.APPLICATION_JSON), CDAR_Boolean.class).isBool();
 		int usersNew = target("users").request().get(Set.class).size();
 		assertEquals(true, boolDelete);
 		assertEquals(users - 1, usersNew);
