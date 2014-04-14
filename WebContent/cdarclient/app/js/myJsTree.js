@@ -167,7 +167,7 @@ function directoryDataToArray(resDirectory, resNodes) {
 	var treeArray = [];
 	var parentId;
 	var type;
-	var rootid;
+	var rootid=null;
 
 	resDirectory.forEach(function(entry) {
 		if (entry.parentid === 0) {

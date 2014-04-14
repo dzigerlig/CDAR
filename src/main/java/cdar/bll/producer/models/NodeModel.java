@@ -1,6 +1,8 @@
 package cdar.bll.producer.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
@@ -9,6 +11,7 @@ import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
 public class NodeModel {
+	private static volatile List<String> wikiList = new ArrayList<String>();
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public Set<Node> getNodes(int treeid) {
@@ -18,7 +21,7 @@ public class NodeModel {
 		}
 		return nodes;
 	}
-	
+
 	public Node getNode(int nodeid) {
 		return new Node(pdc.getNode(nodeid));
 	}
@@ -28,10 +31,12 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
-		MediaWikiModel mwm = new MediaWikiModel();
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
-		mwm.createNewWikiEntry(treeid, node.getWikititle());
+		addWikiEntry(node.getWikititle());
+		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(),
+				this);
+		mwm.start();
 		return new Node(node);
 	}
 
@@ -59,10 +64,11 @@ public class NodeModel {
 		node.setDid(n.getDid());
 		return new Node(node.update());
 
-		//TODO
-//		kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
-//		KnowledgeNodeDao node = kpdc.getKnowledgeNodeById(nodemapping.getKnid());
-//		return new Node(node);
+		// TODO
+		// kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
+		// KnowledgeNodeDao node =
+		// kpdc.getKnowledgeNodeById(nodemapping.getKnid());
+		// return new Node(node);
 	}
 
 	public Node updateNode(Node node) {
@@ -72,5 +78,13 @@ public class NodeModel {
 		nodedao.setTitle(node.getTitle());
 		nodedao.update();
 		return new Node(nodedao);
+	}
+	
+	private synchronized void addWikiEntry(String	wikiTitle) {
+		wikiList.add(wikiTitle);
+	}
+
+	public synchronized void removeWikiEntry(String title) {
+		wikiList.remove(title);
 	}
 }
