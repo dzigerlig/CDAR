@@ -1,5 +1,10 @@
 package cdar.bll.wiki;
 
+import java.io.IOException;
+
+import javax.security.auth.login.FailedLoginException;
+import javax.security.auth.login.LoginException;
+
 import org.wikipedia.Wiki;
 
 import cdar.bll.producer.models.NodeModel;
@@ -39,22 +44,30 @@ public class MediaWikiModel extends Thread{
 	}
 
 	public void createNewWikiEntry() {
-		System.out.println("Creating new wiki entry: " + this.title);
 		Wiki wiki = new Wiki();
-		
 		try {
-			wiki.login("admin", "password");
-			final String templateContent = tm.getDefaultKnowledgeTemplate(this.ktrid);
-			if (templateContent == null) {
-				System.out.println("NO DEFAULT TEMPLATE SET");
-				wiki.edit(this.title, templateContent, "== CDAR ==");
-			} else {
-				System.out.println("DEFAULT TEMPLATE IS SET!");
-				wiki.edit(this.title, templateContent, "");
+			createEntry(wiki);
+		} catch (IOException e) {
+			try {
+				//trying again if it is the first time
+				createEntry(wiki);
+			} catch (LoginException | IOException e1) {
+				e1.printStackTrace();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}		
+		}	
+	}
+
+	private void createEntry(Wiki wiki) throws IOException,
+			FailedLoginException, LoginException {
+		wiki.login("admin", "password");
+		final String templateContent = tm.getDefaultKnowledgeTemplate(this.ktrid);
+		if (templateContent == null) {
+			wiki.edit(this.title, templateContent, "== CDAR ==");
+		} else {
+			wiki.edit(this.title, templateContent, "");
+		}
 	}
 
 	public void run() {

@@ -34,8 +34,7 @@ public class NodeModel {
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
 		addWikiEntry(node.getWikititle());
-		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(),
-				this);
+		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), this);
 		mwm.start();
 		return new Node(node);
 	}
