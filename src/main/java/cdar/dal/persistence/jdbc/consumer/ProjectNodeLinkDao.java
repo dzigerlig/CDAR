@@ -48,6 +48,10 @@ public class ProjectNodeLinkDao extends CUDHelper<ProjectNodeLinkDao> implements
 	public ProjectNodeLinkDao() {
 	}
 
+	public ProjectNodeLinkDao(int id) {
+		setId(id);
+	}
+
 	public int getId() {
 		return id;
 	}

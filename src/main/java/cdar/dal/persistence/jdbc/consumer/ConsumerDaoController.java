@@ -119,7 +119,8 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ProjectNodeDao projectnode = null;
+		ProjectNodeDao projectnode = new ProjectNodeDao();
+		projectnode.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -178,7 +179,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ProjectNodeLinkDao projectnodelink = null;
+		ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -236,7 +237,8 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		ProjectSubnodeDao projectsubnode = null;
+		ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao();
+		projectsubnode.setId(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();
@@ -293,7 +295,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
-		CommentDao usercomment = null;
+		CommentDao usercomment = new CommentDao(-1);
 
 		try {
 			connection = JDBCUtil.getConnection();

@@ -27,6 +27,8 @@ public class TestBLLKnowledgeProducer {
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";
 	
+	private final int unknownId = -13;
+	
 	@Before
 	public void createUser() {
 		um.createUser(username, password);
@@ -50,22 +52,25 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetTreesUnknownUserId() {
-		
+		assertEquals(0, tm.getTrees(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUknownTree() {
-		
+		assertEquals(-1, tm.getTree(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownTree() {
-		
+		Tree tree = tm.addTree(unknownId, "MyTree");
+		tree.setName("My unknown tree");
+		Tree updatedTree = tm.updateTree(tree);
+		assertEquals(-1, updatedTree.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownTree() {
-		
+		assertFalse(tm.deleteTree(unknownId));
 	}
 	
 	@Test
@@ -124,23 +129,30 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetTemplatesUnknownUserId() {
-		
+	public void testGetTemplatesUnknownTreeId() {
+		TemplateModel tplm = new TemplateModel();
+		assertEquals(0, tplm.getKnowledgeTemplates(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownTemplate() {
-		
+		TemplateModel tplm = new TemplateModel();
+		assertEquals(-1, tplm.getKnowledgeTemplate(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownTemplate() {
-		
+		TemplateModel tplm = new TemplateModel();
+		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text");
+		template.setTitle("New title");
+		Template updatedTemplate = tplm.updateTemplate(template);
+		assertEquals(-1, updatedTemplate.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownTemplate() {
-		
+		TemplateModel tplm = new TemplateModel();
+		assertFalse(tplm.deleteTemplate(unknownId));
 	}
 	
 	@Test
@@ -178,22 +190,29 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetNodesUnknownTreeId() {
-		
+		NodeModel nm = new NodeModel();
+		assertEquals(0, nm.getNodes(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownNode() {
-		
+		NodeModel nm = new NodeModel();
+		assertEquals(-1, nm.getNode(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownNode() {
-		
+		NodeModel nm = new NodeModel();
+		Node node = nm.addNode(unknownId, "Node title", 0);
+		node.setTitle("Updated title");
+		Node updatedNode = nm.updateNode(node);
+		assertEquals(-1, updatedNode.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownNode() {
-		
+		NodeModel nm = new NodeModel();
+		assertFalse(nm.deleteNode(unknownId));
 	}
 	
 	@Test
@@ -220,43 +239,56 @@ public class TestBLLKnowledgeProducer {
 	public void testNodeLinkUpdate() {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
+		final String nameSubnode1 = "Subnode1";
+		final String nameSubnode2 = "Subnode2";
 		NodeModel nm = new NodeModel();
+		SubnodeModel snm = new SubnodeModel();
 		DirectoryModel dm = new DirectoryModel();
 		NodeLinkModel nlm = new NodeLinkModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(tree.getId(), nameNode1, directoryId);
 		Node node2 = nm.addNode(tree.getId(), nameNode2, directoryId);
+		Subnode subnode = snm.addSubnode(node.getId(), nameSubnode1);
+		Subnode subnode2 = snm.addSubnode(node.getId(), nameSubnode2);
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
-		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
+		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), subnode.getId());
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
-		nodelink.setSourceId(node2.getId());
-		nodelink.setTargetId(node.getId());
+		assertEquals(nameSubnode1, snm.getSubnode(nlm.getNodeLink(nodelink.getId()).getKsnid()).getTitle());
+		nodelink.setKsnid(subnode2.getId());
 		nlm.updateNodeLink(nodelink);
-		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
+		assertEquals(nameSubnode2, snm.getSubnode(nlm.getNodeLink(nodelink.getId()).getKsnid()).getTitle());
 	}
 	
 	@Test
 	public void testGetNodeLinksUnknownTreeId() {
-		
+		NodeLinkModel nlm = new NodeLinkModel();
+		assertEquals(0, nlm.getNodeLinks(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownNodeLink() {
-		
+		NodeLinkModel nlm = new NodeLinkModel();
+		assertEquals(-1, nlm.getNodeLink(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownNodeLink() {
-		
+		NodeLinkModel nlm = new NodeLinkModel();
+		NodeLink nodeLink = nlm.addNodeLink(unknownId, unknownId, unknownId, unknownId);
+		nodeLink.setSourceId(unknownId);
+		NodeLink updatedNodeLink = nlm.updateNodeLink(nodeLink);
+		assertEquals(-1, updatedNodeLink.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownNodeLink() {
-		
+		NodeLinkModel nlm = new NodeLinkModel();
+		assertFalse(nlm.deleteNodeLink(unknownId));
 	}
 	
 	@Test
@@ -302,27 +334,35 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetSubnodesUnknownTree() {
-		
+		SubnodeModel snm = new SubnodeModel();
+		assertEquals(0, snm.getSubnodesFromTree(unknownId).size());
 	}
 	
 	@Test
 	public void testGetSubnodesUnknownNode() {
-		
+		SubnodeModel snm = new SubnodeModel();
+		assertEquals(0, snm.getSubnodesFromNode(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownSubnode() {
-		
+		SubnodeModel snm = new SubnodeModel();
+		assertEquals(-1, snm.getSubnode(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownSubnode() {
-		
+		SubnodeModel snm = new SubnodeModel();
+		Subnode subnode = snm.addSubnode(unknownId, "Subnode Title");
+		subnode.setTitle("New subnode title");
+		Subnode updatedSubnode = snm.updateSubnode(subnode);
+		assertEquals(-1, updatedSubnode.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownSubnode() {
-		
+		SubnodeModel snm = new SubnodeModel();
+		assertFalse(snm.deleteSubnode(unknownId));
 	}
 	
 	@Test
@@ -362,21 +402,28 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	public void testDirectoryUnknownTreeId() {
-		
+		DirectoryModel dm = new DirectoryModel();
+		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownDirectory() {
-		
+		DirectoryModel dm = new DirectoryModel();
+		assertEquals(-1, dm.getDirectory(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownDirectory() {
-		
+		DirectoryModel dm = new DirectoryModel();
+		Directory directory = dm.addDirectory(unknownId, 0, "My directory");
+		directory.setTitle("My new directory");
+		Directory updatedDirectory = dm.updateDirectory(directory);
+		assertEquals(-1, updatedDirectory.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownDirectory() {
-		
+		DirectoryModel dm = new DirectoryModel();
+		assertFalse(dm.deleteDirectory(unknownId));
 	}
 }

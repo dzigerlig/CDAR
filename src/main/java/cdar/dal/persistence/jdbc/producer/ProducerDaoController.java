@@ -74,7 +74,6 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				tree.setName(result.getString(5));
 			}
 		} catch (SQLException e) {
-			System.out.println("error getTreeById");
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
