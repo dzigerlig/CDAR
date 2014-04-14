@@ -30,10 +30,15 @@ public class WikiEntry extends WikiEntity {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikiTitle());
-		
-		System.out.println("getting wiki entry");
-		
-		fillWikiContent();
+		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
+		if (wec.isKeyInMap(node.getWikiTitle())) {
+			System.out.println("KEY IS IN MAP");
+			setWikiContentPlain(wec.getValue(node.getWikiTitle()));
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+		} else {
+			System.out.println("KEY IS NOT IN MAP");
+			fillWikiContent();
+		}
 	}
 
 	public WikiEntry(Subnode subnode) {

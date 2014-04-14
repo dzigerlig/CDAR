@@ -7,9 +7,6 @@ import javax.security.auth.login.LoginException;
 
 import org.wikipedia.Wiki;
 
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.TemplateModel;
-
 public class MediaWikiModel extends Thread{	
 	private int ktrid; 
 	private String title;
@@ -21,6 +18,7 @@ public class MediaWikiModel extends Thread{
 		setKtrid(ktrid);
 		setTitle(title);
 		setWikiHeper(wikiHelper);
+		setTemplateContent(templateContent);
 	}
 
 	public int getKtrid() {
@@ -47,30 +45,36 @@ public class MediaWikiModel extends Thread{
 		Wiki wiki = new Wiki();
 		try {
 			createEntry(wiki);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			try {
 				//trying again if it is the first time
 				createEntry(wiki);
 			} catch (LoginException | IOException e1) {
 				e1.printStackTrace();
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}	
 	}
 
 	private void createEntry(Wiki wiki) throws IOException,
 			FailedLoginException, LoginException {
 		wiki.login("admin", "password");
-		if (templateContent == null) {
-			wiki.edit(this.title, templateContent, "== CDAR ==");
+		if (getTemplateContent() == null) {
+			wiki.edit(this.title, getTemplateContent(), "== CDAR ==");
 		} else {
-			wiki.edit(this.title, templateContent, "");
+			wiki.edit(this.title, getTemplateContent(), "");
 		}
 	}
 
 	public void run() {
 		createNewWikiEntry();
 		this.wikiHelper.removeWikiEntry(getTitle());
+	}
+
+	public String getTemplateContent() {
+		return templateContent;
+	}
+
+	public void setTemplateContent(String templateContent) {
+		this.templateContent = templateContent;
 	}
 }

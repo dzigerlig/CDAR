@@ -1,8 +1,6 @@
 package cdar.bll.producer.models;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
@@ -37,7 +35,7 @@ public class NodeModel {
 		final String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
 		
 		NodeDao node = new NodeDao(treeid, title, did);
-		node.create();
+		node.create(); 
 		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), templateContent, wikiHelper);
 		mwm.start();

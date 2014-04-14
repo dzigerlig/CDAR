@@ -12,8 +12,6 @@ import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
-import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
