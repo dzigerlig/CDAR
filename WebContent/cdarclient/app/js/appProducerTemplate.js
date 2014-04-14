@@ -33,8 +33,10 @@ app.controller("TemplatesController", [
 				});
 			};
 			
-			$scope.setDefaultTemplate = function(id, isDefault) {
-				alert(id + " is: " + isDefault);
+			$scope.setDefaultTemplate = function(id) {
+				TreeService.setDefaultTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
+					$scope.templates = response;
+				});
 			};
 			
 			$scope.deleteTemplate = function(id) {

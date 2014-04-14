@@ -83,6 +83,13 @@ public class TreeController {
 		return tm.addKnowledgeTemplate(template.getTreeid(),
 				template.getTitle(), template.getTemplatetext());
 	}
+	
+	@POST
+	@Path("templates/default/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid, int templateId) {
+		return tm.setDefaultTemplate(ktreeid, templateId);
+	}
 
 	@POST
 	@Path("templates/edit/{templateid}")

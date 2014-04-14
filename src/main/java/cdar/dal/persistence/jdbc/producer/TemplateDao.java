@@ -22,12 +22,14 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 
 	public TemplateDao(int ktrid) {
 		setKtrid(ktrid);
+		setIsDefault(false);
 	}
 
 	public TemplateDao(int ktrid, String title, String templatetext) {
 		setKtrid(ktrid);
 		setTitle(title);
 		setTemplatetext(templatetext);
+		setIsDefault(false);
 	}
 
 	public TemplateDao(Template template) {
@@ -37,6 +39,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		setLastModificationTime(template.getLastModificationTime());
 		setTitle(template.getTitle());
 		setTemplatetext(template.getTemplatetexthtml());
+		setIsDefault(template.getIsDefault());
 	}
 
 	public TemplateDao() {
@@ -160,7 +163,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ? WHERE id = ?",
+						"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
@@ -171,9 +174,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			preparedStatement.setInt(4, 0);
 		}
 		preparedStatement.setInt(5, getId());
-
 		preparedStatement.executeUpdate();
-
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));

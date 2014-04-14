@@ -106,12 +106,45 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testTemplateIsDefault() {
-		
+		TemplateModel tplm = new TemplateModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		assertFalse(template.getIsDefault());
 	}
 	
 	@Test
 	public void testTemplateDefaultChangeMultipleTemplates() {
-
+		TemplateModel tplm = new TemplateModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		assertFalse(template1.getIsDefault());
+		assertFalse(template2.getIsDefault());
+		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
+		assertTrue(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
+		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
+		tplm.setDefaultTemplate(template1.getTreeid(), template2.getId());
+		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
+		assertTrue(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
+	}
+	
+	@Test
+	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() {
+		TemplateModel tplm = new TemplateModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		assertFalse(template1.getIsDefault());
+		assertFalse(template2.getIsDefault());
+		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
+		assertTrue(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
+		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
+		tplm.setDefaultTemplate(template2.getTreeid(), template2.getId());
+		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
+		assertTrue(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
+		tplm.setDefaultTemplate(template1.getTreeid(), template2.getId());
+		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
+		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
 	}
 	
 	@Test

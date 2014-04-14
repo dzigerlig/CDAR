@@ -231,6 +231,14 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action : 'edit'
 			}
 		},
+		'setDefaultTemplate' : {
+			method : 'POST',
+			isArray : true,
+			params : {
+				entity : 'templates',
+				action : 'default'
+			}
+		},
 		// Subnodes
 		'getSubnodes' : {
 			method : 'GET',
