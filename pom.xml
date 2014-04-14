@@ -32,6 +32,10 @@
            			<value>${fileName}</value>
           		</property>
        		 </systemProperties>
+       		 <includes>
+             	<include>TestTreeController.java</include>
+             	<include>TestUserController.java</include>
+          	 </includes>
     	 </configuration>
 	</plugin>
     </plugins>
