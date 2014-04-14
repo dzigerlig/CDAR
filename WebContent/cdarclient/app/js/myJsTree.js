@@ -45,6 +45,7 @@ $(function() {
 	$('#jstree').on(
 			"rename_node.jstree",
 			function(e, data) {
+				if(data.text===""){return false;}
 				var id = data.node.id;
 				id = id.replace(DIRECTORY, "");
 				if (data.node.type !== 'default') {
@@ -202,7 +203,8 @@ function createNode(response) {
 	sel = sel[0];
 	sel = ref.create_node(sel, {
 		"type" : "file",
-		"id" : DIRECTORY+NODE+ response.id
+		"id" : DIRECTORY+NODE+ response.id,
+		"text":"new Node"
 	});
 	if (sel) {
 		ref.edit(sel);
@@ -212,8 +214,6 @@ function createNode(response) {
 function createDirectory(response) {
 	var sel;
 	var ref = $('#jstree').jstree(true);
-
-
 		sel = ref.get_selected();
 		sel = sel[0];
 		sel = ref.create_node(sel, {
