@@ -1,7 +1,7 @@
 package cdar.bll.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -86,15 +86,15 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testUpdateUnknownProjectTree() {
-//		ProjectTree tree = ptm.getProjectTree(unknownId);
-//		tree.setName("Unknown Tree");
-//		ProjectTree updatedTree = ptm.updateProjectTree(tree);
-//		assertNull(updatedTree.getName());
+		ProjectTree tree = ptm.getProjectTree(unknownId);
+		tree.setName("Unknown Tree");
+		ProjectTree updatedTree = ptm.updateProjectTree(tree);
+		assertEquals(-1, updatedTree.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownProjectTree() {
-		
+		assertFalse(ptm.deleteProjectTree(unknownId));
 	}
 	
 	@Test
@@ -191,12 +191,11 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testUnknownKnowledgeTreeToProjectTree() {
-		
-	}
-	
-	@Test
-	public void testKnowledgeTreeToUnknownProjectTree() {
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
+		ptm.addKnowledgeTreeToProjectTree(unknownId, projectTree.getId());
+		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
 	}
 	
 	@Test
@@ -236,22 +235,29 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectNodesUnknownProjectTree() {
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		assertEquals(0, pnm.getProjectNodes(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownProjectNode() {
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		assertEquals(-1, pnm.getProjectNode(unknownId));
 	}
 	
 	@Test
 	public void testUpdateUnknownProjectNode() {
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNode projectNode = pnm.getProjectNode(unknownId);
+		projectNode.setTitle("Unknown project node");
+		ProjectNode updatedProjectNode = pnm.updateProjectNode(projectNode);
+		assertEquals(-1, updatedProjectNode.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownProjectNode() {
-		
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		assertFalse(pnm.deleteProjectNode(unknownId));
 	}
 	
 	@Test
@@ -297,22 +303,29 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectNodeLinksUnknownProjectTree() {
-		
+		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		assertEquals(0, pnlm.getProjectNodeLinks(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownProjectNodeLink() {
-		
+		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		assertEquals(-1, pnlm.getProjectNodeLink(unknownId).getId());
 	}
 	
 	@Test
 	public void testUpdateUnknownProjectNodeLink() {
-		
+		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeLink projectNodeLink = pnlm.getProjectNodeLink(unknownId);
+		projectNodeLink.setSourceId(12);
+		ProjectNodeLink updatedProjectNodeLink = pnlm.updateLink(projectNodeLink);
+		assertEquals(-1, updatedProjectNodeLink.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownProjectNodeLink() {
-		
+		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		assertFalse(pnlm.removeProjectNodeLink(unknownId));
 	}
 	
 	@Test
@@ -357,22 +370,35 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectSubnodesUnknownProjectNode() {
-		
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(unknownId));
+	}
+	
+	@Test
+	public void testGetProjectSubnodesUnknownProjectTree() {
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		assertEquals(0, psm.getProjectSubnodesFromProjectTree(unknownId));
 	}
 	
 	@Test
 	public void testGetUnknownProjectSubnode() {
-		
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		assertEquals(0, psm.getProjectSubnode(unknownId));
 	}
 	
 	@Test
 	public void testUpdateUnknownProjectSubnode() {
-		
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnode projectSubnode = psm.getProjectSubnode(unknownId);
+		projectSubnode.setTitle("My unknown project subnode");
+		ProjectSubnode updatedProjectSubnode = psm.updateProjectSubnode(projectSubnode);
+		assertEquals(-1, updatedProjectSubnode);
 	}
 	
 	@Test
 	public void testDeleteUnknownProjectSubnode() {
-		
+		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		assertFalse(psm.removeProjectSubnode(unknownId));
 	}
 	
 	@Test
@@ -386,7 +412,7 @@ public class TestBLLKnowledgeConsumer {
 		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
 		assertEquals(1, cm.getComments(pnode.getId()).size());
 		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
-		cm.deleteComment(comment.getId());
+		cm.removeComment(comment.getId());
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 	}
 	
@@ -405,28 +431,35 @@ public class TestBLLKnowledgeConsumer {
 		comment.setComment(newCommentString);
 		cm.updateComment(comment);
 		assertEquals(newCommentString, cm.getComment(comment.getId()).getComment());
-		cm.deleteComment(comment.getId());
+		cm.removeComment(comment.getId());
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 	}
 	
 	@Test
 	public void testGetCommentsUnknownProjectNode() {
-		
+		CommentModel cm = new CommentModel();
+		assertEquals(0, cm.getComments(unknownId).size());
 	}
 	
 	@Test
 	public void testGetUnknownComment() {
-		
+		CommentModel cm = new CommentModel();
+		assertEquals(-1, cm.getComment(unknownId));
 	}
 	
 	@Test
 	public void testUpdateUnknownComment() {
-		
+		CommentModel cm = new CommentModel();
+		Comment comment = cm.getComment(unknownId);
+		comment.setComment("Unknown comment");
+		Comment updatedComment = cm.updateComment(comment);
+		assertEquals(-1, updatedComment.getId());
 	}
 	
 	@Test
 	public void testDeleteUnknownComment() {
-		
+		CommentModel cm = new CommentModel();
+		assertFalse(cm.removeComment(unknownId));
 	}
 }
 

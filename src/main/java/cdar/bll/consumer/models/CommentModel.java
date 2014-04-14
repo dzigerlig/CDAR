@@ -29,7 +29,7 @@ public class CommentModel {
 		return new Comment(commentDao.create());
 	}
 	
-	public boolean deleteComment(int id) {
+	public boolean removeComment(int id) {
 		CommentDao commentDao = cdc.getComment(id);
 		return commentDao.delete();
 	}
