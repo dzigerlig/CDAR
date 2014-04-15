@@ -15,7 +15,11 @@ public class WikiEntryConcurrentHelper {
 	}
 	
 	public synchronized void addWikiEntry(String wikiTitle, String wikiText) {
-		wikiList.put(wikiTitle, wikiText);
+		if (wikiText==null) {
+			wikiList.put(wikiTitle, wikiTitle);
+		} else {
+			wikiList.put(wikiTitle, wikiText);
+		}
 	}
 
 	public synchronized void removeWikiEntry(String title) {

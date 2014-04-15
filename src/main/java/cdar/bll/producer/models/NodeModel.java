@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
@@ -33,11 +33,13 @@ public class NodeModel {
 	public Node addNode(int treeid, String title, int did) {
 		TemplateModel tm = new TemplateModel();
 		final String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
-		
+
 		NodeDao node = new NodeDao(treeid, title, did);
-		node.create(); 
+		node.create();
 		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
-		MediaWikiModel mwm = new MediaWikiModel(treeid, node.getWikititle(), templateContent, wikiHelper);
+
+		MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,
+				node.getWikititle(), templateContent, wikiHelper);
 		mwm.start();
 		return new Node(node);
 	}

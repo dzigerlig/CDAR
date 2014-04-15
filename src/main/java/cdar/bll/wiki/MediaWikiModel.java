@@ -1,80 +1,32 @@
 package cdar.bll.wiki;
 
-import java.io.IOException;
+import cdar.bll.consumer.models.ProjectNodeModel;
+import cdar.bll.producer.models.NodeModel;
+import cdar.bll.producer.models.SubnodeModel;
 
-import javax.security.auth.login.FailedLoginException;
-import javax.security.auth.login.LoginException;
+public class MediaWikiModel {
 
-import org.wikipedia.Wiki;
-
-public class MediaWikiModel extends Thread{	
-	private int ktrid; 
-	private String title;
-	private String templateContent;
-	private WikiEntryConcurrentHelper wikiHelper;
-	
-	public MediaWikiModel(int ktrid, String title, String templateContent, WikiEntryConcurrentHelper wikiHelper) {
-		super();
-		setKtrid(ktrid);
-		setTitle(title);
-		setWikiHeper(wikiHelper);
-		setTemplateContent(templateContent);
+	public WikiEntry getProjectNodeWikiEntry(int nodeid) {
+		ProjectNodeModel pnm = new ProjectNodeModel();
+		return new WikiEntry(pnm.getProjectNode(nodeid));
 	}
 
-	public int getKtrid() {
-		return ktrid;
+	public WikiEntry getKnowledgeNodeWikiEntry(int nodeid) {
+		NodeModel nm = new NodeModel();
+		return new WikiEntry(nm.getNode(nodeid));
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeid) {
+		SubnodeModel sm = new SubnodeModel();
+		return new WikiEntry(sm.getSubnode(subnodeid));
 	}
 
-	public String getTitle() {
-		return title;
+	public WikiEntry saveKnowledgeNodeWikiEntry(WikiEntry wikiEntry) {
+		return wikiEntry.saveEntry();
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public WikiEntry saveKnowledgeSubnodeWikiEntry(WikiEntry wikiEntry) {
+		return wikiEntry.saveEntry();
 	}
 
-	public void setWikiHeper(WikiEntryConcurrentHelper wikiHelper) {
-		this.wikiHelper = wikiHelper;
-	}
-
-	public void createNewWikiEntry() {
-		Wiki wiki = new Wiki();
-		try {
-			createEntry(wiki);
-		} catch (Exception e) {
-			try {
-				//trying again if it is the first time
-				createEntry(wiki);
-			} catch (LoginException | IOException e1) {
-				e1.printStackTrace();
-			}
-		}	
-	}
-
-	private void createEntry(Wiki wiki) throws IOException,
-			FailedLoginException, LoginException {
-		wiki.login("admin", "password");
-		if (getTemplateContent() == null) {
-			wiki.edit(this.title, getTemplateContent(), "== CDAR ==");
-		} else {
-			wiki.edit(this.title, getTemplateContent(), "");
-		}
-	}
-
-	public void run() {
-		createNewWikiEntry();
-		this.wikiHelper.removeWikiEntry(getTitle());
-	}
-
-	public String getTemplateContent() {
-		return templateContent;
-	}
-
-	public void setTemplateContent(String templateContent) {
-		this.templateContent = templateContent;
-	}
 }
