@@ -43,10 +43,39 @@ public class SubnodeModel {
 		return new Subnode(pdc.getSubnode(subnodeid));
 	}
 	
+	public void changeSubnodePosition(int nodeid, int id, int newPosition) {
+		int oldPosition = getSubnode(id).getPosition();
+
+		for (Subnode subnode : getSubnodesFromNode(nodeid)) {
+			if (subnode.getId() == id) {
+				subnode.setPosition(newPosition);
+				updateSubnode(subnode);
+			} else {
+				if (oldPosition < newPosition) {
+					if (subnode.getPosition() > oldPosition
+							&& subnode.getPosition() <= newPosition) {
+						subnode.setPosition(subnode.getPosition() - 1);
+						updateSubnode(subnode);
+					}
+				}
+
+				if (oldPosition > newPosition) {
+					if (subnode.getPosition() >= newPosition
+							&& subnode.getPosition() < oldPosition) {
+						subnode.setPosition(subnode.getPosition() + 1);
+						updateSubnode(subnode);
+					}
+				}
+
+			}
+		}
+	}
+	
 	public Subnode updateSubnode(Subnode subnode) {
 		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
 		subnodedao.setKnid(subnode.getKnid());
 		subnodedao.setTitle(subnode.getTitle());
+		subnodedao.setPosition(subnode.getPosition());
 		return new Subnode(subnodedao.update());
 	}
 	
@@ -58,5 +87,9 @@ public class SubnodeModel {
 		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
 		subnodedao.setTitle(subnode.getTitle());
 		return new Subnode(subnodedao.update());
+	}
+
+	public int getNextSubnodePosition(int nodeid) {
+		return pdc.getNextSubnodePosition(nodeid);
 	}
 }

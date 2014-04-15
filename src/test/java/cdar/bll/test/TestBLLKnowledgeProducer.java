@@ -19,6 +19,11 @@ import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
+import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.SubnodeDao;
+import cdar.dal.persistence.jdbc.producer.TreeDao;
+import cdar.dal.persistence.jdbc.user.UserDao;
 
 public class TestBLLKnowledgeProducer {
 	private UserModel um = new UserModel();
@@ -373,6 +378,51 @@ public class TestBLLKnowledgeProducer {
 		subnode.setTitle(newSubnodename);
 		snm.updateSubnode(subnode);
 		assertEquals(newSubnodename, snm.getSubnode(subnode.getId()).getTitle());
+	}
+	
+	@Test
+	public void TestKnowledgeSubnodePositionChange() {
+		final String subnodename = "My Subnode";
+		SubnodeModel snm = new SubnodeModel();
+		NodeModel nm = new NodeModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		DirectoryModel dm = new DirectoryModel();
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = nm.addNode(tree.getId(), "Node", directoryId);
+		Subnode subnode1 = snm.addSubnode(node.getId(), subnodename);
+		Subnode subnode2 = snm.addSubnode(node.getId(), subnodename);
+		Subnode subnode3 = snm.addSubnode(node.getId(), subnodename);
+		Subnode subnode4 = snm.addSubnode(node.getId(), subnodename);
+		assertEquals(4, snm.getSubnodesFromNode(node.getId()).size());
+		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
+		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 2);
+		assertEquals(2, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(1, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
+		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 1);
+		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
+		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 4);
+		assertEquals(4, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(1, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(2, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode4.getId()).getPosition());
+		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 1);
+		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
+		snm.changeSubnodePosition(node.getId(), subnode4.getId(), 1);
+		assertEquals(2, snm.getSubnode(subnode1.getId()).getPosition());
+		assertEquals(3, snm.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(4, snm.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(1, snm.getSubnode(subnode4.getId()).getPosition());
 	}
 	
 	@Test
