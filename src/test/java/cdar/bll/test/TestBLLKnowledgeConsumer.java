@@ -67,7 +67,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
 		assertEquals(projectTreeCount + 1, ptm.getProjectTrees(um.getUser(username).getId()).size());
 		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getTitle());
-		tree.setName(newTreeName);
+		tree.setTitle(newTreeName);
 		ptm.updateProjectTree(tree);
 		assertEquals(newTreeName, ptm.getProjectTree(tree.getId()).getTitle());
 		ptm.deleteProjectTree(tree.getId());
@@ -87,7 +87,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test
 	public void testUpdateUnknownProjectTree() {
 		ProjectTree tree = ptm.getProjectTree(unknownId);
-		tree.setName("Unknown Tree");
+		tree.setTitle("Unknown Tree");
 		ProjectTree updatedTree = ptm.updateProjectTree(tree);
 		assertEquals(-1, updatedTree.getId());
 	}

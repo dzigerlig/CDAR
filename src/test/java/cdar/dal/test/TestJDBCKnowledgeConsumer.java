@@ -37,24 +37,24 @@ public class TestJDBCKnowledgeConsumer {
 		final String newTreeName = "newTreeName";
 		ProjectTreeDao projecttree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		projecttree.create();
-		assertEquals(testTreeName, cdc.getProjectTree(projecttree.getId()).getName());
-		projecttree.setName(newTreeName);
+		assertEquals(testTreeName, cdc.getProjectTree(projecttree.getId()).getTitle());
+		projecttree.setTitle(newTreeName);
 		projecttree.update();
-		assertEquals(newTreeName, cdc.getProjectTree(projecttree.getId()).getName());
+		assertEquals(newTreeName, cdc.getProjectTree(projecttree.getId()).getTitle());
 	}
 	
 	@Test
 	public void TestGetProjectTreeById() {
 		ProjectTreeDao projecttree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), testTreeName);
 		projecttree = projecttree.create();
-		assertEquals(testTreeName, cdc.getProjectTree(projecttree.getId()).getName());
+		assertEquals(testTreeName, cdc.getProjectTree(projecttree.getId()).getTitle());
 	}
 	 
 	@Test
 	public void TestDeleteProjectTree() {
 		final String treeName = "mytree";
 		ProjectTreeDao tree = new ProjectTreeDao(udc.getUserByName(testUsername).getId(), treeName).create();
-		assertEquals(treeName, cdc.getProjectTree(tree.getId()).getName());
+		assertEquals(treeName, cdc.getProjectTree(tree.getId()).getTitle());
 		tree.delete();
 		assertEquals(-1, cdc.getProjectTree(tree.getId()).getId());
 	}

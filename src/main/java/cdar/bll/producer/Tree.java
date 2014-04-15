@@ -14,20 +14,20 @@ public class Tree extends BasicEntity {
 	}
 
 	public Tree(TreeDao tree) {
-		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getName());
+		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getTitle());
 	}
 
 	public Tree(int id, Date creationDate, Date lastModification,
-			String name) {
+			String title) {
 		super(id, creationDate, lastModification);
-		setTitle(name);
+		setTitle(title);
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String name) {
-		this.title = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

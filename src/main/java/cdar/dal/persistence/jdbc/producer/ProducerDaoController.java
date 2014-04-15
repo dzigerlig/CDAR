@@ -19,9 +19,9 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	public List<TreeDao> getTrees(int uid) {
 		String getUsers = null;
 		if (uid==0) {
-			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE";
+			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE";
 		} else {
-			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;", uid);
+			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;", uid);
 		}
 		
 
@@ -40,7 +40,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				tree.setId(result.getInt(1));
 				tree.setCreationTime(result.getDate(2));
 				tree.setLastModificationTime(result.getDate(3));
-				tree.setName(result.getString(4));
+				tree.setTitle(result.getString(4));
 				tree.setUid(uid);
 				trees.add(tree);
 			}
@@ -53,7 +53,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public TreeDao getTree(int id) {
-		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;" , id);
+		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -71,7 +71,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				tree.setId(result.getInt(2));
 				tree.setCreationTime(result.getDate(3));
 				tree.setLastModificationTime(result.getDate(4));
-				tree.setName(result.getString(5));
+				tree.setTitle(result.getString(5));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

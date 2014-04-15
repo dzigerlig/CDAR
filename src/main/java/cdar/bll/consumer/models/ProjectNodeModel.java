@@ -24,8 +24,8 @@ public class ProjectNodeModel {
 		return new ProjectNode(cdc.getProjectNode(nodeid));
 	}
 
-	public ProjectNode addProjectNode(int id, String projectNodeName) {
-		ProjectNodeDao projectNodeDao = new ProjectNodeDao(id, projectNodeName);
+	public ProjectNode addProjectNode(int id, String projectNodeTitle) {
+		ProjectNodeDao projectNodeDao = new ProjectNodeDao(id, projectNodeTitle);
 		return new ProjectNode(projectNodeDao.create());
 	}
 

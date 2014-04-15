@@ -43,8 +43,8 @@ public class ProjectTreeController {
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ProjectTree addProjectTree(String treeName, @PathParam("uid") int uid) {
-		return ptm.addProjectTree(uid, treeName);
+	public ProjectTree addProjectTree(String treeTitle, @PathParam("uid") int uid) {
+		return ptm.addProjectTree(uid, treeTitle);
 	}
 	
 	@GET

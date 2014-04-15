@@ -30,9 +30,9 @@ public class ProjectTreeModel {
 		return trees;
 	} 
 
-	public ProjectTree addProjectTree(int uid, String treeName) {
+	public ProjectTree addProjectTree(int uid, String treeTitle) {
 		try {
-			ProjectTreeDao tree = new ProjectTreeDao(uid, treeName);
+			ProjectTreeDao tree = new ProjectTreeDao(uid, treeTitle);
 			return new ProjectTree(tree.create());
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -78,7 +78,7 @@ public class ProjectTreeModel {
 
 	public ProjectTree updateProjectTree(ProjectTree tree) {
 		ProjectTreeDao projectTreeDao = cdc.getProjectTree(tree.getId());
-		projectTreeDao.setName(tree.getTitle());
+		projectTreeDao.setTitle(tree.getTitle());
 		return new ProjectTree(projectTreeDao.update());
 	}
 }

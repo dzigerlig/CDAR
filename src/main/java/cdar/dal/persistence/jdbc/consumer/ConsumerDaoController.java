@@ -18,9 +18,9 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees(int uid) {
 		String getUsers = null;
 		if (uid==0) {
-			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE";
+			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE";
 		} else {
-			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE LEFT JOIN knowledgeprojecttreemapping ON knowledgeprojecttreemapping.kptid = knowledgeprojecttree.id where knowledgeprojecttreemapping.uid = %d;", uid);
+			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE LEFT JOIN knowledgeprojecttreemapping ON knowledgeprojecttreemapping.kptid = knowledgeprojecttree.id where knowledgeprojecttreemapping.uid = %d;", uid);
 		}
 		
 
@@ -39,7 +39,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 				projecttree.setId(result.getInt(1));
 				projecttree.setCreationTime(result.getDate(2));
 				projecttree.setLastModificationTime(result.getDate(3));
-				projecttree.setName(result.getString(4));
+				projecttree.setTitle(result.getString(4));
 				projecttree.setUid(uid);
 				projecttrees.add(projecttree);
 			}
@@ -52,7 +52,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 	
 	public ProjectTreeDao getProjectTree(int id) {
-		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,NAME FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = %d;" , id);
+		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = %d;" , id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -70,7 +70,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 				projecttree.setId(result.getInt(2));
 				projecttree.setCreationTime(result.getDate(3));
 				projecttree.setLastModificationTime(result.getDate(4));
-				projecttree.setName(result.getString(5));
+				projecttree.setTitle(result.getString(5));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
