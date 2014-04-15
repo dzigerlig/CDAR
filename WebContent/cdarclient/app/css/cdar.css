@@ -23,3 +23,42 @@ body.dragging,body.dragging * {
 .cdarList {
 	list-style: none;
 }
+
+#jsplumb-container{
+}
+
+
+.item {
+  border: 1px solid black;
+  background-color: #ddddff;
+  width: 100px;
+  height: 100px;
+}
+
+.title {
+  padding: 10px;
+  padding-top:2px;
+  cursor: move;
+}
+	
+.connect {
+  width: 100%;
+  height: 20px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.item {
+  position: absolute;
+  border: 1px solid black;
+  background-color: #ddddff;
+}
+
+#jsplumb-container {
+    position: relative;
+    background-color:#EAEDEF;
+    border: 1px solid gray;
+    width: 100%;
+    min-height: 800px;
+    overflow: auto;
+}

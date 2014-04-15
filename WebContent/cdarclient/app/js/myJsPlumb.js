@@ -23,8 +23,8 @@ function addHTMLNode(response, e) {
 
 	newState.css({
 		// calculate coordinates of the cursor in element
-		'top' : e.pageY - $('#tree-container').offset().top,
-		'left' : e.pageX - $('#tree-container').offset().left
+		'top' : e.pageY - $('#jsplumb-container').offset().top,
+		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
 
 	makeNodesDraggable(newState);
@@ -143,7 +143,6 @@ function makeSource(connect, newState) {
 			length : 14,
 			foldback : 0.8
 		} ], [ "Label", {
-			// label : "Not Set Yet",
 			id : "label",
 			cssClass : "aLabel"
 		} ] ]
@@ -218,7 +217,7 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 function appendElements(title, connect, newState) {
 	newState.append(title);
 	newState.append(connect);
-	$('#tree-container').append(newState);
+	$('#jsplumb-container').append(newState);
 };
 
 function makeNodesDraggable(newState) {
@@ -230,11 +229,7 @@ function makeNodesDraggable(newState) {
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("dblclick", function(c) {
 		jsPlumb.detach(c);
-
-		// if (c.id !== lastConnectionID) { lastConnectionID = c.id;
 		scope.deleteLink(c.id.replace(LINK, ""));
-		// }
-
 	});
 };
 

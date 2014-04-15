@@ -3,7 +3,7 @@ var NODE = 'node';
 var movedNode = null;
 var scope = angular.element(document.getElementById("treeControllerDiv"));
 var mouseOverFlag = false;
-var eleme = $("#tree-container");
+var eleme = $("#jsplumb-container");
 
 function getMovedNode() {
 	return movedNode;
