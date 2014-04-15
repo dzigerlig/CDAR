@@ -58,21 +58,21 @@
 								<thead>
 									<tr>
 										<th>#</th>
-										<th>Name</th>
+										<th>Title</th>
 										<th>Delete</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr data-ng-repeat="tree in projectTrees | orderBy:'id':false">
 										<td>{{$index+1}}</td>
-										<td><a href="#/projecttree/{{tree.id}}">{{tree.name}}</a></td>
+										<td><a href="#/projecttree/{{tree.id}}">{{tree.title}}</a></td>
 										<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
 												Tree</a></td>
 									</tr>
 									<tr>
 										<td></td>
 										<td><div class="input-append">
-												<input class="form-horizontal" placeholder="Treename"
+												<input class="form-horizontal" placeholder="Tree title"
 													required autofocus data-ng-model="newTreeName" />
 												<button class="btn btn-success" type="submit">Add
 													tree</button>

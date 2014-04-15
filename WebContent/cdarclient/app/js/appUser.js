@@ -6,8 +6,8 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	$scope.chkbKnowledgeProducer;
 
 	$scope.credentials = {
-		username : "",
-		password : ""
+		username : '',
+		password : ''
 	};
 	
 	$scope.login = function() {
