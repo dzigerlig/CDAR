@@ -33,7 +33,7 @@ public class TreeController {
 	private SubnodeModel sm = new SubnodeModel();
 	private TemplateModel tm = new TemplateModel();
 
-	// Dynamic Tree
+	// Dynamic Tree 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
@@ -106,7 +106,7 @@ public class TreeController {
 	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid, int templateId) {
 		return tm.setDefaultTemplate(ktreeid, templateId);
 	}
-
+ 
 	@POST
 	@Path("templates/edit/{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
