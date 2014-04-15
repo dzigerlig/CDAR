@@ -32,7 +32,7 @@ public class ProjectTreeDao extends CUDHelper<ProjectTreeDao> implements
 		setId(projecttree.getId());
 		setCreationTime(projecttree.getCreationTime());
 		setLastModificationTime(projecttree.getLastModificationTime());
-		setName(projecttree.getName());
+		setName(projecttree.getTitle());
 	}
 
 	public ProjectTreeDao() {

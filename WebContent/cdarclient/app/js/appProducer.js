@@ -42,7 +42,24 @@ app.controller("HomeProducerController", [
 					reloadTrees();
 				});
 			};
-		} ]);
+			
+			$scope.updateTreeId;
+			$scope.updateTreeTitle;
+			
+			$scope.editTreeTitle = function(id, title) {
+				$scope.updateTreeId = id;
+				$scope.updateTreeTitle = title;
+				$('#treeModal').modal().show();
+			};
+			
+			$scope.saveTreeTitle = function() {
+				$('#treeModal').modal('hide');
+				TreeService.renameTree({ id : $scope.updateTreeId, title : $scope.updateTreeTitle }, function(response) {
+					reloadTrees();
+				});
+			};
+		
+} ]);
 
 app
 		.controller(

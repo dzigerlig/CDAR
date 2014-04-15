@@ -6,7 +6,7 @@ import cdar.bll.BasicEntity;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTree extends BasicEntity {
-	private String name;
+	private String title;
 
 	public ProjectTree() {
 		super();
@@ -26,11 +26,11 @@ public class ProjectTree extends BasicEntity {
 		setId(id);
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.title = name;
 	}
 }

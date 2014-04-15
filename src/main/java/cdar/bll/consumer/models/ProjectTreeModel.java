@@ -78,7 +78,7 @@ public class ProjectTreeModel {
 
 	public ProjectTree updateProjectTree(ProjectTree tree) {
 		ProjectTreeDao projectTreeDao = cdc.getProjectTree(tree.getId());
-		projectTreeDao.setName(tree.getName());
+		projectTreeDao.setName(tree.getTitle());
 		return new ProjectTree(projectTreeDao.update());
 	}
 }

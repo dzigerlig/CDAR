@@ -7,7 +7,7 @@ import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class Tree extends BasicEntity {
 
-	private String name;
+	private String title;
 	
 	public Tree() {
 		super();
@@ -20,14 +20,14 @@ public class Tree extends BasicEntity {
 	public Tree(int id, Date creationDate, Date lastModification,
 			String name) {
 		super(id, creationDate, lastModification);
-		setName(name);
+		setTitle(name);
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String name) {
+		this.title = name;
 	}
 }

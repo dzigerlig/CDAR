@@ -54,6 +54,14 @@ public class TreeController {
 		return ktm.addTree(uid, treeName);
 	}
 	
+	@POST
+	@Path("tree/rename")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Tree renameKnowledgeTree(Tree tree) {
+		return ktm.updateTree(tree);
+	}
+	
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)

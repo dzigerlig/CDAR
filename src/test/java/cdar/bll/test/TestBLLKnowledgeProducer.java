@@ -45,7 +45,7 @@ public class TestBLLKnowledgeProducer {
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
-		assertEquals(treeName, tm.getTree(tree.getId()).getName());
+		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
 		tm.deleteTree(tree.getId());
 		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
 	}
@@ -63,7 +63,7 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testUpdateUnknownTree() {
 		Tree tree = tm.addTree(unknownId, "MyTree");
-		tree.setName("My unknown tree");
+		tree.setTitle("My unknown tree");
 		Tree updatedTree = tm.updateTree(tree);
 		assertEquals(-1, updatedTree.getId());
 	}
@@ -80,10 +80,10 @@ public class TestBLLKnowledgeProducer {
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
-		assertEquals(treeName, tm.getTree(tree.getId()).getName());
-		tree.setName(newTreeName);
+		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
+		tree.setTitle(newTreeName);
 		tm.updateTree(tree);
-		assertEquals(newTreeName, tm.getTree(tree.getId()).getName());
+		assertEquals(newTreeName, tm.getTree(tree.getId()).getTitle());
 		tm.deleteTree(tree.getId());
 		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
 	}

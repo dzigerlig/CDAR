@@ -38,7 +38,7 @@ public class TreeModel {
 
 	public Tree updateTree(Tree tree) {
 		TreeDao treedao = pdc.getTree(tree.getId());
-		treedao.setName(tree.getName());
+		treedao.setName(tree.getTitle());
 		return new Tree(treedao.update());
 	}
 }

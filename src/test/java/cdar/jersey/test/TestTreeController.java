@@ -89,7 +89,7 @@ public class TestTreeController extends JerseyTest {
 	public void testGetTree() {
 		Tree testTree = target(userId + "/ktree/" + treeid).request().get(
 				Tree.class);
-		assertEquals(TREENAME, testTree.getName());
+		assertEquals(TREENAME, testTree.getTitle());
 		assertNotEquals(testTree.getId(), -1);
 	}
 

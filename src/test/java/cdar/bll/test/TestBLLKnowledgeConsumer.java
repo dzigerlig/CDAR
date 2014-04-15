@@ -54,7 +54,7 @@ public class TestBLLKnowledgeConsumer {
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
 		assertEquals(projectTreeCount + 1, ptm.getProjectTrees(um.getUser(username).getId()).size());
-		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getName());
+		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getTitle());
 		ptm.deleteProjectTree(tree.getId());
 		assertEquals(projectTreeCount, ptm.getProjectTrees(um.getUser(username).getId()).size());
 	}
@@ -66,10 +66,10 @@ public class TestBLLKnowledgeConsumer {
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
 		assertEquals(projectTreeCount + 1, ptm.getProjectTrees(um.getUser(username).getId()).size());
-		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getName());
+		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getTitle());
 		tree.setName(newTreeName);
 		ptm.updateProjectTree(tree);
-		assertEquals(newTreeName, ptm.getProjectTree(tree.getId()).getName());
+		assertEquals(newTreeName, ptm.getProjectTree(tree.getId()).getTitle());
 		ptm.deleteProjectTree(tree.getId());
 		assertEquals(projectTreeCount, ptm.getProjectTrees(um.getUser(username).getId()).size());
 	}
