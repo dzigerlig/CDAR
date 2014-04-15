@@ -9,17 +9,13 @@ public class WikiEntryConcurrentHelper {
 	public boolean isKeyInMap(String key) {
 		return wikiList.containsKey(key);
 	}
-	
+
 	public String getValue(String key) {
 		return wikiList.get(key);
 	}
-	
+
 	public synchronized void addWikiEntry(String wikiTitle, String wikiText) {
-		if (wikiText==null) {
-			wikiList.put(wikiTitle, wikiTitle);
-		} else {
-			wikiList.put(wikiTitle, wikiText);
-		}
+		wikiList.put(wikiTitle, wikiText);
 	}
 
 	public synchronized void removeWikiEntry(String title) {

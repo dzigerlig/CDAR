@@ -32,10 +32,15 @@ public class NodeModel {
 
 	public Node addNode(int treeid, String title, int did) {
 		TemplateModel tm = new TemplateModel();
-		final String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
+		String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
 
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
+		
+		if (templateContent==null) {
+			templateContent = "== CDAR ==";
+		}
+		
 		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 
 		MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,

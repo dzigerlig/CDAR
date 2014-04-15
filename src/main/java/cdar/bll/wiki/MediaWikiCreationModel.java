@@ -7,13 +7,14 @@ import javax.security.auth.login.LoginException;
 
 import org.wikipedia.Wiki;
 
-public class MediaWikiCreationModel extends Thread{	
-	private int ktrid; 
+public class MediaWikiCreationModel extends Thread {
+	private int ktrid;
 	private String title;
 	private String templateContent;
 	private WikiEntryConcurrentHelper wikiHelper;
-	
-	public MediaWikiCreationModel(int ktrid, String title, String templateContent, WikiEntryConcurrentHelper wikiHelper) {
+
+	public MediaWikiCreationModel(int ktrid, String title,
+			String templateContent, WikiEntryConcurrentHelper wikiHelper) {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
@@ -47,22 +48,18 @@ public class MediaWikiCreationModel extends Thread{
 			createEntry(wiki);
 		} catch (Exception e) {
 			try {
-				//trying again if it is the first time
+				// trying again if it is the first time
 				createEntry(wiki);
 			} catch (LoginException | IOException e1) {
 				e1.printStackTrace();
 			}
-		}	
+		}
 	}
 
 	private void createEntry(Wiki wiki) throws IOException,
 			FailedLoginException, LoginException {
 		wiki.login("admin", "password");
-		if (getTemplateContent() == null) {
-			wiki.edit(this.title, getTemplateContent(), "== CDAR ==");
-		} else {
-			wiki.edit(this.title, getTemplateContent(), "");
-		}
+		wiki.edit(this.title, getTemplateContent(), "");
 	}
 
 	public void run() {
