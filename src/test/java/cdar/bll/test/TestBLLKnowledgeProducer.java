@@ -398,31 +398,18 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
 		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
 		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 2);
+		assertTrue(snm.changeSubnodePosition(subnode1.getId(), false));
 		assertEquals(2, snm.getSubnode(subnode1.getId()).getPosition());
 		assertEquals(1, snm.getSubnode(subnode2.getId()).getPosition());
 		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
 		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 1);
+		assertTrue(snm.changeSubnodePosition(subnode1.getId(), true));
 		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
 		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
 		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
 		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 4);
-		assertEquals(4, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(1, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(2, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode4.getId()).getPosition());
-		snm.changeSubnodePosition(node.getId(), subnode1.getId(), 1);
-		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		snm.changeSubnodePosition(node.getId(), subnode4.getId(), 1);
-		assertEquals(2, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(4, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(1, snm.getSubnode(subnode4.getId()).getPosition());
+		assertFalse(snm.changeSubnodePosition(subnode1.getId(), true));
+		assertFalse(snm.changeSubnodePosition(subnode4.getId(), false));
 	}
 	
 	@Test

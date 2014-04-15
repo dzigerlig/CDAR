@@ -459,4 +459,20 @@ app
 									getSubnodes();
 								});
 							};
+							
+							$scope.moveSubnodeUp = function(id) {
+								TreeService.moveSubnodeUp({ id: id}, function(response) {
+									if (response.bool) {
+										getSubnodes();
+									}
+								});
+							};
+							
+							$scope.moveSubnodeDown = function(id) {
+								TreeService.moveSubnodeDown({ id: id}, function(response) {
+									if (response.bool) {
+										getSubnodes();
+									}
+								});
+							};
 } ]);

@@ -265,6 +265,20 @@ public class TreeController {
 	public Subnode renameSubnode(Subnode subnode) {
 		return sm.renameSubnode(subnode);
 	}
+	
+	@POST
+	@Path("subnodes/moveup")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CDAR_Boolean moveSubnodeUp(Subnode subnode) {
+		return new CDAR_Boolean(sm.moveSubnodeUp(subnode));
+	}
+	
+	@POST
+	@Path("subnodes/movedown")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CDAR_Boolean moveSubnodeDown(Subnode subnode) {
+		return new CDAR_Boolean(sm.moveSubnodeDown(subnode));
+	}
 
 	@POST
 	@Path("subnodes/add/{ktreeid}")
