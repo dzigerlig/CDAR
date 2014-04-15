@@ -13,13 +13,13 @@ public class ProjectTree extends BasicEntity {
 	}
 
 	public ProjectTree(int id, Date creationDate, Date lastModification,
-			String name) {
+			String title) {
 		super(id, creationDate, lastModification);
-		setName(name);
+		setTitle(title);
 	}
 
 	public ProjectTree(ProjectTreeDao tree) {
-		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getName());
+		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getTitle());
 	}
 
 	public ProjectTree(int id) {
@@ -30,7 +30,7 @@ public class ProjectTree extends BasicEntity {
 		return title;
 	}
 
-	public void setName(String name) {
-		this.title = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

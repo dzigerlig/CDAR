@@ -50,8 +50,8 @@ public class TreeController {
 	@POST
 	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Tree addKnowledgeTree(String treeName, @PathParam("uid") int uid) {
-		return ktm.addTree(uid, treeName);
+	public Tree addKnowledgeTree(String treeTitle, @PathParam("uid") int uid) {
+		return ktm.addTree(uid, treeTitle);
 	}
 	
 	@POST

@@ -19,11 +19,11 @@ public class TreeModel {
 		return trees;
 	} 
 
-	public Tree addTree(int uid, String treeName) {
-		TreeDao tree = new TreeDao(uid, treeName);
+	public Tree addTree(int uid, String treeTitle) {
+		TreeDao tree = new TreeDao(uid, treeTitle);
 		tree.create();
 		DirectoryDao directoryDao = new DirectoryDao(tree.getId());
-		directoryDao.setTitle(treeName);
+		directoryDao.setTitle(treeTitle);
 		directoryDao.create();
 		return new Tree(tree);
 	}
@@ -38,7 +38,7 @@ public class TreeModel {
 
 	public Tree updateTree(Tree tree) {
 		TreeDao treedao = pdc.getTree(tree.getId());
-		treedao.setName(tree.getTitle());
+		treedao.setTitle(tree.getTitle());
 		return new Tree(treedao.update());
 	}
 }

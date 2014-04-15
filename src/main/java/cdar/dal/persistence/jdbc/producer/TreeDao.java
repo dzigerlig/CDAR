@@ -16,7 +16,7 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 	private int uid;
 	private Date creationTime;
 	private Date lastModificationTime;
-	private String name;
+	private String title;
 
 	public TreeDao() {
 	}
@@ -25,16 +25,16 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 		setUid(uid);
 	}
 
-	public TreeDao(int uid, String name) {
+	public TreeDao(int uid, String title) {
 		setUid(uid);
-		setName(name);
+		setTitle(title);
 	}
 
 	public TreeDao(Tree tree) {
 		setId(tree.getId());
 		setCreationTime(tree.getCreationTime());
 		setLastModificationTime(tree.getLastModificationTime());
-		setName(tree.getTitle());
+		setTitle(tree.getTitle());
 	}
 
 	public int getId() {
@@ -69,12 +69,12 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 		this.lastModificationTime = lastModificationTime;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	@Override
@@ -109,10 +109,10 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGETREE (CREATION_TIME, NAME) VALUES (?, ?)",
+						"INSERT INTO KNOWLEDGETREE (CREATION_TIME, TITLE) VALUES (?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-		preparedStatement.setString(2, getName());
+		preparedStatement.setString(2, getTitle());
 
 		preparedStatement.executeUpdate();
 
@@ -135,10 +135,10 @@ public class TreeDao extends CUDHelper<TreeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, NAME = ? WHERE id = ?",
+						"UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-		preparedStatement.setString(2, getName());
+		preparedStatement.setString(2, getTitle());
 		preparedStatement.setInt(3, getId());
 
 		preparedStatement.executeUpdate();
