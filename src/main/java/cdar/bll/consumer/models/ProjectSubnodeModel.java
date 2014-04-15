@@ -49,6 +49,20 @@ public class ProjectSubnodeModel {
 		return new ProjectSubnode(projectSubnodeDao.update());
 	}
 	
+	public void changeProjectSubnodePosition(int nodeid, int id, int position) {
+		for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(nodeid)) {
+			if (subnode.getId()==id) {
+				subnode.setPosition(position);
+				subnode.update();
+			} else {
+				if (subnode.getPosition()>=position) {
+					subnode.setPosition(subnode.getPosition()+1);
+					subnode.update();
+				}
+			}
+		}
+	}
+	
 	public boolean removeProjectSubnode(int id) {
 		return cdc.getProjectSubnode(id).delete();
 	}

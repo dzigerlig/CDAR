@@ -201,6 +201,43 @@ public class TestJDBCKnowledgeProducer {
 	}
 	
 	@Test
+	public void TestKnowledgeSubnodePositionChange() {
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		DirectoryDao directory = new DirectoryDao(tree.getId());
+		directory.setTitle("TestDirectory");
+		directory.create();
+		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
+		node.create();
+		SubnodeDao subnode = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
+		subnode.create();
+		SubnodeDao subnode2 = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
+		subnode2.create();
+		SubnodeDao subnode3 = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
+		subnode3.create();
+		SubnodeDao subnode4 = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
+		subnode4.create();
+		assertEquals(4, kpdc.getSubnodes(node.getId()).size());
+		
+		//
+		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(2, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 2);
+		assertEquals(2, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(1, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+//		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 3);
+//		assertEquals(3, kpdc.getSubnode(subnode.getId()).getPosition());
+//		assertEquals(1, kpdc.getSubnode(subnode2.getId()).getPosition());
+//		assertEquals(2, kpdc.getSubnode(subnode3.getId()).getPosition());
+//		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+	}
+	
+	@Test
 	public void TestKnowledgeSubnodeUpdate() {
 		final String subnodeTitle = "MySubnode";
 		final String newSubnodeTitle = "NewSubnode";
