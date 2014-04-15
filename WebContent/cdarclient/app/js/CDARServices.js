@@ -275,6 +275,20 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action : 'rename'
 			}
 		},
+		'moveSubnodeUp' : {
+			method : 'POST',
+			params : {
+				entity : 'subnodes',
+				action : 'moveup'
+			}
+		},
+		'moveSubnodeDown' : {
+			method : 'POST',
+			params : {
+				entity : 'subnodes',
+				action : 'movedown'
+			}
+		},
 		'deleteSubnode' : {
 			method : 'POST',
 			params : {

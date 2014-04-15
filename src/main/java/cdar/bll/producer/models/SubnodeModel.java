@@ -12,11 +12,12 @@ public class SubnodeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public Subnode addSubnode(int knid, String title) {
-		SubnodeDao subnode = new SubnodeDao(knid, pdc.getNextSubnodePosition(knid), title);
+		SubnodeDao subnode = new SubnodeDao(knid,
+				pdc.getNextSubnodePosition(knid), title);
 		return new Subnode(subnode.create());
 	}
- 
-	//whole tree
+
+	// whole tree
 	public Set<Subnode> getSubnodesFromTree(int treeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
@@ -25,52 +26,61 @@ public class SubnodeModel {
 				subnodes.add(new Subnode(subnode));
 			}
 		}
-		
+
 		return subnodes;
 	}
-	
+
 	public Set<Subnode> getSubnodesFromNode(int nodeId) {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
-		
+
 		for (SubnodeDao subnode : pdc.getSubnodes(nodeId)) {
 			subnodes.add(new Subnode(subnode));
 		}
-		
+
 		return subnodes;
 	}
-	
+
 	public Subnode getSubnode(int subnodeid) {
 		return new Subnode(pdc.getSubnode(subnodeid));
 	}
-	
-	public void changeSubnodePosition(int nodeid, int id, int newPosition) {
+
+	public boolean changeSubnodePosition(int id, boolean up) {
 		int oldPosition = getSubnode(id).getPosition();
+		int newPosition = up ? oldPosition - 1 : oldPosition + 1;
 
-		for (Subnode subnode : getSubnodesFromNode(nodeid)) {
-			if (subnode.getId() == id) {
-				subnode.setPosition(newPosition);
-				updateSubnode(subnode);
-			} else {
-				if (oldPosition < newPosition) {
-					if (subnode.getPosition() > oldPosition
-							&& subnode.getPosition() <= newPosition) {
-						subnode.setPosition(subnode.getPosition() - 1);
-						updateSubnode(subnode);
+		Set<Subnode> subnodes = getSubnodesFromNode(getSubnode(id).getKnid());
+
+		if (subnodes.size() == 0 || newPosition > subnodes.size() || newPosition < 1) {
+			return false;
+		} else {
+
+			for (Subnode subnode : subnodes) {
+				if (subnode.getId() == id) {
+					subnode.setPosition(newPosition);
+					updateSubnode(subnode);
+				} else {
+					if (oldPosition < newPosition) {
+						if (subnode.getPosition() > oldPosition
+								&& subnode.getPosition() <= newPosition) {
+							subnode.setPosition(subnode.getPosition() - 1);
+							updateSubnode(subnode);
+						}
 					}
-				}
 
-				if (oldPosition > newPosition) {
-					if (subnode.getPosition() >= newPosition
-							&& subnode.getPosition() < oldPosition) {
-						subnode.setPosition(subnode.getPosition() + 1);
-						updateSubnode(subnode);
+					if (oldPosition > newPosition) {
+						if (subnode.getPosition() >= newPosition
+								&& subnode.getPosition() < oldPosition) {
+							subnode.setPosition(subnode.getPosition() + 1);
+							updateSubnode(subnode);
+						}
 					}
-				}
 
+				}
 			}
+			return true;
 		}
 	}
-	
+
 	public Subnode updateSubnode(Subnode subnode) {
 		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
 		subnodedao.setKnid(subnode.getKnid());
@@ -78,7 +88,7 @@ public class SubnodeModel {
 		subnodedao.setPosition(subnode.getPosition());
 		return new Subnode(subnodedao.update());
 	}
-	
+
 	public boolean deleteSubnode(int id) {
 		return pdc.getSubnode(id).delete();
 	}
@@ -91,5 +101,13 @@ public class SubnodeModel {
 
 	public int getNextSubnodePosition(int nodeid) {
 		return pdc.getNextSubnodePosition(nodeid);
+	}
+
+	public boolean moveSubnodeUp(Subnode subnode) {
+		return changeSubnodePosition(subnode.getId(), true);
+	}
+
+	public boolean moveSubnodeDown(Subnode subnode) {
+		return changeSubnodePosition(subnode.getId(), false);
 	}
 }
