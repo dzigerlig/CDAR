@@ -133,7 +133,7 @@ public class TreeController {
 	@Path("directories/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDirectory(Directory d) {
-		return dm.addDirectory(d.getKtrid(), d.getParentid(), null);
+		return dm.addDirectory(d.getKtrid(), d.getParentid(), "new Folder");
 	}
 
 	@POST
@@ -176,7 +176,7 @@ public class TreeController {
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
-		return nm.addNode(n.getKtrid(), null, n.getDid());
+		return nm.addNode(n.getKtrid(), "new Node", n.getDid());
 	}
 
 	@POST
