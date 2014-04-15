@@ -191,9 +191,13 @@ public class TestJDBCKnowledgeProducer {
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
 		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
-		SubnodeDao subnode = new SubnodeDao(node.getId(), "MyKnowledgeSubnode");
+		SubnodeDao subnode = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
 		subnode.create();
-		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
+		SubnodeDao subnode2 = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
+		subnode2.create();
+		assertEquals(2, kpdc.getSubnodes(node.getId()).size());
+		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(2, kpdc.getSubnode(subnode2.getId()).getPosition());
 	}
 	
 	@Test
@@ -209,7 +213,7 @@ public class TestJDBCKnowledgeProducer {
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
 		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
-		SubnodeDao subnode = new SubnodeDao(node.getId(), subnodeTitle);
+		SubnodeDao subnode = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), subnodeTitle);
 		subnode.create();
 		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
 		assertEquals(subnodeTitle, kpdc.getSubnode(subnode.getId()).getTitle());
@@ -229,9 +233,10 @@ public class TestJDBCKnowledgeProducer {
 		NodeDao node = new NodeDao(tree.getId(), "MyKnowledgeNode",directory.getId());
 		node.create();
 		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
-		SubnodeDao subnode = new SubnodeDao(node.getId(), "MySubnode");
+		SubnodeDao subnode = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MySubnode");
 		subnode.create();
 		assertEquals(1, kpdc.getSubnodes(node.getId()).size());
+		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
 		subnode.delete();
 		assertEquals(0, kpdc.getSubnodes(node.getId()).size());
 	}

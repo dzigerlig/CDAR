@@ -12,7 +12,7 @@ public class SubnodeModel {
 	private ProducerDaoController pdc = new ProducerDaoController();
 
 	public Subnode addSubnode(int knid, String title) {
-		SubnodeDao subnode = new SubnodeDao(knid, title);
+		SubnodeDao subnode = new SubnodeDao(knid, pdc.getNextSubnodePosition(knid), title);
 		return new Subnode(subnode.create());
 	}
  

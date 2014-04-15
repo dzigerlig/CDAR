@@ -19,16 +19,19 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
 	private int kpnid;
 	private String title;
 	private String wikititle;
+	private int position;
 
-	public ProjectSubnodeDao(int kpnid) {
+	public ProjectSubnodeDao(int kpnid, int position) {
 		setKpnid(kpnid);
 		setWikititle(String.format("PROJECTSUBNODE_%d", getId()));
+		setPosition(position);
 	}
 
-	public ProjectSubnodeDao(int kpnid, String title) {
+	public ProjectSubnodeDao(int kpnid, int position, String title) {
 		setKpnid(kpnid);
 		setTitle(title);
 		setWikititle(String.format("PROJECTSUBNODE_%d", getId()));
+		setPosition(position);
 	}
 
 	public ProjectSubnodeDao(ProjectSubnode projectsubnode) {
@@ -41,7 +44,6 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
 	}
 
 	public ProjectSubnodeDao() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -125,12 +127,13 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
+						"INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE, POSITION) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKpnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setString(4, getWikititle());
+		preparedStatement.setInt(5, getPosition());
 
 		preparedStatement.executeUpdate();
 
@@ -148,12 +151,13 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ? WHERE id = ?",
+						"UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, POSITION = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKpnid());
 		preparedStatement.setString(3, getTitle());
-		preparedStatement.setInt(4, getId());
+		preparedStatement.setInt(4, getPosition());
+		preparedStatement.setInt(5, getId());
 
 		preparedStatement.executeUpdate();
 
@@ -162,5 +166,13 @@ public class ProjectSubnodeDao extends CUDHelper<ProjectSubnodeDao> implements
 			setId(generatedKeys.getInt(1));
 		}
 		return this;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }

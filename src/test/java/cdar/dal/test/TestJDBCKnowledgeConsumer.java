@@ -183,7 +183,7 @@ public class TestJDBCKnowledgeConsumer {
 		ProjectNodeDao projectnode = new ProjectNodeDao(projecttree.getId(), "MyKnowledgeProjectNode");
 		projectnode.create();
 		assertEquals(0, cdc.getProjectSubnodes(projectnode.getId()).size());
-		ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(projectnode.getId(), "MyKnowledgeProjectSubNode");
+		ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(projectnode.getId(), cdc.getNextProjectSubnodePosition(projectnode.getId()), "MyKnowledgeProjectSubNode");
 		projectsubnode.create();
 		assertEquals(1, cdc.getProjectSubnodes(projectnode.getId()).size());
 	}
@@ -198,10 +198,11 @@ public class TestJDBCKnowledgeConsumer {
 		ProjectNodeDao node = new ProjectNodeDao(tree.getId(), "MyKnowledgeProjectNode");
 		node.create();
 		assertEquals(0, cdc.getProjectSubnodes(node.getId()).size());
-		ProjectSubnodeDao subnode = new ProjectSubnodeDao(node.getId(), subnodeTitle);
+		ProjectSubnodeDao subnode = new ProjectSubnodeDao(node.getId(), cdc.getNextProjectSubnodePosition(node.getId()), subnodeTitle);
 		subnode.create();
 		assertEquals(1, cdc.getProjectSubnodes(node.getId()).size());
 		assertEquals(subnodeTitle, cdc.getProjectSubnode(subnode.getId()).getTitle());
+		assertEquals(1, cdc.getProjectSubnode(subnode.getId()).getPosition());
 		subnode.setTitle(newSubnodeTitle);
 		subnode.update();
 		assertEquals(newSubnodeTitle, cdc.getProjectSubnode(subnode.getId()).getTitle());
@@ -215,7 +216,7 @@ public class TestJDBCKnowledgeConsumer {
 		ProjectNodeDao node = new ProjectNodeDao(tree.getId(), "MyKnowledgeProjectNode");
 		node.create();
 		assertEquals(0, cdc.getProjectSubnodes(node.getId()).size());
-		ProjectSubnodeDao subnode = new ProjectSubnodeDao(node.getId(), "MyProjectSubNode");
+		ProjectSubnodeDao subnode = new ProjectSubnodeDao(node.getId(), cdc.getNextProjectSubnodePosition(node.getId()), "MyProjectSubNode");
 		subnode.create();
 		assertEquals(1, cdc.getProjectSubnodes(node.getId()).size());
 		subnode.delete();

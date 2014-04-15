@@ -8,10 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.consumer.models.ProjectNodeModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
-import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 

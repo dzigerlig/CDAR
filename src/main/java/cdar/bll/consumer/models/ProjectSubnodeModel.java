@@ -12,7 +12,7 @@ public class ProjectSubnodeModel {
 	private ConsumerDaoController cdc = new ConsumerDaoController();
 	
 	public ProjectSubnode addProjectSubnode(int kpnid, String title) {
-		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, title);
+		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, cdc.getNextProjectSubnodePosition(kpnid), title);
 		return new ProjectSubnode(projectSubnodeDao.create());
 	}
 	

@@ -209,7 +209,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<SubnodeDao> getSubnodes(int nodeid) {
-		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -222,7 +222,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getSubnodes);
 			while (result.next()) {
-				SubnodeDao subnode = new SubnodeDao(nodeid);
+				SubnodeDao subnode = new SubnodeDao(nodeid, result.getInt(6));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -239,7 +239,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public SubnodeDao getSubnode(int id) {
-		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -253,7 +253,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getSubnode);
 			while (result.next()) {
-				subnode = new SubnodeDao(result.getInt(4));
+				subnode = new SubnodeDao(result.getInt(4), result.getInt(7));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -266,6 +266,18 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return subnode;
+	}
+	
+	public int getNextSubnodePosition(int nodeid) {
+		int position = 0;
+		
+		for (SubnodeDao subnode : getSubnodes(nodeid)) {
+			if (subnode.getPosition() > position) {
+				position = subnode.getPosition();
+			}
+		}
+		
+		return ++position;
 	}
 	
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
