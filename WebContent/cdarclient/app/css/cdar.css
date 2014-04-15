@@ -40,6 +40,12 @@ body.dragging,body.dragging * {
   padding-top:2px;
   cursor: move;
 }
+
+.option {
+  padding: 10px;
+  padding-top:2px;
+  cursor: move;
+}
 	
 .connect {
   width: 100%;

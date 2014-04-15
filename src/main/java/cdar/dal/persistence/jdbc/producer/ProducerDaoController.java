@@ -15,15 +15,16 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	public List<TreeDao> getTrees() {
 		return getTrees(0);
 	}
-	
+
 	public List<TreeDao> getTrees(int uid) {
 		String getUsers = null;
-		if (uid==0) {
+		if (uid == 0) {
 			getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE";
 		} else {
-			getUsers = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;", uid);
+			getUsers = String
+					.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;",
+							uid);
 		}
-		
 
 		Connection connection = null;
 		Statement statement = null;
@@ -51,9 +52,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return trees;
 	}
-	
+
 	public TreeDao getTree(int id) {
-		final String getTreeByIdStatement = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;" , id);
+		final String getTreeByIdStatement = String
+				.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -78,12 +81,14 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
-		
+
 		return tree;
 	}
-	
+
 	public List<TemplateDao> getTemplates(int treeid) {
-		String getTemplates = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE KTRID = %d;", treeid);
+		String getTemplates = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE KTRID = %d;",
+						treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -102,7 +107,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				template.setLastModificationTime(result.getDate(3));
 				template.setTitle(result.getString(4));
 				template.setTemplatetext(result.getString(5));
-				template.setIsDefault(result.getInt(6)==1);
+				template.setIsDefault(result.getInt(6) == 1);
 				templates.add(template);
 			}
 		} catch (SQLException e) {
@@ -112,9 +117,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return templates;
 	}
-	
+
 	public TemplateDao getTemplate(int id) {
-		String getTemplate = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE ID = %d;", id);
+		String getTemplate = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT FROM KNOWLEDGETEMPLATE WHERE ID = %d;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -134,7 +141,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				template.setLastModificationTime(result.getDate(3));
 				template.setTitle(result.getString(4));
 				template.setTemplatetext(result.getString(5));
-				template.setIsDefault(result.getInt(7)==1);
+				template.setIsDefault(result.getInt(7) == 1);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -143,9 +150,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return template;
 	}
-	
+
 	public List<NodeDao> getNodes(int treeid) {
-		String getNodes = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.KTRID = %d AND NODE.ID = MAPPING.KNID;", treeid);
+		String getNodes = String
+				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.KTRID = %d AND NODE.ID = MAPPING.KNID;",
+						treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -167,7 +176,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setDid(result.getInt(7));
 				nodes.add(node);
-				
+
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -176,9 +185,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodes;
 	}
-	
+
 	public NodeDao getNode(int id) {
-		String getNode = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = %d AND NODE.ID = MAPPING.KNID;", id);
+		String getNode = String
+				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = %d AND NODE.ID = MAPPING.KNID;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -192,7 +203,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNode);
 			while (result.next()) {
-				node = new NodeDao(result.getInt(7),result.getInt(8));
+				node = new NodeDao(result.getInt(7), result.getInt(8));
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
@@ -207,9 +218,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return node;
 	}
-	
+
 	public List<SubnodeDao> getSubnodes(int nodeid) {
-		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+		String getSubnodes = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE KNID = %d;",
+						nodeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -237,9 +250,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return subnodes;
 	}
-	
+
 	public SubnodeDao getSubnode(int id) {
-		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getSubnode = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = %d;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -267,50 +282,60 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return subnode;
 	}
-	
+
 	public int getNextSubnodePosition(int nodeid) {
 		int position = 0;
-		
+
 		for (SubnodeDao subnode : getSubnodes(nodeid)) {
 			if (subnode.getPosition() > position) {
 				position = subnode.getPosition();
 			}
 		}
-		
+
 		return ++position;
 	}
-	
+
 	public void changeSubnodePosition(int nodeid, int id, int newPosition) {
 		int oldPosition = getSubnode(id).getPosition();
-		
+
 		for (SubnodeDao subnode : getSubnodes(nodeid)) {
-//			if (subnode.getId()==id) {
-//				subnode.setPosition(newPosition);
-//				subnode.update();
-//			} else {
-//				if (subnode.getPosition()<=newPosition) {
-//					subnode.setPosition(subnode.getPosition()-1);
-//					subnode.update();
-//				}
-//			}
-			if (oldPosition < newPosition) {
-				if (subnode.getPosition() > oldPosition && subnode.getPosition() <= newPosition) {
-					subnode.setPosition(subnode.getPosition()-1);
+			// if (subnode.getId()==id) {
+			// subnode.setPosition(newPosition);
+			// subnode.update();
+			// } else {
+			// if (subnode.getPosition()<=newPosition) {
+			// subnode.setPosition(subnode.getPosition()-1);
+			// subnode.update();
+			// }
+			// }
+			if (subnode.getId() == id) {
+				subnode.setPosition(newPosition);
+				subnode.update();
+			} else {
+				if (oldPosition < newPosition) {
+					if (subnode.getPosition() > oldPosition
+							&& subnode.getPosition() <= newPosition) {
+						subnode.setPosition(subnode.getPosition() - 1);
+						subnode.update();
+					}
 				}
-			}
-			
-			if (oldPosition > newPosition) {
-				if (subnode.getPosition() >= newPosition && subnode.getPosition()<oldPosition) {
-					subnode.setPosition(subnode.getPosition()+1);
+
+				if (oldPosition > newPosition) {
+					if (subnode.getPosition() >= newPosition
+							&& subnode.getPosition() < oldPosition) {
+						subnode.setPosition(subnode.getPosition() + 1);
+						subnode.update();
+					}
 				}
+
 			}
-			
-			
 		}
 	}
-	
+
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
-		String getNodeLinks = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;", treeid);
+		String getNodeLinks = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;",
+						treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -323,7 +348,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNodeLinks);
 			while (result.next()) {
-				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4), result.getInt(5), treeid);
+				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4),
+						result.getInt(5), treeid);
 				nodelink.setId(result.getInt(1));
 				nodelink.setCreationTime(result.getDate(2));
 				nodelink.setLastModificationTime(result.getDate(3));
@@ -334,12 +360,14 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
-		} 
+		}
 		return nodelinks;
 	}
-	
+
 	public NodeLinkDao getNodeLink(int id) {
-		String getNodeLink = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = %d;", id);
+		String getNodeLink = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = %d;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -353,7 +381,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getNodeLink);
 			while (result.next()) {
-				nodelink = new NodeLinkDao(result.getInt(4), result.getInt(5), result.getInt(6));
+				nodelink = new NodeLinkDao(result.getInt(4), result.getInt(5),
+						result.getInt(6));
 				nodelink.setId(result.getInt(1));
 				nodelink.setCreationTime(result.getDate(2));
 				nodelink.setLastModificationTime(result.getDate(3));
@@ -366,9 +395,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelink;
 	}
-	
+
 	public List<DirectoryDao> getDirectories(int treeid) {
-		String getDirectories = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM DIRECTORY WHERE KTRID = %d;", treeid);
+		String getDirectories = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM DIRECTORY WHERE KTRID = %d;",
+						treeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -396,9 +427,11 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return directories;
 	}
-	
+
 	public DirectoryDao getDirectory(int id) {
-		String getDirectory = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = %d;", id);
+		String getDirectory = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = %d;",
+						id);
 
 		Connection connection = null;
 		Statement statement = null;

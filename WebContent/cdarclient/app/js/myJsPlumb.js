@@ -20,6 +20,7 @@ function addHTMLNode(response, e) {
 	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
+	var option = $('<div>').addClass('option').hide();
 
 	newState.css({
 		// calculate coordinates of the cursor in element
@@ -32,7 +33,7 @@ function addHTMLNode(response, e) {
 	showNodeWikiEvent(newState);
 	makeTarget(newState);
 	makeSource(connect, newState);
-	appendElements(title, connect, newState, true);
+	appendElements(title, connect, newState, option);
 }
 
 // imported Nodes
@@ -55,7 +56,7 @@ function drawExistingNodes(data, resSubnodes) {
 					.data(SUBNODE, {
 						subnode : map[this.id]
 					});
-
+			var option = $('<div>').addClass('option').hide();
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
 			newState.css({
@@ -63,6 +64,18 @@ function drawExistingNodes(data, resSubnodes) {
 				'left' : 100
 			});
 
+			//if (map[this.id].length) {
+				console.log(map[this.id]);
+				var list =  $('<ul>');//.addClass('image');
+				jQuery.each(map[this.id], function(object) {
+					console.log(this);
+					list.append($('<li>').text(this.title));
+				});
+				option.append(list);
+		//	}
+
+			bindMouseEnterEndpoint(newState);
+			bindMouseExitEndpoint(newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -71,7 +84,7 @@ function drawExistingNodes(data, resSubnodes) {
 			makeTarget(newState);
 			makeSource(connect, newState);
 
-			appendElements(title, connect, newState);
+			appendElements(title, connect, newState, option);
 		}
 
 	});
@@ -214,8 +227,9 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 	}
 };
 
-function appendElements(title, connect, newState) {
+function appendElements(title, connect, newState, option) {
 	newState.append(title);
+	newState.append(option);
 	newState.append(connect);
 	$('#jsplumb-container').append(newState);
 };
@@ -233,10 +247,18 @@ function bindDetachConnectorEvent() {
 	});
 };
 
-// unused
-function bindBeforeDroppedConnector() {
-	jsPlumb.bind("beforeDrop", function(c) {
-		return true;
+function bindMouseEnterEndpoint(element) {
+	element.bind("mouseenter", function(endpoint) {
+		$('#' + endpoint.currentTarget.id + ' .option').show();
+	      jsPlumb.repaintEverything();
+	});
+};
+
+function bindMouseExitEndpoint(element) {
+	element.bind("mouseout", function(endpoint) {
+		$('#' + endpoint.currentTarget.id + ' .option').hide();
+	      jsPlumb.repaintEverything();
+
 	});
 };
 
