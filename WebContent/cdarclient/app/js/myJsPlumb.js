@@ -27,7 +27,10 @@ function addHTMLNode(response, e) {
 		'top' : e.pageY - $('#jsplumb-container').offset().top,
 		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
+	//bindClickEndpoint(newState);
 
+	//bindMouseEnterEndpoint(newState);
+	//bindMouseExitEndpoint(newState);
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
 	showNodeWikiEvent(newState);
@@ -64,18 +67,19 @@ function drawExistingNodes(data, resSubnodes) {
 				'left' : 100
 			});
 
-			//if (map[this.id].length) {
-				console.log(map[this.id]);
-				var list =  $('<ul>').addClass('optionList');
-				jQuery.each(map[this.id], function(object) {
-					console.log(this);
-					list.append($('<li>').text(this.title));
-				});
-				option.append(list);
-		//	}
+			// if (map[this.id].length) {
+			console.log(map[this.id]);
+			var list = $('<ul>').addClass('optionList');
+			jQuery.each(map[this.id], function(object) {
+				console.log(this);
+				list.append($('<li>').text(this.title));
+			});
+			option.append(list);
+			// }
 
-			bindMouseEnterEndpoint(newState);
-			bindMouseExitEndpoint(newState);
+			bindClickEndpoint(newState);
+			//bindMouseEnterEndpoint(newState);
+			//bindMouseExitEndpoint(newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -146,10 +150,6 @@ function makeSource(connect, newState) {
 		endpoint : [ "Dot", {
 			radius : 2
 		} ],
-		hoverPaintStyle : {
-			strokeStyle : "#1e8151",
-			lineWidth : 2
-		},
 		connectorOverlays : [ [ "Arrow", {
 			location : 1,
 			id : "arrow",
@@ -159,7 +159,6 @@ function makeSource(connect, newState) {
 			id : "label",
 			cssClass : "aLabel"
 		} ] ]
-
 	});
 };
 
@@ -194,8 +193,12 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 			} ],
 			endpoint : [ "Dot", {
 				radius : 2
-			} ]
-
+			} ],
+			endpointStyle : {
+				fillStyle : "blue",
+				outlineColor : "black",
+				outlineWidth : 1
+			}
 		});
 	} else {
 		jsPlumb.connect({
@@ -221,7 +224,12 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 			} ],
 			endpoint : [ "Dot", {
 				radius : 2
-			} ]
+			} ],
+			endpointStyle : {
+				fillStyle : "blue",
+				outlineColor : "black",
+				outlineWidth : 1
+			}
 
 		});
 	}
@@ -247,17 +255,24 @@ function bindDetachConnectorEvent() {
 	});
 };
 
+function bindClickEndpoint(element) {
+	element.bind("click", function(endpoint) {
+		$('#' + endpoint.currentTarget.id + ' .option').toggle();
+		jsPlumb.repaintEverything();
+	});
+};
+
 function bindMouseEnterEndpoint(element) {
 	element.bind("mouseenter", function(endpoint) {
 		$('#' + endpoint.currentTarget.id + ' .option').show();
-	      jsPlumb.repaintEverything();
+		jsPlumb.repaintEverything();
 	});
 };
 
 function bindMouseExitEndpoint(element) {
 	element.bind("mouseout", function(endpoint) {
 		$('#' + endpoint.currentTarget.id + ' .option').hide();
-	      jsPlumb.repaintEverything();
+		jsPlumb.repaintEverything();
 
 	});
 };
