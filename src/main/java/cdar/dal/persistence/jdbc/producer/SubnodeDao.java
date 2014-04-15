@@ -18,16 +18,19 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	private int knid;
 	private String title;
 	private String wikititle;
+	private int position;
 
-	public SubnodeDao(int knid) {
+	public SubnodeDao(int knid, int position) {
 		setKnid(knid);
 		setWikititle(String.format("SUBNODE_%d", getId()));
+		setPosition(position);
 	}
 
-	public SubnodeDao(int knid, String title) {
+	public SubnodeDao(int knid, int position, String title) {
 		setKnid(knid);
 		setTitle(title);
 		setWikititle(String.format("SUBNODE_%d", getId()));
+		setPosition(position);
 	}
 
 	public SubnodeDao(Subnode subnode) {
@@ -40,7 +43,6 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	}
 
 	public SubnodeDao() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -90,6 +92,14 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 	public void setWikititle(String wikititle) {
 		this.wikititle = wikititle;
 	}
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
 
 	@Override
 	public SubnodeDao create() {
@@ -124,12 +134,13 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE) VALUES (?, ?, ?, ?)",
+						"INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE, POSITION) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());
 		preparedStatement.setString(4, getWikititle());
+		preparedStatement.setInt(5, getPosition());
 
 		preparedStatement.executeUpdate();
 
@@ -147,12 +158,13 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ? WHERE id = ?",
+						"UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setInt(2, getKnid());
 		preparedStatement.setString(3, getTitle());
-		preparedStatement.setInt(4, getId());
+		preparedStatement.setInt(4, getPosition());
+		preparedStatement.setInt(5, getId());
 
 		preparedStatement.executeUpdate();
 

@@ -39,7 +39,9 @@ app.controller("HomeProducerController", [
 
 			$scope.deleteTree = function(id) {
 				TreeService.removeTree(id, function(response) {
-					reloadTrees();
+					if (response.bool) {
+						reloadTrees();
+					}
 				});
 			};
 			
@@ -204,7 +206,9 @@ app
 								TreeService.deleteSubnode({
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
-									getSubnodes();
+									if (response.bool) {
+										getSubnodes();
+									}
 								});
 							};
 							

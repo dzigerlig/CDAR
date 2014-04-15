@@ -10,8 +10,6 @@ import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 
 public class WikiEntry extends WikiEntity {
-	//private MediaWikiModel mwm = new MediaWikiModel();
-	
 	private String wikicontentplain;
 	private String wikicontenthtml;
 

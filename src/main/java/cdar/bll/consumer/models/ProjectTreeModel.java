@@ -59,7 +59,7 @@ public class ProjectTreeModel {
 		}
 
 		for (Subnode subnode : snm.getSubnodesFromTree(ktreeid)) {
-			ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(linkMapping.get(subnode.getKnid()));
+			ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(linkMapping.get(subnode.getKnid()), subnode.getPosition());
 			projectsubnode.setTitle(subnode.getTitle());
 			projectsubnode.setWikititle(subnode.getWikiTitle());
 			projectsubnode.create();

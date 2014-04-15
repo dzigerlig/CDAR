@@ -12,7 +12,7 @@ public class ProjectSubnodeModel {
 	private ConsumerDaoController cdc = new ConsumerDaoController();
 	
 	public ProjectSubnode addProjectSubnode(int kpnid, String title) {
-		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, title);
+		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, cdc.getNextProjectSubnodePosition(kpnid), title);
 		return new ProjectSubnode(projectSubnodeDao.create());
 	}
 	
@@ -47,6 +47,20 @@ public class ProjectSubnodeModel {
 		projectSubnodeDao.setKpnid(psn.getRefProjectNodeId());
 		projectSubnodeDao.setTitle(psn.getTitle());
 		return new ProjectSubnode(projectSubnodeDao.update());
+	}
+	
+	public void changeProjectSubnodePosition(int nodeid, int id, int position) {
+		for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(nodeid)) {
+			if (subnode.getId()==id) {
+				subnode.setPosition(position);
+				subnode.update();
+			} else {
+				if (subnode.getPosition()>=position) {
+					subnode.setPosition(subnode.getPosition()+1);
+					subnode.update();
+				}
+			}
+		}
 	}
 	
 	public boolean removeProjectSubnode(int id) {

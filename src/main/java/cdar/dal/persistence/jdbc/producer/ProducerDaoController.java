@@ -209,7 +209,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<SubnodeDao> getSubnodes(int nodeid) {
-		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
+		String getSubnodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE KNID = %d;", nodeid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -222,7 +222,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getSubnodes);
 			while (result.next()) {
-				SubnodeDao subnode = new SubnodeDao(nodeid);
+				SubnodeDao subnode = new SubnodeDao(nodeid, result.getInt(6));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -239,7 +239,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 	}
 	
 	public SubnodeDao getSubnode(int id) {
-		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
+		String getSubnode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -253,7 +253,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getSubnode);
 			while (result.next()) {
-				subnode = new SubnodeDao(result.getInt(4));
+				subnode = new SubnodeDao(result.getInt(4), result.getInt(7));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -266,6 +266,47 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return subnode;
+	}
+	
+	public int getNextSubnodePosition(int nodeid) {
+		int position = 0;
+		
+		for (SubnodeDao subnode : getSubnodes(nodeid)) {
+			if (subnode.getPosition() > position) {
+				position = subnode.getPosition();
+			}
+		}
+		
+		return ++position;
+	}
+	
+	public void changeSubnodePosition(int nodeid, int id, int newPosition) {
+		int oldPosition = getSubnode(id).getPosition();
+		
+		for (SubnodeDao subnode : getSubnodes(nodeid)) {
+//			if (subnode.getId()==id) {
+//				subnode.setPosition(newPosition);
+//				subnode.update();
+//			} else {
+//				if (subnode.getPosition()<=newPosition) {
+//					subnode.setPosition(subnode.getPosition()-1);
+//					subnode.update();
+//				}
+//			}
+			if (oldPosition < newPosition) {
+				if (subnode.getPosition() > oldPosition && subnode.getPosition() <= newPosition) {
+					subnode.setPosition(subnode.getPosition()-1);
+				}
+			}
+			
+			if (oldPosition > newPosition) {
+				if (subnode.getPosition() >= newPosition && subnode.getPosition()<oldPosition) {
+					subnode.setPosition(subnode.getPosition()+1);
+				}
+			}
+			
+			
+		}
 	}
 	
 	public List<NodeLinkDao> getNodeLinks(int treeid) {

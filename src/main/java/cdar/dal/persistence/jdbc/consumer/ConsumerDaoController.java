@@ -9,6 +9,7 @@ import java.util.List;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
 public class ConsumerDaoController extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {
@@ -144,6 +145,18 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 		return projectnode;
 	}
 	
+	public int getNextProjectSubnodePosition(int projectnodeid) {
+		int position = 0;
+		
+		for (ProjectSubnodeDao projectsubnode : getProjectSubnodes(projectnodeid)) {
+			if (projectsubnode.getPosition() > position) {
+				position = projectsubnode.getPosition();
+			}
+		}
+		
+		return ++position;
+	}
+	
 	public List<ProjectNodeLinkDao> getProjectNodeLinks(int treeid) {
 		String getProjectNodeLinks = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE KPTID = %d;", treeid);
 
@@ -202,7 +215,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 	
 	public List<ProjectSubnodeDao> getProjectSubnodes(int kpnid) {
-		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = %d;", kpnid);
+		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = %d;", kpnid);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -215,7 +228,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getProjectSubNodes);
 			while (result.next()) {
-				ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(kpnid);
+				ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(kpnid, result.getInt(6));
 				projectsubnode.setId(result.getInt(1));
 				projectsubnode.setCreationTime(result.getDate(2));
 				projectsubnode.setLastModificationTime(result.getDate(3));
@@ -232,7 +245,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 	}
 	
 	public ProjectSubnodeDao getProjectSubnode(int id) {
-		String getProjectSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = %d;", id);
+		String getProjectSubNode = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = %d;", id);
 
 		Connection connection = null;
 		Statement statement = null;
@@ -246,7 +259,7 @@ public class ConsumerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getProjectSubNode);
 			while (result.next()) {
-				projectsubnode = new ProjectSubnodeDao(result.getInt(4));
+				projectsubnode = new ProjectSubnodeDao(result.getInt(4), result.getInt(7));
 				projectsubnode.setId(result.getInt(1));
 				projectsubnode.setCreationTime(result.getDate(2));
 				projectsubnode.setLastModificationTime(result.getDate(3));
