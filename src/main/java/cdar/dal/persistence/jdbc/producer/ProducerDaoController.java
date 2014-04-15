@@ -295,43 +295,6 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		return ++position;
 	}
 
-	public void changeSubnodePosition(int nodeid, int id, int newPosition) {
-		int oldPosition = getSubnode(id).getPosition();
-
-		for (SubnodeDao subnode : getSubnodes(nodeid)) {
-			// if (subnode.getId()==id) {
-			// subnode.setPosition(newPosition);
-			// subnode.update();
-			// } else {
-			// if (subnode.getPosition()<=newPosition) {
-			// subnode.setPosition(subnode.getPosition()-1);
-			// subnode.update();
-			// }
-			// }
-			if (subnode.getId() == id) {
-				subnode.setPosition(newPosition);
-				subnode.update();
-			} else {
-				if (oldPosition < newPosition) {
-					if (subnode.getPosition() > oldPosition
-							&& subnode.getPosition() <= newPosition) {
-						subnode.setPosition(subnode.getPosition() - 1);
-						subnode.update();
-					}
-				}
-
-				if (oldPosition > newPosition) {
-					if (subnode.getPosition() >= newPosition
-							&& subnode.getPosition() < oldPosition) {
-						subnode.setPosition(subnode.getPosition() + 1);
-						subnode.update();
-					}
-				}
-
-			}
-		}
-	}
-
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
 		String getNodeLinks = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = %d;",
