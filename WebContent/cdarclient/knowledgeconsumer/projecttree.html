@@ -34,7 +34,7 @@
 				<div class="col-md-8">
 					<h1>
 						<a id="menu-toggle" class="btn btn-default"><i
-							class="icon-reorder"></i></a> Project Tree: {{projecttree.name}}
+							class="icon-reorder"></i></a> Project Tree: {{projecttree.title}}
 					</h1>
 				</div>
 				<div class="col-md-4" style="text-align: right">
@@ -62,9 +62,10 @@
 								<div class="col-xs-6">
 									<select class="form-control input-sm" id="knowledgeTreeList"
 										data-ng-model="selectedktreeId">
+										<option style="display:none" value="">select a tree</option>
 										<option
 											data-ng-repeat="tree in knowledgetrees | orderBy:'id':false"
-											value="{{tree.id}}">{{tree.name}}</option>
+											value="{{tree.id}}">{{tree.title}}</option>
 									</select>
 								</div>
 								<div class="col-xs-6">
