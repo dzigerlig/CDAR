@@ -23,6 +23,10 @@ public class CDAR_TreeSimpleExport {
 	private List<NodeLinkDao> links;
 	private List<DirectoryDao> directories;
 	
+	public CDAR_TreeSimpleExport() {
+		this(1);
+	}
+	
 	public CDAR_TreeSimpleExport(int treeid) {
 		setTree(pdc.getTree(treeid));
 		setTemplates(pdc.getTemplates(treeid));
