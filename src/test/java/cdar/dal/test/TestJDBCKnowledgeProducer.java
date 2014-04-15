@@ -219,8 +219,6 @@ public class TestJDBCKnowledgeProducer {
 		SubnodeDao subnode4 = new SubnodeDao(node.getId(), kpdc.getNextSubnodePosition(node.getId()), "MyKnowledgeSubnode");
 		subnode4.create();
 		assertEquals(4, kpdc.getSubnodes(node.getId()).size());
-		
-		//
 		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
 		assertEquals(2, kpdc.getSubnode(subnode2.getId()).getPosition());
 		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
@@ -230,11 +228,26 @@ public class TestJDBCKnowledgeProducer {
 		assertEquals(1, kpdc.getSubnode(subnode2.getId()).getPosition());
 		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
 		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
-//		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 3);
-//		assertEquals(3, kpdc.getSubnode(subnode.getId()).getPosition());
-//		assertEquals(1, kpdc.getSubnode(subnode2.getId()).getPosition());
-//		assertEquals(2, kpdc.getSubnode(subnode3.getId()).getPosition());
-//		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 1);
+		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(2, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 4);
+		assertEquals(4, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(1, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(2, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode4.getId()).getPosition());
+		kpdc.changeSubnodePosition(node.getId(), subnode.getId(), 1);
+		assertEquals(1, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(2, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(4, kpdc.getSubnode(subnode4.getId()).getPosition());
+		kpdc.changeSubnodePosition(node.getId(), subnode4.getId(), 1);
+		assertEquals(2, kpdc.getSubnode(subnode.getId()).getPosition());
+		assertEquals(3, kpdc.getSubnode(subnode2.getId()).getPosition());
+		assertEquals(4, kpdc.getSubnode(subnode3.getId()).getPosition());
+		assertEquals(1, kpdc.getSubnode(subnode4.getId()).getPosition());
 	}
 	
 	@Test
