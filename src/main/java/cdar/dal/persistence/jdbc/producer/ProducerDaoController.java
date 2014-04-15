@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
@@ -293,6 +294,10 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 
 		return ++position;
+	}
+	
+	public Set<SubnodeDao> getSubnodesByTree(int treeid) {
+		return null;
 	}
 
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
