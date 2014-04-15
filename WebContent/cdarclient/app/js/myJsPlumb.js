@@ -66,7 +66,7 @@ function drawExistingNodes(data, resSubnodes) {
 
 			//if (map[this.id].length) {
 				console.log(map[this.id]);
-				var list =  $('<ul>');//.addClass('image');
+				var list =  $('<ul>').addClass('optionList');
 				jQuery.each(map[this.id], function(object) {
 					console.log(this);
 					list.append($('<li>').text(this.title));
