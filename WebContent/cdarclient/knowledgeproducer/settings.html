@@ -1,0 +1,109 @@
+
+<body>
+	<div id="wrapper">
+		<div id="sidebar-wrapper">
+			<div id="consumer" data-ng-hide="UserService.user.isProducer">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand sidebar-cdar"><a
+						href="#/homeconsumer"><strong>CDAR</strong></a></li>
+					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
+						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
+								KnowledgeConsumer</small></a></li>
+					<li><a href="#/homeconsumer">Overview</a></li>
+					<li><a href="#/account">Account</a></li>
+					<li><a href="#/logout">Logout</a></li>
+				</ul>
+			</div>
+			<div id="producer" data-ng-show="UserService.user.isProducer">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand sidebar-cdar"><a
+						href="#/homeproducer"><strong>CDAR</strong></a></li>
+					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
+						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
+								KnowledgeProducer</small></a></li>
+					<li><a href="#/homeproducer">Overview</a></li>
+					<li><a href="#/account">Account</a></li>
+					<li><a href="#/logout">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="page-content-wrapper">
+			<div class="content-header">
+				<div class="col-md-8">
+					<h1>
+						<a id="menu-toggle" class="btn btn-default"><i
+							class="icon-reorder"></i></a> CDAR - Knowledge Producer
+					</h1>
+				</div>
+				<div class="col-md-4" style="text-align: right">
+					<h3>
+						<a href="#/account" style="color: inherit; text-decoration: none;">
+							<span><img src="app/img/user.png" height="42" width="42" /></span>
+							<span>{{UserService.user.username}}</span>
+						</a>
+					</h3>
+				</div>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="lead">Tree settings: 
+							{{knowledgetree.name}}</p>
+					</div>
+					<div class="col-md-2">
+						<a class="btn btn-md btn-primary btn-block"
+							href="#/knowledgetree/{{knowledgetree.id}}">back to tree</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form id="formTreeXml" data-role="form"
+							data-ng-submit="addNewSimpleXmlTree()">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th class="col-md-1">#</th>
+										<th class="col-md-1">Uid</th>
+										<th class="col-md-1">Ktrid</th>
+										<th class="col-md-5">XmlString</th>
+										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="xmltree in treesXml | orderBy:'id':false">
+										<td>{{$index+1}}</td>
+										<td>{{xmltree.uid}}</td>
+										<td>{{xmltree.ktrid}}</td>
+										<td>{{xmltree.xmlString}}</td>
+										<td><a
+											data-ng-click="setXmlTree(xmltree.id)"
+											href="">Set this one</a></td>
+										<td><a data-ng-click="deleteXmlTree(xmltree.id)"
+											href="">Delete XmlTree</a></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><div class="input-append">
+												<button class="btn btn-success" type="submit">Add
+													new xmlTree</button>
+											</div></td>
+										<td colspan="3"></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>
+</body>
