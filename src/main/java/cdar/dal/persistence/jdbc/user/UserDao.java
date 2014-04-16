@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import cdar.bll.user.User;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
@@ -14,6 +17,7 @@ import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
+@XmlRootElement
 public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 
 	private int id;
@@ -49,6 +53,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return id;
 	}
 
+	@XmlElement
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -57,6 +62,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return creationTime;
 	}
 
+	@XmlElement
 	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
 	}
@@ -65,6 +71,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return lastModificationTime;
 	}
 
+	@XmlElement
 	public void setLastModificationTime(Date lastModificationTime) {
 		this.lastModificationTime = lastModificationTime;
 	}
@@ -73,6 +80,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return username;
 	}
 
+	@XmlElement
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -81,6 +89,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return password;
 	}
 
+	@XmlElement
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -89,6 +98,7 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 		return accesstoken;
 	}
 
+	@XmlElement
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
 	}
