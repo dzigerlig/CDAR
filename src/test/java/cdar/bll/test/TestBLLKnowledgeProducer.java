@@ -506,4 +506,44 @@ public class TestBLLKnowledgeProducer {
 		DirectoryModel dm = new DirectoryModel();
 		assertFalse(dm.deleteDirectory(unknownId));
 	}
+	
+	@Test
+	public void testSimpleTreeExportAndImport() {
+		
+		NodeModel nm = new NodeModel();
+		SubnodeModel snm = new SubnodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		NodeLinkModel nlm = new NodeLinkModel();
+		TemplateModel tmm = new TemplateModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		//before copy
+		Template template1 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 1");
+		Template template2 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 2");
+		Directory directory1 = dm.addDirectory(tree.getId(), directoryId, "Directory 1");
+		Directory directory2 = dm.addDirectory(tree.getId(), directoryId, "Directory 2");
+		Directory directory3 = dm.addDirectory(tree.getId(), directory2.getId(), "Directory 3");
+		Node node1 = nm.addNode(tree.getId(), "Node 1", directoryId);
+		Node node2 = nm.addNode(tree.getId(), "Node 2", directoryId);
+		Node node3 = nm.addNode(tree.getId(), "Node 3", directoryId);
+		Node node4 = nm.addNode(tree.getId(), "Node 4", directoryId);
+		Node node5 = nm.addNode(tree.getId(), "Node 5", directoryId);
+		Node node6 = nm.addNode(tree.getId(), "Node 6", directoryId);
+		Subnode subnode1 = snm.addSubnode(node1.getId(), "Subnode 1");
+		Subnode subnode2 = snm.addSubnode(node4.getId(), "Subnode 2");
+		Subnode subnode3 = snm.addSubnode(node4.getId(), "Subnode 3");
+		Subnode subnode4 = snm.addSubnode(node5.getId(), "Subnode 4");
+		NodeLink nodeLink1 = nlm.addNodeLink(tree.getId(), node1.getId(), node2.getId(), subnode1.getId());
+		NodeLink nodeLink2 = nlm.addNodeLink(tree.getId(), node3.getId(), node4.getId(), subnode2.getId());
+		NodeLink nodeLink3 = nlm.addNodeLink(tree.getId(), node6.getId(), node5.getId(), 0);
+		assertEquals(2, tmm.getKnowledgeTemplates(tree.getId()).size());
+		assertEquals(4, dm.getDirectories(tree.getId()).size());
+		assertEquals(6, nm.getNodes(tree.getId()).size());
+		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
+		//copy
+		
+		//after copy
+		
+	}
 }
