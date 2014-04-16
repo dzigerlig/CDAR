@@ -66,6 +66,10 @@ function drawExistingNodes(data, resSubnodes) {
 			var option = $('<div>').addClass('option').hide();
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
+			var downtree = $('<div>').addClass('downtree');
+			var uptree = $('<div>').addClass('uptree');
+			newState.append(downtree);
+			newState.append(uptree);
 			newState.css({
 				'top' : 100,
 				'left' : 100
