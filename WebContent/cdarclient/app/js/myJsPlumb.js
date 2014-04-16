@@ -269,23 +269,26 @@ function removeNodeEvent(newState) {
 
 function detachNode(id) {
 	var newState = $('#' + NODE + id);
-	var allTargetConnection = jsPlumb.getConnections({
-		target : newState
-	});
-	var allSourceConnection = jsPlumb.getConnections({
-		source : newState
-	});
-	jQuery.each(allTargetConnection, function() {
-		scope.deleteLink(this.id.replace(LINK, ""));
-	});
 
-	jQuery.each(allSourceConnection, function() {
-		scope.deleteLink(this.id.replace(LINK, ""));
-	});
+	if (newState.size() !== 0) {
+		var allTargetConnection = jsPlumb.getConnections({
+			target : newState
+		});
+		var allSourceConnection = jsPlumb.getConnections({
+			source : newState
+		});
+		jQuery.each(allTargetConnection, function() {
+			scope.deleteLink(this.id.replace(LINK, ""));
+		});
 
-	scope.undropNode(newState[0].id.replace(NODE, ""));
-	jsPlumb.detachAllConnections($(newState));
-	$(newState).remove();
+		jQuery.each(allSourceConnection, function() {
+			scope.deleteLink(this.id.replace(LINK, ""));
+		});
+
+		scope.undropNode(newState[0].id.replace(NODE, ""));
+		jsPlumb.detachAllConnections($(newState));
+		$(newState).remove();
+	}
 }
 
 function showNodeWikiEvent(newState) {
@@ -356,29 +359,30 @@ function bindConnection() {
 };
 
 function updateSubnodesOfNode(resSubnode, nodeId, changes) {
-
-	var options = $("#node" + nodeId).data("subnode");
-	var optionList = $('#' + NODE + nodeId + ' .option');
-	options.subnode = resSubnode;
-	optionList.empty();
-	jQuery.each(resSubnode, function(object) {
-		optionList.append($('<li>').text(this.title));
-	});
-
-	if (changes !== null) {
-		var allSourceConnection = jsPlumb.getConnections({
-			source : $("#node" + nodeId)
+	if ($("#node" + nodeId).size() !== 0) {
+		var options = $("#node" + nodeId).data("subnode");
+		var optionList = $('#' + NODE + nodeId + ' .option');
+		options.subnode = resSubnode;
+		optionList.empty();
+		jQuery.each(resSubnode, function(object) {
+			optionList.append($('<li>').text(this.title));
 		});
 
-		var map = {};
-		jQuery.each(changes, function(object) {
-			map[this.id] = true;
-		});
-		jQuery.each(allSourceConnection, function(object) {
-			if (map[this.id.replace(LINK, "")]) {
-				jsPlumb.detach(this);
-			}
-		});
+		if (changes !== null) {
+			var allSourceConnection = jsPlumb.getConnections({
+				source : $("#node" + nodeId)
+			});
+
+			var map = {};
+			jQuery.each(changes, function(object) {
+				map[this.id] = true;
+			});
+			jQuery.each(allSourceConnection, function(object) {
+				if (map[this.id.replace(LINK, "")]) {
+					jsPlumb.detach(this);
+				}
+			});
+		}
 	}
 };
 
