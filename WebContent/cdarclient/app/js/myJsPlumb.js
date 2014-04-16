@@ -17,26 +17,28 @@ function initializeJsPlumb() {
 };
 
 function addHTMLNode(response, e) {
-	var newState = $('<div>').attr('id', NODE + response.id).addClass('w');
+	var newState = $('<div>').attr('id', NODE + response.id).addClass('w').data(SUBNODE, {
+		subnode : null
+	});
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
 	var option = $('<div>').addClass('option').hide();
+	var list = $('<ul>').addClass('optionList');
+	option.append(list);
 
 	newState.css({
 		// calculate coordinates of the cursor in element
 		'top' : e.pageY - $('#jsplumb-container').offset().top,
 		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
-	//bindClickEndpoint(newState);
-
-	//bindMouseEnterEndpoint(newState);
-	//bindMouseExitEndpoint(newState);
+	bindClickEndpoint(newState);
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
 	showNodeWikiEvent(newState);
 	makeTarget(newState);
 	makeSource(connect, newState);
 	appendElements(title, connect, newState, option);
+	scope.getSubnodesOfNode(response.id);
 }
 
 // imported Nodes
@@ -67,19 +69,15 @@ function drawExistingNodes(data, resSubnodes) {
 				'left' : 100
 			});
 
-			// if (map[this.id].length) {
-			console.log(map[this.id]);
-			var list = $('<ul>').addClass('optionList');
-			jQuery.each(map[this.id], function(object) {
-				console.log(this);
-				list.append($('<li>').text(this.title));
-			});
-			option.append(list);
-			// }
+			if (map[this.id] !== undefined) {
+				var list = $('<ul>').addClass('optionList');
+				jQuery.each(map[this.id], function(object) {
+					list.append($('<li>').text(this.title));
+				});
+				option.append(list);
+			}
 
 			bindClickEndpoint(newState);
-			//bindMouseEnterEndpoint(newState);
-			//bindMouseExitEndpoint(newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -262,45 +260,33 @@ function bindClickEndpoint(element) {
 	});
 };
 
-function bindMouseEnterEndpoint(element) {
-	element.bind("mouseenter", function(endpoint) {
-		$('#' + endpoint.currentTarget.id + ' .option').show();
-		jsPlumb.repaintEverything();
-	});
-};
-
-function bindMouseExitEndpoint(element) {
-	element.bind("mouseout", function(endpoint) {
-		$('#' + endpoint.currentTarget.id + ' .option').hide();
-		jsPlumb.repaintEverything();
-
-	});
-};
 
 function removeNodeEvent(newState) {
 	newState.dblclick(function(e) {
-
-		var allTargetConnection = jsPlumb.getConnections({
-			target : newState
-		});
-		var allSourceConnection = jsPlumb.getConnections({
-			source : newState
-		});
-
-		jQuery.each(allTargetConnection, function() {
-			scope.deleteLink(this.id.replace(LINK, ""));
-		});
-
-		jQuery.each(allSourceConnection, function() {
-			scope.deleteLink(this.id.replace(LINK, ""));
-		});
-
-		scope.undropNode(newState[0].id.replace(NODE, ""));
-		jsPlumb.detachAllConnections($(this));
-		$(this).remove();
-		e.stopPropagation();
+		detachNode(newState[0].id.replace(NODE, ""));
 	});
 };
+
+function detachNode(id){
+	var newState = $('#'+NODE+id);
+	var allTargetConnection = jsPlumb.getConnections({
+		target : newState
+	});
+	var allSourceConnection = jsPlumb.getConnections({
+		source : newState
+	});
+	jQuery.each(allTargetConnection, function() {
+		scope.deleteLink(this.id.replace(LINK, ""));
+	});
+
+	jQuery.each(allSourceConnection, function() {
+		scope.deleteLink(this.id.replace(LINK, ""));
+	});
+
+	scope.undropNode(newState[0].id.replace(NODE, ""));
+	jsPlumb.detachAllConnections($(newState));
+	$(newState).remove();
+}
 
 function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
@@ -371,8 +357,13 @@ function bindConnection() {
 
 function updateSubnodesOfNode(resSubnode, nodeId) {
 	var options = $("#node" + nodeId).data("subnode");
-	if (options !== null) {
+	//if (options !== null) {
+		var optionList = $('#' + NODE + nodeId + ' .optionList');
 		options.subnode = resSubnode;
-	}
+		optionList.empty();
+		jQuery.each(resSubnode, function(object) {
+			optionList.append($('<li>').text(this.title));
+		});
+	//}
 };
 
