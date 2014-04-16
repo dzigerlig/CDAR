@@ -142,15 +142,15 @@ app
 										changes = idObject;
 									}
 									identity = $scope.selectedNodeId;
-								}
-								else{
+								} else {
 									identity = idObject;
 								}
 								TreeService.getSubnodes({
 									ktreeid : $scope.knowledgetree.id,
 									entityid : identity
 								}, function(response) {
-									updateSubnodesOfNode(response, identity,changes);
+									updateSubnodesOfNode(response, identity,
+											changes);
 								});
 							};
 
@@ -465,7 +465,11 @@ app
 							$scope.deleteDirectory = function(id) {
 								TreeService.deleteDirectory({
 									ktreeid : $routeParams.treeId
-								}, id);
+								}, id, function(response) {
+									if (response.bool) {
+										removeNodes(response.changedEntities);
+									}
+								});
 							};
 
 							$scope.moveDirectory = function(id, newParentId) {
