@@ -130,12 +130,13 @@ app
 								});
 							};
 							
-							var getSubnodesOfNode = function() {
-								TreeService.getSubnodes({
+							$scope.getSubnodesOfNode = function(id) {
+								var identity=id===undefined?$scope.selectedNodeId:id;
+									TreeService.getSubnodes({
 									ktreeid : $scope.knowledgetree.id,
-									entityid : $scope.selectedNodeId
+									entityid : identity
 								}, function(response) {
-									updateSubnodesOfNode(response,$scope.selectedNodeId);
+									updateSubnodesOfNode(response,identity);
 								});
 							};
 							
@@ -161,7 +162,7 @@ app
 									knid : $scope.selectedNodeId,
 									title : $scope.newSubnodeName
 								}, function(response) {
-									getSubnodesOfNode();
+									$scope.getSubnodesOfNode();
 									getSubnodes();
 									$scope.newSubnodeName = '';
 								});
@@ -207,7 +208,8 @@ app
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
 									if (response.bool) {
-										getSubnodes();
+										$scope.getSubnodesOfNode();
+										getSubnodes(); 
 									}
 								});
 							};
@@ -342,6 +344,8 @@ app
 							};
 
 							$scope.deleteNode = function(id) {
+								console.log(id);
+								detachNode(id);
 								TreeService.deleteNode({
 									ktreeid : $routeParams.treeId
 								}, id);
