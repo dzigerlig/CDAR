@@ -21,7 +21,7 @@ public class JAXBTests {
 		System.out.println(marshalledUser);
 		
 		System.out.println("CDAR:");
-		CDAR_TreeSimpleExport tse = new CDAR_TreeSimpleExport();
+		CDAR_TreeSimpleExport tse = new CDAR_TreeSimpleExport(1);
 		System.out.println("Tree: " + tse.getTree().getTitle());
 		System.out.println("Templates: " + tse.getTemplates().size());
 		System.out.println("Nodes: " + tse.getNodes().size());
@@ -29,6 +29,23 @@ public class JAXBTests {
 		System.out.println("Links: " + tse.getLinks().size());
 		System.out.println("Directories: " + tse.getDirectories().size());
 		
+		System.out.println("XML:");
+		
+		String marshalledTree = createXmlString(tse);
+		System.out.println(marshalledTree);
+	}
+
+	private static String createXmlString(CDAR_TreeSimpleExport tse) {
+		try {
+			final Marshaller m = JAXBContext.newInstance(CDAR_TreeSimpleExport.class).createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			final StringWriter w = new StringWriter();
+			m.marshal(tse, w);
+			return w.toString();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private static String createXmlString(UserDao user) {

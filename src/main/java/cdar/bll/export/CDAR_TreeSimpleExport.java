@@ -1,7 +1,9 @@
 package cdar.bll.export;
 
 import java.util.List;
-import java.util.Set;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
@@ -11,21 +13,17 @@ import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
+@XmlRootElement
 public class CDAR_TreeSimpleExport {
 	private int treeId;
 	private ProducerDaoController pdc = new ProducerDaoController();
 	
-	//XML Elements:
 	private TreeDao tree;
 	private List<TemplateDao> templates;
 	private List<NodeDao> nodes;
 	private List<SubnodeDao> subnodes;
 	private List<NodeLinkDao> links;
 	private List<DirectoryDao> directories;
-	
-	public CDAR_TreeSimpleExport() {
-		this(1);
-	}
 	
 	public CDAR_TreeSimpleExport(int treeid) {
 		setTree(pdc.getTree(treeid));
@@ -39,7 +37,7 @@ public class CDAR_TreeSimpleExport {
 	public int getTreeId() {
 		return treeId;
 	}
-
+	
 	public void setTreeId(int treeId) {
 		this.treeId = treeId;
 	}
@@ -48,6 +46,7 @@ public class CDAR_TreeSimpleExport {
 		return tree;
 	}
 
+	@XmlElement
 	public void setTree(TreeDao tree) {
 		this.tree = tree;
 	}
@@ -56,6 +55,7 @@ public class CDAR_TreeSimpleExport {
 		return templates;
 	}
 
+	@XmlElement
 	public void setTemplates(List<TemplateDao> templates) {
 		this.templates = templates;
 	}
@@ -64,6 +64,7 @@ public class CDAR_TreeSimpleExport {
 		return nodes;
 	}
 
+	@XmlElement
 	public void setNodes(List<NodeDao> nodes) {
 		this.nodes = nodes;
 	}
@@ -72,6 +73,7 @@ public class CDAR_TreeSimpleExport {
 		return subnodes;
 	}
 
+	@XmlElement
 	public void setSubnodes(List<SubnodeDao> subnodes) {
 		this.subnodes = subnodes;
 	}
@@ -80,6 +82,7 @@ public class CDAR_TreeSimpleExport {
 		return links;
 	}
 
+	@XmlElement
 	public void setLinks(List<NodeLinkDao> links) {
 		this.links = links;
 	}
@@ -88,6 +91,7 @@ public class CDAR_TreeSimpleExport {
 		return directories;
 	}
 
+	@XmlElement
 	public void setDirectories(List<DirectoryDao> directories) {
 		this.directories = directories;
 	}
