@@ -1,5 +1,6 @@
 package cdar.pl.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -292,6 +293,7 @@ public class TreeController {
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
-		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id), lm.getNodeLinksBySubnode(id));
+		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
+		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id), nodelinks);
 	}
 }
