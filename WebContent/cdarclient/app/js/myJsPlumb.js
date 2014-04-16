@@ -291,7 +291,7 @@ function detachNode(id){
 function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
 		scope.changeNode(newState[0].id.replace(NODE, ""),
-				newState[0].textContent);
+				$('#' + newState[0].id + ' .title').text());
 	});
 };
 
