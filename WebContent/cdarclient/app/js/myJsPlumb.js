@@ -267,6 +267,12 @@ function removeNodeEvent(newState) {
 	});
 };
 
+function removeNodes(deletedNodes){
+	jQuery.each(deletedNodes, function(object) {
+		detach(this.id);
+	});
+}
+
 function detachNode(id) {
 	var newState = $('#' + NODE + id);
 
