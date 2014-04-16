@@ -17,9 +17,10 @@ function initializeJsPlumb() {
 };
 
 function addHTMLNode(response, e) {
-	var newState = $('<div>').attr('id', NODE + response.id).addClass('w').data(SUBNODE, {
-		subnode : null
-	});
+	var newState = $('<div>').attr('id', NODE + response.id).addClass('w')
+			.data(SUBNODE, {
+				subnode : null
+			});
 	var title = $('<div>').addClass('title').text(response.title);
 	var connect = $('<div>').addClass('ep');
 	var option = $('<div>').addClass('option').hide();
@@ -260,15 +261,14 @@ function bindClickEndpoint(element) {
 	});
 };
 
-
 function removeNodeEvent(newState) {
 	newState.dblclick(function(e) {
 		detachNode(newState[0].id.replace(NODE, ""));
 	});
 };
 
-function detachNode(id){
-	var newState = $('#'+NODE+id);
+function detachNode(id) {
+	var newState = $('#' + NODE + id);
 	var allTargetConnection = jsPlumb.getConnections({
 		target : newState
 	});
@@ -290,8 +290,8 @@ function detachNode(id){
 
 function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
-		scope.changeNode(newState[0].id.replace(NODE, ""),
-				$('#' + newState[0].id + ' .title').text());
+		scope.changeNode(newState[0].id.replace(NODE, ""), $(
+				'#' + newState[0].id + ' .title').text());
 	});
 };
 
@@ -355,15 +355,27 @@ function bindConnection() {
 					});
 };
 
-function updateSubnodesOfNode(resSubnode, nodeId) {
+function updateSubnodesOfNode(resSubnode, nodeId, changes) {
+
 	var options = $("#node" + nodeId).data("subnode");
-	//if (options !== null) {
-		var optionList = $('#' + NODE + nodeId + ' .optionList');
-		options.subnode = resSubnode;
-		optionList.empty();
-		jQuery.each(resSubnode, function(object) {
-			optionList.append($('<li>').text(this.title));
+	var optionList = $('#' + NODE + nodeId + ' .optionList');
+	options.subnode = resSubnode;
+	optionList.empty();
+
+	var allSourceConnection = jsPlumb.getConnections({
+		source : $("#node" + nodeId)
+	});
+
+	if (changes !== null) {
+		var map = {};
+		jQuery.each(changes, function(object) {
+			map[this.id] = true;
 		});
-	//}
+		jQuery.each(allSourceConnection, function(object) {
+			if (map[this.id.replace(LINK, "")]) {
+				jsPlumb.detach(this);
+			}
+		});
+	}
 };
 
