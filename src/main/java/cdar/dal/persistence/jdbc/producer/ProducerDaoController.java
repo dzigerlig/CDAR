@@ -358,6 +358,38 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelinks;
 	}
+	
+	public List<NodeLinkDao> getNodeLinksBySubnode(int subnodeid) {
+		String getNodeLinks = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE KSNID = %d;",
+						subnodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<NodeLinkDao> nodelinks = new ArrayList<NodeLinkDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodeLinks);
+			while (result.next()) {
+				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4),
+						result.getInt(5), result.getInt(7));
+				nodelink.setId(result.getInt(1));
+				nodelink.setCreationTime(result.getDate(2));
+				nodelink.setLastModificationTime(result.getDate(3));
+				nodelink.setKsnid(result.getInt(6));
+				nodelinks.add(nodelink);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return nodelinks;
+	}
 
 	public NodeLinkDao getNodeLink(int id) {
 		String getNodeLink = String

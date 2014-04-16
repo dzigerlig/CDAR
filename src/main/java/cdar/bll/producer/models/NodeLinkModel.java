@@ -1,6 +1,8 @@
 package cdar.bll.producer.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import cdar.bll.producer.NodeLink;
@@ -45,5 +47,15 @@ public class NodeLinkModel {
 
 	public NodeLink getNodeLink(int id) {
 		return new NodeLink(pdc.getNodeLink(id));
+	}
+
+	public List<NodeLink> getNodeLinksBySubnode(int subnodeid) {
+		List<NodeLink> nodeLinks = new ArrayList<NodeLink>();
+
+		for (NodeLinkDao nld : pdc.getNodeLinksBySubnode(subnodeid)) {
+			nodeLinks.add(new NodeLink(nld));
+		}
+		
+		return nodeLinks;
 	}
 }

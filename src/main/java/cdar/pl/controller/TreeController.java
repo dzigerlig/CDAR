@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import cdar.bll.CDAR_Boolean;
+import cdar.bll.CDAR_BooleanChanges;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -290,7 +291,7 @@ public class TreeController {
 	@POST
 	@Path("subnodes/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteSubnode(int id) {
-		return new CDAR_Boolean(sm.deleteSubnode(id));
+	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
+		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id), lm.getNodeLinksBySubnode(id));
 	}
 }
