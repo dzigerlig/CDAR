@@ -19,7 +19,7 @@ public class CDAR_TreeSimpleExport {
 	private TreeDao tree;
 	private List<TemplateDao> templates;
 	private List<NodeDao> nodes;
-	private Set<SubnodeDao> subnodes;
+	private List<SubnodeDao> subnodes;
 	private List<NodeLinkDao> links;
 	private List<DirectoryDao> directories;
 	
@@ -68,11 +68,11 @@ public class CDAR_TreeSimpleExport {
 		this.nodes = nodes;
 	}
 
-	public Set<SubnodeDao> getSubnodes() {
+	public List<SubnodeDao> getSubnodes() {
 		return subnodes;
 	}
 
-	public void setSubnodes(Set<SubnodeDao> subnodes) {
+	public void setSubnodes(List<SubnodeDao> subnodes) {
 		this.subnodes = subnodes;
 	}
 

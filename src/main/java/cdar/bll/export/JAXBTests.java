@@ -19,6 +19,16 @@ public class JAXBTests {
 		String marshalledUser = createXmlString(user);
 		
 		System.out.println(marshalledUser);
+		
+		System.out.println("CDAR:");
+		CDAR_TreeSimpleExport tse = new CDAR_TreeSimpleExport();
+		System.out.println("Tree: " + tse.getTree().getTitle());
+		System.out.println("Templates: " + tse.getTemplates().size());
+		System.out.println("Nodes: " + tse.getNodes().size());
+		System.out.println("Subnodes: " + tse.getSubnodes().size());
+		System.out.println("Links: " + tse.getLinks().size());
+		System.out.println("Directories: " + tse.getDirectories().size());
+		
 	}
 
 	private static String createXmlString(UserDao user) {

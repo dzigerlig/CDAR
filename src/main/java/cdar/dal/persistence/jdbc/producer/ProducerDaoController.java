@@ -296,9 +296,36 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		return ++position;
 	}
 	
-	public Set<SubnodeDao> getSubnodesByTree(int treeid) {
-		//SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM KNOWLEDGESUBNODE AS SUBNODE JOIN KNOWLEDGENODE ON KNOWLEDGENODE.ID = SUBNODE.KNID WHERE KNOWLEDGENODE.KTRID = 1;
-		return null;
+	public List<SubnodeDao> getSubnodesByTree(int treeid) {
+		String getSubnodesByTree = String
+				.format("SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM KNOWLEDGESUBNODE AS SUBNODE JOIN KNOWLEDGENODE ON KNOWLEDGENODE.ID = SUBNODE.KNID WHERE KNOWLEDGENODE.KTRID = %d;",
+						treeid);
+		
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<SubnodeDao> subnodes = new ArrayList<SubnodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getSubnodesByTree);
+			while (result.next()) {
+				SubnodeDao subnode = new SubnodeDao(result.getInt(4), result.getInt(7));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
 	}
 
 	public List<NodeLinkDao> getNodeLinks(int treeid) {
