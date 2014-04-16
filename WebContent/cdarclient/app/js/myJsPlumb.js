@@ -58,6 +58,7 @@ function drawExistingNodes(data, resSubnodes) {
 
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
+			map[this.id].sort(function(a,b) { return parseInt(a.position) - parseInt(b.position); });
 			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
 					.data(SUBNODE, {
 						subnode : map[this.id]
@@ -370,6 +371,8 @@ function updateSubnodesOfNode(resSubnode, nodeId, changes) {
 		var optionList = $('#' + NODE + nodeId + ' .option');
 		options.subnode = resSubnode;
 		optionList.empty();
+		resSubnode.sort(function(a,b) { return parseInt(a.position) - parseInt(b.position); });
+
 		jQuery.each(resSubnode, function(object) {
 			optionList.append($('<li>').text(this.title));
 		});

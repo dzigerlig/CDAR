@@ -34,12 +34,14 @@ $(function() {
 	$('#jstree').on("select_node.jstree", function(e, data) {
 		if (data.node.type !== 'default' && data.node.type !== 'root') {
 			var id = data.selected[0];
-			// if (data.node.type !== 'default') {
 			id = id.replace(NODE, "");
-			// }
 			id = id.replace(DIRECTORY, "");
 			scope.changeNode(id, data.node.text);
 		}
+	});	
+	
+	$('#jstree').on("copy_node.jstree", function(e, data) {
+		console.log(data);
 	});
 
 	$('#jstree').on(
@@ -146,8 +148,9 @@ function drawDirectory(treeArray, rootid) {
 						"stripes" : true
 					},
 					'data' : treeArray
-				},
+				},		            
 				"types" : {
+
 					"#" : {
 						"icon" : "http://jstree.com/tree.png",
 						"valid_children" : [ "default" ]

@@ -149,6 +149,7 @@ app
 									ktreeid : $scope.knowledgetree.id,
 									entityid : identity
 								}, function(response) {
+									$scope.subnodes = response;
 									updateSubnodesOfNode(response, identity,
 											changes);
 								});
@@ -179,7 +180,7 @@ app
 									title : $scope.newSubnodeName
 								}, function(response) {
 									$scope.getSubnodesOfNode();
-									getSubnodes();
+									//getSubnodes();
 									$scope.newSubnodeName = '';
 								});
 							};
@@ -236,7 +237,7 @@ app
 													if (response.bool) {
 														$scope
 																.getSubnodesOfNode(response.changedEntities);
-														getSubnodes();
+														//getSubnodes();
 													}
 												});
 							};
@@ -505,7 +506,8 @@ app
 									id : id
 								}, function(response) {
 									if (response.bool) {
-										getSubnodes();
+										$scope.getSubnodesOfNode();
+										//getSubnodes();
 									}
 								});
 							};
@@ -515,7 +517,8 @@ app
 									id : id
 								}, function(response) {
 									if (response.bool) {
-										getSubnodes();
+										$scope.getSubnodesOfNode();
+										//getSubnodes();
 									}
 								});
 							};
