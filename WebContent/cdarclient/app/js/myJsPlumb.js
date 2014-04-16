@@ -358,15 +358,18 @@ function bindConnection() {
 function updateSubnodesOfNode(resSubnode, nodeId, changes) {
 
 	var options = $("#node" + nodeId).data("subnode");
-	var optionList = $('#' + NODE + nodeId + ' .optionList');
+	var optionList = $('#' + NODE + nodeId + ' .option');
 	options.subnode = resSubnode;
 	optionList.empty();
-
-	var allSourceConnection = jsPlumb.getConnections({
-		source : $("#node" + nodeId)
+	jQuery.each(resSubnode, function(object) {
+		optionList.append($('<li>').text(this.title));
 	});
 
 	if (changes !== null) {
+		var allSourceConnection = jsPlumb.getConnections({
+			source : $("#node" + nodeId)
+		});
+
 		var map = {};
 		jQuery.each(changes, function(object) {
 			map[this.id] = true;
