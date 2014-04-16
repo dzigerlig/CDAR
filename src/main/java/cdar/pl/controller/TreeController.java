@@ -19,12 +19,14 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
+import cdar.bll.producer.XmlTree;
 import cdar.bll.producer.models.DirectoryModel;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
+import cdar.bll.producer.models.XmlTreeModel;
 
 @Path("{uid}/ktree")
 public class TreeController {
@@ -34,6 +36,7 @@ public class TreeController {
 	private DirectoryModel dm = new DirectoryModel();
 	private SubnodeModel sm = new SubnodeModel();
 	private TemplateModel tm = new TemplateModel();
+	private XmlTreeModel xtm = new XmlTreeModel();
 
 	// Dynamic Tree 
 	@GET
@@ -63,7 +66,7 @@ public class TreeController {
 	public Tree renameKnowledgeTree(Tree tree) {
 		return ktm.updateTree(tree);
 	}
-	
+	 
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -295,5 +298,35 @@ public class TreeController {
 	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
 		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
 		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id), nodelinks);
+	}
+	
+	//TREE XML
+	@GET
+	@Path("simpleexport/{ktreeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<XmlTree> getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
+		return xtm.getXmlTrees(ktreeid);
+	}
+	
+	@POST
+	@Path("simpleexport/delete/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CDAR_Boolean deleteKnowledgeTreeSimpleXml(int id) {
+		return new CDAR_Boolean(xtm.deleteXmlTree(id));
+	}
+	
+	@POST
+	@Path("singleexport/set/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CDAR_Boolean setKnowledgeTreeSimpleXml(int id) {
+		System.out.println("Setting: " + id);
+		return new CDAR_Boolean(xtm.setXmlTree(id));
+	}
+	
+	@GET
+	@Path("simpleexport/add/{ktreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid, @PathParam("ktreeid") int ktrid) {
+		return xtm.addXmlTree(uid, ktrid);
 	}
 }

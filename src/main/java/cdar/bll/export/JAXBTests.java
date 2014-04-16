@@ -8,35 +8,43 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
 public class JAXBTests {
 
 	public static void main(String[] args) {
-		UserDaoController udc = new UserDaoController();
-
-		UserDao user = udc.getUserByName("root");
-
-		String marshalledUser = createXmlString(user);
-
-		System.out.println(marshalledUser);
-
-		System.out.println("CDAR:");
-		CDAR_TreeSimpleExport tse = new CDAR_TreeSimpleExport(1);
-		System.out.println("Tree: " + tse.getTree().getTitle());
-		System.out.println("Templates: " + tse.getTemplates().size());
-		System.out.println("Nodes: " + tse.getNodes().size());
-		System.out.println("Subnodes: " + tse.getSubnodes().size());
-		System.out.println("Links: " + tse.getLinks().size());
-		System.out.println("Directories: " + tse.getDirectories().size());
-
-		System.out.println("XML:");
-
-		String marshalledTree = createXmlString(tse);
-		System.out.println(marshalledTree);
 		
-		UserDao unmarshalledUser = getUser(marshalledUser);
+		CDAR_TreeExportModel tem = new CDAR_TreeExportModel();
+		final String xmlString = tem.getTreeSimpleXmlString(1);
+		XmlTreeDao xmlTreeDao = new XmlTreeDao(1, 1);
+		xmlTreeDao.setXmlString(xmlString);
+		xmlTreeDao.create();
+		
+//		UserDaoController udc = new UserDaoController();
+//
+//		UserDao user = udc.getUserByName("root");
+//
+//		String marshalledUser = createXmlString(user);
+//
+//		System.out.println(marshalledUser);
+//
+//		System.out.println("CDAR:");
+//		CDAR_TreeSimpleExport tse = new CDAR_TreeSimpleExport(1);
+//		System.out.println("Tree: " + tse.getTree().getTitle());
+//		System.out.println("Templates: " + tse.getTemplates().size());
+//		System.out.println("Nodes: " + tse.getNodes().size());
+//		System.out.println("Subnodes: " + tse.getSubnodes().size());
+//		System.out.println("Links: " + tse.getLinks().size());
+//		System.out.println("Directories: " + tse.getDirectories().size());
+//
+//		System.out.println("XML:");
+//
+//		String marshalledTree = createXmlString(tse);
+//		System.out.println(marshalledTree);
+//		
+//		UserDao unmarshalledUser = getUser(marshalledUser);
 	}
 
 	public static UserDao getUser(String userXml) {

@@ -53,6 +53,12 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
+    $routeProvider.when('/knowledgetree/:treeId/settings', {
+    	templateUrl: 'knowledgeproducer/settings.html',
+    	controller: 'TreeSettingsController',
+    	needsLogin: true
+    });
+    
     $routeProvider.when('/sortable', {
     	templateUrl: 'sortable.html',
     	controller: 'SortableController',

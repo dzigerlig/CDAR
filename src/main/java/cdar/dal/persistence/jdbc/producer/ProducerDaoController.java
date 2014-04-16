@@ -84,6 +84,69 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 		return tree;
 	}
+	
+	public List<XmlTreeDao> getXmlTrees(int treeid) {
+		String getXmlTrees = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE KTRID = %d;",
+						treeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<XmlTreeDao> xmlTrees = new ArrayList<XmlTreeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getXmlTrees);
+			while (result.next()) {
+				XmlTreeDao xmlTree = new XmlTreeDao(result.getInt(1));
+				xmlTree.setCreationTime(result.getDate(2));
+				xmlTree.setLastModificationTime(result.getDate(3));
+				xmlTree.setXmlString(result.getString(4));
+				xmlTree.setUid(result.getInt(5));
+				xmlTree.setKtrid(result.getInt(6));
+				xmlTrees.add(xmlTree);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return xmlTrees;
+	}
+	
+	public XmlTreeDao getXmlTree(int id) {
+		String getXmlTree = String
+				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE ID = %d;",
+						id);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		XmlTreeDao xmlTree = new XmlTreeDao(-1);
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getXmlTree);
+			while (result.next()) {
+				xmlTree = new XmlTreeDao(result.getInt(1));
+				xmlTree.setCreationTime(result.getDate(2));
+				xmlTree.setLastModificationTime(result.getDate(3));
+				xmlTree.setXmlString(result.getString(4));
+				xmlTree.setUid(result.getInt(5));
+				xmlTree.setKtrid(result.getInt(6));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return xmlTree;
+	}
 
 	public List<TemplateDao> getTemplates(int treeid) {
 		String getTemplates = String
@@ -150,6 +213,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return template;
 	}
+	
+	
 
 	public List<NodeDao> getNodes(int treeid) {
 		String getNodes = String

@@ -21,6 +21,7 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 			isArray : false
 		},
 		
+		
 		//action: nodes?
 		'getNodes' : {
 			method : 'GET',
@@ -75,12 +76,41 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 		'removeTree' : {
 			method : 'POST',
 			params : {
-				entity : 'delete',
+				action : 'delete',
 			}
 		},
 		'getTree' : {
 			method : 'GET',
 			params : {}
+		},
+		// EXPORT export/simple/{ktreeid}
+		'getXmlTreesSimple' : {
+			method : 'GET',
+			isArray : true,
+			params : {
+				entity : 'simpleexport',
+			}
+		},
+		'removeXmlTreeSimple' : {
+			method : 'POST',
+			params : {
+				entity : 'simpleexport',
+				action : 'delete'
+			}
+		},
+		'setXmlTreeSimple' : {
+			method : 'POST',
+			params : {
+				entity : 'singleexport',
+				action : 'set'
+			}
+		},
+		'addXmlTreeSimple' : {
+			method : 'GET',
+			params : {
+				entity : 'simpleexport',
+				action : 'add'
+			}
 		},
 
 		// Directories

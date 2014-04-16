@@ -13,6 +13,7 @@ import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
+import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
 import cdar.dal.persistence.jdbc.user.UserDaoController;
 
@@ -75,6 +76,20 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(1, kpdc.getTrees(user.getId()).size());
+	}
+	
+	@Test
+	public void testXmlTreeCreate() {
+		final String xmlString = "<cdar>my xml string</cdar>";
+		UserDao user = udc.getUserByName(testUsername);
+		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
+		tree.create();
+		assertEquals(0, kpdc.getXmlTrees(tree.getId()).size());
+		XmlTreeDao xmlTreeDao = new XmlTreeDao(user.getId(), tree.getId());
+		xmlTreeDao.setXmlString(xmlString);
+		xmlTreeDao.create();
+		assertEquals(1, kpdc.getXmlTrees(tree.getId()).size());
+		assertEquals(xmlString, kpdc.getXmlTree(xmlTreeDao.getId()).getXmlString());
 	}
 	
 	@Test
