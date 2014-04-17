@@ -61,10 +61,10 @@ public class JAXBTests {
 		return null;
 	}
 
-	private static String createXmlString(CDAR_TreeSimpleExport tse) {
+	private static String createXmlString(CDAR_TreeSimple tse) {
 		try {
 			final Marshaller m = JAXBContext.newInstance(
-					CDAR_TreeSimpleExport.class).createMarshaller();
+					CDAR_TreeSimple.class).createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			final StringWriter w = new StringWriter();
 			m.marshal(tse, w);
