@@ -72,7 +72,7 @@ public class XmlTreeModel {
 		}
 
 		for (DirectoryDao directory : pdc.getDirectories(treeid)) {
-			if (!directory.delete()) {
+			if (directory.getParentid()!=0 && !directory.delete()) {
 				return false;
 			}
 		}
@@ -90,9 +90,11 @@ public class XmlTreeModel {
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
 		CDAR_TreeSimple cts = ctem.getTreeSimple(xmlTree.getXmlString());
 
-		for (Template template : cts.getTemplates()) {
-			TemplateDao templateDao = new TemplateDao(template);
-			templateDao.create();
+		if (cts.getTemplates()!=null) {
+			for (Template template : cts.getTemplates()) {
+				TemplateDao templateDao = new TemplateDao(template);
+				templateDao.create();
+			}
 		}
 
 		List<Directory> directoryList = new ArrayList<Directory>(
@@ -109,39 +111,49 @@ public class XmlTreeModel {
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 
 		for (Directory directory : directoryList) {
-			DirectoryDao directoryDao = new DirectoryDao(directory);
-			if (directory.getParentid() != 0) {
-				directoryDao.setParentid(directoryMapping.get(directory
-						.getParentid()));
+			if (directory.getParentid()==0) {
+				directoryMapping.put(directory.getId(), directory.getId());
+			} else {
+				DirectoryDao directoryDao = new DirectoryDao(directory);
+				directoryDao.setParentid(directoryMapping.get(directory.getParentid()));
+				directoryDao.create();
+				directoryMapping.put(directory.getId(), directoryDao.getId());
 			}
-			directoryDao.create();
-			directoryMapping.put(directory.getId(), directoryDao.getId());
 		}
 
 		Map<Integer, Integer> nodeMapping = new HashMap<Integer, Integer>();
-		for (Node node : cts.getNodes()) {
-			NodeDao nodeDao = new NodeDao(node);
-			nodeDao.setDid(directoryMapping.get(node.getDid()));
-			nodeDao.create();
-			nodeMapping.put(node.getId(), nodeDao.getId());
+		if (cts.getNodes() != null) {
+			for (Node node : cts.getNodes()) {
+				NodeDao nodeDao = new NodeDao(node);
+				nodeDao.setDid(directoryMapping.get(node.getDid()));
+				nodeDao.create();
+				nodeMapping.put(node.getId(), nodeDao.getId());
+			}
 		}
 
 		Map<Integer, Integer> subnodeMapping = new HashMap<Integer, Integer>();
-		for (Subnode subnode : cts.getSubnodes()) {
-			SubnodeDao subnodeDao = new SubnodeDao(subnode);
-			subnodeDao.setKnid(nodeMapping.get(subnode.getKnid()));
-			subnodeDao.create();
-			subnodeMapping.put(subnode.getId(), subnodeDao.getId());
+		if (cts.getSubnodes() != null) {
+			for (Subnode subnode : cts.getSubnodes()) {
+				SubnodeDao subnodeDao = new SubnodeDao(subnode);
+				subnodeDao.setKnid(nodeMapping.get(subnode.getKnid()));
+				subnodeDao.create();
+				subnodeMapping.put(subnode.getId(), subnodeDao.getId());
+			}
 		}
 
-		for (NodeLink nodeLink : cts.getLinks()) {
-			NodeLinkDao nodeLinkDao = new NodeLinkDao(nodeLink);
-			nodeLinkDao.setSourceid(nodeMapping.get(nodeLink.getSourceId()));
-			nodeLinkDao.setTargetid(nodeMapping.get(nodeLink.getTargetId()));
-			if (nodeLink.getKsnid() != 0) {
-				nodeLinkDao.setKsnid(subnodeMapping.get(nodeLink.getKsnid()));
+		if (cts.getLinks() != null) {
+			for (NodeLink nodeLink : cts.getLinks()) {
+				NodeLinkDao nodeLinkDao = new NodeLinkDao(nodeLink);
+				nodeLinkDao
+						.setSourceid(nodeMapping.get(nodeLink.getSourceId()));
+				nodeLinkDao
+						.setTargetid(nodeMapping.get(nodeLink.getTargetId()));
+				if (nodeLink.getKsnid() != 0) {
+					nodeLinkDao
+							.setKsnid(subnodeMapping.get(nodeLink.getKsnid()));
+				}
+				nodeLinkDao.create();
 			}
-			nodeLinkDao.create();
 		}
 
 		return true;

@@ -319,7 +319,7 @@ public class TreeController {
 	@Path("singleexport/set/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean setKnowledgeTreeSimpleXml(int id) {
-		System.out.println("Setting: " + id);
+		xtm.cleanTree(id);
 		return new CDAR_Boolean(xtm.setXmlTree(id));
 	}
 	
