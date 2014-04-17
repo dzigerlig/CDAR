@@ -545,7 +545,7 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
 		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
 		//delete
-		assertTrue(xtm.cleanTree(tree.getId()));
+		assertTrue(xtm.cleanTree(xmlTree.getId()));
 		assertEquals(0, tmm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(0, dm.getDirectories(tree.getId()).size());
 		assertEquals(0, nm.getNodes(tree.getId()).size());
@@ -553,11 +553,10 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		//after copy
 		xtm.setXmlTree(xmlTree.getId());
-		System.out.println("Tree id test: " + tree.getId());
 		assertEquals(2, tmm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(4, dm.getDirectories(tree.getId()).size());
-//		assertEquals(6, nm.getNodes(tree.getId()).size());
-//		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
-//		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
+		assertEquals(6, nm.getNodes(tree.getId()).size());
+		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
 	}
 }
