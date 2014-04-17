@@ -12,12 +12,14 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
+import cdar.bll.producer.XmlTree;
 import cdar.bll.producer.models.DirectoryModel;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
+import cdar.bll.producer.models.XmlTreeModel;
 import cdar.bll.user.UserModel;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
@@ -509,7 +511,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testSimpleTreeExportAndImport() {
-		
+		XmlTreeModel xtm = new XmlTreeModel();
 		NodeModel nm = new NodeModel();
 		SubnodeModel snm = new SubnodeModel();
 		DirectoryModel dm = new DirectoryModel();
@@ -541,9 +543,45 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(6, nm.getNodes(tree.getId()).size());
 		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
 		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
-		//copy
-		
+		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
+		//delete
+		assertTrue(xtm.cleanTree(xmlTree.getId()));
+		assertEquals(0, tmm.getKnowledgeTemplates(tree.getId()).size());
+		assertEquals(1, dm.getDirectories(tree.getId()).size());
+		assertEquals(0, nm.getNodes(tree.getId()).size());
+		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		//after copy
-		
+		xtm.setXmlTree(xmlTree.getId());
+		assertEquals(2, tmm.getKnowledgeTemplates(tree.getId()).size());
+		assertEquals(4, dm.getDirectories(tree.getId()).size());
+		assertEquals(6, nm.getNodes(tree.getId()).size());
+		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
+		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
+	}
+	
+	@Test
+	public void testSimpleImportExportEmptyTree() {
+		XmlTreeModel xtm = new XmlTreeModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
+		assertTrue(xtm.cleanTree(xmlTree.getId()));
+		xtm.setXmlTree(xmlTree.getId());
+	}
+	
+	@Test
+	public void testSimpleImportExportTreeOneNode() {
+		NodeModel nm = new NodeModel();
+		DirectoryModel dm = new DirectoryModel();
+		XmlTreeModel xtm = new XmlTreeModel();
+		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node1 = nm.addNode(tree.getId(), "Node 1", directoryId);
+		assertEquals(1, nm.getNodes(tree.getId()).size());
+		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
+		assertTrue(xtm.cleanTree(xmlTree.getId()));
+		assertEquals(0, nm.getNodes(tree.getId()).size());
+		xtm.setXmlTree(xmlTree.getId());
+		assertEquals(1, nm.getNodes(tree.getId()).size());
 	}
 }

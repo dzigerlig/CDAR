@@ -90,6 +90,7 @@ public class DirectoryDao extends CUDHelper<DirectoryDao> implements CdarDao {
 		try {
 			return super.create();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			DirectoryDao directoryDao = new DirectoryDao();
 			directoryDao.setId(-1);
 			return directoryDao;
