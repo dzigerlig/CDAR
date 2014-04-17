@@ -91,6 +91,7 @@ app
 
 							initializeJsPlumb();
 
+							$scope.treeId= $routeParams.treeId;
 							$scope.UserService = UserService;
 							$scope.knowledgetree;
 							$scope.nodes;

@@ -42,7 +42,14 @@ $(function() {
 	
 	$('#jstree').on("copy_node.jstree", function(e, data) {
 		console.log(data);
+		treeCopy();
 	});
+	
+	function treeCopyGetSubnodes(data){
+		//console.log($('#'+data.))
+	}
+	
+	function treeCopyCreateSubnodes(){}
 
 	$('#jstree').on(
 			"rename_node.jstree",

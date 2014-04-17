@@ -39,7 +39,7 @@ app.controller("TreeSettingsController", [
 				TreeService.setXmlTreeSimple({ktreeid : $routeParams.treeId}, id
 				, function(response) {
 					if (response.id != -1) {
-						alert("horray");
+						console.log('tree set');
 					}
 				});
 			};

@@ -12,7 +12,7 @@ function initializeJsPlumb() {
 	bindDetachConnectorEvent();
 	bindConnection();
 	$('html').click(function() {
-		 $('[id^=popup-box-]').hide();
+		$('[id^=popup-box-]').hide();
 	});
 };
 
@@ -58,9 +58,11 @@ function drawExistingNodes(data, resSubnodes) {
 
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
-			map[this.id].sort(function(a, b) {
-				return parseInt(a.position) - parseInt(b.position);
-			});
+			if (map[this.id] !== undefined) {
+				map[this.id].sort(function(a, b) {
+					return parseInt(a.position) - parseInt(b.position);
+				});
+			}
 			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
 					.data(SUBNODE, {
 						subnode : map[this.id]
@@ -343,19 +345,19 @@ function bindConnection() {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 			bindClickConnection(info);
 
-		} else {
+		} else {	scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""), info.targetId
+					.replace(NODE, ""), info.connection);
 			showSubnodePopup(info);
 			bindClickConnection(info);
-			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
-					.replace(NODE, ""), info.connection);
+		
 		}
 	});
 };
 
 function bindClickConnection(info) {
 	info.connection.bind("click", function(c) {
-		//TODO Show popup on connection click. conflict with html click
-		//showSubnodePopup(info);
+		// TODO Show popup on connection click. conflict with html click
+		// showSubnodePopup(info);
 	});
 }
 
