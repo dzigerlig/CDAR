@@ -12,7 +12,7 @@ function initializeJsPlumb() {
 	bindDetachConnectorEvent();
 	bindConnection();
 	$('html').click(function() {
-		$('[id^=popup-box-]').hide();
+		 $('[id^=popup-box-]').hide();
 	});
 };
 
@@ -58,6 +58,9 @@ function drawExistingNodes(data, resSubnodes) {
 
 	jQuery.each(data, function(object) {
 		if (this.dynamicTreeFlag) {
+			map[this.id].sort(function(a, b) {
+				return parseInt(a.position) - parseInt(b.position);
+			});
 			var newState = $('<div>').attr('id', NODE + this.id).addClass('w')
 					.data(SUBNODE, {
 						subnode : map[this.id]
@@ -65,6 +68,10 @@ function drawExistingNodes(data, resSubnodes) {
 			var option = $('<div>').addClass('option').hide();
 			var title = $('<div>').addClass('title').text(this.title);
 			var connect = $('<div>').addClass('ep');
+			var downtree = $('<div>').addClass('downtree');
+			var uptree = $('<div>').addClass('uptree');
+			newState.append(downtree);
+			newState.append(uptree);
 			newState.css({
 				'top' : 100,
 				'left' : 100
@@ -126,6 +133,7 @@ function makePopupEvents() {
 										element.currentTarget).attr("id")
 										.replace(SUBNODE, ""));
 								$('[id^=popup-box-]').hide();
+								console.log('hide');
 
 							}
 						});
@@ -256,6 +264,7 @@ function bindDetachConnectorEvent() {
 
 function bindClickEndpoint(element) {
 	element.bind("click", function(endpoint) {
+		endpoint.originalEvent.stopPropagation();
 		$('#' + endpoint.currentTarget.id + ' .option').toggle();
 		jsPlumb.repaintEverything();
 	});
@@ -267,7 +276,7 @@ function removeNodeEvent(newState) {
 	});
 };
 
-function removeNodes(deletedNodes){
+function removeNodes(deletedNodes) {
 	jQuery.each(deletedNodes, function(object) {
 		detach(this.id);
 	});
@@ -329,40 +338,41 @@ function setLinkId(connection, id) {
 };
 
 function bindConnection() {
-	jsPlumb
-			.bind(
-					"connection",
-					function(info) {
-						if (!isInizialized) {
-							setLinkId(info.connection, info.connection
-									.getParameter("id"));
-						} else {
-							$('#radio-form').empty();
-							$
-									.each(
-											info.connection.source
-													.data(SUBNODE).subnode,
-											function(object) {
-												$('#radio-form')
-														.append(
-																"<input type=\"radio\" id=\""
-																		+ SUBNODE
-																		+ this.id
-																		+ "\" name=\"option\" class=\"radio_item\" value=\""
-																		+ this.title
-																		+ "\">"
-																		+ this.title
-																		+ "<br>");
-											});
+	jsPlumb.bind("connection", function(info) {
+		if (!isInizialized) {
+			setLinkId(info.connection, info.connection.getParameter("id"));
+			bindClickConnection(info);
 
-							scope.addLink(1, info.sourceId.replace(NODE, ""),
-									info.targetId.replace(NODE, ""),
-									info.connection);
-							$('#popup-box-1').show();
-
-						}
-					});
+		} else {
+			showSubnodePopup(info);
+			bindClickConnection(info);
+			scope.addLink(1, info.sourceId.replace(NODE, ""), info.targetId
+					.replace(NODE, ""), info.connection);
+		}
+	});
 };
+
+function bindClickConnection(info) {
+	info.connection.bind("click", function(c) {
+		//TODO Show popup on connection click. conflict with html click
+		//showSubnodePopup(info);
+	});
+}
+
+function showSubnodePopup(info) {
+	$('#popup-box-1').show();
+	$('#radio-form').empty();
+	$.each(info.connection.source.data(SUBNODE).subnode, function(object) {
+		console.log(this.id);
+		$('#radio-form').append(
+				"<input type=\"radio\" id=\"" + SUBNODE + this.id
+						+ "\" name=\"option\" class=\"radio_item\" value=\""
+						+ this.title + "\">" + this.title + "<br>");
+	});
+	$('#popup-box-1').show();
+	console.log('show');
+
+}
 
 function updateSubnodesOfNode(resSubnode, nodeId, changes) {
 	if ($("#node" + nodeId).size() !== 0) {
@@ -370,6 +380,10 @@ function updateSubnodesOfNode(resSubnode, nodeId, changes) {
 		var optionList = $('#' + NODE + nodeId + ' .option');
 		options.subnode = resSubnode;
 		optionList.empty();
+		resSubnode.sort(function(a, b) {
+			return parseInt(a.position) - parseInt(b.position);
+		});
+
 		jQuery.each(resSubnode, function(object) {
 			optionList.append($('<li>').text(this.title));
 		});
