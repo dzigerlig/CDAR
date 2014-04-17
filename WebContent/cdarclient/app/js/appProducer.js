@@ -401,6 +401,7 @@ app
 							};
 
 							$scope.renameNode = function(id, newTitle, did) {
+								renameNode(id, newTitle);
 								TreeService.renameNode({
 									ktreeid : $routeParams.treeId
 								}, {

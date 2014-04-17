@@ -373,7 +373,13 @@ function showSubnodePopup(info) {
 	});
 	$('#popup-box-1').show();
 	console.log('show');
+}
 
+function renameNode(id, newTitle){
+	var title=$('#'+NODE+id +' .title');
+	if(title.size()!==0){
+		title[0].innerHTML=newTitle;
+	}
 }
 
 function updateSubnodesOfNode(resSubnode, nodeId, changes) {
