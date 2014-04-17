@@ -79,29 +79,36 @@ body.dragging,body.dragging * {
 	position: absolute;
 	bottom: 2px;
 	left: 28px;
-	padding-left:10px;
-	position:absolute;
-	width:1em;
-	height:1em;
-	cursor:pointer;
+	padding-left: 10px;
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	cursor: pointer;
 	box-shadow: 0px 0px 2px black;
-	-webkit-transition:-webkit-box-shadow 0.25s ease-in;
-	-moz-transition:-moz-box-shadow 0.25s ease-in;
-	transition:box-shadow 0.25s ease-in;
-	background-image: url(../img/down.png);
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+		background-color: orange;
+	background-size: 1em;
+	background-image: url(../img/treedown.png);
+	
+	
 }
+
 .uptree {
 	position: absolute;
 	bottom: 2px;
 	left: 44px;
-	padding-left:10px;
-	position:absolute;
-	width:1em;
-	height:1em;
-	cursor:pointer;
+	padding-left: 10px;
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	cursor: pointer;
 	box-shadow: 0px 0px 2px black;
-	-webkit-transition:-webkit-box-shadow 0.25s ease-in;
-	-moz-transition:-moz-box-shadow 0.25s ease-in;
-	transition:box-shadow 0.25s ease-in;
-	background-image: url(../img/up.png);
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+background-color: orange;
+	background-size: 1em;
+	background-image: url(../img/treeup.png);
 }
