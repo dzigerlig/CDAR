@@ -25,6 +25,10 @@ function addHTMLNode(response, e) {
 	var connect = $('<div>').addClass('ep');
 	var option = $('<div>').addClass('option').hide();
 	var list = $('<ul>').addClass('optionList');
+	var downtree = $('<div>').addClass('downtree');
+	var uptree = $('<div>').addClass('uptree');
+	newState.append(downtree);
+	newState.append(uptree);
 	option.append(list);
 
 	newState.css({
@@ -32,6 +36,8 @@ function addHTMLNode(response, e) {
 		'top' : e.pageY - $('#jsplumb-container').offset().top,
 		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
+	zoomDownEvent(downtree,newState);
+	zoomUpEvent(uptree,newState);
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
 	showNodeWikiEvent(newState);
@@ -85,7 +91,8 @@ function drawExistingNodes(data, resSubnodes) {
 				});
 				option.append(list);
 			}
-
+			zoomDownEvent(downtree,newState);
+			zoomUpEvent(uptree,newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -296,6 +303,21 @@ function showNodeWikiEvent(newState) {
 				'#' + newState[0].id + ' .title').text());
 		$('#' + newState[0].id + ' .option').toggle();
 		jsPlumb.repaintEverything();
+	});
+};
+
+function zoomUpEvent(uptree, newState) {
+	uptree.click(function(e) {
+	    e.stopPropagation();
+	    scope.zoomUp(newState[0].id.replace(NODE, ""));
+		console.log('clicked up ' + newState[0].id);
+	});
+};
+function zoomDownEvent(downtree, newState) {
+	downtree.click(function(e) {
+	    e.stopPropagation();
+		console.log('clicked down '+newState[0].id);
+		
 	});
 };
 

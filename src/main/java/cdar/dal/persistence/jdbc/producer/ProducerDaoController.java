@@ -87,7 +87,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 		return tree;
 	}
-	
+
 	public List<XmlTreeDao> getXmlTrees(int treeid) {
 		String getXmlTrees = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE KTRID = %d;",
@@ -120,7 +120,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return xmlTrees;
 	}
-	
+
 	public XmlTreeDao getXmlTree(int id) {
 		String getXmlTree = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE ID = %d;",
@@ -220,8 +220,6 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return template;
 	}
-	
-	
 
 	public List<NodeDao> getNodes(int treeid) {
 		String getNodes = String
@@ -257,7 +255,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodes;
 	}
-	
+
 	public NodeDao getNode(int id) {
 		String getNode = String
 				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = %d AND NODE.ID = MAPPING.KNID;",
@@ -290,6 +288,81 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			closeConnections(connection, null, statement, null);
 		}
 		return node;
+	}
+
+	public List<NodeDao> getSibling(int nodeid) {
+		String getNodes = String
+				.format("SELECT DISTINCT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID "
+						+ "FROM (SELECT* FROM NODELINK AS LINK "
+						+ "WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO "
+						+ "WHERE  %d=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING "
+						+ "WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>%d;",
+						nodeid,nodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<NodeDao> nodes = new ArrayList<NodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				NodeDao node = new NodeDao(result.getInt(7), result.getInt(8));
+				node.setId(result.getInt(1));
+				node.setCreationTime(result.getDate(2));
+				node.setLastModificationTime(result.getDate(3));
+				node.setTitle(result.getString(4));
+				node.setWikititle(result.getString(5));
+				node.setDynamicTreeFlag(result.getInt(6));
+				nodes.add(node);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return nodes;
+	}
+	public List<NodeDao> getParent(int nodeid) {
+		String getNodes = String
+				.format("SELECT DISTINCT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID "
+						+ "FROM (SELECT* FROM NODELINK AS LINK "
+						+ "WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO "
+						+ "WHERE  %d=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING "
+						+ "WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KNID;",
+						nodeid);
+		
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<NodeDao> nodes = new ArrayList<NodeDao>();
+		
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+			
+			result = statement.executeQuery(getNodes);
+			while (result.next()) {
+				NodeDao node = new NodeDao(result.getInt(7), result.getInt(8));
+				node.setId(result.getInt(1));
+				node.setCreationTime(result.getDate(2));
+				node.setLastModificationTime(result.getDate(3));
+				node.setTitle(result.getString(4));
+				node.setWikititle(result.getString(5));
+				node.setDynamicTreeFlag(result.getInt(6));
+				nodes.add(node);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return nodes;
 	}
 
 	public List<SubnodeDao> getSubnodes(int nodeid) {
@@ -369,12 +442,12 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 		return ++position;
 	}
-	
+
 	public List<SubnodeDao> getSubnodesByTree(int treeid) {
 		String getSubnodesByTree = String
 				.format("SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM KNOWLEDGESUBNODE AS SUBNODE JOIN KNOWLEDGENODE ON KNOWLEDGENODE.ID = SUBNODE.KNID WHERE KNOWLEDGENODE.KTRID = %d;",
 						treeid);
-		
+
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
@@ -386,7 +459,8 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 			result = statement.executeQuery(getSubnodesByTree);
 			while (result.next()) {
-				SubnodeDao subnode = new SubnodeDao(result.getInt(4), result.getInt(7));
+				SubnodeDao subnode = new SubnodeDao(result.getInt(4),
+						result.getInt(7));
 				subnode.setId(result.getInt(1));
 				subnode.setCreationTime(result.getDate(2));
 				subnode.setLastModificationTime(result.getDate(3));
@@ -435,7 +509,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelinks;
 	}
-	
+
 	public List<NodeLinkDao> getNodeLinksBySubnode(int subnodeid) {
 		String getNodeLinks = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE KSNID = %d;",

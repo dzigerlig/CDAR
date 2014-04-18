@@ -17,7 +17,7 @@ app.controller("HomeProducerController", [
 			$scope.knowledgeTrees;
 			$scope.newTreeName = "";
 			$scope.UserService = UserService;
-			
+
 			var reloadTrees = function() {
 				TreeService.getTrees(function(response) {
 					$scope.knowledgeTrees = response;
@@ -91,7 +91,7 @@ app
 
 							initializeJsPlumb();
 
-							$scope.treeId= $routeParams.treeId;
+							$scope.treeId = $routeParams.treeId;
 							$scope.UserService = UserService;
 							$scope.knowledgetree;
 							$scope.nodes;
@@ -181,7 +181,7 @@ app
 									title : $scope.newSubnodeName
 								}, function(response) {
 									$scope.getSubnodesOfNode();
-									//getSubnodes();
+									// getSubnodes();
 									$scope.newSubnodeName = '';
 								});
 							};
@@ -228,19 +228,14 @@ app
 							};
 
 							$scope.deleteSubnode = function(id) {
-								TreeService
-										.deleteSubnode(
-												{
-													ktreeid : $routeParams.treeId
-												},
-												id,
-												function(response) {
-													if (response.bool) {
-														$scope
-																.getSubnodesOfNode(response);
-														//getSubnodes();
-													}
-												});
+								TreeService.deleteSubnode({
+									ktreeid : $routeParams.treeId
+								}, id, function(response) {
+									if (response.bool) {
+										$scope.getSubnodesOfNode(response);
+										// getSubnodes();
+									}
+								});
 							};
 
 							var showNodeTitle = function() {
@@ -375,15 +370,15 @@ app
 								});
 							};
 
-                            $scope.addNodeCopy = function(node) {
+							$scope.addNodeCopy = function(node) {
 								TreeService.addNode({
 									ktreeid : $routeParams.treeId
 								}, {
 									ktrid : $routeParams.treeId,
-									title:node.text,
+									title : node.text,
 									did : 0
 								}, function(response) {
-                                    prepareForSetId(node, response.id);
+									prepareForSetId(node, response.id);
 								});
 							};
 
@@ -466,7 +461,7 @@ app
 									createDirectory(response);
 								});
 							};
-							
+
 							$scope.addDirectoryCopy = function(node) {
 								TreeService.addDirectory({
 									ktreeid : $routeParams.treeId
@@ -493,7 +488,7 @@ app
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
 									if (response.bool) {
-										//removeNodes(response.changedEntities);
+										// removeNodes(response.changedEntities);
 									}
 								});
 							};
@@ -506,6 +501,20 @@ app
 									parentid : newParentId
 								});
 							};
+
+							$scope.zoomUp = function(nodeid) {
+								TreeService.zoomUp({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								},
+										function(resNodes) {
+
+											directoryDataToArray(resDirectory,
+													resNodes);
+											$scope.getSubnodes(resNodes);
+
+										});
+							}
 
 							$scope.updateSubnodeId;
 							$scope.updateSubnodeTitle;
@@ -523,11 +532,10 @@ app
 									title : $scope.updateSubnodeTitle
 								}, function(response) {
 									if (response.bool) {
-										$scope
-												.getSubnodesOfNode(response);
-										//getSubnodes();
+										$scope.getSubnodesOfNode(response);
+										// getSubnodes();
 									}
-									//getSubnodes();
+									// getSubnodes();
 								});
 							};
 
@@ -537,7 +545,7 @@ app
 								}, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode();
-										//getSubnodes();
+										// getSubnodes();
 									}
 								});
 							};
@@ -548,7 +556,7 @@ app
 								}, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode();
-										//getSubnodes();
+										// getSubnodes();
 									}
 								});
 							};

@@ -76,7 +76,6 @@ $(function() {
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		scope.selectedNodeId = 0;
-		console.log(data);
 		var node = data.node;
 		var id = data.node.id;
 		id = id.replace(DIRECTORY, "");
@@ -254,8 +253,6 @@ function createDirectory(response) {
 };
 
 function deleteSubnodes(data) {
-	console.log('deleteSubnodes');
-	console.log(data);
 	data.node.children_d.forEach(function(nodeId) {
 		var node = data.instance._model.data[nodeId];
 		nodeId=nodeId.replace(DIRECTORY, "")

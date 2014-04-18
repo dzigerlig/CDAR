@@ -208,6 +208,13 @@ app.factory('TreeService', ['$resource', 'UserService', function($resource, User
 				action : 'move',
 			}
 		},
+		'zoomUp' : {
+			method : 'GET',
+			params : {
+				entity : 'nodes',
+				action : 'zoomUp',
+			}
+		},
 
 		// Links
 		'getLinks' : {

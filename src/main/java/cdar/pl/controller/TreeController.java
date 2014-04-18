@@ -227,6 +227,13 @@ public class TreeController {
 	public Node moveNode(Node n) {
 		return nm.moveNode(n);
 	}
+	
+	@GET
+	@Path("/nodes/zoomUp/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Node> zoomUp(@PathParam("nodeid") int nodeid) {
+		return nm.zoomUp(nodeid);
+	}
 
 	// Links
 	@GET

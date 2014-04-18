@@ -32,20 +32,21 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
-		if (did==0) {
-			int rootDirectoryId = ((DirectoryDao)pdc.getDirectories(treeid).toArray()[0]).getId();
+		if (did == 0) {
+			int rootDirectoryId = ((DirectoryDao) pdc.getDirectories(treeid)
+					.toArray()[0]).getId();
 			did = rootDirectoryId;
 		}
-		
+
 		TemplateModel tm = new TemplateModel();
 		String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
-		
-		if (templateContent==null) {
+
+		if (templateContent == null) {
 			templateContent = "== CDAR ==";
 		}
-		
+
 		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 
 		MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,
@@ -92,5 +93,25 @@ public class NodeModel {
 		nodedao.setTitle(node.getTitle());
 		nodedao.update();
 		return new Node(nodedao);
+	}
+
+	public Set<Node> zoomUp(int nodeid) {
+		Set<Node> nodes = new HashSet<Node>();
+		nodes.add(new Node(pdc.getNode(nodeid)));
+		return rekZoomUp(nodeid, 2, nodes);
+	}
+
+	private Set<Node> rekZoomUp(int nodeid, int quantity, Set<Node> nodes) {
+		if (quantity > 0) {
+			for (NodeDao node : pdc.getSibling(nodeid)) {
+				nodes.add(new Node(node));
+			}
+			for (NodeDao node : pdc.getParent(nodeid)) {
+				nodes.add(new Node(node));
+				rekZoomUp(node.getId(), --quantity, nodes);
+			}
+		}
+		return nodes;
+
 	}
 }
