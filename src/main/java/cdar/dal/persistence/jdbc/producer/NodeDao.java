@@ -23,7 +23,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 
 	public NodeDao() {
 	}
-	
+
 	public NodeDao(int ktrid, int did) {
 		setKtrid(ktrid);
 		setDynamicTreeFlag(0);
@@ -169,11 +169,13 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
 
-		preparedStatement = connection
-				.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (knid, did) VALUES (?, ?)");
-		preparedStatement.setInt(1, getId());
-		preparedStatement.setInt(2, getDid());
-		preparedStatement.executeUpdate();
+		if (getDid() != 0) {
+			preparedStatement = connection
+					.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (knid, did) VALUES (?, ?)");
+			preparedStatement.setInt(1, getId());
+			preparedStatement.setInt(2, getDid());
+			preparedStatement.executeUpdate();
+		}
 		return this;
 	}
 

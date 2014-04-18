@@ -370,7 +370,6 @@ app
 								}, {
 									ktrid : $routeParams.treeId,
 									did : did
-
 								}, function(response) {
 									createNode(response);
 								});
@@ -381,8 +380,8 @@ app
 									ktreeid : $routeParams.treeId
 								}, {
 									ktrid : $routeParams.treeId,
-									title:node.text
-									
+									title:node.text,
+									did : 0
 								}, function(response) {
                                     prepareForSetId(node, response.id);
 								});
@@ -473,7 +472,8 @@ app
 									ktreeid : $routeParams.treeId
 								}, {
 									ktrid : $routeParams.treeId,
-									title:node.text
+									title : node.text,
+									parentid : 0
 								}, function(response) {
 									prepareForSetId(node, response.id);
 								});
