@@ -38,7 +38,7 @@ public class TreeController {
 	private TemplateModel tm = new TemplateModel();
 	private XmlTreeModel xtm = new XmlTreeModel();
 
-	// Dynamic Tree 
+	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
@@ -58,7 +58,7 @@ public class TreeController {
 	public Tree addKnowledgeTree(String treeTitle, @PathParam("uid") int uid) {
 		return ktm.addTree(uid, treeTitle);
 	}
-	
+
 	@POST
 	@Path("tree/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class TreeController {
 	public Tree renameKnowledgeTree(Tree tree) {
 		return ktm.updateTree(tree);
 	}
-	 
+
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -97,21 +97,22 @@ public class TreeController {
 		return tm.addKnowledgeTemplate(template.getTreeid(),
 				template.getTitle(), template.getTemplatetext());
 	}
-	
+
 	@POST
 	@Path("templates/rename/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template renameTemplate(Template template) {
 		return tm.renameTemplate(template);
 	}
-	
+
 	@POST
 	@Path("templates/default/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid, int templateId) {
+	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid,
+			int templateId) {
 		return tm.setDefaultTemplate(ktreeid, templateId);
 	}
- 
+
 	@POST
 	@Path("templates/edit/{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -138,7 +139,11 @@ public class TreeController {
 	@Path("directories/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDirectory(Directory d) {
-		return dm.addDirectory(d.getKtrid(), d.getParentid(), "new Folder");
+		if (d.getTitle()==null) {
+			return dm.addDirectory(d.getKtrid(), d.getParentid(), "new Folder");
+		} else {
+			return dm.addDirectory(d.getKtrid(), d.getParentid(), d.getTitle());
+		}
 	}
 
 	@POST
@@ -169,7 +174,7 @@ public class TreeController {
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
 		return nm.getNodes(ktreeid);
 	}
-	
+
 	@GET
 	@Path("/nodes/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -181,7 +186,11 @@ public class TreeController {
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(Node n) {
-		return nm.addNode(n.getKtrid(), "new Node", n.getDid());
+		if (n.getTitle()==null) {
+			return nm.addNode(n.getKtrid(), "new Node", n.getDid());
+		} else {
+			return nm.addNode(n.getKtrid(), n.getTitle(), n.getDid());
+		}
 	}
 
 	@POST
@@ -263,21 +272,21 @@ public class TreeController {
 	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
 		return sm.getSubnodesFromNode(nodeid);
 	}
-	
+
 	@POST
 	@Path("subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Subnode renameSubnode(Subnode subnode) {
 		return sm.renameSubnode(subnode);
 	}
-	
+
 	@POST
 	@Path("subnodes/moveup")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean moveSubnodeUp(Subnode subnode) {
 		return new CDAR_Boolean(sm.moveSubnodeUp(subnode));
 	}
-	
+
 	@POST
 	@Path("subnodes/movedown")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -297,24 +306,26 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
 		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
-		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id), nodelinks);
+		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
+				nodelinks);
 	}
-	
-	//TREE XML
+
+	// TREE XML
 	@GET
 	@Path("simpleexport/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<XmlTree> getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
+	public Set<XmlTree> getKnowledgeTreeSimpleXml(
+			@PathParam("ktreeid") int ktreeid) {
 		return xtm.getXmlTrees(ktreeid);
 	}
-	
+
 	@POST
 	@Path("simpleexport/delete/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteKnowledgeTreeSimpleXml(int id) {
 		return new CDAR_Boolean(xtm.deleteXmlTree(id));
 	}
-	
+
 	@POST
 	@Path("singleexport/set/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -322,11 +333,12 @@ public class TreeController {
 		xtm.cleanTree(id);
 		return new CDAR_Boolean(xtm.setXmlTree(id));
 	}
-	
+
 	@GET
 	@Path("simpleexport/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid, @PathParam("ktreeid") int ktrid) {
+	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid,
+			@PathParam("ktreeid") int ktrid) {
 		return xtm.addXmlTree(uid, ktrid);
 	}
 }
