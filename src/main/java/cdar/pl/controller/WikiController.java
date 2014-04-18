@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 
-@Path("{uid}/wiki")
+@Path("{accesstoken}/{uid}/wiki")
 public class WikiController {
 	private MediaWikiModel mwm = new MediaWikiModel();
 	

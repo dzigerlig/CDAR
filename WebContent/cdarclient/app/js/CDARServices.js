@@ -1,5 +1,5 @@
 app.factory('ProjectTreeService', ['$resource', 'UserService', function($resource, UserService) {
-	return $resource('../webapi/' + UserService.user.id + '/ptree/:action/:treeid/:ktreeid/', {}, {
+	return $resource('../webapi/' + UserService.user.accesstoken + '/' + UserService.user.id + '/ptree/:action/:treeid/:ktreeid/', {}, {
 		'query' : {
 			method : 'GET',
 			isArray : true
@@ -41,7 +41,7 @@ app.factory('ProjectTreeService', ['$resource', 'UserService', function($resourc
 }]);
 
 app.factory('WikiService', ['$resource','UserService', function($resource, UserService) {
-	return $resource('../webapi/' + UserService.user.id + '/wiki/:role/:entity/:nodeid/', {}, {
+	return $resource('../webapi/' + UserService.user.accesstoken + '/' + UserService.user.id + '/wiki/:role/:entity/:nodeid/', {}, {
 		'getWikiEntry' : {
 			method : 'GET'
 		},
@@ -52,7 +52,7 @@ app.factory('WikiService', ['$resource','UserService', function($resource, UserS
 }]);
 
 app.factory('TreeService', ['$resource', 'UserService', function($resource, UserService) {
-	return $resource('../webapi/' + UserService.user.id + '/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
+	return $resource('../webapi/'+ UserService.user.accesstoken + '/' + UserService.user.id + '/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
 		// Tree
 
 		'getTrees' : {
