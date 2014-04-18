@@ -21,7 +21,7 @@ public class JAXBTests {
 		XmlTreeDao xmlTreeDao = new XmlTreeDao(1, 1);
 		xmlTreeDao.setXmlString(xmlString);
 		xmlTreeDao.create();
-		
+		 
 //		UserDaoController udc = new UserDaoController();
 //
 //		UserDao user = udc.getUserByName("root");
