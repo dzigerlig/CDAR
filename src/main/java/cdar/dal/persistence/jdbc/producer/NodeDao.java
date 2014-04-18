@@ -174,7 +174,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement.setInt(1, getId());
 		preparedStatement.setInt(2, getDid());
 		preparedStatement.executeUpdate();
-		preparedStatement.close();
 		return this;
 	}
 
@@ -206,7 +205,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement.setInt(3, getDid());
 
 		preparedStatement.executeUpdate();
-		preparedStatement.close();
 
 		return this;
 	}

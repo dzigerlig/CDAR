@@ -30,6 +30,7 @@ public class JDBCUtil {
                 }
 			}
 		} catch (SQLException e) {
+			System.out.println("GET CONNECTION ERROR!");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

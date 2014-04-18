@@ -36,7 +36,7 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 
 		try {
 			connection = JDBCUtil.getConnection();
-			object =updateVisit(connection, preparedStatement, generatedKeys);			
+			object = updateVisit(connection, preparedStatement, generatedKeys);			
 
 		} catch (Exception ex) {
 			throw ex;
@@ -47,6 +47,7 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 	}
 	
 	public boolean delete(String table, int id) {
+		boolean returnBool = false;
 		if (id != -1) {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
@@ -57,13 +58,13 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 				connection = JDBCUtil.getConnection();
 				preparedStatement = connection.prepareStatement(deleteSQL);
 				preparedStatement.executeUpdate();
-				return true;
+				returnBool = true;
 			} catch (Exception ex) {
-				
+				returnBool = false;
 			} finally {
 				closeConnections(connection, preparedStatement, null, null);
 			}
 		} 
-		return false;
+		return returnBool;
 	}
 }

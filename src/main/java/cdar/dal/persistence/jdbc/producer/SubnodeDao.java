@@ -148,7 +148,6 @@ public class SubnodeDao extends CUDHelper<SubnodeDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();
 		return this;
 	}
 

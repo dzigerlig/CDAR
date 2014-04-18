@@ -153,7 +153,6 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		if (generatedKeys.next()) {
 			setId(generatedKeys.getInt(1));
 		}
-		preparedStatement.close();
 		return this;
 	}
 

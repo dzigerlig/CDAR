@@ -47,6 +47,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -55,7 +56,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 
 	public TreeDao getTree(int id) {
 		final String getTreeByIdStatement = String
-				.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE JOIN KNOWLEDGETREEMAPPING ON KNOWLEDGETREEMAPPING.ktrid = KNOWLEDGETREE.id WHERE ID = %d;",
+				.format("SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = %d;",
 						id);
 
 		Connection connection = null;
@@ -69,14 +70,16 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			statement = connection.createStatement();
 
 			result = statement.executeQuery(getTreeByIdStatement);
-			if (result.next()) {
+			while (result.next()) {
 				tree = new TreeDao(result.getInt(1));
 				tree.setId(result.getInt(2));
 				tree.setCreationTime(result.getDate(3));
 				tree.setLastModificationTime(result.getDate(4));
 				tree.setTitle(result.getString(5));
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("get tree exception");
 			System.out.println(e.getMessage());
 		} finally {
 			closeConnections(connection, null, statement, null);
@@ -111,6 +114,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -142,6 +146,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -175,6 +180,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -208,6 +214,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -241,10 +248,10 @@ public class ProducerDaoController extends CdarJdbcHelper {
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setDid(result.getInt(7));
 				nodes.add(node);
-
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -278,6 +285,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -310,6 +318,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -342,6 +351,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -386,6 +396,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -418,6 +429,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -450,6 +462,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -482,6 +495,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -501,7 +515,6 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
-
 			result = statement.executeQuery(getDirectories);
 			while (result.next()) {
 				DirectoryDao directory = new DirectoryDao(treeid);
@@ -514,6 +527,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}

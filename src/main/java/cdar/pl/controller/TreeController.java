@@ -71,6 +71,7 @@ public class TreeController {
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
+		System.out.println("pl: getting tree: " + ktreeid);
 		return ktm.getTree(ktreeid);
 	}
 
@@ -131,7 +132,7 @@ public class TreeController {
 	@GET
 	@Path("/directories/{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Directory> getDirectory(@PathParam("ktreeid") int ktreeid) {
+	public Set<Directory> getDirectories(@PathParam("ktreeid") int ktreeid) {
 		return dm.getDirectories(ktreeid);
 	}
 

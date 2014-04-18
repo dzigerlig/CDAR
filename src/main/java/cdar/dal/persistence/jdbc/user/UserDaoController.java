@@ -60,7 +60,7 @@ public class UserDaoController extends CdarJdbcHelper {
 			statement = connection.createStatement();
 
 			result = statement.executeQuery(getUserByIdStatement);
-			if (result.next()) {
+			while (result.next()) {
 				user = new UserDao();
 				user.setId(result.getInt(1));
 				user.setCreationTime(result.getDate(2));
@@ -71,6 +71,7 @@ public class UserDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -78,7 +79,7 @@ public class UserDaoController extends CdarJdbcHelper {
 	}
 
 	public UserDao getUserByName(String username) {
-		final String getUserByIdStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = '"
+		final String getUserByNameStatement = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = '"
 				+ username + "'";
 
 		Connection connection = null;
@@ -90,8 +91,8 @@ public class UserDaoController extends CdarJdbcHelper {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
 
-			result = statement.executeQuery(getUserByIdStatement);
-			if (result.next()) {
+			result = statement.executeQuery(getUserByNameStatement);
+			while (result.next()) {
 				user = new UserDao();
 				user.setId(result.getInt(1));
 				user.setCreationTime(result.getDate(2));
@@ -102,6 +103,7 @@ public class UserDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
