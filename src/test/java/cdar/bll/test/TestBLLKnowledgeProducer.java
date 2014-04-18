@@ -45,7 +45,7 @@ public class TestBLLKnowledgeProducer {
 	public void deleteUser() {
 		um.deleteUser(um.getUser(username).getId());
 	}
-	
+
 	@Test
 	public void testTree() {
 		final String treeName = "MyTreeName";
@@ -463,7 +463,7 @@ public class TestBLLKnowledgeProducer {
 		dm.deleteDirectory(newDirectory.getId());
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
 	}
-	
+
 	@Test
 	public void testDirectoryUpdate() {
 		final String treeName = "MyTree";
@@ -487,7 +487,6 @@ public class TestBLLKnowledgeProducer {
 		DirectoryModel dm = new DirectoryModel();
 		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
-	
 	@Test
 	public void testGetUnknownDirectory() {
 		DirectoryModel dm = new DirectoryModel();

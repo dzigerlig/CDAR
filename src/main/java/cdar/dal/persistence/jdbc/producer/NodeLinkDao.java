@@ -108,7 +108,6 @@ public class NodeLinkDao extends CUDHelper<NodeLinkDao> implements CdarDao {
 		try {
 			return super.create();
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			NodeLinkDao nodeLinkDao = new NodeLinkDao();
 			nodeLinkDao.setId(-1);
 			return nodeLinkDao;
