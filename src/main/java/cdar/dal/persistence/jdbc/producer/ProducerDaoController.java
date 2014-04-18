@@ -257,7 +257,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodes;
 	}
-
+	
 	public NodeDao getNode(int id) {
 		String getNode = String
 				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = %d AND NODE.ID = MAPPING.KNID;",

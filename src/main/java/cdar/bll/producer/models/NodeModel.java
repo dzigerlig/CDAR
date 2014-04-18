@@ -6,6 +6,7 @@ import java.util.Set;
 import cdar.bll.producer.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
+import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
 
@@ -31,9 +32,13 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
+		if (did==0) {
+			int rootDirectoryId = ((DirectoryDao)pdc.getDirectories(treeid).toArray()[0]).getId();
+			did = rootDirectoryId;
+		}
+		
 		TemplateModel tm = new TemplateModel();
 		String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
-
 		NodeDao node = new NodeDao(treeid, title, did);
 		node.create();
 		
