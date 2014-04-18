@@ -237,7 +237,7 @@ app
 												function(response) {
 													if (response.bool) {
 														$scope
-																.getSubnodesOfNode(response);
+																.getSubnodesOfNode(response.changedEntities);
 														//getSubnodes();
 													}
 												});
@@ -522,9 +522,7 @@ app
 									id : $scope.updateSubnodeId,
 									title : $scope.updateSubnodeTitle
 								}, function(response) {
-									//getSubnodes();
-									$scope.getSubnodesOfNode(response);
-
+									getSubnodes();
 								});
 							};
 

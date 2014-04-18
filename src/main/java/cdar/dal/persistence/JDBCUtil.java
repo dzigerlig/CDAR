@@ -20,7 +20,7 @@ public class JDBCUtil {
 		try {
 			String hibernateConfig = System.getProperty("fileName");
 			Class.forName("com.mysql.jdbc.Driver"); 
-			if (connection == null || connection.isClosed()) {
+			//if (connection == null || connection.isClosed()) {
 				if (hibernateConfig!=null) {
 					connection = DriverManager.getConnection(REMOTE_DB_CONNECTION,
     						REMOTE_DB_USER, REMOTE_DB_PASSWORD);
@@ -28,11 +28,12 @@ public class JDBCUtil {
                 	connection = DriverManager.getConnection(LOCAL_DB_CONNECTION,
     						LOCAL_DB_USER, LOCAL_DB_PASSWORD);
                 }
-			}
+			//}
 		} catch (SQLException e) {
 			System.out.println("GET CONNECTION ERROR!");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			System.out.println("GET CONNECTION ERROR!");
 			e.printStackTrace();
 		}
 		return connection;
