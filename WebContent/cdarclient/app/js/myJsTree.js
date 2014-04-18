@@ -1,7 +1,7 @@
 var DIRECTORY = 'directory';
 var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
-var copiedId = null;
+var copiedId = [];
 var quantitiyOfCopies = 0;
 var editedCopies = 0;
 
@@ -46,7 +46,6 @@ $(function() {
 	$('#jstree').on("copy_node.jstree", function(e, data) {
 		quantitiyOfCopies = 1;
 		var node = data.node;
-		console.log(node);
 		if (node.type === 'default') {
 			scope.addDirectoryCopy(node);
 			if (node.children_d.length) {
@@ -282,19 +281,23 @@ function prepareForSetId(node, id) {
 	}
 
 	function setId() {
+		console.log(copiedId);
 		for ( var i in copiedId) {
-			var nodeParent = $('#jstree').jstree(true).get_node(i);
+			console.log(copiedId[i]);
+			var nodeParent = $('#jstree').jstree(true).get_node(copiedId[i]);
+			console.log(nodeParent);
+			var id = copiedId[i].replace(DIRECTORY, "");
 			if (nodeParent.type === 'default') {
-				scope
-						.moveDirectory(i, nodeParent.parent.replace(DIRECTORY,
-								""));
+				scope.moveDirectory(id, nodeParent.parent
+						.replace(DIRECTORY, ""));
 
 			} else {
-				scope.moveNode(i, nodeParent.parent.replace(DIRECTORY, ""));
+				scope.moveNode(id.replace(NODE, ""), nodeParent.parent.replace(
+						DIRECTORY, ""));
 			}
 			console.log(nodeParent.parent);
 		}
-		copiedId = null;
+		copiedId = [];
 		editedCopies = 0;
 		quantitiyOfCopies = 0;
 	}
