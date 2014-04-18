@@ -276,8 +276,8 @@ public class TreeController {
 	@POST
 	@Path("subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Subnode renameSubnode(Subnode subnode) {
-		return sm.renameSubnode(subnode);
+	public CDAR_BooleanChanges<NodeLink> renameSubnode(Subnode subnode) {
+		return new CDAR_BooleanChanges<NodeLink>(sm.renameSubnode(subnode), lm.getNodeLinksBySubnode(subnode.getId()));
 	}
 
 	@POST
