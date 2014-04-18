@@ -344,11 +344,12 @@ function bindConnection() {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 			bindClickConnection(info);
 
-		} else {	scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""), info.targetId
-					.replace(NODE, ""), info.connection);
+		} else {
+			scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
+					info.targetId.replace(NODE, ""), info.connection);
 			showSubnodePopup(info);
 			bindClickConnection(info);
-		
+
 		}
 	});
 };
@@ -372,59 +373,63 @@ function showSubnodePopup(info) {
 	$('#popup-box-1').show();
 }
 
-function renameNode(id, newTitle){
-	var title=$('#'+NODE+id +' .title');
-	if(title.size()!==0){
-		title[0].innerHTML=newTitle;
+function renameNode(id, newTitle) {
+	var title = $('#' + NODE + id + ' .title');
+	if (title.size() !== 0) {
+		title[0].innerHTML = newTitle;
 	}
 }
 
-function updateSubnodesOfNode(resSubnode, nodeId, changes) {
-	if ($("#"+NODE + nodeId).size() !== 0) {
-		var options = $("#"+NODE + nodeId).data("subnode");
+function updateSubnodesOfNode(newSubnode, nodeId, changes) {
+	if ($("#" + NODE + nodeId).size() !== 0) {
+		var subnode = $("#" + NODE + nodeId).data("subnode").subnode;
+		var oldSubnodes = subnode.slice(0);
 		var optionList = $('#' + NODE + nodeId + ' .option');
-		console.log(changes);
-		console.log(optionList);
-		console.log(resSubnode);
-		options.subnode = resSubnode;
+		subnode = newSubnode;
 		optionList.empty();
-		resSubnode.sort(function(a, b) {
+		newSubnode.sort(function(a, b) {
 			return parseInt(a.position) - parseInt(b.position);
 		});
 
-		jQuery.each(resSubnode, function(object) {
+		jQuery.each(newSubnode, function(object) {
 			optionList.append($('<li>').text(this.title));
 		});
 
 		if (changes.changedEntities !== null) {
 			var allSourceConnection = jsPlumb.getConnections({
-				source : $("#"+NODE + nodeId)
+				source : $("#" + NODE + nodeId)
 			});
 
 			var map = {};
 			jQuery.each(changes.changedEntities, function(object) {
 				map[this.id] = true;
 			});
+			//get delte from new to old
+			var linkTitle = [];
+			jQuery.each(newSubnode, function(object) {
+				linkTitle.push(this.title);
+			});
+			jQuery.each(oldSubnodes, function(object) {
+				if ($.inArray(this.title, linkTitle) !== -1) {
+					linkTitle = jQuery.removeFromArray(this.title, linkTitle);
+				}
+			});
+			//
 			jQuery.each(allSourceConnection, function(object) {
 				if (map[this.id.replace(LINK, "")]) {
-					if(changes.operation==='delete'){
-					jsPlumb.detach(this);}
-					else if(changes.operation==='update')
-						{
-						//setLabel TODO
-						//console.log(this.getOverlay("label").setLabel(this.);
-						}
+					if (changes.operation === 'delete') {
+						jsPlumb.detach(this);
+					} else if (changes.operation === 'update') {
+						this.getOverlay("label").setLabel(linkTitle[0]);
+					}
 				}
 			});
 		}
-		//rename connectionlabel
-	/*	var allSourceConnection = jsPlumb.getConnections({
-			source : NODE + nodeId
-		});
-		jQuery.each(allSourceConnection, function() {
-			console.log(this.getOverlay("label").getLabel());
-		});*/
-
 	}
 };
 
+jQuery.removeFromArray = function(value, arr) {
+	return jQuery.grep(arr, function(elem, index) {
+		return elem !== value;
+	});
+};

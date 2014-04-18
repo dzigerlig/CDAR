@@ -137,9 +137,9 @@ app
 							$scope.getSubnodesOfNode = function(idObject) {
 								var identity;
 								var changes = null;
-								if ($.isArray(idObject)
+								if (typeof idObject === 'object'
 										|| idObject === undefined) {
-									if ($.isArray(idObject)) {
+									if (typeof idObject === 'object') {
 										changes = idObject;
 									}
 									identity = $scope.selectedNodeId;
@@ -237,7 +237,7 @@ app
 												function(response) {
 													if (response.bool) {
 														$scope
-																.getSubnodesOfNode(response.changedEntities);
+																.getSubnodesOfNode(response);
 														//getSubnodes();
 													}
 												});
@@ -522,7 +522,12 @@ app
 									id : $scope.updateSubnodeId,
 									title : $scope.updateSubnodeTitle
 								}, function(response) {
-									getSubnodes();
+									if (response.bool) {
+										$scope
+												.getSubnodesOfNode(response);
+										//getSubnodes();
+									}
+									//getSubnodes();
 								});
 							};
 
