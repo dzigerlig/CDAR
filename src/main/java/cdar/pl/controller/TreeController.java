@@ -71,7 +71,6 @@ public class TreeController {
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
-		System.out.println("pl: getting tree: " + ktreeid);
 		return ktm.getTree(ktreeid);
 	}
 
@@ -278,7 +277,7 @@ public class TreeController {
 	@Path("subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_BooleanChanges<NodeLink> renameSubnode(Subnode subnode) {
-		return new CDAR_BooleanChanges<NodeLink>(sm.renameSubnode(subnode), lm.getNodeLinksBySubnode(subnode.getId()));
+		return new CDAR_BooleanChanges<NodeLink>(sm.renameSubnode(subnode), lm.getNodeLinksBySubnode(subnode.getId()), "update");
 	}
 
 	@POST
@@ -308,7 +307,7 @@ public class TreeController {
 	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
 		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
 		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
-				nodelinks);
+				nodelinks, "delete");
 	}
 
 	// TREE XML
