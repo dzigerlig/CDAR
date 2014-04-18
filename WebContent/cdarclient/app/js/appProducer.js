@@ -376,6 +376,18 @@ app
 								});
 							};
 
+                            $scope.addNodeCopy = function(node) {
+								TreeService.addNode({
+									ktreeid : $routeParams.treeId
+								}, {
+									ktrid : $routeParams.treeId,
+									title:node.text
+									
+								}, function(response) {
+                                    prepareForSetId(node, response.id);
+								});
+							};
+
 							$scope.deleteNode = function(id) {
 								detachNode(id);
 								TreeService.deleteNode({
@@ -453,6 +465,17 @@ app
 									parentid : parentid
 								}, function(response) {
 									createDirectory(response);
+								});
+							};
+							
+							$scope.addDirectoryCopy = function(node) {
+								TreeService.addDirectory({
+									ktreeid : $routeParams.treeId
+								}, {
+									ktrid : $routeParams.treeId,
+									title:node.text
+								}, function(response) {
+									prepareForSetId(node, response.id);
 								});
 							};
 
