@@ -382,10 +382,10 @@ function renameNode(id, newTitle) {
 
 function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 	if ($("#" + NODE + nodeId).size() !== 0) {
-		var subnode = $("#" + NODE + nodeId).data("subnode").subnode;
-		var oldSubnodes = subnode.slice(0);
+		var options = $("#" + NODE + nodeId).data("subnode");
+		var oldSubnodes = options.subnode.slice(0);
 		var optionList = $('#' + NODE + nodeId + ' .option');
-		subnode = newSubnode;
+		options.subnode = newSubnode;
 		optionList.empty();
 		newSubnode.sort(function(a, b) {
 			return parseInt(a.position) - parseInt(b.position);
@@ -395,7 +395,7 @@ function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 			optionList.append($('<li>').text(this.title));
 		});
 
-		if (changes.changedEntities !== null) {
+		if (changes!==null&&changes.changedEntities !== null) {
 			var allSourceConnection = jsPlumb.getConnections({
 				source : $("#" + NODE + nodeId)
 			});
