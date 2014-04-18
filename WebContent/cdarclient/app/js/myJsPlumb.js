@@ -135,7 +135,6 @@ function makePopupEvents() {
 										element.currentTarget).attr("id")
 										.replace(SUBNODE, ""));
 								$('[id^=popup-box-]').hide();
-								console.log('hide');
 
 							}
 						});
@@ -365,14 +364,12 @@ function showSubnodePopup(info) {
 	$('#popup-box-1').show();
 	$('#radio-form').empty();
 	$.each(info.connection.source.data(SUBNODE).subnode, function(object) {
-		console.log(this.id);
 		$('#radio-form').append(
 				"<input type=\"radio\" id=\"" + SUBNODE + this.id
 						+ "\" name=\"option\" class=\"radio_item\" value=\""
 						+ this.title + "\">" + this.title + "<br>");
 	});
 	$('#popup-box-1').show();
-	console.log('show');
 }
 
 function renameNode(id, newTitle){
@@ -383,9 +380,12 @@ function renameNode(id, newTitle){
 }
 
 function updateSubnodesOfNode(resSubnode, nodeId, changes) {
-	if ($("#node" + nodeId).size() !== 0) {
-		var options = $("#node" + nodeId).data("subnode");
+	if ($("#"+NODE + nodeId).size() !== 0) {
+		var options = $("#"+NODE + nodeId).data("subnode");
 		var optionList = $('#' + NODE + nodeId + ' .option');
+		console.log(changes);
+		console.log(optionList);
+		console.log(resSubnode);
 		options.subnode = resSubnode;
 		optionList.empty();
 		resSubnode.sort(function(a, b) {
@@ -396,21 +396,35 @@ function updateSubnodesOfNode(resSubnode, nodeId, changes) {
 			optionList.append($('<li>').text(this.title));
 		});
 
-		if (changes !== null) {
+		if (changes.changedEntities !== null) {
 			var allSourceConnection = jsPlumb.getConnections({
-				source : $("#node" + nodeId)
+				source : $("#"+NODE + nodeId)
 			});
 
 			var map = {};
-			jQuery.each(changes, function(object) {
+			jQuery.each(changes.changedEntities, function(object) {
 				map[this.id] = true;
 			});
 			jQuery.each(allSourceConnection, function(object) {
 				if (map[this.id.replace(LINK, "")]) {
-					jsPlumb.detach(this);
+					if(changes.operation==='delete'){
+					jsPlumb.detach(this);}
+					else if(changes.operation==='update')
+						{
+						//setLabel TODO
+						//console.log(this.getOverlay("label").setLabel(this.);
+						}
 				}
 			});
 		}
+		//rename connectionlabel
+	/*	var allSourceConnection = jsPlumb.getConnections({
+			source : NODE + nodeId
+		});
+		jQuery.each(allSourceConnection, function() {
+			console.log(this.getOverlay("label").getLabel());
+		});*/
+
 	}
 };
 

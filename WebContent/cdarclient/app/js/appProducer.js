@@ -237,7 +237,7 @@ app
 												function(response) {
 													if (response.bool) {
 														$scope
-																.getSubnodesOfNode(response.changedEntities);
+																.getSubnodesOfNode(response);
 														//getSubnodes();
 													}
 												});
@@ -376,6 +376,18 @@ app
 								});
 							};
 
+                            $scope.addNodeCopy = function(node) {
+								TreeService.addNode({
+									ktreeid : $routeParams.treeId
+								}, {
+									ktrid : $routeParams.treeId,
+									title:node.text
+									
+								}, function(response) {
+                                    prepareForSetId(node, response.id);
+								});
+							};
+
 							$scope.deleteNode = function(id) {
 								detachNode(id);
 								TreeService.deleteNode({
@@ -455,6 +467,17 @@ app
 									createDirectory(response);
 								});
 							};
+							
+							$scope.addDirectoryCopy = function(node) {
+								TreeService.addDirectory({
+									ktreeid : $routeParams.treeId
+								}, {
+									ktrid : $routeParams.treeId,
+									title:node.text
+								}, function(response) {
+									prepareForSetId(node, response.id);
+								});
+							};
 
 							$scope.renameDirectory = function(id, newTitle) {
 								TreeService.renameDirectory({
@@ -499,7 +522,9 @@ app
 									id : $scope.updateSubnodeId,
 									title : $scope.updateSubnodeTitle
 								}, function(response) {
-									getSubnodes();
+									//getSubnodes();
+									$scope.getSubnodesOfNode(response);
+
 								});
 							};
 

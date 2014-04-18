@@ -1,6 +1,9 @@
 var DIRECTORY = 'directory';
 var NODE = 'node';
 var scope = angular.element(document.getElementById("wrapper")).scope();
+var copiedId = null;
+var quantitiyOfCopies = 0;
+var editedCopies = 0;
 
 var mouseOverJsTreeFlag = false;
 var eleme = $("#jstree-container");
@@ -38,18 +41,22 @@ $(function() {
 			id = id.replace(DIRECTORY, "");
 			scope.changeNode(id, data.node.text);
 		}
-	});	
-	
-	$('#jstree').on("copy_node.jstree", function(e, data) {
-		console.log(data);
-		treeCopy();
 	});
-	
-	function treeCopyGetSubnodes(data){
-		//console.log($('#'+data.))
-	}
-	
-	function treeCopyCreateSubnodes(){}
+
+	$('#jstree').on("copy_node.jstree", function(e, data) {
+		quantitiyOfCopies = 1;
+		var node = data.node;
+		console.log(node);
+		if (node.type === 'default') {
+			scope.addDirectoryCopy(node);
+			if (node.children_d.length) {
+				quantitiyOfCopies += node.children_d.length;
+				DNDCopyCreateSubnodes(data);
+			}
+		} else {
+			scope.addNodeCopy(node);
+		}
+	});
 
 	$('#jstree').on(
 			"rename_node.jstree",
@@ -100,7 +107,8 @@ $(function() {
 
 function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length||sel.length>1 || ref._model.data[sel].type !== "default") {
+	if (!sel.length || sel.length > 1
+			|| ref._model.data[sel].type !== "default") {
 		alert('Please select a folder');
 		return false;
 	} else {
@@ -110,8 +118,9 @@ function jstree_createNode() {
 
 function jstree_createDirectory() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-	if (!sel.length||sel.length>1 || ref._model.data[sel].type !== "default"
-			&& ref._model.data[sel].type !== "root" ) {
+	if (!sel.length || sel.length > 1
+			|| ref._model.data[sel].type !== "default"
+			&& ref._model.data[sel].type !== "root") {
 		alert('Please select a directory');
 		return false;
 	} else {
@@ -155,7 +164,7 @@ function drawDirectory(treeArray, rootid) {
 						"stripes" : true
 					},
 					'data' : treeArray
-				},		            
+				},
 				"types" : {
 
 					"#" : {
@@ -164,7 +173,7 @@ function drawDirectory(treeArray, rootid) {
 					},
 					"root" : {
 						"icon" : "http://jstree.com/tree.png",
-						"valid_children" : [ "default"]
+						"valid_children" : [ "default" ]
 					},
 					"default" : {
 						"valid_children" : [ "default", "file" ]
@@ -244,3 +253,49 @@ function createDirectory(response) {
 	}
 };
 
+function DNDCopyCreateSubnodes(data) {
+	data.node.children_d.forEach(function(nodeId) {
+		var node = data.instance._model.data[nodeId];
+		if (node.type === 'default') {
+			scope.addDirectoryCopy(node.parent.replace(DIRECTORY, ""), node);
+		} else {
+			scope.addNodeCopy(node.parent.replace(DIRECTORY, ""), node);
+		}
+
+	});
+}
+
+function prepareForSetId(node, id) {
+	editedCopies++;
+	console.log(editedCopies);
+	var nodeCopy = $('#jstree').jstree(true).get_node(node.id);
+	if (node.type === 'default') {
+		id = DIRECTORY + id;
+	} else {
+		id = DIRECTORY + NODE + id;
+	}
+	$('#jstree').jstree(true).set_id(nodeCopy, id);
+	copiedId.push(id);
+
+	if (editedCopies == quantitiyOfCopies) {
+		setId();
+	}
+
+	function setId() {
+		for ( var i in copiedId) {
+			var nodeParent = $('#jstree').jstree(true).get_node(i);
+			if (nodeParent.type === 'default') {
+				scope
+						.moveDirectory(i, nodeParent.parent.replace(DIRECTORY,
+								""));
+
+			} else {
+				scope.moveNode(i, nodeParent.parent.replace(DIRECTORY, ""));
+			}
+			console.log(nodeParent.parent);
+		}
+		copiedId = null;
+		editedCopies = 0;
+		quantitiyOfCopies = 0;
+	}
+}
