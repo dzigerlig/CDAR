@@ -506,15 +506,19 @@ app
 								TreeService.zoomUp({
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
-								},
-										function(resNodes) {
+								}, function(resNodes) {
 
-											directoryDataToArray(resDirectory,
-													resNodes);
-											$scope.getSubnodes(resNodes);
+								});
+							};
 
-										});
-							}
+							$scope.zoomDown = function(nodeid) {
+								TreeService.zoomDown({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resNodes) {
+
+								});
+							};
 
 							$scope.updateSubnodeId;
 							$scope.updateSubnodeTitle;

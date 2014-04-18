@@ -316,8 +316,8 @@ function zoomUpEvent(uptree, newState) {
 function zoomDownEvent(downtree, newState) {
 	downtree.click(function(e) {
 	    e.stopPropagation();
-		console.log('clicked down '+newState[0].id);
-		
+	    scope.zoomDown(newState[0].id.replace(NODE, ""));
+		console.log('clicked down '+newState[0].id);		
 	});
 };
 

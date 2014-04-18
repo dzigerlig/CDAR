@@ -108,10 +108,25 @@ public class NodeModel {
 			}
 			for (NodeDao node : pdc.getParent(nodeid)) {
 				nodes.add(new Node(node));
-				rekZoomUp(node.getId(), --quantity, nodes);
+				nodes=rekZoomUp(node.getId(), quantity-1, nodes);
 			}
 		}
 		return nodes;
+	}
+	
+	public Set<Node> zoomDown(int nodeid) {
+		Set<Node> nodes = new HashSet<Node>();
+		nodes.add(new Node(pdc.getNode(nodeid)));
+		return rekZoomDown(nodeid, 2, nodes);
+	}
 
+	private Set<Node> rekZoomDown(int nodeid, int quantity, Set<Node> nodes) {
+		if (quantity > 0) {
+			for (NodeDao node : pdc.getFollower(nodeid)) {
+				nodes.add(new Node(node));
+				nodes = rekZoomDown(node.getId(), quantity-1, nodes);
+			}
+		}
+		return nodes;
 	}
 }

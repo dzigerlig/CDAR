@@ -234,6 +234,13 @@ public class TreeController {
 	public Set<Node> zoomUp(@PathParam("nodeid") int nodeid) {
 		return nm.zoomUp(nodeid);
 	}
+	@GET
+	@Path("/nodes/zoomDown/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Node> zoomDown(@PathParam("nodeid") int nodeid) {
+		return nm.zoomDown(nodeid);
+	}
+
 
 	// Links
 	@GET
