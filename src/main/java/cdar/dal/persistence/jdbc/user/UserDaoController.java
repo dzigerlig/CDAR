@@ -111,6 +111,7 @@ public class UserDaoController extends CdarJdbcHelper {
 	}
 
 	public UserDao loginUser(String username, String password) {
+		
 		UserDao user = getUserByName(username);
 		if (user != null && user.getPassword().equals(password)) {
 			try {
