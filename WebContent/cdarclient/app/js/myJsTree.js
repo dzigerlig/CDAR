@@ -256,9 +256,9 @@ function DNDCopyCreateSubnodes(data) {
 	data.node.children_d.forEach(function(nodeId) {
 		var node = data.instance._model.data[nodeId];
 		if (node.type === 'default') {
-			scope.addDirectoryCopy(node.parent.replace(DIRECTORY, ""), node);
+			scope.addDirectoryCopy(node);
 		} else {
-			scope.addNodeCopy(node.parent.replace(DIRECTORY, ""), node);
+			scope.addNodeCopy(node);
 		}
 
 	});
@@ -266,7 +266,6 @@ function DNDCopyCreateSubnodes(data) {
 
 function prepareForSetId(node, id) {
 	editedCopies++;
-	console.log(editedCopies);
 	var nodeCopy = $('#jstree').jstree(true).get_node(node.id);
 	if (node.type === 'default') {
 		id = DIRECTORY + id;
@@ -281,11 +280,8 @@ function prepareForSetId(node, id) {
 	}
 
 	function setId() {
-		console.log(copiedId);
 		for ( var i in copiedId) {
-			console.log(copiedId[i]);
 			var nodeParent = $('#jstree').jstree(true).get_node(copiedId[i]);
-			console.log(nodeParent);
 			var id = copiedId[i].replace(DIRECTORY, "");
 			if (nodeParent.type === 'default') {
 				scope.moveDirectory(id, nodeParent.parent
@@ -295,7 +291,6 @@ function prepareForSetId(node, id) {
 				scope.moveNode(id.replace(NODE, ""), nodeParent.parent.replace(
 						DIRECTORY, ""));
 			}
-			console.log(nodeParent.parent);
 		}
 		copiedId = [];
 		editedCopies = 0;

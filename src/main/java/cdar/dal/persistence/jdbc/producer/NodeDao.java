@@ -117,6 +117,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		try {
 			return super.update();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			NodeDao nodeDao = new NodeDao();
 			nodeDao.setId(-1);
 			return nodeDao;
@@ -168,7 +169,7 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		preparedStatement.setString(1, getWikititle());
 		preparedStatement.executeUpdate();
 		preparedStatement.close();
-
+		
 		if (getDid() != 0) {
 			preparedStatement = connection
 					.prepareStatement("INSERT INTO KNOWLEDGENODEMAPPING (knid, did) VALUES (?, ?)");

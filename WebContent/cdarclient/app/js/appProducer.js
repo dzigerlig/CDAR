@@ -17,7 +17,7 @@ app.controller("HomeProducerController", [
 			$scope.knowledgeTrees;
 			$scope.newTreeName = "";
 			$scope.UserService = UserService;
-
+			
 			var reloadTrees = function() {
 				TreeService.getTrees(function(response) {
 					$scope.knowledgeTrees = response;

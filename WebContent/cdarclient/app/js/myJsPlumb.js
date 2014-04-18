@@ -32,7 +32,6 @@ function addHTMLNode(response, e) {
 		'top' : e.pageY - $('#jsplumb-container').offset().top,
 		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
-	bindClickEndpoint(newState);
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
 	showNodeWikiEvent(newState);
@@ -87,7 +86,6 @@ function drawExistingNodes(data, resSubnodes) {
 				option.append(list);
 			}
 
-			bindClickEndpoint(newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -263,14 +261,6 @@ function bindDetachConnectorEvent() {
 	});
 };
 
-function bindClickEndpoint(element) {
-	element.bind("click", function(endpoint) {
-		endpoint.originalEvent.stopPropagation();
-		$('#' + endpoint.currentTarget.id + ' .option').toggle();
-		jsPlumb.repaintEverything();
-	});
-};
-
 function removeNodeEvent(newState) {
 	newState.dblclick(function(e) {
 		detachNode(newState[0].id.replace(NODE, ""));
@@ -311,6 +301,8 @@ function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
 		scope.changeNode(newState[0].id.replace(NODE, ""), $(
 				'#' + newState[0].id + ' .title').text());
+		$('#' + newState[0].id + ' .option').toggle();
+		jsPlumb.repaintEverything();
 	});
 };
 
