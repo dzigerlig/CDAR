@@ -493,7 +493,7 @@ app
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
 									if (response.bool) {
-										removeNodes(response.changedEntities);
+										//removeNodes(response.changedEntities);
 									}
 								});
 							};

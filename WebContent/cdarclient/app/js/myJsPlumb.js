@@ -267,15 +267,8 @@ function removeNodeEvent(newState) {
 	});
 };
 
-function removeNodes(deletedNodes) {
-	jQuery.each(deletedNodes, function(object) {
-		detach(this.id);
-	});
-}
-
 function detachNode(id) {
 	var newState = $('#' + NODE + id);
-
 	if (newState.size() !== 0) {
 		var allTargetConnection = jsPlumb.getConnections({
 			target : newState
@@ -375,7 +368,8 @@ function renameNode(id, newTitle) {
 function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 	if ($("#" + NODE + nodeId).size() !== 0) {
 		var options = $("#" + NODE + nodeId).data("subnode");
-		var oldSubnodes = options.subnode.slice(0);
+		if (changes!==null&&changes.changedEntities !== null) {
+		var oldSubnodes = options.subnode.slice(0);}
 		var optionList = $('#' + NODE + nodeId + ' .option');
 		options.subnode = newSubnode;
 		optionList.empty();

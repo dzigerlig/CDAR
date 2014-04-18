@@ -50,7 +50,7 @@ $(function() {
 			scope.addDirectoryCopy(node);
 			if (node.children_d.length) {
 				quantitiyOfCopies += node.children_d.length;
-				DNDCopyCreateSubnodes(data);
+				dndCopyCreateSubnodes(data);
 			}
 		} else {
 			scope.addNodeCopy(node);
@@ -75,16 +75,18 @@ $(function() {
 			});
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
+		scope.selectedNodeId = 0;
+		console.log(data);
+		var node = data.node;
 		var id = data.node.id;
 		id = id.replace(DIRECTORY, "");
-		if (data.node.type !== 'default') {
-			id = id.replace(NODE, "");
-
-			scope.deleteNode(id);
-			scope.selectedNodeId = 0;
-		} else {
+		if (node.type === 'default') {
 			scope.deleteDirectory(id);
-
+			if (node.children_d.length) {
+				deleteSubnodes(data);
+			}
+		} else {
+			scope.deleteNode(id.replace(NODE, ""));
 		}
 	});
 
@@ -246,13 +248,27 @@ function createDirectory(response) {
 		'text' : 'new Folder',
 		"id" : DIRECTORY + response.id
 	});
-
 	if (sel) {
 		ref.edit(sel);
 	}
 };
 
-function DNDCopyCreateSubnodes(data) {
+function deleteSubnodes(data) {
+	console.log('deleteSubnodes');
+	console.log(data);
+	data.node.children_d.forEach(function(nodeId) {
+		var node = data.instance._model.data[nodeId];
+		nodeId=nodeId.replace(DIRECTORY, "")
+		if (node.type === 'default') {
+			scope.deleteDirectory(nodeId);
+		} else {
+			detachNode(nodeId.replace(NODE, ""));
+			scope.deleteNode(nodeId.replace(NODE, ""));
+		}
+
+	});
+}
+function dndCopyCreateSubnodes(data) {
 	data.node.children_d.forEach(function(nodeId) {
 		var node = data.instance._model.data[nodeId];
 		if (node.type === 'default') {
