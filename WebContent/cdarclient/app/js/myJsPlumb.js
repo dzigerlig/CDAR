@@ -47,8 +47,37 @@ function addHTMLNode(response, e) {
 	scope.getSubnodesOfNode(response.id);
 }
 
+function buildContent(){
+	$("#jsplumb-container").empty();
+	var container=$("#jsplumb-container");
+	var popup = $('<div>').addClass('popup-box').attr('id', 'popup-box-1');
+	container.append(popup);
+	var top = $('<div>').addClass('top');
+	popup.append(top);
+	var text = $('<h4>').val('Choose decision');
+	top.append(text);
+	var bottom = $('<div>').addClass('bottom');
+	popup.append(bottom);
+	var form = $('<form>').attr('id', 'radio-form');
+	bottom.append(form);
+	
+	
+	/*
+	
+	<div class="popup-box" id="popup-box-1">
+	<div class="top">
+		<h4>Choose decision</h4>
+	</div>
+	<div class="bottom">
+		<form action="" id="radio-form"></form>
+	</div>
+</div>*/
+
+}
+
 // imported Nodes
 function drawExistingNodes(data, resSubnodes) {
+	buildContent();
 	isInizialized = false;
 	var map = {};
 	jQuery.each(resSubnodes, function(object) {
@@ -336,6 +365,7 @@ function makeNodeHierarchy(data, resSubNodes) {
 						+ this.targetId + ";";
 			});
 	direction += "}";
+	$("#dot-src").empty();
 	$('#dot-src').val(direction);
 	isInizialized = true;
 };
