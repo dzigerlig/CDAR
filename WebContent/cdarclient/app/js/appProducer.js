@@ -106,6 +106,15 @@ app
 							$scope.selectedSubnodeName = '';
 							$scope.newSubnodeName = '';
 							$scope.subnodeHtmlText;
+							
+							// TREE TITLE
+							$scope.saveKnowledgeTreeTitle = function(title) {
+								TreeService.renameTree({
+									ktreeid : $scope.knowledgetree.treeid
+								},
+									$scope.knowledgetree
+								);
+							};
 
 							// TEMPLATES //
 							$scope.templates;

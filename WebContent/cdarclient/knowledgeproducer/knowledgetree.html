@@ -36,8 +36,8 @@
 			<div class="content-header">
 				<div class="col-md-8">
 					<h1>
-						<a id="menu-toggle" class="btn btn-default"><i
-							class="icon-reorder"></i></a> Knowledge Tree: {{knowledgetree.title}}
+						<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
+						Knowledge Tree: <a href="#" editable-text="knowledgetree.title" onbeforesave="saveKnowledgeTreeTitle($data)">{{knowledgetree.title}}</a>
 					</h1>
 				</div>
 				<div class="col-md-4" style="text-align: right">
