@@ -60,8 +60,7 @@ public class TemplateModel {
 
 	public String getDefaultKnowledgeTemplate(int ktrid) {
 		for (TemplateDao templatedao : pdc.getTemplates(ktrid)) {
-			if (templatedao.getIsDefault()) {
-				System.out.println(templatedao.getTemplatetext());
+			if (templatedao.getIsDefault() && !templatedao.getDecisionMade()) {
 				return templatedao.getTemplatetext();
 			}
 		}

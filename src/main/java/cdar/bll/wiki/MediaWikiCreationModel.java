@@ -18,7 +18,7 @@ public class MediaWikiCreationModel extends Thread {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
-		setWikiHeper(wikiHelper);
+		setWikiHelper(wikiHelper);
 		setTemplateContent(templateContent);
 	}
 
@@ -38,8 +38,12 @@ public class MediaWikiCreationModel extends Thread {
 		this.title = title;
 	}
 
-	public void setWikiHeper(WikiEntryConcurrentHelper wikiHelper) {
+	public void setWikiHelper(WikiEntryConcurrentHelper wikiHelper) {
 		this.wikiHelper = wikiHelper;
+	}
+	
+	public WikiEntryConcurrentHelper getWikiHelper() {
+		return wikiHelper;
 	}
 
 	public void createNewWikiEntry() {
@@ -59,12 +63,12 @@ public class MediaWikiCreationModel extends Thread {
 	private void createEntry(Wiki wiki) throws IOException,
 			FailedLoginException, LoginException {
 		wiki.login("admin", "password");
-		wiki.edit(this.title, getTemplateContent(), "");
+		wiki.edit(getTitle(), getTemplateContent(), "");
 	}
 
 	public void run() {
 		createNewWikiEntry();
-		this.wikiHelper.removeWikiEntry(getTitle());
+		getWikiHelper().removeWikiEntry(getTitle());
 	}
 
 	public String getTemplateContent() {
