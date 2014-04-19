@@ -325,7 +325,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -364,7 +364,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -402,7 +402,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -510,7 +510,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -551,7 +551,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -592,7 +592,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+		//	e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -703,7 +703,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -739,7 +739,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -771,7 +771,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}
@@ -869,7 +869,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			closeConnections(connection, null, statement, null);
 		}

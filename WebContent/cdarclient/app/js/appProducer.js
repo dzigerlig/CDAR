@@ -518,11 +518,11 @@ app
 									entityid : nodeid
 								}, function(resSubnodes) {
 									drawExistingNodes(resNodes, resSubnodes);
-									$scope.zoomUpLink(resSubnodes);
+									$scope.zoomUpLink(nodeid, resSubnodes);
 								});
 							};
 
-							$scope.zoomUpLink = function(resSubnodes) {
+							$scope.zoomUpLink = function(nodeid,resSubnodes) {
 								TreeService.zoomUpLink({
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
@@ -537,7 +537,27 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resNodes) {
+									$scope.zoomDownSubnode(nodeid, resNodes);
+								});
+							};
+							
+							$scope.zoomDownSubnode = function(nodeid, resNodes) {
+								TreeService.zoomDownSubnode({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resSubnodes) {
+									drawExistingNodes(resNodes, resSubnodes);
+									$scope.zoomDownLink(nodeid, resSubnodes);
+								});
+							};
 
+							$scope.zoomDownLink = function(nodeid,resSubnodes) {
+								TreeService.zoomDownLink({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resLinks) {
+									makeNodeHierarchy(resLinks, resSubnodes);
+									w_launch();
 								});
 							};
 

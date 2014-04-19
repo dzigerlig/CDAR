@@ -48,6 +48,9 @@ function addHTMLNode(response, e) {
 }
 
 function buildContent(){
+	jsPlumb.detachEveryConnection();
+	jsPlumb.deleteEveryEndpoint();
+
 	$("#jsplumb-container").empty();
 	var container=$("#jsplumb-container");
 	var popup = $('<div>').addClass('popup-box').attr('id', 'popup-box-1');
@@ -216,6 +219,7 @@ function makeTarget(newState) {
 
 function connectNodes(stateSource, stateTarget, id, subnode) {
 	if (subnode === undefined) {
+		
 		jsPlumb.connect({
 			source : stateSource,
 			target : stateTarget,
@@ -242,6 +246,7 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 				outlineWidth : 1
 			}
 		});
+
 	} else {
 		jsPlumb.connect({
 			source : stateSource,
@@ -267,11 +272,11 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 			endpoint : [ "Dot", {
 				radius : 2
 			} ],
-			endpointStyle : {
+			/*endpointStyle : {
 				fillStyle : "blue",
 				outlineColor : "black",
-				outlineWidth : 1
-			}
+				//outlineWidth : 1
+			}*/
 
 		});
 	}
@@ -339,18 +344,17 @@ function zoomUpEvent(uptree, newState) {
 	uptree.click(function(e) {
 	    e.stopPropagation();
 	    scope.zoomUpNode(newState[0].id.replace(NODE, ""));
-		console.log('clicked up ' + newState[0].id);
 	});
 };
 function zoomDownEvent(downtree, newState) {
 	downtree.click(function(e) {
 	    e.stopPropagation();
 	    scope.zoomDownNode(newState[0].id.replace(NODE, ""));
-		console.log('clicked down '+newState[0].id);		
 	});
 };
 
-function makeNodeHierarchy(data, resSubNodes) {
+function makeNodeHierarchy(data, resSubNodes) {	
+	$("#dot-src").empty();
 	var map = {};
 	jQuery.each(resSubNodes, function(object) {
 		map[this.id] = this;
@@ -365,7 +369,6 @@ function makeNodeHierarchy(data, resSubNodes) {
 						+ this.targetId + ";";
 			});
 	direction += "}";
-	$("#dot-src").empty();
 	$('#dot-src').val(direction);
 	isInizialized = true;
 };
