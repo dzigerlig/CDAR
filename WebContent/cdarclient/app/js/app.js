@@ -1,4 +1,4 @@
-var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5', 'ui.bootstrap' ]);
+var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5', 'ui.bootstrap', 'xeditable' ]);
 
 app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;
@@ -72,11 +72,13 @@ app.config(function ($routeProvider,$httpProvider) {
 });
 
 
-app.run(function ($rootScope, $location, AuthenticationService, $templateCache) {
+app.run(function ($rootScope, $location, AuthenticationService, $templateCache, editableOptions) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!$.cookie('cdar') && next.needsLogin) {
             $location.url("/login");
         }
         event.preventDefault();
     });
+    
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
