@@ -501,18 +501,45 @@ app
 									parentid : newParentId
 								});
 							};
+							
+							
+							
+							$scope.zoomUpNode = function(nodeid) {
+							TreeService.zoomUpNode({
+								ktreeid : $routeParams.treeId,
+								entityid : nodeid
+								},
+									function(resNodes) {
+										$scope.zoomUpSubnode(nodeid, resNodes);
 
-							$scope.zoomUp = function(nodeid) {
-								TreeService.zoomUp({
-									ktreeid : $routeParams.treeId,
-									entityid : nodeid
-								}, function(resNodes) {
+									});};							
+									
+									
+									/*
+									$scope.zoomUpSubnode = function(nodeid, resNodes) {
+										TreeService.zoomUpSubnode({
+											ktreeid : $routeParams.treeId,
+											entityid : nodeid
+										}, function(resSubnodes) {
+											drawExistingNodes(resNodes, resSubnodes);
+											$scope.zoomUpLink(resSubnodes);
+										});
+									};
 
-								});
-							};
+									$scope.zoomUpLink = function(resSubnodes) {
+										TreeService.zoomUpLink({
+											ktreeid : $routeParams.treeId,
+											entityid : nodeid
+										}, function(resLinks) {
+											makeNodeHierarchy(resLinks, resSubnodes);
+											w_launch();
+										});
+									};*/
+									
 
-							$scope.zoomDown = function(nodeid) {
-								TreeService.zoomDown({
+
+							$scope.zoomDownNode = function(nodeid) {
+								TreeService.zoomDownNode({
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resNodes) {

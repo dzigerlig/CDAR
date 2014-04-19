@@ -309,14 +309,14 @@ function showNodeWikiEvent(newState) {
 function zoomUpEvent(uptree, newState) {
 	uptree.click(function(e) {
 	    e.stopPropagation();
-	    scope.zoomUp(newState[0].id.replace(NODE, ""));
+	    scope.zoomUpNode(newState[0].id.replace(NODE, ""));
 		console.log('clicked up ' + newState[0].id);
 	});
 };
 function zoomDownEvent(downtree, newState) {
 	downtree.click(function(e) {
 	    e.stopPropagation();
-	    scope.zoomDown(newState[0].id.replace(NODE, ""));
+	    scope.zoomDownNode(newState[0].id.replace(NODE, ""));
 		console.log('clicked down '+newState[0].id);		
 	});
 };

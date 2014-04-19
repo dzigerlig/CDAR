@@ -103,10 +103,10 @@ public class NodeModel {
 
 	private Set<Node> rekZoomUp(int nodeid, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
-			for (NodeDao node : pdc.getSibling(nodeid)) {
+			for (NodeDao node : pdc.getSiblingNode(nodeid)) {
 				nodes.add(new Node(node));
 			}
-			for (NodeDao node : pdc.getParent(nodeid)) {
+			for (NodeDao node : pdc.getParentNode(nodeid)) {
 				nodes.add(new Node(node));
 				nodes=rekZoomUp(node.getId(), quantity-1, nodes);
 			}
@@ -122,7 +122,7 @@ public class NodeModel {
 
 	private Set<Node> rekZoomDown(int nodeid, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
-			for (NodeDao node : pdc.getFollower(nodeid)) {
+			for (NodeDao node : pdc.getFollowerNode(nodeid)) {
 				nodes.add(new Node(node));
 				nodes = rekZoomDown(node.getId(), quantity-1, nodes);
 			}

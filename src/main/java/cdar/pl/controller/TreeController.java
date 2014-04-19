@@ -231,13 +231,13 @@ public class TreeController {
 	@GET
 	@Path("/nodes/zoomUp/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Node> zoomUp(@PathParam("nodeid") int nodeid) {
+	public Set<Node> zoomUpNode(@PathParam("nodeid") int nodeid) {
 		return nm.zoomUp(nodeid);
 	}
 	@GET
 	@Path("/nodes/zoomDown/{ktreeid}/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Node> zoomDown(@PathParam("nodeid") int nodeid) {
+	public Set<Node> zoomDownNode(@PathParam("nodeid") int nodeid) {
 		return nm.zoomDown(nodeid);
 	}
 
@@ -270,6 +270,20 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink updateNodeLink(NodeLink nl) {
 		return lm.updateNodeLink(nl);
+	}
+	
+	@GET
+	@Path("/links/zoomUp/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<NodeLink> zoomUpLink(@PathParam("nodeid") int nodeid) {
+		return lm.zoomUp(nodeid);
+	}
+	
+	@GET
+	@Path("/links/zoomDown/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<NodeLink> zoomDownLink(@PathParam("nodeid") int nodeid) {
+		return lm.zoomDown(nodeid);
 	}
 
 	// Subnodes

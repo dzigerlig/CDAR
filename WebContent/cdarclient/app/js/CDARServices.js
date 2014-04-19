@@ -222,7 +222,7 @@ app.factory('TreeService', [
 						action : 'move',
 					}
 				},
-				'zoomUp' : {
+				'zoomUpNode' : {
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -230,7 +230,7 @@ app.factory('TreeService', [
 						action : 'zoomUp',
 					}
 				},
-				'zoomDown' : {
+				'zoomDownNode' : {
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -266,6 +266,23 @@ app.factory('TreeService', [
 					params : {
 						entity : 'links',
 						action : 'update',
+					}
+				},
+				
+				'zoomUpLink' : {
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity : 'links',
+						action : 'zoomUp',
+					}
+				},
+				'zoomDownLink' : {
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity : 'links',
+						action : 'zoomDown',
 					}
 				},
 
