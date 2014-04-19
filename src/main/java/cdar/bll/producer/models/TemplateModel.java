@@ -41,14 +41,18 @@ public class TemplateModel {
 	}
 
 	public Set<Template> setDefaultTemplate(int treeid, int templateId) {
-		if (pdc.getTemplate(templateId).getIsDefault()) {
+		TemplateDao srcTemplate = pdc.getTemplate(templateId);
+		
+		if (srcTemplate.getIsDefault()) {
 			TemplateDao templatedao = pdc.getTemplate(templateId);
 			templatedao.setIsDefault(false);
 			templatedao.update();
 		} else {
 			for (TemplateDao templatedao : pdc.getTemplates(treeid)) {
-				templatedao.setIsDefault(templatedao.getId() == templateId);
-				templatedao.update();
+				if (templatedao.getDecisionMade() == srcTemplate.getDecisionMade()) {
+					templatedao.setIsDefault(templatedao.getId() == templateId);
+					templatedao.update();
+				}
 			}
 		}
 		return getKnowledgeTemplates(treeid);
