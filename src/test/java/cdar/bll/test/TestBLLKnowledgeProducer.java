@@ -102,7 +102,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText);
+		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
 		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
@@ -115,7 +115,7 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateIsDefault() {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template.getIsDefault());
 	}
 	
@@ -123,8 +123,8 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateDefaultChangeMultipleTemplates() {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
-		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
+		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
 		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
@@ -139,8 +139,8 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
-		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text");
+		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
+		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
 		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
@@ -163,7 +163,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText);
+		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
 		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
@@ -193,7 +193,7 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testUpdateUnknownTemplate() {
 		TemplateModel tplm = new TemplateModel();
-		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text");
+		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text", false);
 		template.setTitle("New title");
 		Template updatedTemplate = tplm.updateTemplate(template);
 		assertEquals(-1, updatedTemplate.getId());
@@ -253,7 +253,7 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testUpdateUnknownNode() {
 		NodeModel nm = new NodeModel();
-		Node node = nm.addNode(unknownId, "Node title", 0);
+		Node node = nm.addNode(unknownId, "Node title", 2);
 		node.setTitle("Updated title");
 		Node updatedNode = nm.updateNode(node);
 		assertEquals(-1, updatedNode.getId());
@@ -519,8 +519,8 @@ public class TestBLLKnowledgeProducer {
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		//before copy
-		Template template1 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 1");
-		Template template2 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 2");
+		Template template1 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 1", false);
+		Template template2 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 2", false);
 		Directory directory1 = dm.addDirectory(tree.getId(), directoryId, "Directory 1");
 		Directory directory2 = dm.addDirectory(tree.getId(), directoryId, "Directory 2");
 		Directory directory3 = dm.addDirectory(tree.getId(), directory2.getId(), "Directory 3");

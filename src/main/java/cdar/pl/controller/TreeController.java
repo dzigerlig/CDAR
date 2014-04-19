@@ -95,7 +95,7 @@ public class TreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
 		return tm.addKnowledgeTemplate(template.getTreeid(),
-				template.getTitle(), template.getTemplatetext());
+				template.getTitle(), template.getTemplatetext(), template.getDecisionMade());
 	}
 
 	@POST

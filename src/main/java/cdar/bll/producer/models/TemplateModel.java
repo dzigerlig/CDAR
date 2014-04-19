@@ -22,8 +22,8 @@ public class TemplateModel {
 		return new Template(pdc.getTemplate(templateid));
 	}
 
-	public Template addKnowledgeTemplate(int treeid, String title, String text) {
-		TemplateDao templatedao = new TemplateDao(treeid, title, text);
+	public Template addKnowledgeTemplate(int treeid, String title, String text, boolean decisionMade) {
+		TemplateDao templatedao = new TemplateDao(treeid, title, text, decisionMade);
 		return new Template(templatedao.create());
 	}
 

@@ -13,17 +13,18 @@ public class Template extends BasicEntity {
 	private String templatetext;
 	private String templatetexthtml;
 	private boolean isDefault = false;
+	private boolean decisionMade = false;
 	
 	public Template() {
 		
 	}
 
 	public Template(TemplateDao template) {
-		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getTemplatetext(), template.getKtrid(), template.getIsDefault());
+		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getTemplatetext(), template.getKtrid(), template.getIsDefault(), template.getDecisionMade());
 	}
 
 	public Template(int id, Date creationTime, Date lastModificationTime,
-			String title, String templatetext, int treeid, boolean isDefault) {
+			String title, String templatetext, int treeid, boolean isDefault, boolean decisionMade) {
 		super(id, creationTime, lastModificationTime);
 		setTreeid(treeid);
 		setTitle(title);
@@ -32,6 +33,7 @@ public class Template extends BasicEntity {
 			setTemplatetexthtml(WikiModel.toHtml(getTemplatetext()));
 		}
 		setIsDefault(isDefault);
+		setDecisionMade(decisionMade);
 	}
 
 	public Template(int id) {
@@ -76,5 +78,13 @@ public class Template extends BasicEntity {
 
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
+	}
+	
+	public boolean getDecisionMade() {
+		return decisionMade;
+	}
+
+	public void setDecisionMade(boolean decisionMade) {
+		this.decisionMade = decisionMade;
 	}
 }

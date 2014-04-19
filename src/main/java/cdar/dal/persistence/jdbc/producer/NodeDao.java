@@ -117,7 +117,6 @@ public class NodeDao extends CUDHelper<NodeDao> implements CdarDao {
 		try {
 			return super.update();
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			NodeDao nodeDao = new NodeDao();
 			nodeDao.setId(-1);
 			return nodeDao;

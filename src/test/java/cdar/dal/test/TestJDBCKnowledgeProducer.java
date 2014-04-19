@@ -1,6 +1,7 @@
 package cdar.dal.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -100,10 +101,12 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText);
+		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText, false);
 		template.create();
 		assertEquals(templateName, kpdc.getTemplate(template.getId()).getTitle());
 		assertEquals(templateText, kpdc.getTemplate(template.getId()).getTemplatetext());
+		assertFalse(kpdc.getTemplate(template.getId()).getIsDefault());
+		assertFalse(kpdc.getTemplate(template.getId()).getDecisionMade());
 		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 	}
 	
@@ -117,7 +120,7 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText);
+		TemplateDao template = new TemplateDao(tree.getId(), templateName, templateText, false);
 		template.create();
 		assertEquals(templateName, kpdc.getTemplates(tree.getId()).get(0).getTitle());
 		assertEquals(templateText, kpdc.getTemplates(tree.getId()).get(0).getTemplatetext());
@@ -134,7 +137,7 @@ public class TestJDBCKnowledgeProducer {
 		TreeDao tree = new TreeDao(user.getId(), "TestKnowledgeTree");
 		tree.create();
 		assertEquals(0, kpdc.getTemplates(tree.getId()).size());
-		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate", "TEXT");
+		TemplateDao template = new TemplateDao(tree.getId(), "MyTemplate", "TEXT", false);
 		template.create();
 		assertEquals(1, kpdc.getTemplates(tree.getId()).size());
 		template.delete();

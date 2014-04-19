@@ -32,27 +32,33 @@ public class NodeModel {
 	}
 
 	public Node addNode(int treeid, String title, int did) {
-		if (did == 0) {
-			int rootDirectoryId = ((DirectoryDao) pdc.getDirectories(treeid)
-					.toArray()[0]).getId();
-			did = rootDirectoryId;
+		if (treeid != -1) {
+			if (did == 0) {
+				int rootDirectoryId = ((DirectoryDao) pdc
+						.getDirectories(treeid).get(0)).getId();
+				did = rootDirectoryId;
+			}
+
+			TemplateModel tm = new TemplateModel();
+			String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
+			NodeDao node = new NodeDao(treeid, title, did);
+			node.create();
+
+			if (templateContent == null) {
+				templateContent = "== CDAR ==";
+			}
+
+			wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
+
+			MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,
+					node.getWikititle(), templateContent, wikiHelper);
+			mwm.start();
+			return new Node(node);
+		} else {
+			Node node = new Node();
+			node.setId(-1);
+			return node;
 		}
-
-		TemplateModel tm = new TemplateModel();
-		String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
-		NodeDao node = new NodeDao(treeid, title, did);
-		node.create();
-
-		if (templateContent == null) {
-			templateContent = "== CDAR ==";
-		}
-
-		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
-
-		MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,
-				node.getWikititle(), templateContent, wikiHelper);
-		mwm.start();
-		return new Node(node);
 	}
 
 	public Node dropNode(int id) {
@@ -108,12 +114,12 @@ public class NodeModel {
 			}
 			for (NodeDao node : pdc.getParentNode(nodeid)) {
 				nodes.add(new Node(node));
-				nodes=rekZoomUp(node.getId(), quantity-1, nodes);
+				nodes = rekZoomUp(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;
 	}
-	
+
 	public Set<Node> zoomDown(int nodeid) {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(new Node(pdc.getNode(nodeid)));
@@ -124,7 +130,7 @@ public class NodeModel {
 		if (quantity > 0) {
 			for (NodeDao node : pdc.getFollowerNode(nodeid)) {
 				nodes.add(new Node(node));
-				nodes = rekZoomDown(node.getId(), quantity-1, nodes);
+				nodes = rekZoomDown(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;

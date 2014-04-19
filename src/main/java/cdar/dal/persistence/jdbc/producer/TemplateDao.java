@@ -19,17 +19,19 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	private String title;
 	private String templatetext;
 	private boolean isDefault;
+	private boolean decisionMade;
 
 	public TemplateDao(int ktrid) {
 		setKtrid(ktrid);
 		setIsDefault(false);
 	}
 
-	public TemplateDao(int ktrid, String title, String templatetext) {
+	public TemplateDao(int ktrid, String title, String templatetext, boolean decisionMade) {
 		setKtrid(ktrid);
 		setTitle(title);
 		setTemplatetext(templatetext);
 		setIsDefault(false);
+		setDecisionMade(decisionMade);
 	}
 
 	public TemplateDao(Template template) {
@@ -101,6 +103,14 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
+	
+	public boolean getDecisionMade() {
+		return decisionMade;
+	}
+
+	public void setDecisionMade(boolean decisionMade) {
+		this.decisionMade = decisionMade;
+	}
 
 	@Override
 	public TemplateDao update() {
@@ -135,7 +145,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"INSERT INTO KNOWLEDGETEMPLATE (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT) VALUES (?, ?, ?, ?, ?)",
+						"INSERT INTO KNOWLEDGETEMPLATE (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE) VALUES (?, ?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
@@ -145,6 +155,12 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			preparedStatement.setInt(5, 1);
 		} else {
 			preparedStatement.setInt(5, 0);
+		}
+		
+		if (getDecisionMade()) {
+			preparedStatement.setInt(6, 1);
+		} else {
+			preparedStatement.setInt(6, 0);
 		}
 
 		preparedStatement.executeUpdate();
@@ -162,7 +178,7 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 			throws SQLException {
 		preparedStatement = connection
 				.prepareStatement(
-						"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ? WHERE id = ?",
+						"UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?",
 						Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 		preparedStatement.setString(2, getTitle());
@@ -172,7 +188,12 @@ public class TemplateDao extends CUDHelper<TemplateDao> implements CdarDao {
 		} else {
 			preparedStatement.setInt(4, 0);
 		}
-		preparedStatement.setInt(5, getId());
+		if (getDecisionMade()) {
+			preparedStatement.setInt(5, 1);
+		} else {
+			preparedStatement.setInt(5, 0);
+		}
+		preparedStatement.setInt(6, getId());
 		preparedStatement.executeUpdate();
 		generatedKeys = preparedStatement.getGeneratedKeys();
 		if (generatedKeys.next()) {
