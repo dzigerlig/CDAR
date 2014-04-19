@@ -501,42 +501,36 @@ app
 									parentid : newParentId
 								});
 							};
-							
-							
-							
+
 							$scope.zoomUpNode = function(nodeid) {
-							TreeService.zoomUpNode({
-								ktreeid : $routeParams.treeId,
-								entityid : nodeid
-								},
-									function(resNodes) {
-										$scope.zoomUpSubnode(nodeid, resNodes);
+								TreeService.zoomUpNode({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resNodes) {
+									$scope.zoomUpSubnode(nodeid, resNodes);
 
-									});};							
-									
-									
-									/*
-									$scope.zoomUpSubnode = function(nodeid, resNodes) {
-										TreeService.zoomUpSubnode({
-											ktreeid : $routeParams.treeId,
-											entityid : nodeid
-										}, function(resSubnodes) {
-											drawExistingNodes(resNodes, resSubnodes);
-											$scope.zoomUpLink(resSubnodes);
-										});
-									};
+								});
+							};
 
-									$scope.zoomUpLink = function(resSubnodes) {
-										TreeService.zoomUpLink({
-											ktreeid : $routeParams.treeId,
-											entityid : nodeid
-										}, function(resLinks) {
-											makeNodeHierarchy(resLinks, resSubnodes);
-											w_launch();
-										});
-									};*/
-									
+							$scope.zoomUpSubnode = function(nodeid, resNodes) {
+								TreeService.zoomUpSubnode({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resSubnodes) {
+									drawExistingNodes(resNodes, resSubnodes);
+									$scope.zoomUpLink(resSubnodes);
+								});
+							};
 
+							$scope.zoomUpLink = function(resSubnodes) {
+								TreeService.zoomUpLink({
+									ktreeid : $routeParams.treeId,
+									entityid : nodeid
+								}, function(resLinks) {
+									makeNodeHierarchy(resLinks, resSubnodes);
+									w_launch();
+								});
+							};
 
 							$scope.zoomDownNode = function(nodeid) {
 								TreeService.zoomDownNode({

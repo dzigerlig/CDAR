@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
@@ -51,7 +52,8 @@ public class SubnodeModel {
 
 		Set<Subnode> subnodes = getSubnodesFromNode(getSubnode(id).getKnid());
 
-		if (subnodes.size() == 0 || newPosition > subnodes.size() || newPosition < 1) {
+		if (subnodes.size() == 0 || newPosition > subnodes.size()
+				|| newPosition < 1) {
 			return false;
 		} else {
 
@@ -98,12 +100,13 @@ public class SubnodeModel {
 		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
 		subnodedao.setTitle(subnode.getTitle());
 		Subnode retSubnode = new Subnode(subnodedao.update());
-		if (retSubnode.getId()==-1) {
+		if (retSubnode.getId() == -1) {
 			return false;
-		} {
+		}
+		{
 			return true;
 		}
-		
+
 	}
 
 	public int getNextSubnodePosition(int nodeid) {
@@ -116,5 +119,46 @@ public class SubnodeModel {
 
 	public boolean moveSubnodeDown(Subnode subnode) {
 		return changeSubnodePosition(subnode.getId(), false);
+	}
+
+	public Set<Subnode> zoomUp(int nodeid) {
+		Set<Subnode> subnodes = new HashSet<Subnode>();
+		for (SubnodeDao subnode : pdc.getSubnodes(nodeid)) {
+			subnodes.add(new Subnode(subnode));
+		}
+		return rekZoomUp(nodeid, 2, subnodes);
+	}
+
+	private Set<Subnode> rekZoomUp(int nodeid, int quantity,
+			Set<Subnode> subnodes) {
+		if (quantity > 0) {
+			for (SubnodeDao subnode : pdc.getSiblingSubnode(nodeid)) {
+				subnodes.add(new Subnode(subnode));
+			}
+			for (SubnodeDao subnode : pdc.getParentSubnode(nodeid)) {
+				subnodes.add(new Subnode(subnode));
+				subnodes = rekZoomUp(subnode.getKnid(), quantity - 1, subnodes);
+			}
+		}
+		return subnodes;
+	}
+
+	public Set<Subnode> zoomDown(int nodeid) {
+		Set<Subnode> subnodes = new HashSet<Subnode>();
+		for (SubnodeDao subnode : pdc.getSubnodes(nodeid)) {
+			subnodes.add(new Subnode(subnode));
+		}
+		return rekZoomDown(nodeid, 2, subnodes);
+	}
+
+	private Set<Subnode> rekZoomDown(int nodeid, int quantity,
+			Set<Subnode> subnodes) {
+		if (quantity > 0) {
+			for (SubnodeDao node : pdc.getFollowerSubnode(nodeid)) {
+				subnodes.add(new Subnode(node));
+				subnodes = rekZoomDown(node.getKnid(), quantity - 1, subnodes);
+			}
+		}
+		return subnodes;
 	}
 }

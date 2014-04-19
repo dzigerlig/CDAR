@@ -472,6 +472,130 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return subnode;
 	}
+	
+	public List<SubnodeDao> getParentSubnode(int nodeid) {
+		String getSubnode = String
+				.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION "
+						+ "FROM ( "
+						+ "SELECT NODE.ID "
+						+ "FROM( "
+						+ "SELECT LINKTO.SOURCEID "
+						+ "FROM NODELINK AS LINKTO "
+						+ "WHERE %d = LINKTO.TARGETID) AS SUB,  KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING "
+						+ "WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KNID) AS NODES, KNOWLEDGESUBNODE AS SUBN "
+						+ "WHERE SUBN.KNID=NODES.ID;",
+						nodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<SubnodeDao> subnodes = new ArrayList<SubnodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getSubnode);
+			while (result.next()) {
+				SubnodeDao subnode = new SubnodeDao(result.getInt(4),
+						result.getInt(7));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
+	}
+
+	public List<SubnodeDao> getSiblingSubnode(int nodeid) {
+		String getSubnode = String
+				.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION "
+						+ "FROM( "
+						+ "SELECT DISTINCT  NODE.ID "
+						+ "FROM ( "
+						+ "SELECT* FROM NODELINK AS LINK "
+						+ "WHERE ( "
+						+ "SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO "
+						+ "WHERE  %d=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING "
+						+ "WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>%d) AS NODES, KNOWLEDGESUBNODE AS SUBN "
+						+ "WHERE SUBN.KNID=NODES.ID;", nodeid, nodeid);
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<SubnodeDao> subnodes = new ArrayList<SubnodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getSubnode);
+			while (result.next()) {
+				SubnodeDao subnode = new SubnodeDao(result.getInt(4),
+						result.getInt(7));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
+	}
+	
+	public List<SubnodeDao> getFollowerSubnode(int nodeid) {
+		String getSubnode = String
+				.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION "
+						+ "FROM ( "
+						+ "SELECT  NODE.ID "
+						+ "FROM( "
+						+ "SELECT LINKTO.TARGETID FROM NODELINK AS LINKTO "
+						+ "WHERE %d=LINKTO.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING "
+						+ "WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID) AS NODES, KNOWLEDGESUBNODE AS SUBN "
+						+ "WHERE SUBN.KNID=NODES.ID;",
+						nodeid);
+
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet result = null;
+		List<SubnodeDao> subnodes = new ArrayList<SubnodeDao>();
+
+		try {
+			connection = JDBCUtil.getConnection();
+			statement = connection.createStatement();
+
+			result = statement.executeQuery(getSubnode);
+			while (result.next()) {
+				SubnodeDao subnode = new SubnodeDao(result.getInt(4),
+						result.getInt(7));
+				subnode.setId(result.getInt(1));
+				subnode.setCreationTime(result.getDate(2));
+				subnode.setLastModificationTime(result.getDate(3));
+				subnode.setTitle(result.getString(5));
+				subnode.setWikititle(result.getString(6));
+				subnodes.add(subnode);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			closeConnections(connection, null, statement, null);
+		}
+		return subnodes;
+	}
 
 	public int getNextSubnodePosition(int nodeid) {
 		int position = 0;
@@ -551,22 +675,20 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelinks;
 	}
-	
+
 	public List<NodeLinkDao> getParentNodeLinks(int nodeid) {
 		String getNodeLinks = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID "
-						+ "FROM NODELINK "
-						+ "WHERE %d = TARGETID;",
-						nodeid);		
+						+ "FROM NODELINK " + "WHERE %d = TARGETID;", nodeid);
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
 		List<NodeLinkDao> nodelinks = new ArrayList<NodeLinkDao>();
-		
+
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
-			
+
 			result = statement.executeQuery(getNodeLinks);
 			while (result.next()) {
 				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4),
@@ -585,7 +707,7 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelinks;
 	}
-	
+
 	public List<NodeLinkDao> getSiblingNodeLinks(int nodeid) {
 		String getNodeLinks = String
 				.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID "
@@ -593,16 +715,16 @@ public class ProducerDaoController extends CdarJdbcHelper {
 						+ "WHERE ( "
 						+ "SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO "
 						+ "WHERE  %d=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> %d;",
-						nodeid,nodeid);		
+						nodeid, nodeid);
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
 		List<NodeLinkDao> nodelinks = new ArrayList<NodeLinkDao>();
-		
+
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
-			
+
 			result = statement.executeQuery(getNodeLinks);
 			while (result.next()) {
 				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4),
@@ -621,23 +743,20 @@ public class ProducerDaoController extends CdarJdbcHelper {
 		}
 		return nodelinks;
 	}
-	
-	
+
 	public List<NodeLinkDao> getFollowerNodeLinks(int nodeid) {
 		String getNodeLinks = String
 				.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID "
-						+ "FROM    NODELINK "
-						+ "WHERE %d = SOURCEID;",
-						nodeid);		
+						+ "FROM    NODELINK " + "WHERE %d = SOURCEID;", nodeid);
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet result = null;
 		List<NodeLinkDao> nodelinks = new ArrayList<NodeLinkDao>();
-		
+
 		try {
 			connection = JDBCUtil.getConnection();
 			statement = connection.createStatement();
-			
+
 			result = statement.executeQuery(getNodeLinks);
 			while (result.next()) {
 				NodeLinkDao nodelink = new NodeLinkDao(result.getInt(4),

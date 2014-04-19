@@ -337,6 +337,20 @@ public class TreeController {
 		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
 				nodelinks, "delete");
 	}
+	
+	@GET
+	@Path("/subnodes/zoomUp/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Subnode> zoomUpSubnode(@PathParam("nodeid") int nodeid) {
+		return sm.zoomUp(nodeid);
+	}
+	
+	@GET
+	@Path("/subnodes/zoomDown/{ktreeid}/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Set<Subnode> zoomDownSubnode(@PathParam("nodeid") int nodeid) {
+		return sm.zoomDown(nodeid);
+	}
 
 	// TREE XML
 	@GET

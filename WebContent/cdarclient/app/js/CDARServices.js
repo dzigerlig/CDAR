@@ -379,7 +379,22 @@ app.factory('TreeService', [
 						entity : 'templates',
 						action : 'delete'
 					}
-				}
+				},'zoomUpSubnode' : {
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity : 'nodes',
+						action : 'zoomUp',
+					}
+				},
+				'zoomDownSubnode' : {
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity : 'nodes',
+						action : 'zoomDown',
+					}
+				},
 			});
 		} ]);
 
