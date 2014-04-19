@@ -10,7 +10,8 @@ app.controller("TemplatesController", [
 				WikiService, UserService, $route) {
 			$scope.knowledgetree;
 			$scope.templates;
-			$scope.newTemplateName;
+			$scope.newProducerTemplateName = '';
+			$scope.newConsumerTemplateName = '';
 			$scope.selectedTemplate;
 			$scope.selectedTemplateId = 0;
 			
@@ -66,16 +67,28 @@ app.controller("TemplatesController", [
 
 			reloadTemplates();
 
-			$scope.addNewTemplate = function() {
+			$scope.addNewTemplate = function(decisionMade) {
+				var templateName;
+				if (decisionMade) {
+					templateName = $scope.newConsumerTemplateName;
+				} else {
+					templateName = $scope.newProducerTemplateName;
+				};
+				
 				TreeService.addTemplate({
 					ktreeid : $routeParams.treeId
 				}, {
 					treeid : $routeParams.treeId,
-					title : $scope.newTemplateName
+					title : templateName,
+					decisionMade : decisionMade
 				}, function(response) {
 					if (response.id != -1) {
 						reloadTemplates();
-						$scope.newTemplateName = '';
+						if(decisionMade) {
+							$scope.newConsumerTemplateName = '';
+						} else {
+							$scope.newProducerTemplateName = '';
+						};
 					} else {
 						alert("exception");
 					}
