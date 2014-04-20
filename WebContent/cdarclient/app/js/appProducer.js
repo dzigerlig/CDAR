@@ -44,25 +44,16 @@ app.controller("HomeProducerController", [
 					}
 				});
 			};
-
-			$scope.updateTreeId;
-			$scope.updateTreeTitle;
-
-			$scope.editTreeTitle = function(id, title) {
-				$scope.updateTreeId = id;
-				$scope.updateTreeTitle = title;
-				$('#treeModal').modal().show();
+			
+			$scope.saveKnowledgeTreeTitle = function(data, id) {
+				var tree = $.grep($scope.knowledgeTrees, function(t) { return t.id === id; })[0];
+				tree.title = data;
+				
+				TreeService.renameTree(
+					tree
+				);
 			};
 
-			$scope.saveTreeTitle = function() {
-				$('#treeModal').modal('hide');
-				TreeService.renameTree({
-					id : $scope.updateTreeId,
-					title : $scope.updateTreeTitle
-				}, function(response) {
-					reloadTrees();
-				});
-			};
 
 		} ]);
 
@@ -109,9 +100,7 @@ app
 							
 							// TREE TITLE
 							$scope.saveKnowledgeTreeTitle = function(title) {
-								TreeService.renameTree({
-									ktreeid : $scope.knowledgetree.treeid
-								},
+								TreeService.renameTree(
 									$scope.knowledgetree
 								);
 							};

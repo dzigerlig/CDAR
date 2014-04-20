@@ -51,15 +51,13 @@
                         <p class="lead">Knowledge tree overview</p>
                     </div>
                     <div class="col-md-12">
-                    	<form id="formAddTree" data-role="form"
-									data-ng-submit="addNewTree()">
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th>#</th>
-												<th>Name</th>
-												<th>Edit title</th>
-												<th>Delete</th>
+												<th class="col-md-1">#</th>
+												<th class="col-md-5">Name</th>
+												<th class="col-md-3">Edit title</th>
+												<th class="col-md-3">Delete</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -68,7 +66,7 @@
 												<td>{{$index+1}}</td>
 												<td><a href="#/knowledgetree/{{tree.id}}">{{tree.title}}</a></td>
 												<td>
-													<a data-ng-click="editTreeTitle(tree.id, tree.title)" href="">edit title</a>
+													<a href="#" editable-text="tree.title" onbeforesave="saveKnowledgeTreeTitle($data, tree.id)">edit title</a>
 												</td>
 												<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
 														Tree</a></td>
@@ -76,16 +74,16 @@
 											<tr>
 												<td></td>
 												<td>
+												<form id="formAddTree" data-role="form" data-ng-submit="addNewTree()">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="knowledge treename" required autofocus data-ng-model="newTreeName" />
 													<button class="btn btn-success" type="submit">Add knowledge tree</button>
 												</div>
+												</form>
 												</td>
 												<td></td>
 											</tr>
 										</tbody>
-									</table>
-								</form>
                     </div>
                 </div>
             </div>
