@@ -383,7 +383,7 @@ app.factory('TreeService', [
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'nodes',
+						entity : 'subnodes',
 						action : 'zoomUp',
 					}
 				},
@@ -391,7 +391,7 @@ app.factory('TreeService', [
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'nodes',
+						entity : 'subnodes',
 						action : 'zoomDown',
 					}
 				},

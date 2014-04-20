@@ -57,31 +57,19 @@ function buildContent(){
 	container.append(popup);
 	var top = $('<div>').addClass('top');
 	popup.append(top);
-	var text = $('<h4>').val('Choose decision');
+	var text = $('<h4>').html('Choose decision');
 	top.append(text);
 	var bottom = $('<div>').addClass('bottom');
 	popup.append(bottom);
 	var form = $('<form>').attr('id', 'radio-form');
 	bottom.append(form);
-	
-	
-	/*
-	
-	<div class="popup-box" id="popup-box-1">
-	<div class="top">
-		<h4>Choose decision</h4>
-	</div>
-	<div class="bottom">
-		<form action="" id="radio-form"></form>
-	</div>
-</div>*/
-
 }
 
 // imported Nodes
 function drawExistingNodes(data, resSubnodes) {
 	buildContent();
-	isInizialized = false;
+    makePopupEvents();
+    isInizialized = false;
 	var map = {};
 	jQuery.each(resSubnodes, function(object) {
 		if (map[this.knid] === undefined) {
@@ -272,11 +260,11 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 			endpoint : [ "Dot", {
 				radius : 2
 			} ],
-			/*endpointStyle : {
+			endpointStyle : {
 				fillStyle : "blue",
 				outlineColor : "black",
-				//outlineWidth : 1
-			}*/
+				outlineWidth : 1
+			}
 
 		});
 	}
