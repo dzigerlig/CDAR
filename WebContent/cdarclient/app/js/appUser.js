@@ -26,7 +26,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 					$location.path('/homeconsumer');
 				}
 			} else {
-				alert("wrong username/password combination");
+				noty({type: 'alert', text : 'wrong username/password combination', timeout: 4000});
 			}
 		});
 	};
@@ -49,10 +49,10 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 	$scope.register = function() {
 		AuthenticationService.addUser.post({username: $scope.credentials.username, password: md5.createHash($scope.credentials.password)}, function(response) {
 			if (response.id != -1) {
-				alert("User created!");
+				noty({type: 'success', text : 'user created', timeout: 4000});
 				$location.path('/login');
 			} else {
-				alert("User already exists!");
+				noty({type: 'alert', text : 'user already exists', timeout: 4000});
 			}
 		});
 	};

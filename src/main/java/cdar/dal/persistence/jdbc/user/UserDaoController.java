@@ -111,20 +111,23 @@ public class UserDaoController extends CdarJdbcHelper {
 	}
 
 	public UserDao loginUser(String username, String password) {
-		
 		UserDao user = getUserByName(username);
-		if (user != null && user.getPassword().equals(password)) {
-			try {
-				user.setAccesstoken(sha1(String.format("%s%s",
-						user.getPassword(), new Date().toString())));
-				user.update();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
+		System.out.println("id: " + user.getId());
+		System.out.println("username: " + user.getUsername());
+		if (user.getId() != -1 && user.getUsername() != null
+				&& user.getPassword() != null) {
+			if (user.getPassword().equals(password)) {
+				try {
+					user.setAccesstoken(sha1(String.format("%s%s",
+							user.getPassword(), new Date().toString())));
+					user.update();
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
 			}
-			return getUserByName(username);
 		}
 
-		return null;
+		return user;
 	}
 
 	// SOURCE: http://www.sha1-online.com/sha1-java/

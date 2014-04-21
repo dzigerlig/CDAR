@@ -13,11 +13,7 @@ public class UserModel {
 	}
 
 	public User loginUser(String username, String password) {
-		UserDao userdao = udc.loginUser(username, password);
-		if (userdao != null) {
-			return new User(userdao);
-		}
-		return new User(-1);
+		return new User(udc.loginUser(username, password));
 	}
 
 	public User createUser(String username, String password) {
@@ -26,7 +22,9 @@ public class UserModel {
 		userdao.setPassword(password);
 		try {
 			User user = new User(userdao.create());
-			//System.out.println(new WikiRegister().userRequest(userdao.getUsername(), userdao.getPassword()));
+			// System.out.println(new
+			// WikiRegister().userRequest(userdao.getUsername(),
+			// userdao.getPassword()));
 			return user;
 		} catch (Exception e) {
 			return new User(-1);
@@ -53,7 +51,7 @@ public class UserModel {
 	public User getUser(String username) {
 		return new User(udc.getUserByName(username));
 	}
-	
+
 	public User getUser(int userid) {
 		return new User(udc.getUserById(userid));
 	}
