@@ -112,8 +112,6 @@ public class UserDaoController extends CdarJdbcHelper {
 
 	public UserDao loginUser(String username, String password) {
 		UserDao user = getUserByName(username);
-		System.out.println("id: " + user.getId());
-		System.out.println("username: " + user.getUsername());
 		if (user.getId() != -1 && user.getUsername() != null
 				&& user.getPassword() != null) {
 			if (user.getPassword().equals(password)) {
@@ -124,10 +122,10 @@ public class UserDaoController extends CdarJdbcHelper {
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}
+				return user;
 			}
 		}
-
-		return user;
+		return new UserDao(-1);
 	}
 
 	// SOURCE: http://www.sha1-online.com/sha1-java/
