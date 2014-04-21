@@ -31,6 +31,7 @@ app.controller("HomeProducerController", [
 					if (response.id != 0) {
 						$scope.newTreeName = '';
 						reloadTrees();
+						noty({type: 'success', text : 'knowledge tree added successfully', timeout: 1500});
 					} else {
 						alert("Error: KnowledgeTree NOT added!");
 					}
@@ -41,6 +42,7 @@ app.controller("HomeProducerController", [
 				TreeService.removeTree(id, function(response) {
 					if (response.bool) {
 						reloadTrees();
+						noty({type: 'success', text : 'knowledge tree deleted successfully', timeout: 1500});
 					}
 				});
 			};
@@ -50,7 +52,9 @@ app.controller("HomeProducerController", [
 				tree.title = data;
 				
 				TreeService.renameTree(
-					tree
+					tree, function(response) {
+						noty({type: 'success', text : 'knowledge tree renamed successfully', timeout: 1500});
+					}
 				);
 			};
 
