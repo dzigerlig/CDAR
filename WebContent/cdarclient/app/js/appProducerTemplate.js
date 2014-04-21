@@ -35,6 +35,7 @@ app.controller("TemplatesController", [
 			$scope.setDefaultTemplate = function(id) {
 				TreeService.setDefaultTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
 					$scope.templates = response;
+					noty({type: 'success', text : 'default template updated successfully', timeout: 2000});
 				});
 			};
 			
@@ -44,6 +45,7 @@ app.controller("TemplatesController", [
 					if ($scope.selectedTemplateId==id) {
 						$scope.selectedTemplateId = 0;
 					};
+					noty({type: 'success', text : 'template deleted successfully', timeout: 2000});
 				});
 			};
 			
@@ -56,6 +58,7 @@ app.controller("TemplatesController", [
 				
 				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, template, function(response) {
 					reloadTemplates();
+					noty({type: 'success', text : 'template renamed successfully', timeout: 2000});
 				});
 			};
 			
@@ -83,6 +86,7 @@ app.controller("TemplatesController", [
 						} else {
 							$scope.newProducerTemplateName = '';
 						};
+						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 2000});
 					} else {
 						alert("exception");
 					}
@@ -120,6 +124,7 @@ app.controller("TemplatesController", [
 						entityid : $scope.selectedTemplate.id
 					}, $scope.selectedTemplate, function(response) {
 						changeTemplateFields(response);
+						noty({type: 'success', text : 'template text edited successfully', timeout: 2000});
 					});
 				}
 			};

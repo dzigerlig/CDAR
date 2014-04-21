@@ -41,6 +41,10 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 		username : "",
 		password : ""
 	};
+	
+	$scope.updateUser = function(data) {
+		alert(data);
+	};
 
 	$scope.register = function() {
 		AuthenticationService.addUser.post({username: $scope.credentials.username, password: md5.createHash($scope.credentials.password)}, function(response) {
