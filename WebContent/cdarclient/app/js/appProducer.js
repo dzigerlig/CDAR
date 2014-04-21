@@ -559,27 +559,16 @@ app
 								});
 							};
 
-							$scope.updateSubnodeId;
-							$scope.updateSubnodeTitle;
-
-							$scope.editSubnodeTitle = function(id, title) {
-								$scope.updateSubnodeId = id;
-								$scope.updateSubnodeTitle = title;
-								$('#subnodeModal').modal().show();
-							};
-
-							$scope.saveSubnodeTitle = function() {
-								$('#subnodeModal').modal('hide');
-								TreeService.renameSubnode({
-									id : $scope.updateSubnodeId,
-									title : $scope.updateSubnodeTitle
-								}, function(response) {
+							$scope.editSubnodeTitle = function(data, id) {
+								var subnode = $.grep($scope.subnodes, function(t) { return t.id === id; })[0];
+								subnode.title = data;
+								
+								TreeService.renameSubnode(subnode, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode(response);
-										// getSubnodes();
 									}
-									// getSubnodes();
 								});
+
 							};
 
 							$scope.moveSubnodeUp = function(id) {
