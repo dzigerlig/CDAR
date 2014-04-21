@@ -10,12 +10,8 @@ app.controller("TemplatesController", [
 				WikiService, UserService, $route) {
 			$scope.knowledgetree;
 			$scope.templates;
-			$scope.newProducerTemplateName = '';
-			$scope.newConsumerTemplateName = '';
 			$scope.selectedTemplate;
 			$scope.selectedTemplateId = 0;
-			
-			$scope.ktemplates = '';
 			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
@@ -54,19 +50,15 @@ app.controller("TemplatesController", [
 			$scope.updateTemplateId;
 			$scope.updateTemplateTitle;
 			
-			$scope.editTemplateTitle = function(id, title) {
-				$scope.updateTemplateId = id;
-				$scope.updateTemplateTitle = title;
-				$('#templateModal').modal().show();
-			};
-			
-			$scope.updateTemplateName = function() {
-				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, { id : $scope.updateTemplateId, title : $scope.updateTemplateTitle }, function(response) {
+			$scope.editTemplateTitle = function(data, id) {
+				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
+				template.title = data;
+				
+				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, template, function(response) {
 					reloadTemplates();
-					$('#templateModal').modal('hide');
 				});
 			};
-
+			
 			reloadTemplates();
 
 			$scope.addNewTemplate = function(decisionMade) {

@@ -65,15 +65,13 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<form id="formTemplates" data-role="form"
-							data-ng-submit="addNewTemplate(false)">
 							<table class="table table-striped">
 								<thead>
 									<tr>
 										<th class="col-md-1">#</th>
 										<th class="col-md-3">Name</th>
-										<th class="col-md-3">Default</th>
 										<th class="col-md-3">Edit title</th>
+										<th class="col-md-3">Default</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
 								</thead>
@@ -82,27 +80,30 @@
 										<td>{{$index+1}}</td>
 										<td><a data-ng-click="changeTemplate(template.id)"
 											href="">{{template.title}}</a></td>
+										<td>
+											<a href="#" editable-text="template.title" onbeforesave="editTemplateTitle($data, template.id)">edit title</a>
+										</td>
 										<td><a data-ng-click="setDefaultTemplate(template.id)"
 											href=""> {{template.isDefault}} </a></td>
-										<td><a
-											data-ng-click="editTemplateTitle(template.id, template.title)"
-											href=""> Edit title </a></td>
 										<td><a data-ng-click="deleteTemplate(template.id)"
 											href="">Delete Template</a></td>
 									</tr>
 									<tr>
 										<td></td>
-										<td><div class="input-append">
-												<input class="form-horizontal" placeholder="template name"
-													required autofocus data-ng-model="newProducerTemplateName" />
-												<button class="btn btn-success" type="submit">Add
-													template</button>
-											</div></td>
+										<td>
+											<form id="formTemplates" data-role="form" data-ng-submit="addNewTemplate(false)">
+												<div class="input-append">
+													<input class="form-horizontal" placeholder="template name"
+														required autofocus data-ng-model="newProducerTemplateName" />
+													<button class="btn btn-success" type="submit">Add
+														template</button>
+												</div>
+											</form>
+										</td>
 										<td colspan="3"></td>
 									</tr>
 								</tbody>
 							</table>
-						</form>
 					</div>
 				</div>
 				<div class="row">
@@ -112,15 +113,13 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<form id="formTemplates" data-role="form"
-							data-ng-submit="addNewTemplate(true)">
 							<table class="table table-striped">
 								<thead>
 									<tr>
 										<th class="col-md-1">#</th>
 										<th class="col-md-3">Name</th>
-										<th class="col-md-3">Default</th>
 										<th class="col-md-3">Edit title</th>
+										<th class="col-md-3">Default</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
 								</thead>
@@ -129,27 +128,30 @@
 										<td>{{$index+1}}</td>
 										<td><a data-ng-click="changeTemplate(template.id)"
 											href="">{{template.title}}</a></td>
+										<td>
+											<a href="#" editable-text="template.title" onbeforesave="editTemplateTitle($data, template.id)">edit title</a>
+										</td>
 										<td><a data-ng-click="setDefaultTemplate(template.id)"
 											href=""> {{template.isDefault}} </a></td>
-										<td><a
-											data-ng-click="editTemplateTitle(template.id, template.title)"
-											href=""> Edit title </a></td>
 										<td><a data-ng-click="deleteTemplate(template.id)"
 											href="">Delete Template</a></td>
 									</tr>
 									<tr>
 										<td></td>
-										<td><div class="input-append">
-												<input class="form-horizontal" placeholder="template name"
-													required autofocus data-ng-model="newConsumerTemplateName" />
-												<button class="btn btn-success" type="submit">Add
-													template</button>
-											</div></td>
+										<td>
+											<form id="formTemplates" data-role="form" data-ng-submit="addNewTemplate(false)">
+												<div class="input-append">
+													<input class="form-horizontal" placeholder="template name"
+														required autofocus data-ng-model="newProducerTemplateName" />
+													<button class="btn btn-success" type="submit">Add
+														template</button>
+												</div>
+											</form>
+										</td>
 										<td colspan="3"></td>
 									</tr>
 								</tbody>
 							</table>
-						</form>
 					</div>
 				</div>
 				<div class="row">
@@ -173,30 +175,6 @@
 							<p class="well">no wiki entry selected</p>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="templateModal" class="modal fade bs-example-modal-sm"
-		tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="modalLabel">Change template title</h4>
-				</div>
-				<div class="modal-body">
-					<form id="formTemplateUpdate" data-role="form"
-						data-ng-submit="updateTemplateName()">
-						<input class="form-horizontal" placeholder="template title"
-							required autofocus data-ng-model="updateTemplateTitle" />
-						<button class="btn btn-success" type="submit">Save
-							template title</button>
-					</form>
 				</div>
 			</div>
 		</div>
