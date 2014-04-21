@@ -33,7 +33,7 @@ app.controller("HomeProducerController", [
 						reloadTrees();
 						noty({type: 'success', text : 'knowledge tree added successfully', timeout: 1500});
 					} else {
-						alert("Error: KnowledgeTree NOT added!");
+						noty({type: 'alert', text : 'knowledge not added successfully', timeout: 1500});
 					}
 				});
 			};
@@ -105,27 +105,13 @@ app
 							// TREE TITLE
 							$scope.saveKnowledgeTreeTitle = function(title) {
 								TreeService.renameTree(
-									$scope.knowledgetree
+									$scope.knowledgetree, function(response) {
+										noty({type: 'success', text : 'knowledge tree renamed successfully', timeout: 1500});
+									}
 								);
 							};
 
-							// TEMPLATES //
-							$scope.templates;
-							$scope.templateid;
-
-							TreeService.getTemplates({
-								ktreeid : $routeParams.treeId
-							}, function(response) {
-								$scope.templates = response;
-							});
-
-							$scope.applyTemplate = function() {
-								alert($scope.listSelectedTemplateId);
-							};
-
-							$scope.revertTemplate = function() {
-								alert($scope.listSelectedTemplateId);
-							};
+							
 
 							var getSubnodes = function() {
 								TreeService.getSubnodes({
@@ -185,6 +171,7 @@ app
 									$scope.getSubnodesOfNode();
 									// getSubnodes();
 									$scope.newSubnodeName = '';
+									noty({type: 'success', text : 'subnode added successfully', timeout: 1500});
 								});
 							};
 
@@ -224,6 +211,7 @@ app
 											response) {
 										$scope.selectedSubnode = response;
 										changeWikiFieldsSubnode();
+										noty({type: 'success', text : 'subnode text edited successfully', timeout: 1500});
 									});
 								}
 								;
@@ -235,7 +223,7 @@ app
 								}, id, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode(response);
-										// getSubnodes();
+										noty({type: 'success', text : 'subnode deleted successfully', timeout: 1500});
 									}
 								});
 							};
@@ -303,6 +291,7 @@ app
 									}, $scope.selectedNode, function(response) {
 										$scope.selectedNode = response;
 										changeWikiFields(response);
+										noty({type: 'success', text : 'node text edited successfully', timeout: 1500});
 									});
 								}
 								;
@@ -358,6 +347,8 @@ app
 								}, {
 									id : linkId,
 									ksnid : subnodeId
+								}, function(response) {
+									noty({type: 'success', text : 'link added successfully', timeout: 1500});
 								});
 							};
 
@@ -369,6 +360,7 @@ app
 									did : did
 								}, function(response) {
 									createNode(response);
+									noty({type: 'success', text : 'node added successfully', timeout: 1500});
 								});
 							};
 
@@ -388,7 +380,9 @@ app
 								detachNode(id);
 								TreeService.deleteNode({
 									ktreeid : $routeParams.treeId
-								}, id);
+								}, id, function(response) {
+									noty({type: 'success', text : 'node deleted successfully', timeout: 1500});
+								});
 							};
 
 							$scope.getNode = function(id) {
@@ -416,6 +410,8 @@ app
 									id : id,
 									title : newTitle,
 									did : did
+								}, function (response) {
+									noty({type: 'success', text : 'node renamed successfully', timeout: 1500});
 								});
 							};
 
@@ -450,7 +446,9 @@ app
 							$scope.deleteLink = function(id) {
 								TreeService.deleteLink({
 									ktreeid : $routeParams.treeId
-								}, id);
+								}, id, function(response) {
+									noty({type: 'success', text : 'link deleted successfully', timeout: 1500});
+								});
 							};
 
 							$scope.addDirectory = function(parentid) {
@@ -461,6 +459,7 @@ app
 									parentid : parentid
 								}, function(response) {
 									createDirectory(response);
+									noty({type: 'success', text : 'directory added successfully', timeout: 1500});
 								});
 							};
 
@@ -482,6 +481,8 @@ app
 								}, {
 									id : id,
 									title : newTitle
+								}, function(response) {
+									noty({type: 'success', text : 'directory renamed successfully', timeout: 1500});
 								});
 							};
 
@@ -491,6 +492,7 @@ app
 								}, id, function(response) {
 									if (response.bool) {
 										// removeNodes(response.changedEntities);
+										noty({type: 'success', text : 'directory deleted successfully', timeout: 1500});
 									}
 								});
 							};
@@ -501,6 +503,8 @@ app
 								}, {
 									id : id,
 									parentid : newParentId
+								}, function(response) {
+									noty({type: 'success', text : 'directory moved successfully', timeout: 1500});
 								});
 							};
 
@@ -570,6 +574,7 @@ app
 								TreeService.renameSubnode(subnode, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode(response);
+										noty({type: 'success', text : 'subnode renamed successfully', timeout: 1500});
 									}
 								});
 
@@ -581,6 +586,7 @@ app
 								}, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode();
+										noty({type: 'success', text : 'subnode position changed successfully', timeout: 1500});
 										// getSubnodes();
 									}
 								});
@@ -592,6 +598,7 @@ app
 								}, function(response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode();
+										noty({type: 'success', text : 'subnode position changed successfully', timeout: 1500});
 										// getSubnodes();
 									}
 								});
