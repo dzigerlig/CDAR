@@ -15,6 +15,8 @@ app.controller("TemplatesController", [
 			$scope.selectedTemplate;
 			$scope.selectedTemplateId = 0;
 			
+			$scope.ktemplates = '';
+			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
 			
