@@ -22,7 +22,7 @@ function addHTMLNode(response, e) {
 				subnode : null
 			});
 	var title = $('<div>').addClass('title').text(response.title);
-	var connect = $('<div>').addClass('ep');
+	var connect = $('<div>').addClass('ep draglink');
 	var option = $('<div>').addClass('option').hide();
 	var list = $('<ul>').addClass('optionList');
 	var downtree = $('<div>').addClass('downtree');

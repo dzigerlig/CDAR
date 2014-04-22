@@ -76,6 +76,7 @@ $(function() {
 
 	$('#jstree').on("delete_node.jstree", function(e, data) {
 		scope.selectedNodeId = 0;
+		$scope.selectednodename="";
 		var node = data.node;
 		var id = data.node.id;
 		id = id.replace(DIRECTORY, "");

@@ -112,3 +112,8 @@ background-color: orange;
 	background-size: 1em;
 	background-image: url(../img/treeup.png);
 }
+
+.draglink{
+		background-image: url(../img/circle.png);	
+			background-size: 1em;		
+}
