@@ -80,6 +80,7 @@ public class WikiEntry extends WikiEntity {
 			c.edit(getWikiTitle(), getWikiContentPlain(), "");
 			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} catch (Exception e) {
+			//TODO: create new wiki entry
 			e.printStackTrace();
 		}
 		return this;

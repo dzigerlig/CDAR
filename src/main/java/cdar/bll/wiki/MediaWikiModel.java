@@ -5,7 +5,6 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
-import cdar.dal.persistence.jdbc.user.UserDao;
 
 public class MediaWikiModel {
 	private UserModel um = new UserModel();
