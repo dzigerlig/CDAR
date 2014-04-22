@@ -29,16 +29,12 @@ public class WikiRegister {
 				+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
 				+ "password=" + URLEncoder.encode(password, "UTF-8");
 
-		HttpURLConnection connection = getConnection(body);
+		HttpURLConnection connection = establishConnection(body);
 
-		OutputStreamWriter writer = new OutputStreamWriter(
-				connection.getOutputStream());
-		writer.write(body);
-		writer.flush();
+		OutputStreamWriter writer = flushWriter(body, connection);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		InputStream stream = connection.getInputStream();
-		
 		String cookie = connection.getHeaderField("Set-Cookie");
 
 		Document doc = db.parse(stream);
@@ -54,26 +50,21 @@ public class WikiRegister {
 		return createUser(username, password, token, cookie);
 	}
 
-	private boolean createUser(String username, String password, String token,
-			String cookie) throws IOException, ParserConfigurationException,
-			SAXException {
+	private boolean createUser(String username, String password,
+			String token, String cookie) throws IOException,
+			ParserConfigurationException, SAXException {
 		String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
 				+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
 				+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
 				+ "password=" + URLEncoder.encode(password, "UTF-8") + "&"
 				+ "token=" + URLEncoder.encode(token, "UTF-8");
 
-		HttpURLConnection connection = getConnection(body);
+		HttpURLConnection connection = establishConnection(body);
 		connection.setRequestProperty("Cookie", cookie);
-		
-		OutputStreamWriter writer = new OutputStreamWriter(
-				connection.getOutputStream());
-		writer.write(body);
-		writer.flush();
+		OutputStreamWriter writer = flushWriter(body, connection);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		InputStream stream = connection.getInputStream();
-		
 		Document doc = db.parse(stream);
 		doc.getDocumentElement().normalize();
 		NodeList layerConfigList = doc.getElementsByTagName("createaccount");
@@ -97,14 +88,22 @@ public class WikiRegister {
 		stream.close();
 		writer.close();
 		connection.disconnect();
-		System.out.println(result);
-		if (result == "success") {
+		if(result.equals("success"))
 			return true;
-		}
+		System.out.println(result);
 		return false;
 	}
 
-	private HttpURLConnection getConnection(String body)
+	private OutputStreamWriter flushWriter(String body,
+			HttpURLConnection connection) throws IOException {
+		OutputStreamWriter writer = new OutputStreamWriter(
+				connection.getOutputStream());
+		writer.write(body);
+		writer.flush();
+		return writer;
+	}
+
+	private HttpURLConnection establishConnection(String body)
 			throws MalformedURLException, IOException, ProtocolException {
 		URL url = new URL(URL);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
