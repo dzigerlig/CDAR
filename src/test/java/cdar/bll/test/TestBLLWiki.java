@@ -42,7 +42,7 @@ public class TestBLLWiki {
 	public void testAddNode() {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node = nm.addNode(tree.getId(), nodeTitle, did);
+		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);
 		assertEquals("== CDAR ==", mwm.getKnowledgeNodeWikiEntry(node.getId()).getWikiContentPlain());
 	}
 	
@@ -50,6 +50,6 @@ public class TestBLLWiki {
 	public void testAddNodeWithTemplate() {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node = nm.addNode(tree.getId(), nodeTitle, did);
+		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);
 	}
 }

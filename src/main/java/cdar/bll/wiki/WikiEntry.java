@@ -46,9 +46,12 @@ public class WikiEntry extends WikiEntity {
 
 	private void fillWikiContent() {
 		Wiki wiki = new Wiki();
+		
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikiTitle()));
-			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+			StringBuilder sb = new StringBuilder();
+			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/5/5d/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
+			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,10 +73,10 @@ public class WikiEntry extends WikiEntity {
 		this.wikicontenthtml = wikicontenthtml;
 	}
 
-	public WikiEntry saveEntry() {
+	public WikiEntry saveEntry(String username, String password) {
 		try {
 			Wiki c = new Wiki();
-			c.login("admin", "password");
+			c.login(username, password);
 			c.edit(getWikiTitle(), getWikiContentPlain(), "");
 			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} catch (Exception e) {

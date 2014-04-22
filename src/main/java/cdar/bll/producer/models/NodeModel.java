@@ -31,7 +31,7 @@ public class NodeModel {
 		return pdc.getNode(id).delete();
 	}
 
-	public Node addNode(int treeid, String title, int did) {
+	public Node addNode(int uid, int treeid, String title, int did) {
 		if (treeid != -1) {
 			if (did == 0) {
 				int rootDirectoryId = ((DirectoryDao) pdc
@@ -50,7 +50,7 @@ public class NodeModel {
 
 			wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 
-			MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeid,
+			MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeid,
 					node.getWikititle(), templateContent, wikiHelper);
 			mwm.start();
 			return new Node(node);

@@ -39,15 +39,15 @@ public class WikiController {
 	@Path("/producer/node")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WikiEntry postKnowledgeNodeWikiEntry(WikiEntry wikiEntry) {
-		return mwm.saveKnowledgeNodeWikiEntry(wikiEntry);
+	public WikiEntry postKnowledgeNodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
+		return mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry);
 	}
 	
 	@POST
 	@Path("/producer/subnode")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WikiEntry postKnowledgeSubnodeWikiEntry(WikiEntry wikiEntry) {
-		return mwm.saveKnowledgeSubnodeWikiEntry(wikiEntry);
+	public WikiEntry postKnowledgeSubnodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
+		return mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry);
 	}
 }

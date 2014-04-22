@@ -124,8 +124,8 @@ public class TestBLLKnowledgeConsumer {
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node1 = nm.addNode(tree.getId(), nodeTitle1, directoryId);
-		Node node2 = nm.addNode(tree.getId(), nodeTitle2, directoryId);
+		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle1, directoryId);
+		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle2, directoryId);
 		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node1.getId(), node2.getId(), 0);
 		assertEquals(2, nm.getNodes(tree.getId()).size());
 		assertEquals(node1.getId(), nlm.getNodeLink(nodelink.getId()).getSourceId());
@@ -161,8 +161,8 @@ public class TestBLLKnowledgeConsumer {
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node1 = nm.addNode(tree.getId(), nodeTitle1, directoryId);
-		Node node2 = nm.addNode(tree.getId(), nodeTitle2, directoryId);
+		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle1, directoryId);
+		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle2, directoryId);
 		snm.addSubnode(node1.getId(), subnodeTitle1);
 		snm.addSubnode(node1.getId(), subnodeTitle2);
 		snm.addSubnode(node2.getId(), subnodeTitle3);

@@ -7,19 +7,24 @@ import javax.security.auth.login.LoginException;
 
 import org.wikipedia.Wiki;
 
+import cdar.bll.user.User;
+import cdar.bll.user.UserModel;
+
 public class MediaWikiCreationModel extends Thread {
 	private int ktrid;
+	private int uid;
 	private String title;
 	private String templateContent;
 	private WikiEntryConcurrentHelper wikiHelper;
 
-	public MediaWikiCreationModel(int ktrid, String title,
+	public MediaWikiCreationModel(int uid, int ktrid, String title,
 			String templateContent, WikiEntryConcurrentHelper wikiHelper) {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
 		setWikiHelper(wikiHelper);
 		setTemplateContent(templateContent);
+		setUid(uid);
 	}
 
 	public int getKtrid() {
@@ -46,28 +51,30 @@ public class MediaWikiCreationModel extends Thread {
 		return wikiHelper;
 	}
 
-	public void createNewWikiEntry() {
+	public void createNewWikiEntry(String username, String password) {
 		Wiki wiki = new Wiki();
 		try {
-			createEntry(wiki);
+			createEntry(wiki, username, password);
 		} catch (Exception e) {
 			try {
 				// trying again if it is the first time
-				createEntry(wiki);
+				createEntry(wiki, username, password);
 			} catch (LoginException | IOException e1) {
 				e1.printStackTrace();
 			}
 		}
 	}
 
-	private void createEntry(Wiki wiki) throws IOException,
+	private void createEntry(Wiki wiki, String username, String password) throws IOException,
 			FailedLoginException, LoginException {
-		wiki.login("admin", "password");
+		wiki.login(username, password);
 		wiki.edit(getTitle(), getTemplateContent(), "");
 	}
 
 	public void run() {
-		createNewWikiEntry();
+		UserModel um = new UserModel();
+		User user = um.getUser(getUid());
+		createNewWikiEntry(user.getUsername(), user.getPassword());
 		getWikiHelper().removeWikiEntry(getTitle());
 	}
 
@@ -77,5 +84,13 @@ public class MediaWikiCreationModel extends Thread {
 
 	public void setTemplateContent(String templateContent) {
 		this.templateContent = templateContent;
+	}
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 }

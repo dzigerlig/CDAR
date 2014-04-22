@@ -185,11 +185,11 @@ public class TreeController {
 	@POST
 	@Path("nodes/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Node addNode(Node n) {
+	public Node addNode(@PathParam("uid") int uid, Node n) {
 		if (n.getTitle()==null) {
-			return nm.addNode(n.getKtrid(), "new Node", n.getDid());
+			return nm.addNode(uid, n.getKtrid(), "new Node", n.getDid());
 		} else {
-			return nm.addNode(n.getKtrid(), n.getTitle(), n.getDid());
+			return nm.addNode(uid, n.getKtrid(), n.getTitle(), n.getDid());
 		}
 	}
 
