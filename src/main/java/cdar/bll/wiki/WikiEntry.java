@@ -50,7 +50,7 @@ public class WikiEntry extends WikiEntity {
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikiTitle()));
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/5/5d/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
+			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,7 +78,9 @@ public class WikiEntry extends WikiEntity {
 			Wiki c = new Wiki();
 			c.login(username, password);
 			c.edit(getWikiTitle(), getWikiContentPlain(), "");
-			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+			StringBuilder sb = new StringBuilder();
+			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
+			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			//TODO: create new wiki entry
 			e.printStackTrace();
