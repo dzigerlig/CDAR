@@ -109,7 +109,7 @@ function jstree_createNode() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length || sel.length > 1
 			|| ref._model.data[sel].type !== "default") {
-		alert('Please select a folder');
+		noty({type: 'success', text : 'Please select a folder', timeout: 5000});
 		return false;
 	} else {
 		scope.addNode(sel[0].replace(DIRECTORY, ""));
@@ -121,7 +121,7 @@ function jstree_createDirectory() {
 	if (!sel.length || sel.length > 1
 			|| ref._model.data[sel].type !== "default"
 			&& ref._model.data[sel].type !== "root") {
-		alert('Please select a directory');
+		noty({type: 'success', text : 'Please select a folder', timeout: 5000});
 		return false;
 	} else {
 		scope.addDirectory(sel[0].replace(DIRECTORY, ""));
@@ -131,7 +131,7 @@ function jstree_createDirectory() {
 function jstree_rename() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
-		alert('Please select a folder or a node');
+		noty({type: 'success', text : 'Please select a folder or a node', timeout: 5000});
 		return false;
 	}
 	sel = sel[0];
@@ -140,11 +140,11 @@ function jstree_rename() {
 function jstree_delete() {
 	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
 	if (!sel.length) {
-		alert('Please select a folder or a node');
+		noty({type: 'success', text : 'Please select a folder or a node', timeout: 5000});
 		return false;
 	}
 	if (ref._model.data[sel[0]].parent === '#') {
-		alert("you can't delete a root node");
+		noty({type: 'success', text : "You can't delete a root node", timeout: 5000});
 		return false;
 	}
 
