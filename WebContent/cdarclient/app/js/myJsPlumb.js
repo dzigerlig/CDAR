@@ -4,10 +4,12 @@ var isInizialized = false;
 var NODE = 'node';
 var LINK = 'link';
 var SUBNODE = 'subnode';
+var selectedElement = null;
 
 function initializeJsPlumb() {
 	scope = angular.element(document.getElementById("wrapper")).scope();
 	setDefaultSettings();
+	register();
 	makePopupEvents();
 	bindDetachConnectorEvent();
 	bindConnection();
@@ -36,8 +38,8 @@ function addHTMLNode(response, e) {
 		'top' : e.pageY - $('#jsplumb-container').offset().top,
 		'left' : e.pageX - $('#jsplumb-container').offset().left
 	});
-	zoomDownEvent(downtree,newState);
-	zoomUpEvent(uptree,newState);
+	zoomDownEvent(downtree, newState);
+	zoomUpEvent(uptree, newState);
 	makeNodesDraggable(newState);
 	removeNodeEvent(newState);
 	showNodeWikiEvent(newState);
@@ -47,12 +49,12 @@ function addHTMLNode(response, e) {
 	scope.getSubnodesOfNode(response.id);
 }
 
-function buildContent(){
+function buildContent() {
 	jsPlumb.detachEveryConnection();
 	jsPlumb.deleteEveryEndpoint();
 
 	$("#jsplumb-container").empty();
-	var container=$("#jsplumb-container");
+	var container = $("#jsplumb-container");
 	var popup = $('<div>').addClass('popup-box').attr('id', 'popup-box-1');
 	container.append(popup);
 	var top = $('<div>').addClass('top');
@@ -68,8 +70,8 @@ function buildContent(){
 // imported Nodes
 function drawExistingNodes(data, resSubnodes) {
 	buildContent();
-    makePopupEvents();
-    isInizialized = false;
+	makePopupEvents();
+	isInizialized = false;
 	var map = {};
 	jQuery.each(resSubnodes, function(object) {
 		if (map[this.knid] === undefined) {
@@ -94,7 +96,7 @@ function drawExistingNodes(data, resSubnodes) {
 					});
 			var option = $('<div>').addClass('option').hide();
 			var title = $('<div>').addClass('title').text(this.title);
-			var connect = $('<div>').addClass('ep');
+			var connect = $('<div>').addClass('ep draglink');
 			var downtree = $('<div>').addClass('downtree');
 			var uptree = $('<div>').addClass('uptree');
 			newState.append(downtree);
@@ -111,8 +113,8 @@ function drawExistingNodes(data, resSubnodes) {
 				});
 				option.append(list);
 			}
-			zoomDownEvent(downtree,newState);
-			zoomUpEvent(uptree,newState);
+			zoomDownEvent(downtree, newState);
+			zoomUpEvent(uptree, newState);
 			makeNodesDraggable(newState);
 
 			removeNodeEvent(newState);
@@ -130,8 +132,12 @@ function drawExistingNodes(data, resSubnodes) {
 // Functions
 function setDefaultSettings() {
 	jsPlumb.Defaults.PaintStyle = {
-		lineWidth : 2,
-		strokeStyle : '#1e8151',
+		connectorStyle : {
+			strokeStyle : "#5c96bc",
+			lineWidth : 2,
+			outlineColor : "transparent",
+			outlineWidth : 4
+		},
 
 		connectorOverlays : [ [ "Arrow", {
 			location : 1,
@@ -171,7 +177,7 @@ function makeSource(connect, newState) {
 		parent : newState,
 		anchor : 'Continuous',
 		connectorStyle : {
-			strokeStyle : "#5c96bc",
+			strokeStyle : "#5C96BC",
 			lineWidth : 2,
 			outlineColor : "transparent",
 			outlineWidth : 4
@@ -206,68 +212,24 @@ function makeTarget(newState) {
 };
 
 function connectNodes(stateSource, stateTarget, id, subnode) {
-	if (subnode === undefined) {
-		
-		jsPlumb.connect({
-			source : stateSource,
-			target : stateTarget,
-			parameters : {
-				"id" : id
-			},
-			anchors : 'Perimeter',
-			overlays : [ [ "Arrow", {
-				location : 1,
-				id : "arrow",
-				length : 14,
-				foldback : 0.8
-			} ] ],
-
-			connector : [ "StateMachine", {
-				curviness : 20
-			} ],
-			endpoint : [ "Dot", {
-				radius : 2
-			} ],
-			endpointStyle : {
-				fillStyle : "blue",
-				outlineColor : "black",
-				outlineWidth : 1
-			}
-		});
-
-	} else {
-		jsPlumb.connect({
-			source : stateSource,
-			target : stateTarget,
-			parameters : {
-				"id" : id
-			},
-			anchors : 'Perimeter',
-			overlays : [ [ "Arrow", {
-				location : 1,
-				id : "arrow",
-				length : 14,
-				foldback : 0.8
-			} ], [ "Label", {
-				label : subnode.title,
-				id : "label",
-				cssClass : "aLabel"
-			} ] ],
-
-			connector : [ "StateMachine", {
-				curviness : 20
-			} ],
-			endpoint : [ "Dot", {
-				radius : 2
-			} ],
-			endpointStyle : {
-				fillStyle : "blue",
-				outlineColor : "black",
-				outlineWidth : 1
-			}
-
-		});
+	var label = "";
+	if (subnode !== undefined) {
+		label = subnode.title;
 	}
+
+	jsPlumb.connect({
+		source : stateSource,
+		target : stateTarget,
+		parameters : {
+			"id" : id
+		},
+		anchors : 'Perimeter',
+		type : "change",
+		data : {
+			color : "#5C96BC",
+			label : label
+		}
+	});
 };
 
 function appendElements(title, connect, newState, option) {
@@ -292,7 +254,10 @@ function bindDetachConnectorEvent() {
 
 function removeNodeEvent(newState) {
 	newState.dblclick(function(e) {
-		detachNode(newState[0].id.replace(NODE, ""));
+		$('#' + newState[0].id + ' .option').toggle();
+		jsPlumb.repaintEverything();
+
+		// detachNode(newState[0].id.replace(NODE, ""));
 	});
 };
 
@@ -323,25 +288,51 @@ function showNodeWikiEvent(newState) {
 	newState.click(function(e) {
 		scope.changeNode(newState[0].id.replace(NODE, ""), $(
 				'#' + newState[0].id + ' .title').text());
-		$('#' + newState[0].id + ' .option').toggle();
-		jsPlumb.repaintEverything();
+
+		resetSelectedDesign();
+		$(newState).css('background-color', '#beebff');
+		selectedElement = newState[0].id;
+
 	});
 };
 
+function resetSelectedDesign(){
+	if (selectedElement !== null) {
+		if (selectedElement.indexOf(NODE) > -1) {
+			if ($("#" + selectedElement).size() !== 0) {
+				 $('#' + selectedElement).css('background-color', 'white');
+			}
+		} else {
+			var connections = jsPlumb.getConnections();
+			jQuery.each(connections, function(object) {
+				if (selectedElement === this.id) {
+					var label = this.getOverlay("label").getLabel();
+
+					this.setType("change", {
+						color : "#5C96BC",
+						label : label
+					});
+				}
+			});
+		}
+	}
+}
+
+
 function zoomUpEvent(uptree, newState) {
 	uptree.click(function(e) {
-	    e.stopPropagation();
-	    scope.zoomUpNode(newState[0].id.replace(NODE, ""));
+		e.stopPropagation();
+		scope.zoomUpNode(newState[0].id.replace(NODE, ""));
 	});
 };
 function zoomDownEvent(downtree, newState) {
 	downtree.click(function(e) {
-	    e.stopPropagation();
-	    scope.zoomDownNode(newState[0].id.replace(NODE, ""));
+		e.stopPropagation();
+		scope.zoomDownNode(newState[0].id.replace(NODE, ""));
 	});
 };
 
-function makeNodeHierarchy(data, resSubNodes) {	
+function makeNodeHierarchy(data, resSubNodes) {
 	$("#dot-src").empty();
 	var map = {};
 	jQuery.each(resSubNodes, function(object) {
@@ -371,19 +362,28 @@ function bindConnection() {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
 			bindClickConnection(info);
-
 		} else {
 			scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
 					info.targetId.replace(NODE, ""), info.connection);
 			showSubnodePopup(info);
 			bindClickConnection(info);
-
 		}
+
 	});
 };
 
 function bindClickConnection(info) {
 	info.connection.bind("click", function(c) {
+		resetSelectedDesign();
+
+		var label = info.connection.getOverlay("label").getLabel();
+
+		info.connection.setType("change", {
+			color : "#BEEBFF",
+			label : label
+		});
+		selectedElement = info.connection.id;
+
 		// TODO Show popup on connection click. conflict with html click
 		// showSubnodePopup(info);
 	});
@@ -411,8 +411,9 @@ function renameNode(id, newTitle) {
 function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 	if ($("#" + NODE + nodeId).size() !== 0) {
 		var options = $("#" + NODE + nodeId).data("subnode");
-		if (changes!==null&&changes.changedEntities !== null) {
-		var oldSubnodes = options.subnode.slice(0);}
+		if (changes !== null && changes.changedEntities !== null) {
+			var oldSubnodes = options.subnode.slice(0);
+		}
 		var optionList = $('#' + NODE + nodeId + ' .option');
 		options.subnode = newSubnode;
 		optionList.empty();
@@ -424,7 +425,7 @@ function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 			optionList.append($('<li>').text(this.title));
 		});
 
-		if (changes!==null&&changes.changedEntities !== null) {
+		if (changes !== null && changes.changedEntities !== null) {
 			var allSourceConnection = jsPlumb.getConnections({
 				source : $("#" + NODE + nodeId)
 			});
@@ -433,7 +434,7 @@ function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 			jQuery.each(changes.changedEntities, function(object) {
 				map[this.id] = true;
 			});
-			//get delte from new to old
+			// get delte from new to old
 			var linkTitle = [];
 			jQuery.each(newSubnode, function(object) {
 				linkTitle.push(this.title);
@@ -456,6 +457,39 @@ function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 		}
 	}
 };
+
+function registerLinkTemplate() {
+	console.log('registered');
+	jsPlumb.registerConnectionType("change", {
+		paintStyle : {
+			strokeStyle : "${color}",
+			lineWidth : 2
+		},
+		overlays : [ [ "Arrow", {
+			location : 1,
+			id : "arrow",
+			length : 14,
+			foldback : 0.8
+		} ], [ "Label", {
+			label : "${label}",
+			id : "label",
+			cssClass : "aLabel"
+		} ] ],
+
+		connector : [ "StateMachine", {
+			curviness : 20
+		} ],
+		endpoint : [ "Dot", {
+			radius : 2
+		} ],
+		endpointStyle : {
+			fillStyle : "${color}",
+			outlineColor : "black",
+			outlineWidth : 1
+		}
+	});
+
+}
 
 jQuery.removeFromArray = function(value, arr) {
 	return jQuery.grep(arr, function(elem, index) {
