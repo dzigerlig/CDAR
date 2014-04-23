@@ -53,6 +53,12 @@ public class WikiEntry extends WikiEntity {
 			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
+			/*TODO
+			new WikiEntryConcurrentHelper().addWikiEntry(getWikiTitle(), getWikiContentPlain());
+
+			MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeid,
+					node.getWikititle(), templateContent, wikiHelper);
+			mwm.start();*/
 			e.printStackTrace();
 		}
 	}
