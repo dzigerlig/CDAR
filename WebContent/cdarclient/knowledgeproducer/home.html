@@ -1,33 +1,5 @@
-
-<body>
     <div id="wrapper">
-        <div id="sidebar-wrapper">
-			<div id="consumer" data-ng-hide="UserService.user.isProducer">
-				<ul class="sidebar-nav">
-					<li class="sidebar-brand sidebar-cdar"><a
-						href="#/homeconsumer"><strong>CDAR</strong></a></li>
-					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
-						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
-								KnowledgeConsumer</small></a></li>
-					<li><a href="#/homeconsumer">Overview</a></li>
-					<li><a href="#/account">Account</a></li>
-					<li><a href="#/logout">Logout</a></li>
-				</ul>
-			</div>
-			<div id="producer" data-ng-show="UserService.user.isProducer">
-				<ul class="sidebar-nav">
-					<li class="sidebar-brand sidebar-cdar"><a
-						href="#/homeproducer"><strong>CDAR</strong></a></li>
-					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
-						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
-								KnowledgeProducer</small></a></li>
-					<li><a href="#/homeproducer">Overview</a></li>
-					<li><a href="#/account">Account</a></li>
-					<li><a href="#/logout">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-
+    <cdar-navigation></cdar-navigation>
         <div id="page-content-wrapper">
             <div class="content-header">
 	            <div class="col-md-8">
@@ -88,29 +60,9 @@
             </div>
         </div>
     </div>
-    
-    <div id="treeModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-	    <div class="modal-dialog modal-sm">
-	      <div class="modal-content">
-	
-	        <div class="modal-header">
-	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	          <h4 class="modal-title" id="modalLabel">Change tree title</h4>
-	        </div>
-	        <div class="modal-body">
-		        <form id="formTreeUpdate" data-role="form" data-ng-submit="saveTreeTitle()">
-		        	<input class="form-horizontal" placeholder="tree title" required autofocus data-ng-model="updateTreeTitle" />
-					<button class="btn btn-success" type="submit">Save tree title</button>
-				</form>
-	        </div>
-	      </div>
-	   </div>
-  	</div>
-    
 	<script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("active");
     });
     </script>
- </body>
