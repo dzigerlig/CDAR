@@ -39,12 +39,12 @@
 					<div class="col-md-3" id="jstree-container">
 						<h3>STATIC TREE</h3>
 						<button type="button" class="btn btn-success btn-sm"
-							onclick="jstree_createNode();">
-							<i class="glyphicon glyphicon-asterisk"></i> Create Node
-						</button>
-						<button type="button" class="btn btn-success btn-sm"
 							onclick="jstree_createDirectory();">
 							<i class="glyphicon glyphicon-asterisk"></i> Create Folder
+						</button>
+						<button type="button" class="btn btn-success btn-sm"
+							onclick="jstree_createNode();">
+							<i class="glyphicon glyphicon-asterisk"></i> Create Node
 						</button>
 						<button type="button" class="btn btn-warning btn-sm"
 							onclick="jstree_rename();">
@@ -61,6 +61,10 @@
 					</div>
 					<div class="col-md-9">
 						<h3>DYNAMIC TREE</h3>
+						<button type="button" class="btn btn-danger btn-sm"
+							onclick="jsplumb_remove();">
+							<i class="glyphicon glyphicon-remove"></i> Remove
+						</button>
 						<div id="jsplumb-container">
 							<!-- <div class="popup-box" id="popup-box-1">
 								<div class="top">

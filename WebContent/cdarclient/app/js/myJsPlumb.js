@@ -14,6 +14,7 @@ function initializeJsPlumb() {
 	bindDetachConnectorEvent();
 	bindConnection();
 	$('html').click(function() {
+		// resetSelectedDesign();
 		$('[id^=popup-box-]').hide();
 	});
 };
@@ -176,6 +177,11 @@ function makeSource(connect, newState) {
 	jsPlumb.makeSource(connect, {
 		parent : newState,
 		anchor : 'Continuous',
+		type : "change",
+		data : {
+			color : "#5C96BC",
+			label : ""
+		},
 		connectorStyle : {
 			strokeStyle : "#5C96BC",
 			lineWidth : 2,
@@ -223,7 +229,7 @@ function connectNodes(stateSource, stateTarget, id, subnode) {
 		parameters : {
 			"id" : id
 		},
-		anchors : 'Perimeter',
+		anchors : 'Continuous',
 		type : "change",
 		data : {
 			color : "#5C96BC",
@@ -247,8 +253,8 @@ function makeNodesDraggable(newState) {
 
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("dblclick", function(c) {
-		jsPlumb.detach(c);
-		scope.deleteLink(c.id.replace(LINK, ""));
+		//jsPlumb.detach(c);
+		//scope.deleteLink(c.id.replace(LINK, ""));
 	});
 };
 
@@ -261,20 +267,30 @@ function removeNodeEvent(newState) {
 	});
 };
 
+function jsplumb_remove() {
+	if (selectedElement !== null) {
+		if (selectedElement.indexOf(NODE) > -1) {
+			detachNode(selectedElement.replace(NODE, ""));
+		}
+		else{
+			var connections = jsPlumb.getConnections();
+			jQuery.each(connections, function(object) {
+				if (selectedElement === this.id) {
+					jsPlumb.detach(this);
+				}
+			});
+			scope.deleteLink(selectedElement.replace(LINK, ""));
+		}
+	}
+
+};
+
 function detachNode(id) {
 	var newState = $('#' + NODE + id);
 	if (newState.size() !== 0) {
-		var allTargetConnection = jsPlumb.getConnections({
-			target : newState
-		});
-		var allSourceConnection = jsPlumb.getConnections({
-			source : newState
-		});
-		jQuery.each(allTargetConnection, function() {
-			scope.deleteLink(this.id.replace(LINK, ""));
-		});
-
-		jQuery.each(allSourceConnection, function() {
+	
+		var connections = getConnections(newState);
+		jQuery.each(connections, function() {
 			scope.deleteLink(this.id.replace(LINK, ""));
 		});
 
@@ -291,16 +307,33 @@ function showNodeWikiEvent(newState) {
 
 		resetSelectedDesign();
 		$(newState).css('background-color', '#beebff');
-		selectedElement = newState[0].id;
 
+		var connections = getConnections(newState);
+
+		jQuery.each(connections, function(object) {
+			this.setType("change", {
+				color : "#beebff",
+				label : this.getOverlay("label").getLabel()
+			});
+		});
+		selectedElement = newState[0].id;
+		e.stopPropagation();
 	});
 };
 
-function resetSelectedDesign(){
+function resetSelectedDesign() {
 	if (selectedElement !== null) {
 		if (selectedElement.indexOf(NODE) > -1) {
 			if ($("#" + selectedElement).size() !== 0) {
-				 $('#' + selectedElement).css('background-color', 'white');
+				var newState = $('#' + selectedElement);
+				newState.css('background-color', 'white');
+				var connections = getConnections(newState);
+				jQuery.each(connections, function(object) {
+					this.setType("change", {
+						color : "#5C96BC",
+						label : this.getOverlay("label").getLabel()
+					});
+				});
 			}
 		} else {
 			var connections = jsPlumb.getConnections();
@@ -316,8 +349,8 @@ function resetSelectedDesign(){
 			});
 		}
 	}
+	selectedElement = null;
 }
-
 
 function zoomUpEvent(uptree, newState) {
 	uptree.click(function(e) {
@@ -373,9 +406,12 @@ function bindConnection() {
 };
 
 function bindClickConnection(info) {
-	info.connection.bind("click", function(c) {
-		resetSelectedDesign();
 
+	info.connection.bind("click", function(c) {
+
+		// e.stopPropagation();
+
+		resetSelectedDesign();
 		var label = info.connection.getOverlay("label").getLabel();
 
 		info.connection.setType("change", {
@@ -459,7 +495,6 @@ function updateSubnodesOfNode(newSubnode, nodeId, changes) {
 };
 
 function registerLinkTemplate() {
-	console.log('registered');
 	jsPlumb.registerConnectionType("change", {
 		paintStyle : {
 			strokeStyle : "${color}",
@@ -496,3 +531,14 @@ jQuery.removeFromArray = function(value, arr) {
 		return elem !== value;
 	});
 };
+
+function getConnections(state) {
+	var allTargetConnection = jsPlumb.getConnections({
+		target : state
+	});
+	var allSourceConnection = jsPlumb.getConnections({
+		source : state
+	});
+	return allTargetConnection.concat(allSourceConnection);
+
+}
