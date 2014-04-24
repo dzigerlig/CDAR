@@ -13,7 +13,7 @@ function initializeJsPlumb() {
 	registerLinkTemplate();
 	makePopupEvents();
 	bindDetachConnectorEvent();
-	bindConnection();
+	bindNewConnection();
 	$('html').click(function() {
 		// resetSelectedDesign();
 		$('[id^=popup-box-]').hide();
@@ -43,8 +43,8 @@ function addHTMLNode(response, e) {
 	zoomDownEvent(downtree, newState);
 	zoomUpEvent(uptree, newState);
 	makeNodesDraggable(newState);
-	removeNodeEvent(newState);
-	showNodeWikiEvent(newState);
+	showSubnodesEvent(newState);
+	clickNodeEvent(newState);
 	makeTarget(newState);
 	makeSource(connect, newState);
 	appendElements(title, connect, newState, option);
@@ -120,8 +120,8 @@ function drawExistingNodes(data, resSubnodes) {
 			zoomUpEvent(uptree, newState);
 			makeNodesDraggable(newState);
 
-			removeNodeEvent(newState);
-			showNodeWikiEvent(newState);
+			showSubnodesEvent(newState);
+			clickNodeEvent(newState);
 
 			makeTarget(newState);
 			makeSource(connect, newState);
@@ -253,14 +253,7 @@ function makeNodesDraggable(newState) {
 	});
 };
 
-function bindDetachConnectorEvent() {
-	jsPlumb.bind("dblclick", function(c) {
-		// jsPlumb.detach(c);
-		// scope.deleteLink(c.id.replace(LINK, ""));
-	});
-};
-
-function removeNodeEvent(newState) {
+function showSubnodesEvent(newState) {
 	newState.dblclick(function(e) {
 		$('#' + newState[0].id + ' .option').toggle();
 		jsPlumb.repaintEverything();
@@ -307,7 +300,7 @@ function detachNode(id) {
 	}
 }
 
-function showNodeWikiEvent(newState) {
+function clickNodeEvent(newState) {
 	newState.click(function(e) {
 		scope.changeNode(newState[0].id.replace(NODE, ""), $(
 				'#' + newState[0].id + ' .title').text());
@@ -399,7 +392,7 @@ function setLinkId(connection, id) {
 	lastConnectionID = LINK + id;
 };
 
-function bindConnection() {
+function bindNewConnection() {
 	jsPlumb.bind("connection", function(info) {
 		if (!isInizialized) {
 			setLinkId(info.connection, info.connection.getParameter("id"));
