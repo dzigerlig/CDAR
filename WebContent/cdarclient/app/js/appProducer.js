@@ -315,7 +315,7 @@ app
 								},
 										function(resNodes) {
 
-											directoryDataToArray(resDirectory,
+											myJsTree.directoryDataToArray(resDirectory,
 													resNodes);
 											$scope.getSubnodes(resNodes);
 
@@ -359,7 +359,7 @@ app
 									ktrid : $routeParams.treeId,
 									did : did
 								}, function(response) {
-									createNode(response);
+									myJsTree.drawNewNode(response);
 									//noty({type: 'success', text : 'node added successfully', timeout: 1500});
 								});
 							};
@@ -372,7 +372,7 @@ app
 									title : node.text,
 									did : 0
 								}, function(response) {
-									prepareForSetId(node, response.id);
+									myJsTree.prepareForSetId(node, response.id);
 								});
 							};
 
@@ -390,7 +390,7 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : id
 								}, function(node) {
-									setMovedNode(node);
+									myDragDrop.setMovedNode(node);
 								});
 							};
 
@@ -458,7 +458,7 @@ app
 									ktrid : $routeParams.treeId,
 									parentid : parentid
 								}, function(response) {
-									createDirectory(response);
+									myJsTree.createDirectory(response);
 									//noty({type: 'success', text : 'directory added successfully', timeout: 1500});
 								});
 							};
@@ -471,7 +471,7 @@ app
 									title : node.text,
 									parentid : 0
 								}, function(response) {
-									prepareForSetId(node, response.id);
+									myJsTree.prepareForSetId(node, response.id);
 								});
 							};
 

@@ -1,12 +1,12 @@
-var lastConnectionID = -1;
-var scope;
-var isInizialized = false;
-var NODE = 'node';
-var LINK = 'link';
-var SUBNODE = 'subnode';
-var selectedElement = null;
-
 var myJsPlumb = (function () {
+
+    var lastConnectionID = -1;
+    var scope;
+    var isInizialized = false;
+    var NODE = 'node';
+    var LINK = 'link';
+    var SUBNODE = 'subnode';
+    var selectedElement = null;
 
     //private Methods
     function buildContent() {
@@ -553,14 +553,8 @@ var myJsPlumb = (function () {
                 }
             }
         }
-
-
-
-
-
-
-    }
-})()
+    };
+})();
 
 
 
