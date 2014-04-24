@@ -20,7 +20,6 @@ $('html').click(function() {
 });
 
 $(function() {
-
 	$('#jstree').jstree('get_selected');
 
 	var to = false;

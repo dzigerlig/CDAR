@@ -7,6 +7,7 @@ var SUBNODE = 'subnode';
 var selectedElement = null;
 
 function initializeJsPlumb() {
+	console.log('ini');
 	scope = angular.element(document.getElementById("wrapper")).scope();
 	setDefaultSettings();
 	registerLinkTemplate();
@@ -73,6 +74,7 @@ function drawExistingNodes(data, resSubnodes) {
 	buildContent();
 	makePopupEvents();
 	isInizialized = false;
+	selectedElement=null;
 	var map = {};
 	jQuery.each(resSubnodes, function(object) {
 		if (map[this.knid] === undefined) {
@@ -211,9 +213,9 @@ function makeTarget(newState) {
 	jsPlumb.makeTarget(newState, {
 		anchor : 'Continuous',
 		endpoint : "Blank",
-		dropOptions : {
-			hoverClass : "dragHover"
-		}
+	/*
+	 * dropOptions : { hoverClass : "dragHover" }
+	 */
 	});
 };
 
@@ -253,8 +255,8 @@ function makeNodesDraggable(newState) {
 
 function bindDetachConnectorEvent() {
 	jsPlumb.bind("dblclick", function(c) {
-		//jsPlumb.detach(c);
-		//scope.deleteLink(c.id.replace(LINK, ""));
+		// jsPlumb.detach(c);
+		// scope.deleteLink(c.id.replace(LINK, ""));
 	});
 };
 
@@ -271,8 +273,7 @@ function jsplumb_remove() {
 	if (selectedElement !== null) {
 		if (selectedElement.indexOf(NODE) > -1) {
 			detachNode(selectedElement.replace(NODE, ""));
-		}
-		else{
+		} else {
 			var connections = jsPlumb.getConnections();
 			jQuery.each(connections, function(object) {
 				if (selectedElement === this.id) {
@@ -281,6 +282,12 @@ function jsplumb_remove() {
 			});
 			scope.deleteLink(selectedElement.replace(LINK, ""));
 		}
+	} else {
+		noty({
+			type : 'alert',
+			text : 'Please select a node or a connection',
+			timeout : 5000
+		});
 	}
 
 };
@@ -288,7 +295,7 @@ function jsplumb_remove() {
 function detachNode(id) {
 	var newState = $('#' + NODE + id);
 	if (newState.size() !== 0) {
-	
+
 		var connections = getConnections(newState);
 		jQuery.each(connections, function() {
 			scope.deleteLink(this.id.replace(LINK, ""));
@@ -306,7 +313,8 @@ function showNodeWikiEvent(newState) {
 				'#' + newState[0].id + ' .title').text());
 
 		resetSelectedDesign();
-		$(newState).css('background-color', '#beebff');
+		// $(newState).css('background-color', '#beebff');
+		newState.addClass("selectednode");
 
 		var connections = getConnections(newState);
 
@@ -326,7 +334,8 @@ function resetSelectedDesign() {
 		if (selectedElement.indexOf(NODE) > -1) {
 			if ($("#" + selectedElement).size() !== 0) {
 				var newState = $('#' + selectedElement);
-				newState.css('background-color', 'white');
+				// newState.css('background-color', 'inherit');
+				newState.removeClass("selectednode");
 				var connections = getConnections(newState);
 				jQuery.each(connections, function(object) {
 					this.setType("change", {

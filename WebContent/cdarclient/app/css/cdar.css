@@ -117,3 +117,7 @@ background-color: orange;
 		background-image: url(../img/circle.png);	
 			background-size: 1em;		
 }
+
+.selectednode{
+	background-color: #beebff;
+}
