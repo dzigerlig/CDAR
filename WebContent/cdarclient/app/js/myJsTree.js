@@ -259,7 +259,7 @@ function deleteSubnodes(data) {
 		if (node.type === 'default') {
 			scope.deleteDirectory(nodeId);
 		} else {
-			detachNode(nodeId.replace(NODE, ""));
+			myJsPlumb.detachNode(nodeId.replace(NODE, ""));
 			scope.deleteNode(nodeId.replace(NODE, ""));
 		}
 

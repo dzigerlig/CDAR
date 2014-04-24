@@ -84,7 +84,7 @@ app
 							setReload(true);
 							//
 
-							initializeJsPlumb();
+							myJsPlumb.initialize();
 
 							$scope.treeId = $routeParams.treeId;
 							$scope.UserService = UserService;
@@ -139,7 +139,7 @@ app
 									entityid : identity
 								}, function(response) {
 									$scope.subnodes = response;
-									updateSubnodesOfNode(response, identity,
+									myJsPlumb.updateSubnodesOfNode(response, identity,
 											changes);
 								});
 							};
@@ -327,7 +327,7 @@ app
 								TreeService.getSubnodes({
 									ktreeid : $routeParams.treeId
 								}, resNodes, function(resSubnodes) {
-									drawExistingNodes(resNodes, resSubnodes);
+									myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
 									$scope.getLinks(resSubnodes);
 								});
 							};
@@ -336,7 +336,7 @@ app
 								TreeService.getLinks({
 									ktreeid : $routeParams.treeId
 								}, resSubnodes, function(response) {
-									makeNodeHierarchy(response, resSubnodes);
+									myJsPlumb.makeNodeHierarchy(response, resSubnodes);
 									w_launch();
 								});
 							};
@@ -377,7 +377,7 @@ app
 							};
 
 							$scope.deleteNode = function(id) {
-								detachNode(id);
+								myJsPlumb.detachNode(id);
 								TreeService.deleteNode({
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
@@ -398,12 +398,12 @@ app
 								TreeService.dropNode({
 									ktreeid : $routeParams.treeId
 								}, id, function(response) {
-									addHTMLNode(response, e);
+									myJsPlumb.addHTMLNode(response, e);
 								});
 							};
 
 							$scope.renameNode = function(id, newTitle, did) {
-								renameNode(id, newTitle);
+								myJsPlumb.renameNode(id, newTitle);
 								TreeService.renameNode({
 									ktreeid : $routeParams.treeId
 								}, {
@@ -439,7 +439,7 @@ app
 									sourceId : sourceId,
 									targetId : targetId
 								}, function(response) {
-									setLinkId(connection, response.id);
+									myJsPlumb.setLinkId(connection, response.id);
 								});
 							};
 
@@ -523,7 +523,7 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resSubnodes) {
-									drawExistingNodes(resNodes, resSubnodes);
+									myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
 									$scope.zoomUpLink(nodeid, resSubnodes);
 								});
 							};
@@ -533,7 +533,7 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resLinks) {
-									makeNodeHierarchy(resLinks, resSubnodes);
+									myJsPlumb.makeNodeHierarchy(resLinks, resSubnodes);
 									w_launch();
 								});
 							};
@@ -552,7 +552,7 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resSubnodes) {
-									drawExistingNodes(resNodes, resSubnodes);
+									myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
 									$scope.zoomDownLink(nodeid, resSubnodes);
 								});
 							};
@@ -562,7 +562,7 @@ app
 									ktreeid : $routeParams.treeId,
 									entityid : nodeid
 								}, function(resLinks) {
-									makeNodeHierarchy(resLinks, resSubnodes);
+									myJsPlumb.makeNodeHierarchy(resLinks, resSubnodes);
 									w_launch();
 								});
 							};
