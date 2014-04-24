@@ -79,7 +79,7 @@ var myJsTree = (function () {
 
         $('#jstree').on("delete_node.jstree", function (e, data) {
             scope.selectedNodeId = 0;
-            $scope.selectednodename = "";
+            scope.selectednodename = "";
             var node = data.node;
             var id = data.node.id;
             id = id.replace(DIRECTORY, "");
@@ -209,6 +209,7 @@ var myJsTree = (function () {
                 noty({type: 'success', text: 'Please select a folder', timeout: 5000});
                 return false;
             } else {
+                console.log('new di');
                 scope.addDirectory(sel[0].replace(DIRECTORY, ""));
             }
         },
@@ -300,7 +301,7 @@ var myJsTree = (function () {
             }
         },
 
-        prepareFprSetId:function(node,id){   editedCopies++;
+        prepareForSetId:function(node,id){   editedCopies++;
             var nodeCopy = $('#jstree').jstree(true).get_node(node.id);
             if (node.type === 'default') {
                 id = DIRECTORY + id;

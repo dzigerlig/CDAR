@@ -458,7 +458,7 @@ app
 									ktrid : $routeParams.treeId,
 									parentid : parentid
 								}, function(response) {
-									myJsTree.createDirectory(response);
+									myJsTree.drawNewDirectory(response);
 									//noty({type: 'success', text : 'directory added successfully', timeout: 1500});
 								});
 							};

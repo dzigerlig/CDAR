@@ -1,4 +1,8 @@
-
+<head>
+<script src="app/js/myJsTree.js"></script>
+<script src="app/js/myDragDrop.js"></script>
+<script src="vendor/js/jquery-sortable.js"></script>
+</head>
 <body>
 	<div id="wrapper">
 
@@ -26,10 +30,11 @@
 				<div class="row">
 					<div class="col-md-4">
 						<h3>STATIC TREE</h3>
-						<ul>
+						<div id="jstree"></div>
+						<!--  <ul>
 							<li data-ng-repeat="node in nodes | orderBy:'id':false"><a
 								href="" data-ng-click="changeNode(node.id)">{{node.title}}</a></li>
-						</ul>
+						</ul>-->
 
 						<h4>Knowledge Tree Add:</h4>
 						<div id="addKnowledgeTree" class="row">
