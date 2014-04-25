@@ -40,11 +40,6 @@
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-   		<groupId>org.hibernate</groupId>
-   		<artifactId>hibernate-core</artifactId>
-   		<version>4.3.1.Final</version>
-	</dependency>
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
@@ -55,7 +50,6 @@
 		<artifactId>junit</artifactId>
 		<version>4.11</version>
 	</dependency>
-	
 	<dependency>
 		<groupId>org.glassfish.jersey.containers</groupId>
 		<artifactId>jersey-container-servlet-core</artifactId>
@@ -76,30 +70,25 @@
     	<artifactId>bliki-core</artifactId>
     	<version>3.0.19</version>
     </dependency>
-    
     <dependency>
-    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-    <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
-    <version>2.7</version>
-</dependency>
-
-<dependency>
-    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-    <artifactId>jersey-test-framework-provider-inmemory</artifactId>
-    <version>2.7</version>
-</dependency>
-
-<dependency>
-    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-    <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
-    <version>2.7</version>
-</dependency>
-
-<dependency>
-    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-    <artifactId>jersey-test-framework-provider-jetty</artifactId>
-    <version>2.7</version>
-</dependency>
-    
+    	<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+    	<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+    	<version>2.7</version>
+	</dependency>
+	<dependency>
+    	<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+    	<artifactId>jersey-test-framework-provider-inmemory</artifactId>
+    	<version>2.7</version>
+	</dependency>
+	<dependency>
+ 	   <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+	    <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
+	    <version>2.7</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+		<artifactId>jersey-test-framework-provider-jetty</artifactId>
+		<version>2.7</version>
+	</dependency>
   </dependencies>
 </project>
