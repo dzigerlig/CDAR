@@ -16,7 +16,7 @@ var myDragDrop = (function () {
 
     function getMovedNode() {
         return movedNode;
-    };
+    }
 
     function isMouseOverContainer() {
         return mouseOverFlag;
@@ -39,8 +39,7 @@ var myDragDrop = (function () {
             var type = data.data.origin._model.data[id].type;
             if (getMovedNode() !== null) {
                 var movedNode = getMovedNode();
-                if (isMouseOverContainer() && type !== 'default'
-                    && type !== 'root' && movedNode.dynamicTreeFlag !== 1) {
+                if (isMouseOverContainer() && type !== 'default' && type !== 'root' && movedNode.dynamicTreeFlag !== 1) {
                     id = id.replace(NODE, "");
                     id = id.replace(DIRECTORY, "");
                     scope.dropNode(data.event, id);
@@ -56,8 +55,7 @@ var myDragDrop = (function () {
             var type = data.data.origin._model.data[nodeId].type;
             if (getMovedNode() !== null) {
                 var movedNode = getMovedNode();
-                if (isMouseOverContainer() && type !== 'default'
-                    && type !== 'root' && movedNode.dynamicTreeFlag !== 1) {
+                if (isMouseOverContainer() && type !== 'default' && type !== 'root' && movedNode.dynamicTreeFlag !== 1) {
                     data.helper.find('.jstree-icon:eq(0)').removeClass(
                         'jstree-er').addClass('jstree-ok');
                     return;
@@ -86,7 +84,7 @@ var myDragDrop = (function () {
         setMovedNode: function (node) {
             movedNode = node;
         }
-    }
+    };
 
 })();
 

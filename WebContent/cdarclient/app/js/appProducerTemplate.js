@@ -8,14 +8,16 @@ app.controller("TemplatesController", [
 		'$route',
 		function($scope, $routeParams, TreeService, AuthenticationService,
 				WikiService, UserService, $route) {
-			$scope.knowledgetree;
-			$scope.templates;
-			$scope.selectedTemplate;
+			$scope.knowledgetree = "";
+			$scope.templates = "";
+			$scope.selectedTemplate = "";
 			$scope.selectedTemplateId = 0;
 			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
 			
+			$scope.updateTemplateId = "";
+			$scope.updateTemplateTitle = "";
 			
 			$scope.UserService = UserService;
 
@@ -45,13 +47,10 @@ app.controller("TemplatesController", [
 					reloadTemplates();
 					if ($scope.selectedTemplateId==id) {
 						$scope.selectedTemplateId = 0;
-					};
+					}
 					noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
 				});
 			};
-			
-			$scope.updateTemplateId;
-			$scope.updateTemplateTitle;
 			
 			$scope.editTemplateTitle = function(data, id) {
 				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
@@ -71,7 +70,7 @@ app.controller("TemplatesController", [
 					templateName = $scope.newConsumerTemplateName;
 				} else {
 					templateName = $scope.newProducerTemplateName;
-				};
+				}
 				
 				TreeService.addTemplate({
 					ktreeid : $routeParams.treeId
@@ -86,7 +85,7 @@ app.controller("TemplatesController", [
 							$scope.newConsumerTemplateName = '';
 						} else {
 							$scope.newProducerTemplateName = '';
-						};
+						}
 						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
 					} else {
 						alert("exception");
@@ -116,7 +115,7 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.saveTemplate = function() {
-				if ($scope.selectedTemplate.id != 0) {
+				if ($scope.selectedTemplate.id !== 0) {
 					$scope.templatePlain = $("#templateArea").val();
 					$scope.selectedTemplate.templatetext = $scope.templatePlain;
 					switchToRead();
@@ -130,10 +129,7 @@ app.controller("TemplatesController", [
 				}
 			};
 			
-			$scope.tabs = [
-			               { title:"READ" },
-			               { title:"WRITE" }
-			             ];
+			$scope.tabs = [{ title:"READ" },{ title:"WRITE" }];
 			
 			var switchToRead = function() {
 				$scope.tabs[0].active = true;

@@ -3,7 +3,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	$.removeCookie('cdar');
 	UserService.user = '';
 	
-	$scope.chkbKnowledgeProducer;
+	$scope.chkbKnowledgeProducer = "";
 
 	$scope.credentials = {
 		username : '',

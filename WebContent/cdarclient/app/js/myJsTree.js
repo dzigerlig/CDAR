@@ -148,7 +148,7 @@ var myJsTree = (function () {
     function deleteSubnodes(data) {
         data.node.children_d.forEach(function (nodeId) {
             var node = data.instance._model.data[nodeId];
-            nodeId = nodeId.replace(DIRECTORY, "")
+            nodeId = nodeId.replace(DIRECTORY, "");
             if (node.type === 'default') {
                 scope.deleteDirectory(nodeId);
             } else {
@@ -157,7 +157,7 @@ var myJsTree = (function () {
             }
 
         });
-    };
+    }
 
     function dndCopyCreateSubnodes(data) {
         data.node.children_d.forEach(function (nodeId) {
@@ -193,19 +193,17 @@ var myJsTree = (function () {
     return{
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-            if (!sel.length || sel.length > 1
-                || ref._model.data[sel].type !== "default") {
+            if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== "default") {
                 noty({type: 'success', text: 'Please select a folder', timeout: 5000});
                 return false;
             } else {
                 scope.addNode(sel[0].replace(DIRECTORY, ""));
-            }
+            };
         },
         createDirectory: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1
-                || ref._model.data[sel].type !== "default"
-                && ref._model.data[sel].type !== "root") {
+                || ref._model.data[sel].type !== "default" && ref._model.data[sel].type !== "root") {
                 noty({type: 'success', text: 'Please select a folder', timeout: 5000});
                 return false;
             } else {

@@ -6,8 +6,8 @@ app.controller("TreeSettingsController", [
 		'UserService',
 		'$route',
 		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
-			$scope.knowledgetree;
-			$scope.treesXml;
+			$scope.knowledgetree = "";
+			$scope.treesXml = "";
 			
 			
 			$scope.UserService = UserService;
@@ -19,8 +19,7 @@ app.controller("TreeSettingsController", [
 			});
 			
 			var reloadXmlTrees = function() {
-				TreeService.getXmlTreesSimple({ktreeid : $routeParams.treeId}
-				, function(response) {
+				TreeService.getXmlTreesSimple({ktreeid : $routeParams.treeId}, function(response) {
 					$scope.treesXml = response;
 				});
 			};
@@ -36,8 +35,7 @@ app.controller("TreeSettingsController", [
 			};
 			
 			$scope.setXmlTree = function(id) {
-				TreeService.setXmlTreeSimple({ktreeid : $routeParams.treeId}, id
-				, function(response) {
+				TreeService.setXmlTreeSimple({ktreeid : $routeParams.treeId}, id, function(response) {
 					if (response.id != -1) {
 						console.log('tree set');
 					}
@@ -45,8 +43,7 @@ app.controller("TreeSettingsController", [
 			};
 			
 			$scope.deleteXmlTree = function(id) {
-				TreeService.removeXmlTreeSimple({ktreeid : $routeParams.treeId }, id
-				, function(response) {
+				TreeService.removeXmlTreeSimple({ktreeid : $routeParams.treeId }, id, function(response) {
 					if (response.bool) {
 						reloadXmlTrees();
 					}

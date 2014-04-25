@@ -1,5 +1,5 @@
 app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'ProjectTreeService', 'UserService', function ($scope, AuthenticationService, ProjectTreeService, UserService) {
-	$scope.projectTrees;
+	$scope.projectTrees = "";
 	$scope.newTreeName = "";
 	$scope.UserService = UserService;
 	
@@ -39,10 +39,10 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'TreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, TreeService, UserService, WikiService) {
 	$scope.UserService = UserService;
-	$scope.projecttree;
-	$scope.nodes;
-	$scope.trees;
-	$scope.selectedktreeId;
+	$scope.projecttree = "";
+	$scope.nodes = "";
+	$scope.trees = "";
+	$scope.selectedktreeId = "";
 	
 	$scope.wikiText = "no wiki entry selected";
 	

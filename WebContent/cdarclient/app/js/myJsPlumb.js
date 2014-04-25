@@ -25,7 +25,7 @@ var myJsPlumb = (function () {
         popup.append(bottom);
         var form = $('<form>').attr('id', 'radio-form');
         bottom.append(form);
-    };
+    }
 
     function setDefaultSettings() {
         jsPlumb.Defaults.PaintStyle = {
@@ -49,7 +49,7 @@ var myJsPlumb = (function () {
                 } ]
             ]
         };
-    };
+    }
 
     function makePopupEvents() {
         $('#radio-form')
@@ -70,7 +70,7 @@ var myJsPlumb = (function () {
                     }
                 });
             });
-    };
+    }
 
     function makeSource(connect, newState) {
         jsPlumb.makeSource(connect, {
@@ -107,7 +107,7 @@ var myJsPlumb = (function () {
                 } ]
             ]
         });
-    };
+    }
 
     function makeTarget(newState) {
         jsPlumb.makeTarget(newState, {
@@ -117,7 +117,7 @@ var myJsPlumb = (function () {
              * dropOptions : { hoverClass : "dragHover" }
              */
         });
-    };
+    }
 
     function connectNodes(stateSource, stateTarget, id, subnode) {
         var label = "";
@@ -138,20 +138,20 @@ var myJsPlumb = (function () {
                 label: label
             }
         });
-    };
+    }
 
     function appendElements(title, connect, newState, option) {
         newState.append(title);
         newState.append(option);
         newState.append(connect);
         $('#jsplumb-container').append(newState);
-    };
+    }
 
     function makeNodesDraggable(newState) {
         jsPlumb.draggable(newState, {
             containment: 'parent'
         });
-    };
+    }
 
     function showSubnodesEvent(newState) {
         newState.dblclick(function (e) {
@@ -160,7 +160,7 @@ var myJsPlumb = (function () {
 
             // detachNode(newState[0].id.replace(NODE, ""));
         });
-    };
+    }
 
     function clickNodeEvent(newState) {
         newState.click(function (e) {
@@ -182,7 +182,7 @@ var myJsPlumb = (function () {
             selectedElement = newState[0].id;
             e.stopPropagation();
         });
-    };
+    }
 
     function resetSelectDesign() {
         if (selectedElement !== null) {
@@ -200,6 +200,7 @@ var myJsPlumb = (function () {
                     });
                 }
             } else {
+            	//JSHINT: Connections is already defined?
                 var connections = jsPlumb.getConnections();
                 jQuery.each(connections, function (object) {
                     if (selectedElement === this.id) {
@@ -214,20 +215,22 @@ var myJsPlumb = (function () {
             }
         }
         selectedElement = null;
-    };
+    }
 
     function zoomUpEvent(uptree, newState) {
         uptree.click(function (e) {
             e.stopPropagation();
             scope.zoomUpNode(newState[0].id.replace(NODE, ""));
         });
-    };
+    }
+    
     function zoomDownEvent(downtree, newState) {
         downtree.click(function (e) {
             e.stopPropagation();
             scope.zoomDownNode(newState[0].id.replace(NODE, ""));
         });
-    };
+    }
+    
 
     function bindNewConnection() {
         jsPlumb.bind("connection", function (info) {
@@ -242,7 +245,7 @@ var myJsPlumb = (function () {
             }
 
         });
-    };
+    }
 
     function bindClickConnection(info) {
 
@@ -269,8 +272,7 @@ var myJsPlumb = (function () {
         $('#radio-form').empty();
         $.each(info.connection.source.data(SUBNODE).subnode, function (object) {
             $('#radio-form').append(
-                "<input type=\"radio\" id=\"" + SUBNODE + this.id
-                    + "\" name=\"option\" class=\"radio_item\" value=\""
+                "<input type=\"radio\" id=\"" + SUBNODE + this.id + "\" name=\"option\" class=\"radio_item\" value=\""
                     + this.title + "\">" + this.title + "<br>");
         });
         $('#popup-box-1').show();
@@ -326,8 +328,7 @@ var myJsPlumb = (function () {
             source: state
         });
         return allTargetConnection.concat(allSourceConnection);
-
-    };
+    }
 
     //public Methods
     return{
@@ -484,8 +485,7 @@ var myJsPlumb = (function () {
                 function (object) {
                     connectNodes(NODE + this.sourceId, NODE + this.targetId,
                         this.id, map[this.ksnid]);
-                    direction += NODE + this.sourceId + " -> " + NODE
-                        + this.targetId + ";";
+                    direction += NODE + this.sourceId + " -> " + NODE  + this.targetId + ";";
                 });
             direction += "}";
             $('#dot-src').val(direction);
