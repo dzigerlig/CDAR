@@ -16,7 +16,7 @@ import cdar.bll.consumer.ProjectTree;
 import cdar.bll.consumer.models.ProjectNodeModel;
 import cdar.bll.consumer.models.ProjectTreeModel;
 
-@Path("{accesstoken}/{uid}/ptree")
+@Path("ptree")
 public class ProjectTreeController {
 	private ProjectTreeModel ptm = new ProjectTreeModel();
 	

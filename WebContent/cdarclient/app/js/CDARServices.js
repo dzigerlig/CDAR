@@ -2,8 +2,7 @@ app.factory('ProjectTreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
-			return $resource('../webapi/' + UserService.user.accesstoken + '/'
-					+ UserService.user.id + '/ptree/:action/:treeid/:ktreeid/',
+			return $resource('../webapi/ptree/:action/:treeid/:ktreeid/',
 					{}, {
 						'query' : {
                             headers: {'uid':UserService.user.id,
@@ -60,8 +59,7 @@ app.factory('WikiService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
-			return $resource('../webapi/' + UserService.user.accesstoken + '/'
-					+ UserService.user.id + '/wiki/:role/:entity/:nodeid/', {},
+			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
 					{
 						'getWikiEntry' : {
                             headers: {'uid':UserService.user.id,
@@ -80,9 +78,7 @@ app.factory('TreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
-			return $resource('../webapi/' + UserService.user.accesstoken + '/'
-					+ UserService.user.id
-					+ '/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
+			return $resource('../webapi/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
 				// Tree
 
 				'getTrees' : {

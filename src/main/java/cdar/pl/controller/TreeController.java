@@ -28,7 +28,7 @@ import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.producer.models.XmlTreeModel;
 
-@Path("{accesstoken}/{uid}/ktree")
+@Path("ktree")
 public class TreeController {
 	private TreeModel ktm = new TreeModel();
 	private NodeModel nm = new NodeModel();
