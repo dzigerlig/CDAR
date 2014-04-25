@@ -64,6 +64,29 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	reloadTree();
+
+    TreeService.getDirectories({
+        ktreeid : $routeParams.treeId
+    }, function(resDirectory) {
+        TreeService.getNodes({
+                ktreeid : $routeParams.treeId
+            },
+            function(resNodes) {
+
+                myJsTree.directoryDataToArray(resDirectory,
+                    resNodes);
+               // $scope.getSubnodes(resNodes);
+
+            });
+
+    });
+
+    $scope.getSubnodes = function(resNodes) {
+        TreeService.getSubnodes({
+            ktreeid : $routeParams.treeId
+        }, resNodes, function(resSubnodes) {
+        });
+    };
 	
 	TreeService.query(function(response) {
 		$scope.knowledgetrees = response;

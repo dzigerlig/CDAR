@@ -39,19 +39,19 @@
 					<div class="col-md-3" id="jstree-container">
 						<h3>STATIC TREE</h3>
 						<button type="button" class="btn btn-success btn-sm"
-							onclick="jstree_createNode();">
-							<i class="glyphicon glyphicon-asterisk"></i> Create Node
-						</button>
-						<button type="button" class="btn btn-success btn-sm"
-							onclick="jstree_createDirectory();">
+							onclick="myJsTree.createDirectory();">
 							<i class="glyphicon glyphicon-asterisk"></i> Create Folder
 						</button>
+						<button type="button" class="btn btn-success btn-sm"
+							onclick="myJsTree.createNode();">
+							<i class="glyphicon glyphicon-asterisk"></i> Create Node
+						</button>
 						<button type="button" class="btn btn-warning btn-sm"
-							onclick="jstree_rename();">
+							onclick="myJsTree.rename();">
 							<i class="glyphicon glyphicon-pencil"></i> Rename
 						</button>
 						<button type="button" class="btn btn-danger btn-sm"
-							onclick="jstree_delete();">
+							onclick="myJsTree.delete();">
 							<i class="glyphicon glyphicon-remove"></i> Delete
 						</button>
 						<input type="text" value=""
@@ -61,6 +61,10 @@
 					</div>
 					<div class="col-md-9">
 						<h3>DYNAMIC TREE</h3>
+						<button type="button" class="btn btn-danger btn-sm"
+							onclick="myJsPlumb.remove();">
+							<i class="glyphicon glyphicon-remove"></i> Remove
+						</button>
 						<div id="jsplumb-container">
 							<!-- <div class="popup-box" id="popup-box-1">
 								<div class="top">
