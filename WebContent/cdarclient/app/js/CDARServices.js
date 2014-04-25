@@ -6,28 +6,38 @@ app.factory('ProjectTreeService', [
 					+ UserService.user.id + '/ptree/:action/:treeid/:ktreeid/',
 					{}, {
 						'query' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'GET',
 							isArray : true
 						},
 						'addTree' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'POST',
 							params : {
 								action : 'add'
 							}
 						},
 						'removeTree' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'POST',
 							params : {
 								action : 'delete'
 							}
 						},
 						'getTree' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'GET',
 							isArray : false
 						},
 
 						// action: nodes?
 						'getNodes' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'GET',
 							params : {
 								action : "nodes"
@@ -35,6 +45,8 @@ app.factory('ProjectTreeService', [
 							isArray : true
 						},
 						'copyTree' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'GET',
 							isArray : false,
 							params : {
@@ -52,9 +64,13 @@ app.factory('WikiService', [
 					+ UserService.user.id + '/wiki/:role/:entity/:nodeid/', {},
 					{
 						'getWikiEntry' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'GET'
 						},
 						'postEntry' : {
+                            headers: {'uid':UserService.user.id,
+                                'auth-token': UserService.user.accesstoken},
 							method : 'POST'
 						}
 					});
@@ -70,10 +86,14 @@ app.factory('TreeService', [
 				// Tree
 
 				'getTrees' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true
 				},
 				'addTree' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'tree',
@@ -81,6 +101,8 @@ app.factory('TreeService', [
 					}
 				},
 				'renameTree' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'tree',
@@ -88,24 +110,32 @@ app.factory('TreeService', [
 					}
 				},
 				'removeTree' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
-						action : 'delete',
+						action : 'delete'
 					}
 				},
 				'getTree' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					params : {}
 				},
 				// EXPORT export/simple/{ktreeid}
 				'getXmlTreesSimple' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'simpleexport',
+						entity : 'simpleexport'
 					}
 				},
 				'removeXmlTreeSimple' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'simpleexport',
@@ -113,6 +143,8 @@ app.factory('TreeService', [
 					}
 				},
 				'setXmlTreeSimple' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'singleexport',
@@ -120,6 +152,8 @@ app.factory('TreeService', [
 					}
 				},
 				'addXmlTreeSimple' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					params : {
 						entity : 'simpleexport',
@@ -129,165 +163,209 @@ app.factory('TreeService', [
 
 				// Directories
 				'getDirectories' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'directories',
+						entity : 'directories'
 					}
 				},
 				'addDirectory' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'directories',
-						action : 'add',
+						action : 'add'
 					}
 				},
 				'deleteDirectory' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'directories',
-						action : 'delete',
+						action : 'delete'
 					}
 				},
 				'renameDirectory' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'directories',
-						action : 'rename',
+						action : 'rename'
 					}
 				},
 
 				'moveDirectory' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'directories',
-						action : 'move',
+						action : 'move'
 					}
 				},
 
 				// Nodes
 				'getNodes' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'nodes',
+						entity : 'nodes'
 					}
 				},
 				'getNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					params : {
-						entity : 'nodes',
+						entity : 'nodes'
 					}
 				},
 				'addNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'add',
+						action : 'add'
 					}
 				},
 				'deleteNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'delete',
+						action : 'delete'
 					}
 				},
 				'dropNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'drop',
+						action : 'drop'
 					}
 				},
 				'renameNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'rename',
+						action : 'rename'
 					}
 				},
 				'undropNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'undrop',
+						action : 'undrop'
 					}
 				},
 
 				'moveNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'nodes',
-						action : 'move',
+						action : 'move'
 					}
 				},
 				'zoomUpNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'nodes',
-						action : 'zoomUp',
+						action : 'zoomUp'
 					}
 				},
 				'zoomDownNode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'nodes',
-						action : 'zoomDown',
+						action : 'zoomDown'
 					}
 				},
 
 				// Links
 				'getLinks' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity : 'links',
+						entity : 'links'
 					}
 				},
 				'addLink' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'links',
-						action : 'add',
+						action : 'add'
 					}
 				},
 				'deleteLink' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'links',
-						action : 'delete',
+						action : 'delete'
 					}
 				},
 				'updateLink' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'links',
-						action : 'update',
+						action : 'update'
 					}
 				},
 				
 				'zoomUpLink' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'links',
-						action : 'zoomUp',
+						action : 'zoomUp'
 					}
 				},
 				'zoomDownLink' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'links',
-						action : 'zoomDown',
+						action : 'zoomDown'
 					}
 				},
 
 				// Templates
 				'getTemplates' : {
+                    headers: {'uid':UserService.user.id,
+                'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -295,6 +373,8 @@ app.factory('TreeService', [
 					}
 				},
 				'getTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : false,
 					params : {
@@ -302,6 +382,8 @@ app.factory('TreeService', [
 					}
 				},
 				'addTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -309,6 +391,8 @@ app.factory('TreeService', [
 					}
 				},
 				'editTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -316,6 +400,8 @@ app.factory('TreeService', [
 					}
 				},
 				'renameTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -323,6 +409,8 @@ app.factory('TreeService', [
 					}
 				},
 				'setDefaultTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					isArray : true,
 					params : {
@@ -332,6 +420,8 @@ app.factory('TreeService', [
 				},
 				// Subnodes
 				'getSubnodes' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -339,6 +429,8 @@ app.factory('TreeService', [
 					}
 				},
 				'addSubnode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -346,6 +438,8 @@ app.factory('TreeService', [
 					}
 				},
 				'renameSubnode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -353,6 +447,8 @@ app.factory('TreeService', [
 					}
 				},
 				'moveSubnodeUp' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -360,6 +456,8 @@ app.factory('TreeService', [
 					}
 				},
 				'moveSubnodeDown' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -367,6 +465,8 @@ app.factory('TreeService', [
 					}
 				},
 				'deleteSubnode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -374,27 +474,33 @@ app.factory('TreeService', [
 					}
 				},
 				'deleteTemplate' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'POST',
 					params : {
 						entity : 'templates',
 						action : 'delete'
 					}
 				},'zoomUpSubnode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'subnodes',
-						action : 'zoomUp',
+						action : 'zoomUp'
 					}
 				},
 				'zoomDownSubnode' : {
+                    headers: {'uid':UserService.user.id,
+                        'auth-token': UserService.user.accesstoken},
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity : 'subnodes',
-						action : 'zoomDown',
+						action : 'zoomDown'
 					}
-				},
+				}
 			});
 		} ]);
 

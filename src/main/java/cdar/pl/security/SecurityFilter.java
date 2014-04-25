@@ -25,8 +25,8 @@ public class SecurityFilter implements ContainerRequestFilter {
 		
 		if (!extendendUriInfo.getPath().contains("user")) {
 			try {
-				final int uid = Integer.parseInt(extendendUriInfo.getPathParameters().get("uid").get(0));
-				final String accesstoken = extendendUriInfo.getPathParameters().get("accesstoken").get(0);
+				final int uid = Integer.parseInt(requestContext.getHeaderString("uid"));
+				final String accesstoken = requestContext.getHeaderString("auth-token");
 				
 				User user = um.getUser(uid);
 				

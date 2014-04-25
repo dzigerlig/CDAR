@@ -75,7 +75,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
                 myJsTree.directoryDataToArray(resDirectory,
                     resNodes);
-               // $scope.getSubnodes(resNodes);
+                $scope.getSubnodes(resNodes);
 
             });
 
@@ -85,6 +85,17 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         TreeService.getSubnodes({
             ktreeid : $routeParams.treeId
         }, resNodes, function(resSubnodes) {
+            myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
+            $scope.getLinks(resSubnodes);
+        });
+    };
+
+    $scope.getLinks = function(resSubnodes) {
+        TreeService.getLinks({
+            ktreeid : $routeParams.treeId
+        }, resSubnodes, function(response) {
+            myJsPlumb.makeNodeHierarchy(response, resSubnodes);
+            w_launch();
         });
     };
 	

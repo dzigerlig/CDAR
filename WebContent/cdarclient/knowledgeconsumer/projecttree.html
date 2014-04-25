@@ -31,11 +31,6 @@
 					<div class="col-md-4">
 						<h3>STATIC TREE</h3>
 						<div id="jstree"></div>
-						<!--  <ul>
-							<li data-ng-repeat="node in nodes | orderBy:'id':false"><a
-								href="" data-ng-click="changeNode(node.id)">{{node.title}}</a></li>
-						</ul>-->
-
 						<h4>Knowledge Tree Add:</h4>
 						<div id="addKnowledgeTree" class="row">
 							<form data-role="form">
@@ -57,6 +52,9 @@
 					</div>
 					<div class="col-md-8">
 						<h3>DYNAMIC TREE</h3>
+                        <div id="jsplumb-container"></div>
+
+                        <textarea id="dot-src" style="display: none;"> </textarea>
 					</div>
 				</div>
 				<div class="row">
