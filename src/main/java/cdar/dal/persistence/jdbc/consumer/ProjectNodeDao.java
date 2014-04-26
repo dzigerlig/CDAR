@@ -45,7 +45,6 @@ public class ProjectNodeDao extends CUDHelper<ProjectNodeDao> implements
 	}
 
 	public ProjectNodeDao() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {

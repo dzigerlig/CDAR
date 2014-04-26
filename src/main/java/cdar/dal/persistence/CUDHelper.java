@@ -3,6 +3,7 @@ package cdar.dal.persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 	
@@ -52,11 +53,12 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
 
-			String deleteSQL = String.format("DELETE FROM %s WHERE ID = %d;",
-					table, id);
 			try {
 				connection = JDBCUtil.getConnection();
-				preparedStatement = connection.prepareStatement(deleteSQL);
+				//prepared statement cannot be used for tablename, preparedstatement is for the column names
+				//http://stackoverflow.com/questions/11312155/how-to-use-a-tablename-variable-for-a-java-prepared-statement-insert
+				preparedStatement = connection.prepareStatement(String.format("DELETE FROM %s WHERE ID = ?", table));
+				preparedStatement.setInt(1, id);
 				preparedStatement.executeUpdate();
 				returnBool = true;
 			} catch (Exception ex) {

@@ -68,7 +68,7 @@ public class TestJDBCUser {
 	@Test
 	public void testGetUsers() {
 		final int currentUserCount = udc.getUsers().size();
-		UserDao user = new UserDao("MyUser", "MyPassword").create();
+		UserDao user = new UserDao("MyNewUser", "MyPassword").create();
 		assertEquals(currentUserCount+1, udc.getUsers().size());
 		user.delete();
 	}
