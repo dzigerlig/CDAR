@@ -561,10 +561,10 @@ app.factory('UserService', [ '$location', '$cookieStore', function($location, $c
 			$cookieStore.put('cdarProducer', val);
 		},
 		removeCookies : function() {
-//			$cookieStore.remove('cdarUsername');
-//			$cookieStore.remove('cdarAccesstoken');
-//			$cookieStore.remove('cdarId');
-//			$cookieStore.remove('cdarProducer');
+			$cookieStore.remove('cdarUsername');
+			$cookieStore.remove('cdarAccesstoken');
+			$cookieStore.remove('cdarId');
+			$cookieStore.remove('cdarProducer');
 		},
 		redirectUrl : function() {
 			if (this.getIsProducer()=='true') {
