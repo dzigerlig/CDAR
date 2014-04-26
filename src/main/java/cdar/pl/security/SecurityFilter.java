@@ -22,14 +22,20 @@ public class SecurityFilter implements ContainerRequestFilter {
 		UserModel um = new UserModel();
 		final ExtendedUriInfo extendendUriInfo = (ExtendedUriInfo) requestContext
 				.getUriInfo();
-		
+
 		if (!extendendUriInfo.getPath().contains("user")) {
 			try {
-				final int uid = Integer.parseInt(requestContext.getHeaderString("uid"));
-				final String accesstoken = requestContext.getHeaderString("auth-token");
-				
+				System.out.println("uid: "
+						+ requestContext.getHeaderString("uid"));
+				System.out.println("accesstoken: "
+						+ requestContext.getHeaderString("auth-token"));
+				final int uid = Integer.parseInt(requestContext
+						.getHeaderString("uid"));
+				final String accesstoken = requestContext
+						.getHeaderString("auth-token");
+
 				User user = um.getUser(uid);
-				
+
 				if (!user.getAccesstoken().equals(accesstoken)) {
 					abortRequest(requestContext);
 				}
@@ -39,8 +45,10 @@ public class SecurityFilter implements ContainerRequestFilter {
 			}
 		}
 	}
-	
+
 	private void abortRequest(ContainerRequestContext requestContext) {
-		requestContext.abortWith(Response.status(Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, "CDAR").entity("Login required.").build());
+		requestContext.abortWith(Response.status(Status.UNAUTHORIZED)
+				.header(HttpHeaders.WWW_AUTHENTICATE, "CDAR")
+				.entity("Login required.").build());
 	}
 }

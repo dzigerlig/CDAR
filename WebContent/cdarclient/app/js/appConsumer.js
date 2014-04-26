@@ -9,6 +9,9 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 		});
 	};
 	
+	alert(UserService.getUserId());
+	alert(UserService.getAccesstoken());
+	
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
@@ -65,39 +68,40 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	reloadTree();
 
-    TreeService.getDirectories({
-        ktreeid : $routeParams.treeId
-    }, function(resDirectory) {
-        TreeService.getNodes({
-                ktreeid : $routeParams.treeId
-            },
-            function(resNodes) {
+	//wieso knowledge tree in project tree?
+//    TreeService.getDirectories({
+//        ktreeid : $routeParams.treeId
+//    }, function(resDirectory) {
+//        TreeService.getNodes({
+//                ktreeid : $routeParams.treeId
+//            },
+//            function(resNodes) {
+//
+//                myJsTree.directoryDataToArray(resDirectory,
+//                    resNodes);
+//                $scope.getSubnodes(resNodes);
+//
+//            });
+//
+//    });
 
-                myJsTree.directoryDataToArray(resDirectory,
-                    resNodes);
-                $scope.getSubnodes(resNodes);
+//    $scope.getSubnodes = function(resNodes) {
+//        TreeService.getSubnodes({
+//            ktreeid : $routeParams.treeId
+//        }, resNodes, function(resSubnodes) {
+//            myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
+//            $scope.getLinks(resSubnodes);
+//        });
+//    };
 
-            });
-
-    });
-
-    $scope.getSubnodes = function(resNodes) {
-        TreeService.getSubnodes({
-            ktreeid : $routeParams.treeId
-        }, resNodes, function(resSubnodes) {
-            myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
-            $scope.getLinks(resSubnodes);
-        });
-    };
-
-    $scope.getLinks = function(resSubnodes) {
-        TreeService.getLinks({
-            ktreeid : $routeParams.treeId
-        }, resSubnodes, function(response) {
-            myJsPlumb.makeNodeHierarchy(response, resSubnodes);
-            w_launch();
-        });
-    };
+//    $scope.getLinks = function(resSubnodes) {
+//        TreeService.getLinks({
+//            ktreeid : $routeParams.treeId
+//        }, resSubnodes, function(response) {
+//            myJsPlumb.makeNodeHierarchy(response, resSubnodes);
+//            w_launch();
+//        });
+//    };
 	
 	TreeService.query(function(response) {
 		$scope.knowledgetrees = response;
