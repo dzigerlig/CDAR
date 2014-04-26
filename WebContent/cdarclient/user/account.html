@@ -1,33 +1,7 @@
 
-<body>
 	<div id="wrapper">
 
-		<div id="sidebar-wrapper">
-			<div id="consumer" data-ng-hide="UserService.user.isProducer">
-				<ul class="sidebar-nav">
-					<li class="sidebar-brand sidebar-cdar"><a
-						href="#/homeconsumer"><strong>CDAR</strong></a></li>
-					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
-						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
-								KnowledgeConsumer</small></a></li>
-					<li><a href="#/homeconsumer">Overview</a></li>
-					<li><a href="#/account">Account</a></li>
-					<li><a href="#/logout">Logout</a></li>
-				</ul>
-			</div>
-			<div id="producer" data-ng-show="UserService.user.isProducer">
-				<ul class="sidebar-nav">
-					<li class="sidebar-brand sidebar-cdar"><a
-						href="#/homeproducer"><strong>CDAR</strong></a></li>
-					<li class="sidebar-brand sidebar-cdar sidebar-cdar-role"><a
-						href="#" data-ng-click="UserService.redirectUrl()"><small>Role:
-								KnowledgeProducer</small></a></li>
-					<li><a href="#/homeproducer">Overview</a></li>
-					<li><a href="#/account">Account</a></li>
-					<li><a href="#/logout">Logout</a></li>
-				</ul>
-			</div>
-		</div>
+		<div ng-include src="'templates/navigation.html'"></div>
 
 		<div id="page-content-wrapper">
 			<div class="content-header">
@@ -73,4 +47,3 @@
 			$("#wrapper").toggleClass("active");
 		});
 	</script>
-</body>
