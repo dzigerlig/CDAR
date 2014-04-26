@@ -4,14 +4,14 @@ app.factory('ProjectTreeService', [
 		function($resource, UserService) {
 			return $resource('../webapi/ptree/:action/:treeid/:ktreeid/',
 					{}, {
-						'query' : {
-                            headers: {'uid': UserService.getUserId(),
+						'getTrees' : {
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'GET',
 							isArray : true
 						},
 						'addTree' : {
-                            headers: {'uid': UserService.getUserId(),
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'POST',
 							params : {
@@ -19,7 +19,7 @@ app.factory('ProjectTreeService', [
 							}
 						},
 						'removeTree' : {
-                            headers: {'uid': UserService.getUserId(),
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'POST',
 							params : {
@@ -27,7 +27,7 @@ app.factory('ProjectTreeService', [
 							}
 						},
 						'getTree' : {
-                            headers: {'uid': UserService.getUserId(),
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'GET',
 							isArray : false
@@ -35,7 +35,7 @@ app.factory('ProjectTreeService', [
 
 						// action: nodes?
 						'getNodes' : {
-                            headers: {'uid': UserService.getUserId(),
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'GET',
 							params : {
@@ -44,7 +44,7 @@ app.factory('ProjectTreeService', [
 							isArray : true
 						},
 						'copyTree' : {
-                            headers: {'uid': UserService.getUserId(),
+							headers: {'uid': UserService.getUserId(),
                                 'auth-token': UserService.getAccesstoken()},
 							method : 'GET',
 							isArray : false,

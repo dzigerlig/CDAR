@@ -4,13 +4,10 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
 	$scope.UserService = UserService;
 	
 	var reloadTrees = function() {
-		ProjectTreeService.query(function(response) {
+		ProjectTreeService.getTrees(function(response) {
 			$scope.projectTrees = response;
 		});
 	};
-	
-	alert(UserService.getUserId());
-	alert(UserService.getAccesstoken());
 	
 	reloadTrees();
 	
@@ -103,7 +100,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 //        });
 //    };
 	
-	TreeService.query(function(response) {
+	TreeService.getTrees(function(response) {
 		$scope.knowledgetrees = response;
 	});
 	
@@ -114,8 +111,4 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			});
 		}
 	};
-	
-    $scope.logout = function () {
-        AuthenticationService.logout();
-    };
 }]);
