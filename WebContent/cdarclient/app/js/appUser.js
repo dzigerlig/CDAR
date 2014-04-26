@@ -19,13 +19,9 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 				
 				if ($scope.chkbKnowledgeProducer) {
 					UserService.setIsProducer('true');
-				} else {
-					UserService.setIsProducer('false');
-				}
-				
-				if ($scope.chkbKnowledgeProducer) {
 					$location.path('/homeproducer');
 				} else {
+					UserService.setIsProducer('false');
 					$location.path('/homeconsumer');
 				}
 			} else {

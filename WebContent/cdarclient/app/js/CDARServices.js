@@ -360,8 +360,8 @@ app.factory('TreeService', [
 
 				// Templates
 				'getTemplates' : {
-                    headers: {'uid': UserService.getUserId(),
-                'auth-token': UserService.getAccesstoken()},
+					headers: {'uid': UserService.getUserId(),
+                        'auth-token': UserService.getAccesstoken()},
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -561,17 +561,17 @@ app.factory('UserService', [ '$location', '$cookieStore', function($location, $c
 			$cookieStore.put('cdarProducer', val);
 		},
 		removeCookies : function() {
-			$cookieStore.remove('cdarUsername');
-			$cookieStore.remove('cdarAccesstoken');
-			$cookieStore.remove('cdarId');
-			$cookieStore.remove('cdarProducer');
+//			$cookieStore.remove('cdarUsername');
+//			$cookieStore.remove('cdarAccesstoken');
+//			$cookieStore.remove('cdarId');
+//			$cookieStore.remove('cdarProducer');
 		},
 		redirectUrl : function() {
-			if (this.isProducer) {
-				$cookieStore.put('cdarProducer', 'false');
+			if (this.getIsProducer()=='true') {
+				this.setIsProducer('false');
 				$location.path('/homeconsumer');
 			} else {
-				$cookieStore.put('cdarProducer', 'true');
+				this.setIsProducer('true');
 				$location.path('/homeproducer');
 			}
 		}
