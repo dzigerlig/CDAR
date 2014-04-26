@@ -1,9 +1,8 @@
-var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5', 'ui.bootstrap', 'xeditable', 'app.directives.navigation' ]);
+var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ngMd5', 'ui.bootstrap', 'xeditable', 'app.directives.navigation', 'ngCookies' ]);
 
 app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    $.cookie.json = true;
     
     $routeProvider.when('/login', {
         templateUrl: 'user/login.html',
@@ -72,9 +71,9 @@ app.config(function ($routeProvider,$httpProvider) {
 });
 
 
-app.run(function ($rootScope, $location, AuthenticationService, $templateCache, editableOptions) {
+app.run(function ($rootScope, $location, AuthenticationService, $templateCache, editableOptions, UserService) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
-        if (!$.cookie('cdar') && next.needsLogin) {
+        if (!UserService.isLoggedIn() && next.needsLogin) {
             $location.url("/login");
         }
         event.preventDefault();

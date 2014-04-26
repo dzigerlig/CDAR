@@ -1,7 +1,7 @@
 app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
 		AuthenticationService, md5, UserService) {
-	$.removeCookie('cdar');
-	UserService.user = '';
+
+	UserService.removeCookies();
 	
 	$scope.chkbKnowledgeProducer = "";
 
@@ -11,15 +11,18 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	};
 	
 	$scope.login = function() {
-		UserService.user = '';
-		
 		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password)}, function(response) {
 			if (response.id != -1 && response.accesstoken.length == 40) {
-				response.isProducer = $scope.chkbKnowledgeProducer;
-				$.cookie('cdar', response, {
-					expires : 7
-				});
-				UserService.user = $.cookie('cdar');
+				UserService.setUsername(response.username);
+				UserService.setAccesstoken(response.accesstoken);
+				UserService.setUserId(response.id);
+				
+				if ($scope.chkbKnowledgeProducer) {
+					UserService.setIsProducer('true');
+				} else {
+					UserService.setIsProducer('false');
+				}
+				
 				if ($scope.chkbKnowledgeProducer) {
 					$location.path('/homeproducer');
 				} else {
@@ -34,18 +37,13 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 
 app.controller("RegistrationController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
 		AuthenticationService, md5, UserService) {
-	$.removeCookie('cdar');
-	UserService.user = '';
+	UserService.removeCookies();
 
 	$scope.credentials = {
 		username : "",
 		password : ""
 	};
 	
-	$scope.updateUser = function(data) {
-		alert(data);
-	};
-
 	$scope.register = function() {
 		AuthenticationService.addUser.post({username: $scope.credentials.username, password: md5.createHash($scope.credentials.password)}, function(response) {
 			if (response.id != -1) {
@@ -64,9 +62,7 @@ app.controller("AccountController", ['$scope', '$location', 'AuthenticationServi
 	$scope.newPw = '';
 	
 	$scope.changePw = function() {
-		console.log($scope.user);
-		$scope.UserService.user.password = md5.createHash($scope.newPw);
-		AuthenticationService.edit.changepw($scope.UserService.user, function(response) {
+		AuthenticationService.edit.changepw({id : UserService.getUserId(), username : UserService.getUsername(), password : md5.createHash($scope.newPw)}, function(response) {
 			if (response.id != -1) {
 				alert("pw changed!");
 				$scope.newPw = '';
@@ -76,7 +72,3 @@ app.controller("AccountController", ['$scope', '$location', 'AuthenticationServi
 		});
 	};
 }]);
-
-
-
-

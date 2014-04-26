@@ -9,7 +9,7 @@ var myJsTree = (function () {
     var mouseOverJsTreeFlag = false;
     var eleme = $("#jstree-container");
 
-    //private Methods
+    // private Methods
     eleme.mouseover(function () {
         mouseOverJsTreeFlag = true;
     }).mouseout(function () {
@@ -189,7 +189,7 @@ var myJsTree = (function () {
         quantitiyOfCopies = 0;
     }
 
-//public Methods
+// public Methods
     return{
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
@@ -299,7 +299,8 @@ var myJsTree = (function () {
             }
         },
 
-        prepareForSetId:function(node,id){   editedCopies++;
+        prepareForSetId:function(node,id){
+        	editedCopies++;
             var nodeCopy = $('#jstree').jstree(true).get_node(node.id);
             if (node.type === 'default') {
                 id = DIRECTORY + id;
@@ -311,7 +312,8 @@ var myJsTree = (function () {
 
             if (editedCopies == quantitiyOfCopies) {
                 setId();
-            }}
+            }
+        }
     };
 })();
 
