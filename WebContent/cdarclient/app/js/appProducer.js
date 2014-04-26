@@ -105,7 +105,7 @@ app
 							$scope.selectedSubnode = "";
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
-							$scope.newSubnodeName = '';
+							$scope.newSubnodeName = 'Subnode';
 							$scope.subnodeHtmlText = "";
 
 							// TREE TITLE
@@ -174,7 +174,7 @@ app
 								}, function(response) {
 									$scope.getSubnodesOfNode();
 									// getSubnodes();
-									$scope.newSubnodeName = '';
+									$scope.newSubnodeName = 'Subnode';
 									// noty({type: 'success', text : 'subnode
 									// added successfully', timeout: 1500});
 								});
