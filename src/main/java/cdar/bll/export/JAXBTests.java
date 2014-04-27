@@ -10,7 +10,7 @@ import javax.xml.bind.Unmarshaller;
 
 import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDaoRepository;
 
 public class JAXBTests {
 

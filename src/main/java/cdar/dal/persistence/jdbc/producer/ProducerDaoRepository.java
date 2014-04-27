@@ -10,7 +10,7 @@ import java.util.List;
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
-public class ProducerDaoController extends CdarJdbcHelper {
+public class ProducerDaoRepository extends CdarJdbcHelper {
 
 	public List<TreeDao> getTrees() {
 		return getTrees(0);

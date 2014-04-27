@@ -9,10 +9,10 @@ import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
 public class NodeLinkModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 
 	public Set<NodeLink> getNodeLinks(int treeid) {

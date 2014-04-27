@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.consumer.ProjectSubnode;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
 
 public class ProjectSubnodeModel {
-	private ConsumerDaoController cdc = new ConsumerDaoController();
+	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	
 	public ProjectSubnode addProjectSubnode(int kpnid, String title) {
 		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, cdc.getNextProjectSubnodePosition(kpnid), title);

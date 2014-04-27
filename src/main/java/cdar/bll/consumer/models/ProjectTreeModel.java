@@ -12,7 +12,7 @@ import cdar.bll.producer.Subnode;
 import cdar.bll.producer.models.NodeLinkModel;
 import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
@@ -20,7 +20,7 @@ import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTreeModel {
 	
-	private ConsumerDaoController cdc = new ConsumerDaoController();
+	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	
 	public Set<ProjectTree> getProjectTrees(int uid) {
 		Set<ProjectTree> trees = new HashSet<ProjectTree>();

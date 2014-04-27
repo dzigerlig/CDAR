@@ -5,10 +5,10 @@ import java.util.Set;
 
 import cdar.bll.consumer.Comment;
 import cdar.dal.persistence.jdbc.consumer.CommentDao;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 
 public class CommentModel {
-	private ConsumerDaoController cdc = new ConsumerDaoController();
+	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	
 	public Set<Comment> getComments(int pnodeid) {
 		Set<Comment> comments = new HashSet<Comment>();

@@ -20,13 +20,13 @@ import cdar.bll.producer.XmlTree;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 
 public class XmlTreeModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 	public Set<XmlTree> getXmlTrees(int treeid) {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();

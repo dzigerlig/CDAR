@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.consumer.ProjectNode;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 
 public class ProjectNodeModel {
-	private ConsumerDaoController cdc = new ConsumerDaoController();
+	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	
 	public Set<ProjectNode> getProjectNodes(int ptreeid) {
 		Set<ProjectNode> projectnodes = new HashSet<ProjectNode>();

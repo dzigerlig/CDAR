@@ -8,11 +8,11 @@ import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
 public class NodeModel {
 
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
 
 	public Set<Node> getNodes(int treeid) {

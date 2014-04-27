@@ -11,7 +11,7 @@ import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
-public class ConsumerDaoController extends CdarJdbcHelper {
+public class ConsumerDaoRepository extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {
 		return getProjectTrees(0);
 	}

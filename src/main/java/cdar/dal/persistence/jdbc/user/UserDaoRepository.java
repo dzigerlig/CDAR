@@ -13,7 +13,7 @@ import java.util.List;
 import cdar.dal.persistence.JDBCUtil;
 import cdar.dal.persistence.CdarJdbcHelper;
 
-public class UserDaoController extends CdarJdbcHelper {
+public class UserDaoRepository extends CdarJdbcHelper {
 
 	public List<UserDao> getUsers() {
 		final String getUsers = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";

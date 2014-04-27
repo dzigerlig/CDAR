@@ -10,17 +10,17 @@ import org.junit.Test;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDaoRepository;
 
 public class TestJDBCKnowledgeProducer {
-	private UserDaoController udc = new UserDaoController();
-	private ProducerDaoController kpdc = new ProducerDaoController();
+	private UserDaoRepository udc = new UserDaoRepository();
+	private ProducerDaoRepository kpdc = new ProducerDaoRepository();
 	private final String testUsername = "UnitTestUser";
 	private final String testPassword = "UnitTestPassword";
 	private final String testTreeName = "UnitTestTreeName";

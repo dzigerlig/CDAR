@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDaoRepository;
 
 public class TestJDBCUser {
 	private String testUsername = "UnitTestUser";
 	private final String testPassword = "UnitTestPassword";
-	private UserDaoController udc = new UserDaoController();
+	private UserDaoRepository udc = new UserDaoRepository();
 	
 	@Before
 	public void createTestUser() {

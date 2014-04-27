@@ -7,17 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cdar.dal.persistence.jdbc.consumer.CommentDao;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDaoRepository;
 
 public class TestJDBCKnowledgeConsumer {
-	private UserDaoController udc = new UserDaoController();
-	private ConsumerDaoController cdc = new ConsumerDaoController();
+	private UserDaoRepository udc = new UserDaoRepository();
+	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	private final String testUsername = "UnitTestUser";
 	private final String testPassword = "UnitTestPassword";
 	private final String testTreeName = "UnitTestTreeName";

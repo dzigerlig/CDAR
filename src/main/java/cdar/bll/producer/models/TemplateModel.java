@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Template;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 public class TemplateModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 	public Set<Template> getKnowledgeTemplates(int ktreeid) {
 		Set<Template> templates = new HashSet<Template>();

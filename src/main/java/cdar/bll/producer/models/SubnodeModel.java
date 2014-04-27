@@ -7,11 +7,11 @@ import java.util.Set;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
 public class SubnodeModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 	public Subnode addSubnode(int knid, String title) {
 		SubnodeDao subnode = new SubnodeDao(knid,

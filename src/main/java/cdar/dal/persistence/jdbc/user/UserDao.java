@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import cdar.bll.user.User;
 import cdar.dal.persistence.CUDHelper;
 import cdar.dal.persistence.CdarDao;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoController;
+import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 @XmlRootElement
@@ -123,8 +123,8 @@ public class UserDao extends CUDHelper<UserDao> implements CdarDao {
 
 	@Override
 	public boolean delete() {
-		ProducerDaoController kpdc = new ProducerDaoController();
-		ConsumerDaoController cdc = new ConsumerDaoController();
+		ProducerDaoRepository kpdc = new ProducerDaoRepository();
+		ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 
 		for (TreeDao tree : kpdc.getTrees(getId())) {
 			tree.delete();

@@ -5,11 +5,11 @@ import java.util.Set;
 
 import cdar.bll.producer.Tree;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
 
 public class TreeModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 	public Set<Tree> getTrees(int uid) {
 		Set<Tree> trees = new HashSet<Tree>();

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoController;
+import cdar.dal.persistence.jdbc.user.UserDaoRepository;
 import cdar.pl.wiki.WikiRegister;
 
 public class UserModel {
-	private UserDaoController udc = new UserDaoController();
+	private UserDaoRepository udc = new UserDaoRepository();
 
 	public UserModel() {
 	}

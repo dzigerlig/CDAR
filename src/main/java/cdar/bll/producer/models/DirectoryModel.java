@@ -5,10 +5,10 @@ import java.util.Set;
 
 import cdar.bll.producer.Directory;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoController;
+import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
 public class DirectoryModel {
-	private ProducerDaoController pdc = new ProducerDaoController();
+	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 
 	public Set<Directory> getDirectories(int treeid) {
 		Set<Directory> ln = new HashSet<Directory>();
