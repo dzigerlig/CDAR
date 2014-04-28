@@ -6,13 +6,14 @@ import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiModel {
 	private UserModel um = new UserModel();
 
-	public WikiEntry getProjectNodeWikiEntry(int nodeid) {
+	public WikiEntry getProjectNodeWikiEntry(int nodeid) throws UnknownProjectNodeException {
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		return new WikiEntry(pnm.getProjectNode(nodeid));
 	}

@@ -47,14 +47,12 @@ public class TreeRepository {
 	public Tree getTree(int id) throws Exception {
 		final String sql = "SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?";
 
-		Tree tree = new Tree();
-
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
-					tree = new Tree();
+					Tree tree = new Tree();
 					tree.setUid(result.getInt(1));
 					tree.setId(result.getInt(2));
 					tree.setCreationTime(result.getDate(3));
