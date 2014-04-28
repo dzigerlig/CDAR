@@ -1,5 +1,6 @@
 package cdar.bll.user;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -18,7 +19,7 @@ public class UserModel {
 		User user = getUser(username);
 
 		if (user.getPassword().equals(password)) {
-			user.setAccesstoken(DigestUtils.shaHex(user.getPassword()));
+			user.setAccesstoken(DigestUtils.shaHex(String.format("%s%s", user.getPassword(), new Date().toString())));
 			updateUser(user);
 			return user;
 		} else {
