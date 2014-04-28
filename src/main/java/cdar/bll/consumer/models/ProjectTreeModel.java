@@ -1,5 +1,6 @@
 package cdar.bll.consumer.models;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class ProjectTreeModel {
 		return new ProjectTree(cdc.getProjectTree(ptreeid));
 	}
 
-	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) {
+	public void addKnowledgeTreeToProjectTree(int ktreeid, int ptreeid) throws SQLException {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		NodeModel nm = new NodeModel();
 		SubnodeModel snm = new SubnodeModel();

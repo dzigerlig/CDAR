@@ -9,6 +9,7 @@ public class Node extends WikiEntity {
 	private int ktrid;
 	private int dynamicTreeFlag;
 	private int did;
+	private String wikititle;
 
 	public Node() {
 		super();
@@ -113,5 +114,13 @@ public class Node extends WikiEntity {
 		else if (ktrid != other.ktrid)
 			return false;
 		return true;
+	}
+
+	public String getWikititle() {
+		return wikititle;
+	}
+
+	public void setWikititle(String wikititle) {
+		this.wikititle = wikititle;
 	}
 }

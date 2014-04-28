@@ -1,5 +1,6 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
+import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
@@ -20,10 +22,11 @@ public class SubnodeModel {
 	}
 
 	// whole tree
-	public Set<Subnode> getSubnodesFromTree(int treeId) {
+	public Set<Subnode> getSubnodesFromTree(int treeId) throws SQLException {
+		NodeRepository nr = new NodeRepository();
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
-		for (NodeDao node : pdc.getNodes(treeId)) {
+		for (Node node : nr.getNodes(treeId)) {
 			for (SubnodeDao subnode : pdc.getSubnodes(node.getId())) {
 				subnodes.add(new Subnode(subnode));
 			}

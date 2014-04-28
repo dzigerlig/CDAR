@@ -3,6 +3,8 @@ package cdar.bll.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -191,7 +193,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testUnknownKnowledgeTreeToProjectTree() throws UnknownUserException {
+	public void testUnknownKnowledgeTreeToProjectTree() throws UnknownUserException, SQLException {
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());

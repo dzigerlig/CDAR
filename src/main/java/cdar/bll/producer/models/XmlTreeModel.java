@@ -19,6 +19,7 @@ import cdar.bll.producer.Template;
 import cdar.bll.producer.XmlTree;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
+import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
@@ -62,10 +63,12 @@ public class XmlTreeModel {
 	}
 
 	public boolean cleanTree(int xmlTreeid) throws Exception {
+		NodeRepository nr = new NodeRepository();
+		
 		XmlTree xmlTree = getXmlTree(xmlTreeid);
 		int treeid = xmlTree.getKtrid();
-		for (NodeDao node : pdc.getNodes(treeid)) {
-			if (!node.delete()) {
+		for (Node node : nr.getNodes(treeid)) {
+			if (!nr.deleteNode(node)) {
 				return false;
 			}
 		}
