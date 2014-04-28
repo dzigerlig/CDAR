@@ -85,18 +85,19 @@ public class NodeRepository {
 			preparedStatement.setInt(1, nodeid);
 			preparedStatement.setInt(2, nodeid);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Node node = new Node();
-				node.setId(result.getInt(1));
-				node.setCreationTime(result.getDate(2));
-				node.setLastModificationTime(result.getDate(3));
-				node.setTitle(result.getString(4));
-				node.setWikiTitle(result.getString(5));
-				node.setDynamicTreeFlag(result.getInt(6));
-				node.setKtrid(result.getInt(7));
-				node.setDid(result.getInt(8));
-				nodes.add(node);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Node node = new Node();
+					node.setId(result.getInt(1));
+					node.setCreationTime(result.getDate(2));
+					node.setLastModificationTime(result.getDate(3));
+					node.setTitle(result.getString(4));
+					node.setWikiTitle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setKtrid(result.getInt(7));
+					node.setDid(result.getInt(8));
+					nodes.add(node);
+				}
 			}
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
@@ -116,18 +117,19 @@ public class NodeRepository {
 
 			preparedStatement.setInt(1, nodeid);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Node node = new Node();
-				node.setId(result.getInt(1));
-				node.setCreationTime(result.getDate(2));
-				node.setLastModificationTime(result.getDate(3));
-				node.setTitle(result.getString(4));
-				node.setWikiTitle(result.getString(5));
-				node.setDynamicTreeFlag(result.getInt(6));
-				node.setKtrid(result.getInt(7));
-				node.setDid(result.getInt(8));
-				nodes.add(node);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Node node = new Node();
+					node.setId(result.getInt(1));
+					node.setCreationTime(result.getDate(2));
+					node.setLastModificationTime(result.getDate(3));
+					node.setTitle(result.getString(4));
+					node.setWikiTitle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setKtrid(result.getInt(7));
+					node.setDid(result.getInt(8));
+					nodes.add(node);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -146,18 +148,19 @@ public class NodeRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeid);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Node node = new Node();
-				node.setId(result.getInt(1));
-				node.setCreationTime(result.getDate(2));
-				node.setLastModificationTime(result.getDate(3));
-				node.setTitle(result.getString(4));
-				node.setWikiTitle(result.getString(5));
-				node.setDynamicTreeFlag(result.getInt(6));
-				node.setKtrid(result.getInt(7));
-				node.setDid(result.getInt(8));
-				nodes.add(node);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Node node = new Node();
+					node.setId(result.getInt(1));
+					node.setCreationTime(result.getDate(2));
+					node.setLastModificationTime(result.getDate(3));
+					node.setTitle(result.getString(4));
+					node.setWikiTitle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setKtrid(result.getInt(7));
+					node.setDid(result.getInt(8));
+					nodes.add(node);
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -183,10 +186,11 @@ public class NodeRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				node.setId(generatedKeys.getInt(1));
-				node.setWikiTitle(String.format("NODE_%d", node.getId()));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					node.setId(generatedKeys.getInt(1));
+					node.setWikiTitle(String.format("NODE_%d", node.getId()));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownTreeException();
@@ -237,9 +241,10 @@ public class NodeRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				node.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					node.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw ex;

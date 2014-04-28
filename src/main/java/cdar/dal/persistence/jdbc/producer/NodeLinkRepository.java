@@ -26,17 +26,18 @@ public class NodeLinkRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setKtrid(treeId);
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKsnid(result.getInt(6));
-				nodelinks.add(nodelink);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setKtrid(treeId);
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKsnid(result.getInt(6));
+					nodelinks.add(nodelink);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -53,17 +54,18 @@ public class NodeLinkRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeid);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKsnid(result.getInt(6));
-				nodelink.setKtrid(result.getInt(7));
-				nodelinks.add(nodelink);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKsnid(result.getInt(6));
+					nodelink.setKtrid(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -81,17 +83,18 @@ public class NodeLinkRepository {
 			preparedStatement.setInt(1, nodeid);
 			preparedStatement.setInt(2, nodeid);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKsnid(result.getInt(6));
-				nodelink.setKtrid(result.getInt(7));
-				nodelinks.add(nodelink);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKsnid(result.getInt(6));
+					nodelink.setKtrid(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -108,17 +111,18 @@ public class NodeLinkRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeId);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKsnid(result.getInt(6));
-				nodelink.setKtrid(result.getInt(7));
-				nodelinks.add(nodelink);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKsnid(result.getInt(6));
+					nodelink.setKtrid(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -136,17 +140,18 @@ public class NodeLinkRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, subnodeId);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKsnid(result.getInt(6));
-				nodelink.setKtrid(result.getInt(7));
-				nodelinks.add(nodelink);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKsnid(result.getInt(6));
+					nodelink.setKtrid(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -163,17 +168,18 @@ public class NodeLinkRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				NodeLink nodelink = new NodeLink();
-				nodelink.setId(result.getInt(1));
-				nodelink.setCreationTime(result.getDate(2));
-				nodelink.setLastModificationTime(result.getDate(3));
-				nodelink.setSourceId(result.getInt(4));
-				nodelink.setTargetId(result.getInt(5));
-				nodelink.setKtrid(result.getInt(6));
-				nodelink.setKsnid(result.getInt(7));
-				return nodelink;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(result.getDate(2));
+					nodelink.setLastModificationTime(result.getDate(3));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setKtrid(result.getInt(6));
+					nodelink.setKsnid(result.getInt(7));
+					return nodelink;
+				}
 			}
 		} catch (SQLException ex) {
 			throw new UnknownNodeLinkException();
@@ -199,9 +205,10 @@ public class NodeLinkRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				nodeLink.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					nodeLink.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownTreeException();
@@ -211,7 +218,6 @@ public class NodeLinkRepository {
 	
 	public NodeLink updateNodeLink(NodeLink nodeLink) throws Exception {
 		final String sql = "UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?";
-		ResultSet generatedKeys = null;
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -228,9 +234,10 @@ public class NodeLinkRepository {
 
 			preparedStatement.executeUpdate();
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				nodeLink.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					nodeLink.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw ex;

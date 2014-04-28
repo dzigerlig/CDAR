@@ -24,19 +24,19 @@ public class TreeRepository {
 							uid);
 		}
 
-		ResultSet result = null;
 		List<Tree> trees = new ArrayList<Tree>();
 
 		try (Connection connection = DBConnection.getConnection(); Statement statement = connection.createStatement()) {
-			result = statement.executeQuery(sql);
-			while (result.next()) {
-				Tree tree = new Tree();
-				tree.setId(result.getInt(1));
-				tree.setCreationTime(result.getDate(2));
-				tree.setLastModificationTime(result.getDate(3));
-				tree.setTitle(result.getString(4));
-				tree.setUid(uid);
-				trees.add(tree);
+			try (ResultSet result = statement.executeQuery(sql)) {
+				while (result.next()) {
+					Tree tree = new Tree();
+					tree.setId(result.getInt(1));
+					tree.setCreationTime(result.getDate(2));
+					tree.setLastModificationTime(result.getDate(3));
+					tree.setTitle(result.getString(4));
+					tree.setUid(uid);
+					trees.add(tree);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -47,21 +47,21 @@ public class TreeRepository {
 	public Tree getTree(int id) throws Exception {
 		final String sql = "SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?";
 
-		ResultSet result = null;
 		Tree tree = new Tree();
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
-			result = preparedStatement.executeQuery();
-			while (result.next()) {
-				tree = new Tree();
-				tree.setUid(result.getInt(1));
-				tree.setId(result.getInt(2));
-				tree.setCreationTime(result.getDate(3));
-				tree.setLastModificationTime(result.getDate(4));
-				tree.setTitle(result.getString(5));
-				return tree;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					tree = new Tree();
+					tree.setUid(result.getInt(1));
+					tree.setId(result.getInt(2));
+					tree.setCreationTime(result.getDate(3));
+					tree.setLastModificationTime(result.getDate(4));
+					tree.setTitle(result.getString(5));
+					return tree;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +73,6 @@ public class TreeRepository {
 	public Tree createTree(Tree tree) throws Exception {
 		final String sql = "INSERT INTO KNOWLEDGETREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)";
-		ResultSet generatedKeys = null;
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -83,9 +82,10 @@ public class TreeRepository {
 
 			preparedStatement.executeUpdate();
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				tree.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					tree.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw ex;
@@ -103,7 +103,6 @@ public class TreeRepository {
 	
 	public Tree updateTree(Tree tree) throws Exception {
 		final String sql = "UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
-		ResultSet generatedKeys = null;
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -113,11 +112,11 @@ public class TreeRepository {
 
 			preparedStatement.executeUpdate();
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				tree.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					tree.setId(generatedKeys.getInt(1));
+				}
 			}
-
 		} catch (Exception ex) {
 			throw ex;
 		}

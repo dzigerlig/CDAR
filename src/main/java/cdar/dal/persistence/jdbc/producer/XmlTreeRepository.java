@@ -22,16 +22,17 @@ public class XmlTreeRepository {
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				XmlTree xmlTree = new XmlTree();
-				xmlTree.setId(result.getInt(1));
-				xmlTree.setCreationTime(result.getDate(2));
-				xmlTree.setLastModificationTime(result.getDate(3));
-				xmlTree.setXmlString(result.getString(4));
-				xmlTree.setUid(result.getInt(5));
-				xmlTree.setKtrid(result.getInt(6));
-				xmlTrees.add(xmlTree);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					XmlTree xmlTree = new XmlTree();
+					xmlTree.setId(result.getInt(1));
+					xmlTree.setCreationTime(result.getDate(2));
+					xmlTree.setLastModificationTime(result.getDate(3));
+					xmlTree.setXmlString(result.getString(4));
+					xmlTree.setUid(result.getInt(5));
+					xmlTree.setKtrid(result.getInt(6));
+					xmlTrees.add(xmlTree);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -45,16 +46,17 @@ public class XmlTreeRepository {
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				XmlTree xmlTree = new XmlTree();
-				xmlTree.setId(result.getInt(1));
-				xmlTree.setCreationTime(result.getDate(2));
-				xmlTree.setLastModificationTime(result.getDate(3));
-				xmlTree.setXmlString(result.getString(4));
-				xmlTree.setUid(result.getInt(5));
-				xmlTree.setKtrid(result.getInt(6));
-				return xmlTree;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					XmlTree xmlTree = new XmlTree();
+					xmlTree.setId(result.getInt(1));
+					xmlTree.setCreationTime(result.getDate(2));
+					xmlTree.setLastModificationTime(result.getDate(3));
+					xmlTree.setXmlString(result.getString(4));
+					xmlTree.setUid(result.getInt(5));
+					xmlTree.setKtrid(result.getInt(6));
+					return xmlTree;
+				}
 			}
 		} catch (SQLException ex) {
 			throw new UnknownXmlTreeException();
@@ -76,9 +78,10 @@ public class XmlTreeRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				xmlTree.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					xmlTree.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();
@@ -97,9 +100,10 @@ public class XmlTreeRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				xmlTree.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					xmlTree.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();

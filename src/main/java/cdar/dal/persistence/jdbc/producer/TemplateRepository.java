@@ -24,18 +24,19 @@ public class TemplateRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Template template = new Template();
-				template.setTreeId(treeId);
-				template.setId(result.getInt(1));
-				template.setCreationTime(result.getDate(2));
-				template.setLastModificationTime(result.getDate(3));
-				template.setTitle(result.getString(4));
-				template.setTemplatetext(result.getString(5));
-				template.setIsDefault(result.getInt(6) == 1);
-				template.setDecisionMade(result.getInt(7) == 1);
-				templates.add(template);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Template template = new Template();
+					template.setTreeId(treeId);
+					template.setId(result.getInt(1));
+					template.setCreationTime(result.getDate(2));
+					template.setLastModificationTime(result.getDate(3));
+					template.setTitle(result.getString(4));
+					template.setTemplatetext(result.getString(5));
+					template.setIsDefault(result.getInt(6) == 1);
+					template.setDecisionMade(result.getInt(7) == 1);
+					templates.add(template);
+				}
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -52,18 +53,19 @@ public class TemplateRepository {
 			preparedStatement.setInt(1, id);
 			
 
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Template template = new Template();
-				template.setTreeId(result.getInt(6));
-				template.setId(result.getInt(1));
-				template.setCreationTime(result.getDate(2));
-				template.setLastModificationTime(result.getDate(3));
-				template.setTitle(result.getString(4));
-				template.setTemplatetext(result.getString(5));
-				template.setIsDefault(result.getInt(7) == 1);
-				template.setDecisionMade(result.getInt(8) == 1);
-				return template;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Template template = new Template();
+					template.setTreeId(result.getInt(6));
+					template.setId(result.getInt(1));
+					template.setCreationTime(result.getDate(2));
+					template.setLastModificationTime(result.getDate(3));
+					template.setTitle(result.getString(4));
+					template.setTemplatetext(result.getString(5));
+					template.setIsDefault(result.getInt(7) == 1);
+					template.setDecisionMade(result.getInt(8) == 1);
+					return template;
+				}
 			}
 		} catch (SQLException ex) {
 			throw new UnknownTemplateException();
@@ -95,9 +97,10 @@ public class TemplateRepository {
 
 			preparedStatement.executeUpdate();
 
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				template.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){ 
+				if (generatedKeys.next()) {
+					template.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownTemplateException();
@@ -123,9 +126,10 @@ public class TemplateRepository {
 			}
 			preparedStatement.setInt(6, template.getId());
 			preparedStatement.executeUpdate();
-			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				template.setId(generatedKeys.getInt(1));
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					template.setId(generatedKeys.getInt(1));
+				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownTemplateException();
