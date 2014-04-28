@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 
 public class XmlTree extends BasicEntity {
 	private int uid;
@@ -19,10 +18,6 @@ public class XmlTree extends BasicEntity {
 		setUid(uid);
 		setKtrid(ktrid);
 		setXmlString(xmlString);
-	}
-
-	public XmlTree(XmlTreeDao xmlTreeDao) {
-		this(xmlTreeDao.getId(), xmlTreeDao.getCreationTime(), xmlTreeDao.getLastModificationTime(), xmlTreeDao.getUid(), xmlTreeDao.getKtrid(), xmlTreeDao.getXmlString());
 	}
 
 	public int getUid() {

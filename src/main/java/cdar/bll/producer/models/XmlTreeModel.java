@@ -24,7 +24,6 @@ import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
-import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 import cdar.dal.persistence.jdbc.producer.XmlTreeRepository;
 
 public class XmlTreeModel {
@@ -47,10 +46,11 @@ public class XmlTreeModel {
 	public XmlTree addXmlTree(int uid, int ktrid) throws Exception {
 		CDAR_TreeExportModel tem = new CDAR_TreeExportModel();
 		final String xmlString = tem.getTreeSimpleXmlString(ktrid);
-		XmlTreeDao xmlTreeDao = new XmlTreeDao(uid, ktrid);
-		xmlTreeDao.setXmlString(xmlString);
-		xmlTreeDao.create();
-		return new XmlTree(xmlTreeDao);
+		XmlTree xmlTree = new XmlTree();
+		xmlTree.setUid(uid);
+		xmlTree.setKtrid(ktrid);
+		xmlTree.setXmlString(xmlString);
+		return xtr.createXmlTree(xmlTree);
 	}
 
 	public boolean deleteXmlTree(int xmlTreeId) throws UnknownXmlTreeException, Exception {
