@@ -1,5 +1,6 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,24 +18,27 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.XmlTree;
+import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.persistence.jdbc.producer.NodeLinkRepository;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TemplateDao;
 import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
+import cdar.dal.persistence.jdbc.producer.XmlTreeRepository;
 
 public class XmlTreeModel {
 	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 	private DirectoryModel dm = new DirectoryModel();
 	private NodeRepository nr = new NodeRepository();
 	private NodeLinkRepository nlr = new NodeLinkRepository();
+	private XmlTreeRepository xtr = new XmlTreeRepository();
 
-	public Set<XmlTree> getXmlTrees(int treeid) {
+	public Set<XmlTree> getXmlTrees(int treeId) throws SQLException {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();
 
-		for (XmlTreeDao xmlTreeDao : pdc.getXmlTrees(treeid)) {
-			xmlTrees.add(new XmlTree(xmlTreeDao));
+		for (XmlTree xmlTree : xtr.getXmlTrees(treeId)) {
+			xmlTrees.add(xmlTree);
 		}
 
 		return xmlTrees;
@@ -49,18 +53,18 @@ public class XmlTreeModel {
 		return new XmlTree(xmlTreeDao);
 	}
 
-	public boolean deleteXmlTree(int xmlTreeId) {
-		return pdc.getXmlTree(xmlTreeId).delete();
+	public boolean deleteXmlTree(int xmlTreeId) throws UnknownXmlTreeException, Exception {
+		return xtr.deleteXmlTree(xtr.getXmlTree(xmlTreeId));
 	}
 
-	public XmlTree getXmlTree(int xmlTreeId) {
-		return new XmlTree(pdc.getXmlTree(xmlTreeId));
+	public XmlTree getXmlTree(int xmlTreeId) throws UnknownXmlTreeException {
+		return xtr.getXmlTree(xmlTreeId);
 	}
 
-	public XmlTree updateXmlTree(XmlTree xmlTree) {
-		XmlTreeDao xmlTreeDao = pdc.getXmlTree(xmlTree.getId());
-		xmlTreeDao.setXmlString(xmlTree.getXmlString());
-		return new XmlTree(xmlTreeDao.update());
+	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
+		XmlTree updatedXmlTree = getXmlTree(xmlTree.getId());
+		updatedXmlTree.setXmlString(xmlTree.getXmlString());
+		return xtr.updateXmlTree(updatedXmlTree);
 	}
 
 	public boolean cleanTree(int xmlTreeid) throws Exception {
