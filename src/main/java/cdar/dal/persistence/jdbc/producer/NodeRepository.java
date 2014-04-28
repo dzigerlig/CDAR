@@ -15,19 +15,19 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.JDBCUtil;
 
 public class NodeRepository {
-	public List<Node> getNodes(int treeid) throws SQLException {
+	public List<Node> getNodes(int treeId) throws SQLException {
 		final String sql = "SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.KTRID = ? AND NODE.ID = MAPPING.KNID";
 
 		List<Node> nodes = new ArrayList<Node>();
 
 		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
-			preparedStatement.setInt(1, treeid);
+			preparedStatement.setInt(1, treeId);
 
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
 				Node node = new Node();
-				node.setKtrid(treeid);
+				node.setKtrid(treeId);
 				node.setId(result.getInt(1));
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
@@ -71,15 +71,15 @@ public class NodeRepository {
 		throw new UnknownNodeException();
 	}
 
-	public List<Node> getSiblingNode(int nodeid) {
-		final String sql = "SELECT DISTINCT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT * FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?";
+	public List<Node> getSiblingNode(int nodeId) {
+		final String sql = "SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT * FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?";
 
 		List<Node> nodes = new ArrayList<Node>();
 
 		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)){
-			preparedStatement.setInt(1, nodeid);
-			preparedStatement.setInt(2, nodeid);
+			preparedStatement.setInt(1, nodeId);
+			preparedStatement.setInt(2, nodeId);
 
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
@@ -132,7 +132,7 @@ public class NodeRepository {
 	}
 
 	public List<Node> getFollowerNode(int nodeid) {
-		final String sql = "SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM(SELECT LINKTO.TARGETID FROM NODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID";
+		final String sql = "SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM(SELECT LINKTO.TARGETID FROM NODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID";
 
 		List<Node> nodes = new ArrayList<Node>();
 
@@ -178,9 +178,10 @@ public class NodeRepository {
 			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				node.setId(generatedKeys.getInt(1));
-				node.setWikiTitle(String.format("NODE_%d", node.getId()));
 			}
 		} catch (Exception ex) {
+			System.out.println("SQL NODE EXCEPTION: ");
+			ex.printStackTrace();
 			throw new UnknownTreeException();
 		}
 		
@@ -188,10 +189,12 @@ public class NodeRepository {
 		try (Connection connection = JDBCUtil.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlWiki)) {
-			preparedStatement.setString(1, node.getWikiTitle());
+			preparedStatement.setString(1, String.format("NODE_%d", node.getId()));
 			preparedStatement.setInt(2, node.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
+			System.out.println("SQL WIKI EXCEPTION: ");
+			ex.printStackTrace();
 			throw ex;
 		}
 		
@@ -203,6 +206,8 @@ public class NodeRepository {
 			preparedStatement.setInt(2, node.getDid());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
+			System.out.println("SQL MAPPING EXCEPTION: ");
+			ex.printStackTrace();
 			throw ex;
 		}
 		
