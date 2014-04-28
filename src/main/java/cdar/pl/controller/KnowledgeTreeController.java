@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.CDAR_BooleanChanges;
@@ -41,345 +42,637 @@ public class KnowledgeTreeController {
 	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Tree> getKnowledgeTreesByUid(@PathParam("uid") int uid) {
-		return ktm.getTrees(uid);
+	public Response getKnowledgeTreesByUid(@PathParam("uid") int uid) {
+		try {
+			return Response.ok(ktm.getTrees(uid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteTreeById(int ktreeid) {
-		return new CDAR_Boolean(ktm.deleteTree(ktreeid));
+	public Response deleteTreeById(int ktreeid) {
+		try {
+			return Response.ok(new CDAR_Boolean(ktm.deleteTree(ktreeid)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	@POST
 	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Tree addKnowledgeTree(String treeTitle, @PathParam("uid") int uid) {
-		return ktm.addTree(uid, treeTitle);
+	public Response addKnowledgeTree(String treeTitle, @PathParam("uid") int uid) {
+		try {
+			return Response.ok(ktm.addTree(uid, treeTitle),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
 	@POST
 	@Path("tree/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Tree renameKnowledgeTree(Tree tree) {
-		return ktm.updateTree(tree);
+	public Response renameKnowledgeTree(Tree tree) {
+		try {
+			return Response
+					.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Tree getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
-		return ktm.getTree(ktreeid);
+	public Response getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response
+					.ok(ktm.getTree(ktreeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	// TEMPLATES
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/templates")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Template> getTemplates(@PathParam("ktreeid") int ktreeid) {
-		return tm.getKnowledgeTemplates(ktreeid);
+	public Response getTemplates(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response.ok(tm.getKnowledgeTemplates(ktreeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/templates/{templateid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Template getTemplate(@PathParam("ktreeid") int ktreeid,
+	public Response getTemplate(@PathParam("ktreeid") int ktreeid,
 			@PathParam("templateid") int templateid) {
-		return tm.getKnowledgeTemplate(templateid);
+		try {
+			return Response.ok(tm.getKnowledgeTemplate(templateid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/templates/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Template addTemplate(Template template) {
-		return tm.addKnowledgeTemplate(template.getTreeId(),
-				template.getTitle(), template.getTemplatetext(), template.getDecisionMade());
+	public Response addTemplate(Template template) {
+
+		try {
+			return Response.ok(
+					tm.addKnowledgeTemplate(template.getTreeId(),
+							template.getTitle(), template.getTemplatetext(),
+							template.getDecisionMade()),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/templates/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Template renameTemplate(Template template) {
-		return tm.renameTemplate(template);
+	public Response renameTemplate(Template template) {
+		try {
+			return Response.ok(tm.renameTemplate(template),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	@POST
 	@Path("{ktreeid}/templates/default")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid,
+	public Response setDefaultTemplate(@PathParam("ktreeid") int ktreeid,
 			int templateId) {
-		return tm.setDefaultTemplate(ktreeid, templateId);
+		try {
+			return Response.ok(tm.setDefaultTemplate(ktreeid, templateId),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/templates/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Template editTemplate(Template template) {
-		return tm.updateTemplate(template);
+	public Response editTemplate(Template template) {
+		try {
+			return Response.ok(tm.updateTemplate(template),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/templates/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteTemplate(int id) {
-		return new CDAR_Boolean(tm.deleteTemplate(id));
+	public Response deleteTemplate(int id) {
+		try {
+			return Response.ok(new CDAR_Boolean(tm.deleteTemplate(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	// Directory
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/directories")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Directory> getDirectories(@PathParam("ktreeid") int ktreeid) {
-		return dm.getDirectories(ktreeid);
-	}
-
-	@POST//Changed
-	@Path("{ktreeid}/directories/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Directory addDirectory(Directory d) {
-		if (d.getTitle()==null) {
-			return dm.addDirectory(d.getKtrid(), d.getParentid(), "new Folder");
-		} else {
-			return dm.addDirectory(d.getKtrid(), d.getParentid(), d.getTitle());
+	public Response getDirectories(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response.ok(dm.getDirectories(ktreeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
+	@Path("{ktreeid}/directories/add")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addDirectory(Directory d) {
+		try {
+			if (d.getTitle() == null) {
+				return Response.ok(
+						dm.addDirectory(d.getKtrid(), d.getParentid(),
+								"new Folder"), MediaType.APPLICATION_JSON)
+						.build();
+			} else {
+				return Response.ok(
+						dm.addDirectory(d.getKtrid(), d.getParentid(),
+								d.getTitle()), MediaType.APPLICATION_JSON)
+						.build();
+			}
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
+
+	@POST
+	// Changed
 	@Path("{ktreeid}/directories/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteDirectory(int id) {
-		return new CDAR_Boolean(dm.deleteDirectory(id));
+	public Response deleteDirectory(int id) {
+		try {
+			return Response.ok(new CDAR_Boolean(dm.deleteDirectory(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/directories/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Directory renameDirectory(Directory d) {
-		return dm.renameDirectory(d);
+	public Response renameDirectory(Directory d) {
+		try {
+			return Response.ok(dm.renameDirectory(d),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/directories/move")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Directory moveDirectory(Directory d) {
-		return dm.moveDirectory(d);
+	public Response moveDirectory(Directory d) {
+		try {
+			return Response.ok(dm.moveDirectory(d), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
 	// Nodes
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/nodes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
-		return nm.getNodes(ktreeid);
-	}
-
-	@GET//Changed
-	@Path("{ktreeid}/nodes/{nodeid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Node getNode(@PathParam("nodeid") int nodeid) {
-		return nm.getNode(nodeid);
-	}
-
-	@POST//Changed
-	@Path("{ktreeid}/nodes/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Node addNode(@PathParam("uid") int uid, Node n) {
-		if (n.getTitle()==null) {
-			return nm.addNode(uid, n.getKtrid(), "new Node", n.getDid());
-		} else {
-			return nm.addNode(uid, n.getKtrid(), n.getTitle(), n.getDid());
+	public Response getNodes(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response
+					.ok(nm.getNodes(ktreeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
-	@POST//Changed
+	@GET
+	// Changed
+	@Path("{ktreeid}/nodes/{nodeid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getNode(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(nm.getNode(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+
+	@POST
+	// Changed
+	@Path("{ktreeid}/nodes/add")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addNode(@PathParam("uid") int uid, Node n) {
+		try {
+			if (n.getTitle() == null) {
+				return Response.ok(
+						nm.addNode(uid, n.getKtrid(), "new Node", n.getDid()),
+						MediaType.APPLICATION_JSON).build();
+			} else {
+				return Response
+						.ok(nm.addNode(uid, n.getKtrid(), n.getTitle(),
+								n.getDid()), MediaType.APPLICATION_JSON)
+						.build();
+			}
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
+
+	@POST
+	// Changed
 	@Path("{ktreeid}/nodes/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteNode(int id) {
-		return new CDAR_Boolean(nm.deleteNode(id));
+	public Response deleteNode(int id) {
+		try {
+			return Response.ok(new CDAR_Boolean(nm.deleteNode(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed TODO rename
 	@Path("{ktreeid}/nodes/drop")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Node dropNode(int id) {
-		return nm.dropNode(id);
+	public Response dropNode(int id) {
+		try {
+			return Response.ok(nm.dropNode(id), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/nodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Node renameNode(Node n) {
-		return nm.renameNode(n);
+	public Response renameNode(Node n) {
+		try {
+			return Response.ok(nm.renameNode(n), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed TODO rename
 	@Path("{ktreeid}/nodes/undrop")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Node undropNode(int id) {
-		return nm.undropNode(id);
+	public Response undropNode(int id) {
+		try {
+			return Response.ok(nm.undropNode(id), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/nodes/move")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Node moveNode(Node n) {
-		return nm.moveNode(n);
+	public Response moveNode(Node n) {
+		try {
+			return Response.ok(nm.moveNode(n), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
-	
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/nodes/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Node> zoomUpNode(@PathParam("nodeid") int nodeid) {
-		return nm.zoomUp(nodeid);
+	public Response zoomUpNode(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(nm.zoomUp(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/nodes/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Node> zoomDownNode(@PathParam("nodeid") int nodeid) {
-		return nm.zoomDown(nodeid);
+	public Response zoomDownNode(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(nm.zoomDown(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
-
 
 	// Links
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/links")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
-		return lm.getNodeLinks(ktreeid);
+	public Response getLinks(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response.ok(lm.getNodeLinks(ktreeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/links/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public NodeLink addNodeLink(NodeLink nl) {
-		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
-				nl.getTargetId(), nl.getKsnid());
+	public Response addNodeLink(NodeLink nl) {
+		try {
+			return Response.ok(
+					lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
+							nl.getTargetId(), nl.getKsnid()),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/links/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteNodeLink(int id) {
-		return new CDAR_Boolean(lm.deleteNodeLink(id));
+	public Response deleteNodeLink(int id) {
+		try {
+			return Response.ok(new CDAR_Boolean(lm.deleteNodeLink(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/links/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public NodeLink updateNodeLink(NodeLink nl) {
-		return lm.updateNodeLink(nl);
+	public Response updateNodeLink(NodeLink nl) {
+		try {
+			return Response.ok(lm.updateNodeLink(nl),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
-	
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/links/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<NodeLink> zoomUpLink(@PathParam("nodeid") int nodeid) {
-		return lm.zoomUp(nodeid);
+	public Response zoomUpLink(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(lm.zoomUp(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
-	
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/links/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<NodeLink> zoomDownLink(@PathParam("nodeid") int nodeid) {
-		return lm.zoomDown(nodeid);
+	public Response zoomDownLink(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(lm.zoomDown(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	// Subnodes
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Subnode> getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
-		return sm.getSubnodesFromTree(ktreeid);
+	public Response getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response.ok(sm.getSubnodesFromTree(ktreeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/subnodes/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
-		return sm.getSubnodesFromNode(nodeid);
+	public Response getSubnodes(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(sm.getSubnodesFromNode(nodeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_BooleanChanges<NodeLink> renameSubnode(Subnode subnode) {
-		return new CDAR_BooleanChanges<NodeLink>(sm.renameSubnode(subnode), lm.getNodeLinksBySubnode(subnode.getId()), "update");
+	public Response renameSubnode(Subnode subnode) {
+		try {
+			sm.renameSubnode(subnode);
+			return Response
+					.ok(new CDAR_BooleanChanges<NodeLink>(true, lm
+							.getNodeLinksBySubnode(subnode.getId()), "update"),
+							MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/subnodes/moveup")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean moveSubnodeUp(Subnode subnode) {
-		return new CDAR_Boolean(sm.moveSubnodeUp(subnode));
+	public Response moveSubnodeUp(Subnode subnode) {
+		try {
+			return Response.ok(new CDAR_Boolean(sm.moveSubnodeUp(subnode)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/subnodes/movedown")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean moveSubnodeDown(Subnode subnode) {
-		return new CDAR_Boolean(sm.moveSubnodeDown(subnode));
+	public Response moveSubnodeDown(Subnode subnode) {
+		try {
+			return Response.ok(new CDAR_Boolean(sm.moveSubnodeDown(subnode)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/subnodes/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Subnode addSubnode(Subnode sN) {
-		return sm.addSubnode(sN.getKnid(), sN.getTitle());
+	public Response addSubnode(Subnode sn) {
+		try {
+			return Response.ok(sm.addSubnode(sn.getKnid(), sn.getTitle()),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/subnodes/delete/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
-		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
-		return new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
-				nodelinks, "delete");
+	public Response deleteSubnode(int id) {
+		try {
+			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
+
+			return Response.ok(
+					new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
+							nodelinks, "delete"), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
-	
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/subnodes/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Subnode> zoomUpSubnode(@PathParam("nodeid") int nodeid) {
-		return sm.zoomUp(nodeid);
+	public Response zoomUpSubnode(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(sm.zoomUp(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
-	
-	@GET//Changed
+
+	@GET
+	// Changed
 	@Path("{ktreeid}/subnodes/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<Subnode> zoomDownSubnode(@PathParam("nodeid") int nodeid) {
-		return sm.zoomDown(nodeid);
+	public Response zoomDownSubnode(@PathParam("nodeid") int nodeid) {
+		try {
+			return Response.ok(sm.zoomDown(nodeid), MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
 	// TREE XML
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/simpleexport")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<XmlTree> getKnowledgeTreeSimpleXml(
-			@PathParam("ktreeid") int ktreeid) {
-		return xtm.getXmlTrees(ktreeid);
+	public Response getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
+		try {
+			return Response.ok(xtm.getXmlTrees(ktreeid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/simpleexport/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteKnowledgeTreeSimpleXml(int id) {
-		return new CDAR_Boolean(xtm.deleteXmlTree(id));
+	public Response deleteKnowledgeTreeSimpleXml(int id) {
+		try {
+			return Response.ok(new CDAR_Boolean(xtm.deleteXmlTree(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@POST//Changed
+	@POST
+	// Changed
 	@Path("{ktreeid}/singleexport/set")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean setKnowledgeTreeSimpleXml(int id) {
-		xtm.cleanTree(id);
-		return new CDAR_Boolean(xtm.setXmlTree(id));
+	public Response setKnowledgeTreeSimpleXml(int id) {
+		try {
+			xtm.cleanTree(id);
+			return Response.ok(new CDAR_Boolean(xtm.setXmlTree(id)),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 
-	@GET//Changed
+	@GET
+	// Changed
 	@Path("{ktreeid}/simpleexport/add/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid, @PathParam("ktreeid") int ktrid) {
-		return xtm.addXmlTree(uid, ktrid);
+	public Response addKnowledgeTreeSimpleXml(@PathParam("uid") int uid,
+			@PathParam("ktreeid") int ktrid) {
+		try {
+			return Response.ok(xtm.addXmlTree(uid, ktrid),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 	}
 }
