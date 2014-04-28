@@ -29,6 +29,7 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeConsumer {
@@ -405,7 +406,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testComment() throws UnknownUserException {
+	public void testComment() throws Exception {
 		final String commentString = "This is a comment";
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
@@ -420,7 +421,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testCommentUpdate() throws UnknownUserException {
+	public void testCommentUpdate() throws Exception {
 		final String commentString = "This is a comment";
 		final String newCommentString = "This is another comment";
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -439,30 +440,30 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetCommentsUnknownProjectNode() {
+	public void testGetCommentsUnknownProjectNode() throws SQLException {
 		CommentModel cm = new CommentModel();
 		assertEquals(0, cm.getComments(unknownId).size());
 	}
 	
 	@Test
-	public void testGetUnknownComment() {
+	public void testGetUnknownComment() throws UnknownCommentException {
 		CommentModel cm = new CommentModel();
-		assertEquals(-1, cm.getComment(unknownId).getId());
+		cm.getComment(unknownId).getId();
 	}
 	
 	@Test
-	public void testUpdateUnknownComment() {
+	public void testUpdateUnknownComment() throws Exception {
 		CommentModel cm = new CommentModel();
 		Comment comment = cm.getComment(unknownId);
 		comment.setComment("Unknown comment");
 		Comment updatedComment = cm.updateComment(comment);
-		assertEquals(-1, updatedComment.getId());
+		updatedComment.getId();
 	}
 	
 	@Test
-	public void testDeleteUnknownComment() {
+	public void testDeleteUnknownComment() throws Exception {
 		CommentModel cm = new CommentModel();
-		assertFalse(cm.removeComment(unknownId));
+		cm.removeComment(unknownId);
 	}
 }
 
