@@ -12,7 +12,7 @@ import cdar.bll.user.User;
 
 public class CDAR_TreeExportModel {
 
-	public String getTreeSimpleXmlString(int treeid) {
+	public String getTreeSimpleXmlString(int treeid) throws Exception {
 		CDAR_TreeSimple tse = new CDAR_TreeSimple(treeid);
 		try {
 			final Marshaller m = JAXBContext.newInstance(CDAR_TreeSimple.class)

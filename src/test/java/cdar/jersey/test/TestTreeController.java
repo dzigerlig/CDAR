@@ -22,7 +22,7 @@ import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
-import cdar.pl.controller.TreeController;
+import cdar.pl.controller.KnowledgeTreeController;
 import cdar.pl.controller.UserController;
 
 public class TestTreeController extends JerseyTest {
@@ -36,7 +36,7 @@ public class TestTreeController extends JerseyTest {
 
 	@Override
 	protected Application configure() {
-		return new ResourceConfig(TreeController.class, UserController.class);
+		return new ResourceConfig(KnowledgeTreeController.class, UserController.class);
 	}
 	
 	private String getAuthString() {

@@ -99,7 +99,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeZeroEntries() throws UnknownUserException {
+	public void testKnowledgeTreeToProjectTreeZeroEntries() throws Exception {
 		NodeModel nm = new NodeModel();
 		TreeModel tm = new TreeModel();
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -113,7 +113,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() throws UnknownUserException {
+	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() throws Exception {
 		final String nodeTitle1 = "MyNode 1";
 		final String nodeTitle2 = "MyNode 2";
 		NodeModel nm = new NodeModel();
@@ -145,7 +145,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeComplete() throws UnknownUserException {
+	public void testKnowledgeTreeToProjectTreeComplete() throws Exception {
 		final String nodeTitle1 = "My Node 1";
 		final String nodeTitle2 = "My Node 2";
 		final String subnodeTitle1 = "My Subnode 1";

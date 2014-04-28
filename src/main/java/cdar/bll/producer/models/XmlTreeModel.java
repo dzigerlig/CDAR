@@ -38,7 +38,7 @@ public class XmlTreeModel {
 		return xmlTrees;
 	}
 
-	public XmlTree addXmlTree(int uid, int ktrid) {
+	public XmlTree addXmlTree(int uid, int ktrid) throws Exception {
 		CDAR_TreeExportModel tem = new CDAR_TreeExportModel();
 		final String xmlString = tem.getTreeSimpleXmlString(ktrid);
 		XmlTreeDao xmlTreeDao = new XmlTreeDao(uid, ktrid);

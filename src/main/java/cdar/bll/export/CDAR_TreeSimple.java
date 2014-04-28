@@ -17,6 +17,7 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
+import cdar.dal.persistence.jdbc.producer.TreeRepository;
 
 @XmlRootElement
 public class CDAR_TreeSimple {
@@ -29,17 +30,18 @@ public class CDAR_TreeSimple {
 	private Set<NodeLink> links;
 	private Set<Directory> directories;
 	
-	private TreeModel tm = new TreeModel();
 	private TemplateModel tem = new TemplateModel();
 	private NodeModel nm = new NodeModel();
 	private SubnodeModel snm = new SubnodeModel();
 	private NodeLinkModel nlm = new NodeLinkModel();
 	private DirectoryModel dm = new DirectoryModel();
 	
+	private TreeRepository tr = new TreeRepository();
+	
 	public CDAR_TreeSimple() {}
 	
-	public CDAR_TreeSimple(int treeid) {
-		setTree(tm.getTree(treeid));
+	public CDAR_TreeSimple(int treeid) throws Exception {
+		setTree(tr.getTree(treeid));
 		setTemplates(tem.getKnowledgeTemplates(treeid));
 		setNodes(nm.getNodes(treeid));
 		setSubnodes(snm.getSubnodesFromTree(treeid));

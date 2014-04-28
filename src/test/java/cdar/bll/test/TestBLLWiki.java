@@ -40,7 +40,7 @@ public class TestBLLWiki {
 	}
 	
 	@Test
-	public void testAddNode() throws UnknownUserException {
+	public void testAddNode() throws Exception {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);
@@ -48,7 +48,7 @@ public class TestBLLWiki {
 	}
 	
 	@Test
-	public void testAddNodeWithTemplate() throws UnknownUserException {
+	public void testAddNodeWithTemplate() throws Exception {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);

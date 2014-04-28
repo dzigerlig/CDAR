@@ -11,7 +11,6 @@ import java.util.List;
 
 import cdar.bll.user.User;
 import cdar.dal.exceptions.UnknownUserException;
-import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.persistence.JDBCUtil;
 
 public class UserRepository {

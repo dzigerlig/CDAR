@@ -29,7 +29,7 @@ import cdar.bll.producer.models.TreeModel;
 import cdar.bll.producer.models.XmlTreeModel;
 
 @Path("ktree")
-public class TreeController {
+public class KnowledgeTreeController {
 	private TreeModel ktm = new TreeModel();
 	private NodeModel nm = new NodeModel();
 	private NodeLinkModel lm = new NodeLinkModel();
@@ -379,8 +379,7 @@ public class TreeController {
 	@GET
 	@Path("simpleexport/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid,
-			@PathParam("ktreeid") int ktrid) {
+	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid, @PathParam("ktreeid") int ktrid) {
 		return xtm.addXmlTree(uid, ktrid);
 	}
 }
