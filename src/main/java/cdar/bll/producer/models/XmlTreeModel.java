@@ -17,7 +17,6 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.XmlTree;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
@@ -27,6 +26,7 @@ import cdar.dal.persistence.jdbc.producer.XmlTreeDao;
 
 public class XmlTreeModel {
 	private ProducerDaoRepository pdc = new ProducerDaoRepository();
+	private DirectoryModel dm = new DirectoryModel();
 
 	public Set<XmlTree> getXmlTrees(int treeid) {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();
@@ -61,8 +61,7 @@ public class XmlTreeModel {
 		return new XmlTree(xmlTreeDao.update());
 	}
 
-	public boolean cleanTree(int xmlTreeid) {
-		CDAR_TreeExportModel ctem = new CDAR_TreeExportModel();
+	public boolean cleanTree(int xmlTreeid) throws Exception {
 		XmlTree xmlTree = getXmlTree(xmlTreeid);
 		int treeid = xmlTree.getKtrid();
 		for (NodeDao node : pdc.getNodes(treeid)) {
@@ -71,8 +70,8 @@ public class XmlTreeModel {
 			}
 		}
 
-		for (DirectoryDao directory : pdc.getDirectories(treeid)) {
-			if (directory.getParentid()!=0 && !directory.delete()) {
+		for (Directory directory : dm.getDirectories(treeid)) {
+			if (directory.getParentid()!=0 && !dm.deleteDirectory(directory.getId())) {
 				return false;
 			}
 		}
@@ -85,7 +84,8 @@ public class XmlTreeModel {
 		return true;
 	}
 
-	public boolean setXmlTree(int xmlTreeId) {
+	public boolean setXmlTree(int xmlTreeId) throws Exception {
+		
 		CDAR_TreeExportModel ctem = new CDAR_TreeExportModel();
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
 		CDAR_TreeSimple cts = ctem.getTreeSimple(xmlTree.getXmlString());
@@ -114,10 +114,11 @@ public class XmlTreeModel {
 			if (directory.getParentid()==0) {
 				directoryMapping.put(directory.getId(), directory.getId());
 			} else {
-				DirectoryDao directoryDao = new DirectoryDao(directory);
-				directoryDao.setParentid(directoryMapping.get(directory.getParentid()));
-				directoryDao.create();
-				directoryMapping.put(directory.getId(), directoryDao.getId());
+				Directory newDirectory = new Directory();
+				newDirectory.setTitle(directory.getTitle());
+				newDirectory.setKtrid(directory.getKtrid());
+				newDirectory = dm.addDirectory(directory.getKtrid(), directoryMapping.get(directory.getParentid()), directory.getTitle());
+				directoryMapping.put(directory.getId(), newDirectory.getId());
 			}
 		}
 

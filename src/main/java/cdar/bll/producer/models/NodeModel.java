@@ -1,12 +1,13 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
+import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
@@ -31,11 +32,11 @@ public class NodeModel {
 		return pdc.getNode(id).delete();
 	}
 
-	public Node addNode(int uid, int treeid, String title, int did) {
+	public Node addNode(int uid, int treeid, String title, int did) throws SQLException {
 		if (treeid != -1) {
 			if (did == 0) {
-				int rootDirectoryId = ((DirectoryDao) pdc
-						.getDirectories(treeid).get(0)).getId();
+				DirectoryRepository dr = new DirectoryRepository();
+				int rootDirectoryId = dr.getDirectories(treeid).get(0).getId();
 				did = rootDirectoryId;
 			}
 

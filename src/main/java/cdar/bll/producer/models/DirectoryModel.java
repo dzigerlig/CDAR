@@ -1,56 +1,58 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Directory;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
+import cdar.dal.exceptions.UnknownDirectoryException;
+import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
 public class DirectoryModel {
 	private ProducerDaoRepository pdc = new ProducerDaoRepository();
+	private DirectoryRepository dr = new DirectoryRepository();
 
-	public Set<Directory> getDirectories(int treeid) {
-		Set<Directory> ln = new HashSet<Directory>();
-		for (DirectoryDao dd : pdc.getDirectories(treeid)) {
-			ln.add(new Directory(dd));			
+	public Set<Directory> getDirectories(int treeid) throws SQLException {
+		Set<Directory> directories = new HashSet<Directory>();
+		for (Directory directory : dr.getDirectories(treeid)) {
+			directories.add(directory);		
 		}
-		return ln;
+		return directories;
 	}
 	
-	public Directory getDirectory(int id) {
-		return new Directory(pdc.getDirectory(id));
+	public Directory getDirectory(int id) throws UnknownDirectoryException {
+		return dr.getDirectory(id);
 	}
 
-	public boolean deleteDirectory(int id) {
-		return pdc.getDirectory(id).delete();
+	public boolean deleteDirectory(int id) throws Exception {
+		Directory directory = getDirectory(id);
+		return dr.deleteDirectory(directory);
 	}
 
-	public Directory addDirectory(int treeid, int parentid, String title)	
+	public Directory addDirectory(int treeid, int parentid, String title) throws Exception	
 	{ 
-		DirectoryDao directory = new DirectoryDao(treeid);
+		Directory directory = new Directory();
+		directory.setKtrid(treeid);
 		directory.setParentid(parentid);
 		directory.setTitle(title);
-		return new Directory(directory.create());
+		return dr.createDirectory(directory);
 	}
 
-	public Directory renameDirectory(Directory d) {
-		DirectoryDao dd = pdc.getDirectory(d.getId());
-		dd.setTitle(d.getTitle());
-		return new Directory(dd.update());
+	public Directory renameDirectory(Directory directory) throws Exception {
+		Directory updatedDirectory = getDirectory(directory.getId());
+		updatedDirectory.setTitle(directory.getTitle());
+		return dr.updateDirectory(updatedDirectory);
 	}
 	
 	//unused except tests
-	public Directory updateDirectory(Directory d) {
-		DirectoryDao dd = pdc.getDirectory(d.getId());
-		dd.setParentid(d.getParentid());
-		dd.setTitle(d.getTitle());
-		return new Directory(dd.update());
+	public Directory updateDirectory(Directory directory) throws Exception {
+		return dr.updateDirectory(directory);
 	}
 
-	public Directory moveDirectory(Directory d) {
-		DirectoryDao dd = pdc.getDirectory(d.getId());
-		dd.setParentid(d.getParentid());
-		return new Directory(dd.update());
+	public Directory moveDirectory(Directory directory) throws Exception {
+		Directory movedDirectory = dr.getDirectory(directory.getId());
+		movedDirectory.setParentid(directory.getParentid());
+		return dr.updateDirectory(movedDirectory);
 	}
 }

@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 
 public class Directory extends BasicEntity {
 	private int parentid;
@@ -21,10 +20,6 @@ public class Directory extends BasicEntity {
 		setParentid(parentid);
 		setKtrid(ktrid);
 		setTitle(title);
-	}
-
-	public Directory(DirectoryDao directoryDao) {
-		this(directoryDao.getId(), directoryDao.getCreationTime(),directoryDao.getLastModificationTime(), directoryDao.getParentid(), directoryDao.getKtrid(), directoryDao.getTitle());
 	}
 
 	public int getParentid() {

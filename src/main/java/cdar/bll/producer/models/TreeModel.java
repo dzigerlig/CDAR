@@ -4,9 +4,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.producer.Directory;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
+import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 import cdar.dal.persistence.jdbc.producer.TreeRepository;
 import cdar.dal.persistence.jdbc.user.UserRepository;
 
@@ -22,14 +23,17 @@ public class TreeModel {
 	} 
 
 	public Tree addTree(int uid, String treeTitle) throws Exception {
+		DirectoryRepository dr = new DirectoryRepository();
+		
 		User user = new UserRepository().getUser(uid);
 		Tree tree = new Tree();
 		tree.setUid(user.getId());
 		tree.setTitle(treeTitle);
 		tree = tr.createTree(tree);
-		DirectoryDao directoryDao = new DirectoryDao(tree.getId());
-		directoryDao.setTitle(treeTitle);
-		directoryDao.create();
+		Directory directory = new Directory();
+		directory.setKtrid(tree.getId());
+		directory.setTitle(treeTitle);
+		dr.createDirectory(directory);
 		return tree;
 	}
 

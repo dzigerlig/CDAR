@@ -23,11 +23,9 @@ import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.producer.models.XmlTreeModel;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
-import cdar.dal.persistence.jdbc.producer.DirectoryDao;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
-import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
 public class TestBLLKnowledgeProducer {
 	private UserModel um = new UserModel();
@@ -253,7 +251,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testUpdateUnknownNode() throws UnknownUserException {
+	public void testUpdateUnknownNode() throws UnknownUserException, SQLException {
 		NodeModel nm = new NodeModel();
 		Node node = nm.addNode(um.getUser(username).getId(), unknownId, "Node title", 2);
 		node.setTitle("Updated title");
@@ -485,18 +483,18 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(newDirectoryName, dm.getDirectory(newDirectory.getId()).getTitle());
 	}
 	
-	public void testDirectoryUnknownTreeId() {
+	public void testDirectoryUnknownTreeId() throws SQLException {
 		DirectoryModel dm = new DirectoryModel();
 		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
-	@Test
-	public void testGetUnknownDirectory() {
+	@Test(expected = UnknownDirectoryException.class)
+	public void testGetUnknownDirectory() throws UnknownDirectoryException {
 		DirectoryModel dm = new DirectoryModel();
-		assertEquals(-1, dm.getDirectory(unknownId).getId());
+		dm.getDirectory(unknownId).getId();
 	}
 	
-	@Test
-	public void testUpdateUnknownDirectory() {
+	@Test(expected = Exception.class)
+	public void testUpdateUnknownDirectory() throws Exception {
 		DirectoryModel dm = new DirectoryModel();
 		Directory directory = dm.addDirectory(unknownId, 0, "My directory");
 		directory.setTitle("My new directory");
@@ -504,10 +502,10 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(-1, updatedDirectory.getId());
 	}
 	
-	@Test
-	public void testDeleteUnknownDirectory() {
+	@Test(expected = UnknownDirectoryException.class)
+	public void testDeleteUnknownDirectory() throws Exception {
 		DirectoryModel dm = new DirectoryModel();
-		assertFalse(dm.deleteDirectory(unknownId));
+		dm.deleteDirectory(unknownId);
 	}
 	
 	@Test
@@ -561,7 +559,7 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
 	}
 	
-	@Test(expected = UnknownUserException.class)
+	@Test
 	public void testSimpleImportExportEmptyTree() throws Exception {
 		XmlTreeModel xtm = new XmlTreeModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
