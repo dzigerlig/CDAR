@@ -3,7 +3,6 @@ package cdar.bll.user;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.user.UserDao;
 
 public class User extends BasicEntity {
 	private String username;
@@ -29,10 +28,6 @@ public class User extends BasicEntity {
 	public User(String username, String password) {
 		setUsername(username);
 		setPassword(password);
-	}
-	
-	public User(UserDao userDao) {
-		this(userDao.getId(), userDao.getCreationTime(), userDao.getLastModificationTime(), userDao.getUsername(), userDao.getPassword(), userDao.getAccesstoken());
 	}
 	
 	public String getUsername() {

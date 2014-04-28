@@ -5,6 +5,7 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiModel {
 	private UserModel um = new UserModel();
@@ -24,12 +25,12 @@ public class MediaWikiModel {
 		return new WikiEntry(sm.getSubnode(subnodeid));
 	}
 
-	public WikiEntry saveKnowledgeNodeWikiEntry(int userid, WikiEntry wikiEntry) {
+	public WikiEntry saveKnowledgeNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
 		User user = um.getUser(userid);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userid, WikiEntry wikiEntry) {
+	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
 		User user = um.getUser(userid);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}

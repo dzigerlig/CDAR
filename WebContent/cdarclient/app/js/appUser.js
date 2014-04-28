@@ -1,5 +1,5 @@
-app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
-		AuthenticationService, md5, UserService) {
+app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
+		AuthenticationService, UserService) {
 
 	UserService.removeCookies();
 	
@@ -11,8 +11,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	};
 	
 	$scope.login = function() {
-		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: md5.createHash($scope.credentials.password)}, function(response) {
-			if (response.id != -1 && response.accesstoken.length == 40) {
+		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: $scope.credentials.password}, function(response) {
 				UserService.setUsername(response.username);
 				UserService.setAccesstoken(response.accesstoken);
 				UserService.setUserId(response.id);
@@ -24,15 +23,14 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 					UserService.setIsProducer('false');
 					$location.path('/homeconsumer');
 				}
-			} else {
-				noty({type: 'alert', text : 'wrong username/password combination', timeout: 4000});
-			}
+		}, function(error) {
+			noty({type: 'alert', text : 'wrong username/password combination', timeout: 4000});
 		});
 	};
 }]);
 
-app.controller("RegistrationController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
-		AuthenticationService, md5, UserService) {
+app.controller("RegistrationController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
+		AuthenticationService, UserService) {
 	UserService.removeCookies();
 
 	$scope.credentials = {
@@ -41,7 +39,7 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 	};
 	
 	$scope.register = function() {
-		AuthenticationService.addUser.post({username: $scope.credentials.username, password: md5.createHash($scope.credentials.password)}, function(response) {
+		AuthenticationService.addUser.post({username: $scope.credentials.username, password: $scope.credentials.password}, function(response) {
 			if (response.id != -1) {
 				noty({type: 'success', text : 'user created', timeout: 4000});
 				$location.path('/login');
@@ -52,13 +50,13 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 	};
 }]);
 
-app.controller("AccountController", ['$scope', '$location', 'AuthenticationService', 'md5', 'UserService', function($scope, $location,
-		AuthenticationService, md5, UserService) {
+app.controller("AccountController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
+		AuthenticationService, UserService) {
 	$scope.UserService = UserService;
 	$scope.newPw = '';
 	
 	$scope.changePw = function() {
-		AuthenticationService.edit.changepw({id : UserService.getUserId(), username : UserService.getUsername(), password : md5.createHash($scope.newPw)}, function(response) {
+		AuthenticationService.edit.changepw({id : UserService.getUserId(), username : UserService.getUsername(), password : $scope.newPw}, function(response) {
 			if (response.id != -1) {
 				alert("pw changed!");
 				$scope.newPw = '';

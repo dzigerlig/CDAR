@@ -1,13 +1,14 @@
 package cdar.bll.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.WrongCredentialsException;
 
 public class TestBLLUser {
 	private UserModel um = new UserModel();
@@ -15,50 +16,43 @@ public class TestBLLUser {
 	private final String password = "BLLPassword";
 
 	@Test
-	public void testCreateUser() {
+	public void testCreateUser() throws Exception {
 		int usercount = um.getUsers().size();
 		User user = um.createUser(username, password);
-		assertEquals(usercount+1, um.getUsers().size());
+		assertEquals(usercount + 1, um.getUsers().size());
 		assertEquals(user.getId(), um.getUser(user.getUsername()).getId());
 		um.deleteUser(user.getId());
 		assertEquals(usercount, um.getUsers().size());
 	}
-	
+
 	@Test
-	public void testCreateUserSameUsername() {
+	public void testCreateUserSameUsername() throws Exception {
 		User user = um.createUser(username, password);
-		User user2 = um.createUser(username, password);
-		assertEquals(-1, user2.getId());
-		assertNull(user2.getUsername());
-		assertNull(user2.getPassword());
-		assertNull(user2.getAccesstoken());
+		try {
+			um.createUser(username, password);
+		} catch (Exception ex) {
+			assert (true);
+		}
 		um.deleteUser(user.getId());
 	}
-	
-	@Test
-	public void testGetUnknownUserByUsername() {
-		User user = um.getUser("Bill Gates");
-		assertEquals(-1, user.getId());
+
+	@Test(expected = UnknownUserException.class)
+	public void testGetUnknownUserByUsername() throws UnknownUserException {
+		um.getUser("Bill Gates");
 	}
-	
-	@Test
-	public void testGetUnknownUserById() {
-		User user = um.getUser(-13);
-		assertEquals(-1, user.getId());
+
+	@Test(expected = UnknownUserException.class)
+	public void testGetUnknownUserById() throws UnknownUserException {
+		um.getUser(-13);
 	}
-	
-	@Test
-	public void testDeleteUnknownUser() {
-		assertFalse(um.deleteUser(-13));
+
+	@Test(expected = Exception.class)
+	public void testDeleteUnknownUser() throws Exception {
+		um.deleteUser(-13);
 	}
-	
+
 	@Test
-	public void testUpdateUnknownUser() {
-		assertEquals(-1, um.updateUser(new User(-12)).getId());
-	}
-	
-	@Test
-	public void updateUser() {
+	public void updateUser() throws Exception {
 		final String newPassword = "newpassword";
 		User user = um.createUser(username, password);
 		assertEquals(password, um.getUser(user.getUsername()).getPassword());
@@ -67,24 +61,24 @@ public class TestBLLUser {
 		assertEquals(newPassword, um.getUser(user.getUsername()).getPassword());
 		um.deleteUser(user.getId());
 	}
-	
+
 	@Test
-	public void testLogin() {
+	public void testLogin() throws Exception {
 		User user = um.createUser(username, password);
 		assertNull(um.getUser(user.getUsername()).getAccesstoken());
 		um.loginUser(user.getUsername(), user.getPassword());
-		assert(um.getUser(user.getUsername()).getAccesstoken()!=null);
+		assert (um.getUser(user.getUsername()).getAccesstoken() != null);
 		um.deleteUser(user.getId());
 	}
-	
+
 	@Test
-	public void testLoginWrongPassword() {
+	public void testLoginWrongPassword() throws Exception {
 		User user = um.createUser(username, password);
-		User loggedInUser = um.loginUser(user.getUsername(), "fakePassword");
-		assertEquals(-1, loggedInUser.getId());
-		assertNull(loggedInUser.getUsername());
-		assertNull(loggedInUser.getPassword());
-		assertNull(loggedInUser.getAccesstoken());
+		try {
+			um.loginUser(user.getUsername(), "fakePassword");
+		} catch (WrongCredentialsException ex) {
+			assert (true);
+		}
 		um.deleteUser(user.getId());
 	}
 }

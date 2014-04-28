@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import cdar.dal.persistence.jdbc.user.UserDao;
+import cdar.bll.user.User;
 
 public class CDAR_TreeExportModel {
 
@@ -41,13 +41,13 @@ public class CDAR_TreeExportModel {
 		return null;
 	}
 
-	public static UserDao getUser(String userXml) {
+	public static User getUser(String userXml) {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(UserDao.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(User.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
 			StringReader reader = new StringReader(userXml);
-			UserDao user = (UserDao) unmarshaller.unmarshal(reader);
+			User user = (User) unmarshaller.unmarshal(reader);
 			return user;
 		} catch (JAXBException e) {
 			e.printStackTrace();

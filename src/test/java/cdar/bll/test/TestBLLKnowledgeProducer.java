@@ -21,11 +21,11 @@ import cdar.bll.producer.models.TemplateModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.producer.models.XmlTreeModel;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.persistence.jdbc.producer.DirectoryDao;
 import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 import cdar.dal.persistence.jdbc.producer.TreeDao;
-import cdar.dal.persistence.jdbc.user.UserDao;
 
 public class TestBLLKnowledgeProducer {
 	private UserModel um = new UserModel();
@@ -37,17 +37,17 @@ public class TestBLLKnowledgeProducer {
 	private final int unknownId = -13;
 	
 	@Before
-	public void createUser() {
+	public void createUser() throws Exception {
 		um.createUser(username, password);
 	}
 	
 	@After
-	public void deleteUser() {
+	public void deleteUser() throws UnknownUserException, Exception {
 		um.deleteUser(um.getUser(username).getId());
 	}
 
 	@Test
-	public void testTree() {
+	public void testTree() throws UnknownUserException {
 		final String treeName = "MyTreeName";
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
@@ -81,7 +81,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTreeUpdate() {
+	public void testTreeUpdate() throws UnknownUserException {
 		final String treeName = "MyTreeName";
 		final String newTreeName = "My new tree";
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
@@ -96,7 +96,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTemplate() {
+	public void testTemplate() throws UnknownUserException {
 		final String templateName = "MyTemplate";
 		final String templateText = "MyTemplateText";
 		TemplateModel tplm = new TemplateModel();
@@ -112,7 +112,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTemplateIsDefault() {
+	public void testTemplateIsDefault() throws UnknownUserException {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
@@ -120,7 +120,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTemplateDefaultChangeMultipleTemplates() {
+	public void testTemplateDefaultChangeMultipleTemplates() throws UnknownUserException {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
@@ -136,7 +136,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() {
+	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() throws UnknownUserException {
 		TemplateModel tplm = new TemplateModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
@@ -155,7 +155,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testTemplateUpdate() {
+	public void testTemplateUpdate() throws UnknownUserException {
 		final String templateName = "MyTemplate";
 		final String newTemplateName = "My new template name";
 		final String templateText = "MyTemplateText";
@@ -206,7 +206,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testNode() {
+	public void testNode() throws UnknownUserException {
 		final String nodeTitle = "Node";
 		NodeModel nm = new NodeModel();
 		DirectoryModel dm = new DirectoryModel();
@@ -224,7 +224,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testUpdateNode() {
+	public void testUpdateNode() throws UnknownUserException {
 		final String nodeTitle = "Node";
 		final String newNodeTitle = "MyNewTitle";
 		NodeModel nm = new NodeModel();
@@ -251,7 +251,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testUpdateUnknownNode() {
+	public void testUpdateUnknownNode() throws UnknownUserException {
 		NodeModel nm = new NodeModel();
 		Node node = nm.addNode(um.getUser(username).getId(), unknownId, "Node title", 2);
 		node.setTitle("Updated title");
@@ -266,7 +266,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testNodeLink() {
+	public void testNodeLink() throws UnknownUserException {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		NodeModel nm = new NodeModel();
@@ -286,7 +286,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testNodeLinkUpdate() {
+	public void testNodeLinkUpdate() throws UnknownUserException {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		final String nameSubnode1 = "Subnode1";
@@ -342,7 +342,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testSubnode() {
+	public void testSubnode() throws UnknownUserException {
 		final String subnodename = "My Subnode";
 		SubnodeModel snm = new SubnodeModel();
 		NodeModel nm = new NodeModel();
@@ -362,7 +362,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testSubnodeUpdate() {
+	public void testSubnodeUpdate() throws UnknownUserException {
 		final String subnodename = "My Subnode";
 		final String newSubnodename = "My New Subnode";
 		SubnodeModel snm = new SubnodeModel();
@@ -383,7 +383,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestKnowledgeSubnodePositionChange() {
+	public void TestKnowledgeSubnodePositionChange() throws UnknownUserException {
 		final String subnodename = "My Subnode";
 		SubnodeModel snm = new SubnodeModel();
 		NodeModel nm = new NodeModel();
@@ -448,7 +448,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testDirectory() {
+	public void testDirectory() throws UnknownUserException {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
 		NodeModel nm = new NodeModel();
@@ -465,7 +465,7 @@ public class TestBLLKnowledgeProducer {
 	}
 
 	@Test
-	public void testDirectoryUpdate() {
+	public void testDirectoryUpdate() throws UnknownUserException {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
 		final String newDirectoryName = "MyNewDirectory";
@@ -509,7 +509,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testSimpleTreeExportAndImport() {
+	public void testSimpleTreeExportAndImport() throws UnknownUserException {
 		XmlTreeModel xtm = new XmlTreeModel();
 		NodeModel nm = new NodeModel();
 		SubnodeModel snm = new SubnodeModel();
@@ -560,7 +560,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testSimpleImportExportEmptyTree() {
+	public void testSimpleImportExportEmptyTree() throws UnknownUserException {
 		XmlTreeModel xtm = new XmlTreeModel();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
@@ -569,7 +569,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testSimpleImportExportTreeOneNode() {
+	public void testSimpleImportExportTreeOneNode() throws UnknownUserException {
 		NodeModel nm = new NodeModel();
 		DirectoryModel dm = new DirectoryModel();
 		XmlTreeModel xtm = new XmlTreeModel();

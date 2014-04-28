@@ -14,6 +14,7 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
 import cdar.bll.wiki.MediaWikiModel;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLWiki {
 	private UserModel um = new UserModel();
@@ -29,17 +30,17 @@ public class TestBLLWiki {
 	private final String nodeTitle = "Test Node";
 	
 	@Before
-	public void createUser() {
+	public void createUser() throws Exception {
 		um.createUser(username, password);
 	}
 	
 	@After
-	public void deleteUser() {
+	public void deleteUser() throws UnknownUserException, Exception {
 		um.deleteUser(um.getUser(username).getId());
 	}
 	
 	@Test
-	public void testAddNode() {
+	public void testAddNode() throws UnknownUserException {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);
@@ -47,7 +48,7 @@ public class TestBLLWiki {
 	}
 	
 	@Test
-	public void testAddNodeWithTemplate() {
+	public void testAddNodeWithTemplate() throws UnknownUserException {
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, did);

@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
+import cdar.dal.exceptions.UnknownUserException;
 
 @Path("wiki")
 public class WikiController {
@@ -40,7 +41,11 @@ public class WikiController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry postKnowledgeNodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
-		return mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry);
+		try {
+			return mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry);
+		} catch (UnknownUserException uue) {
+			return null;
+		}
 	}
 	
 	@POST
@@ -48,6 +53,10 @@ public class WikiController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WikiEntry postKnowledgeSubnodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
+		try {
 		return mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry);
+		} catch (UnknownUserException uue) {
+			return null;
+		}
 	}
 }

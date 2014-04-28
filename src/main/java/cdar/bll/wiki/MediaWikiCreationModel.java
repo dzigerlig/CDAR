@@ -9,6 +9,7 @@ import org.wikipedia.Wiki;
 
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiCreationModel extends Thread {
 	private int ktrid;
@@ -72,10 +73,14 @@ public class MediaWikiCreationModel extends Thread {
 	}
 
 	public void run() {
-		UserModel um = new UserModel();
-		User user = um.getUser(getUid());
-		createNewWikiEntry(user.getUsername(), user.getPassword());
-		getWikiHelper().removeWikiEntry(getTitle());
+		try {
+			UserModel um = new UserModel();
+			User user = um.getUser(getUid());
+			createNewWikiEntry(user.getUsername(), user.getPassword());
+			getWikiHelper().removeWikiEntry(getTitle());
+		} catch (UnknownUserException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getTemplateContent() {

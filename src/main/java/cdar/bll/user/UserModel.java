@@ -1,66 +1,58 @@
 package cdar.bll.user;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import cdar.dal.persistence.jdbc.user.UserDao;
-import cdar.dal.persistence.jdbc.user.UserDaoRepository;
-import cdar.pl.wiki.WikiRegister;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.WrongCredentialsException;
+import cdar.dal.persistence.jdbc.user.UserRepository;
 
 public class UserModel {
-	private UserDaoRepository udc = new UserDaoRepository();
+	private UserRepository userRepository = new UserRepository();
 
 	public UserModel() {
 	}
 
-	public User loginUser(String username, String password) {
-		return new User(udc.loginUser(username, password));
-	}
+	public User loginUser(String username, String password) throws Exception {
+		User user = getUser(username);
 
-	public User createUser(String username, String password) {
-		UserDao userdao = new UserDao();
-		userdao.setUsername(username);
-		userdao.setPassword(password);
-		try {
-			User user = new User(userdao.create());
-			System.out.println(new WikiRegister().userRequest(
-					userdao.getUsername(), userdao.getPassword()));
+		if (user.getPassword().equals(password)) {
+			user.setAccesstoken(DigestUtils.shaHex(user.getPassword()));
+			updateUser(user);
 			return user;
-		} catch (Exception e) {
-			return new User(-1);
+		} else {
+			throw new WrongCredentialsException();
 		}
 	}
 
-	public Boolean deleteUser(int userid) {
-		UserDao userdao = udc.getUserById(userid);
-		return new Boolean(userdao.delete());
+	public User createUser(String username, String password) throws Exception {
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+
+		return userRepository.createUser(user);
 	}
 
-	public User updateUser(User user) {
-		UserDao userdao = udc.getUserById(user.getId());
-		userdao.setUsername(user.getUsername());
-		userdao.setPassword(user.getPassword());
-		userdao.setAccesstoken(user.getAccesstoken());
-		try {
-			return new User(userdao.update());
-		} catch (Exception e) {
-			return new User(-1);
-		}
+	public boolean deleteUser(int userId) throws Exception {
+		User user;
+		user = userRepository.getUser(userId);
+		return userRepository.deleteUser(user);
 	}
 
-	public User getUser(String username) {
-		return new User(udc.getUserByName(username));
+	public User updateUser(User user) throws Exception {
+		return userRepository.updateUser(user);
 	}
 
-	public User getUser(int userid) {
-		return new User(udc.getUserById(userid));
+	public User getUser(String username) throws UnknownUserException {
+		return userRepository.getUser(username);
 	}
 
-	public List<User> getUsers() {
-		List<User> users = new ArrayList<User>();
-		for (UserDao userDao : udc.getUsers()) {
-			users.add(new User(userDao));
-		}
-		return users;
+	public User getUser(int userid) throws UnknownUserException {
+		return userRepository.getUser(userid);
+	}
+
+	public List<User> getUsers() throws Exception {
+		return userRepository.getUsers();
 	}
 }

@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.user.User;
+import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.persistence.JDBCUtil;
 
 public class UserRepository {
@@ -37,7 +39,7 @@ public class UserRepository {
 		return users;
 	}
 
-	public User getUser(int id) throws SQLException {
+	public User getUser(int id) throws UnknownUserException {
 		User user = new User();
 		ResultSet result = null;
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = ?";
@@ -54,14 +56,15 @@ public class UserRepository {
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
+				return user;
 			}
 		} catch (SQLException e) {
-			throw e;
+			throw new UnknownUserException();
 		}
-		return user;
+		throw new UnknownUserException();
 	}
 
-	public User getUser(String username) throws SQLException {
+	public User getUser(String username) throws UnknownUserException {
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = ?";
 		ResultSet result = null;
 		User user = new User();
@@ -79,23 +82,12 @@ public class UserRepository {
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
+				return user;
 			}
 		} catch (SQLException e) {
-			throw e;
+			throw new UnknownUserException();
 		}
-		return user;
-	}
-
-	public User loginUser(String username, String password) throws Exception {
-		User user = getUser(username);
-
-		if (user.getPassword().equals(password)) {
-			user.setAccesstoken(user.getPassword());
-			updateUser(user);
-			return user;
-		} else {
-			throw new Exception("Wrong credentials");
-		}
+		throw new UnknownUserException();
 	}
 
 	public User createUser(User user) throws Exception {

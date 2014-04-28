@@ -27,6 +27,7 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeConsumer {
 	
@@ -39,17 +40,17 @@ public class TestBLLKnowledgeConsumer {
 	private final int unknownId = -13;
 	
 	@Before
-	public void createUser() {
+	public void createUser() throws Exception {
 		um.createUser(username, password);
 	}
 	
 	@After
-	public void deleteUser() {
+	public void deleteUser() throws UnknownUserException, Exception {
 		um.deleteUser(um.getUser(username).getId());
 	}
 	
 	@Test
-	public void testProjectTree() {
+	public void testProjectTree() throws UnknownUserException {
 		final String treeName = "Project Tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
@@ -60,7 +61,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 
 	@Test
-	public void testProjectTreeUpdate() {
+	public void testProjectTreeUpdate() throws UnknownUserException {
 		final String treeName = "Project Tree";
 		final String newTreeName = "My new project tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
@@ -98,7 +99,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeZeroEntries() {
+	public void testKnowledgeTreeToProjectTreeZeroEntries() throws UnknownUserException {
 		NodeModel nm = new NodeModel();
 		TreeModel tm = new TreeModel();
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -112,7 +113,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() {
+	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() throws UnknownUserException {
 		final String nodeTitle1 = "MyNode 1";
 		final String nodeTitle2 = "MyNode 2";
 		NodeModel nm = new NodeModel();
@@ -144,7 +145,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeComplete() {
+	public void testKnowledgeTreeToProjectTreeComplete() throws UnknownUserException {
 		final String nodeTitle1 = "My Node 1";
 		final String nodeTitle2 = "My Node 2";
 		final String subnodeTitle1 = "My Subnode 1";
@@ -190,7 +191,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testUnknownKnowledgeTreeToProjectTree() {
+	public void testUnknownKnowledgeTreeToProjectTree() throws UnknownUserException {
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
@@ -199,7 +200,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNode() {
+	public void testProjectNode() throws UnknownUserException {
 		final String projectNodeName = "My project node";
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
@@ -213,7 +214,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNodeUpdate() {
+	public void testProjectNodeUpdate() throws UnknownUserException {
 		final String projectNodeName = "My project node";
 		final String newProjectNodeName = "My new project node name";
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -261,7 +262,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNodeLink() {
+	public void testProjectNodeLink() throws UnknownUserException {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -279,7 +280,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNodeLinkUpdate() {
+	public void testProjectNodeLinkUpdate() throws UnknownUserException {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -329,7 +330,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectSubnode() {
+	public void testProjectSubnode() throws UnknownUserException {
 		final String projectSubnodeName = "My project subnode";
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		ProjectNodeModel pnm = new ProjectNodeModel();
@@ -347,7 +348,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectSubnodeUpdate() {
+	public void testProjectSubnodeUpdate() throws UnknownUserException {
 		final String projectSubnodeName = "My project subnode";
 		final String newProjectSubnodeName = "Another project subnode name";
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
@@ -402,7 +403,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testComment() {
+	public void testComment() throws UnknownUserException {
 		final String commentString = "This is a comment";
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
@@ -417,7 +418,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testCommentUpdate() {
+	public void testCommentUpdate() throws UnknownUserException {
 		final String commentString = "This is a comment";
 		final String newCommentString = "This is another comment";
 		ProjectNodeModel pnm = new ProjectNodeModel();
