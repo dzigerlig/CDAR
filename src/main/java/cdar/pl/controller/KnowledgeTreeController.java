@@ -75,68 +75,68 @@ public class KnowledgeTreeController {
 	}
 
 	// TEMPLATES
-	@GET
-	@Path("templates/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/templates")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Template> getTemplates(@PathParam("ktreeid") int ktreeid) {
 		return tm.getKnowledgeTemplates(ktreeid);
 	}
 
-	@GET
-	@Path("templates/{ktreeid}/{templateid}")
+	@GET//Changed
+	@Path("{ktreeid}/templates/{templateid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Template getTemplate(@PathParam("ktreeid") int ktreeid,
 			@PathParam("templateid") int templateid) {
 		return tm.getKnowledgeTemplate(templateid);
 	}
 
-	@POST
-	@Path("templates/add/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/templates/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
 		return tm.addKnowledgeTemplate(template.getTreeId(),
 				template.getTitle(), template.getTemplatetext(), template.getDecisionMade());
 	}
 
-	@POST
-	@Path("templates/rename/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/templates/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template renameTemplate(Template template) {
 		return tm.renameTemplate(template);
 	}
 
 	@POST
-	@Path("templates/default/{ktreeid}")
+	@Path("{ktreeid}/templates/default")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Set<Template> setDefaultTemplate(@PathParam("ktreeid") int ktreeid,
 			int templateId) {
 		return tm.setDefaultTemplate(ktreeid, templateId);
 	}
 
-	@POST
-	@Path("templates/edit/{templateid}")
+	@POST//Changed
+	@Path("{ktreeid}/templates/edit")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template editTemplate(Template template) {
 		return tm.updateTemplate(template);
 	}
 
-	@POST
-	@Path("templates/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/templates/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteTemplate(int id) {
 		return new CDAR_Boolean(tm.deleteTemplate(id));
 	}
 
 	// Directory
-	@GET
-	@Path("/directories/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/directories")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Directory> getDirectories(@PathParam("ktreeid") int ktreeid) {
 		return dm.getDirectories(ktreeid);
 	}
 
-	@POST
-	@Path("directories/add/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/directories/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory addDirectory(Directory d) {
 		if (d.getTitle()==null) {
@@ -146,44 +146,44 @@ public class KnowledgeTreeController {
 		}
 	}
 
-	@POST
-	@Path("directories/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/directories/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteDirectory(int id) {
 		return new CDAR_Boolean(dm.deleteDirectory(id));
 	}
 
-	@POST
-	@Path("directories/rename/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/directories/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory renameDirectory(Directory d) {
 		return dm.renameDirectory(d);
 	}
 
-	@POST
-	@Path("directories/move/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/directories/move")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Directory moveDirectory(Directory d) {
 		return dm.moveDirectory(d);
 	}
 
 	// Nodes
-	@GET
-	@Path("/nodes/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/nodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> getNodes(@PathParam("ktreeid") int ktreeid) {
 		return nm.getNodes(ktreeid);
 	}
 
-	@GET
-	@Path("/nodes/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/nodes/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Node getNode(@PathParam("nodeid") int nodeid) {
 		return nm.getNode(nodeid);
 	}
 
-	@POST
-	@Path("nodes/add/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node addNode(@PathParam("uid") int uid, Node n) {
 		if (n.getTitle()==null) {
@@ -193,49 +193,49 @@ public class KnowledgeTreeController {
 		}
 	}
 
-	@POST
-	@Path("nodes/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteNode(int id) {
 		return new CDAR_Boolean(nm.deleteNode(id));
 	}
 
-	@POST
-	@Path("nodes/drop/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/drop")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node dropNode(int id) {
 		return nm.dropNode(id);
 	}
 
-	@POST
-	@Path("nodes/rename/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node renameNode(Node n) {
 		return nm.renameNode(n);
 	}
 
-	@POST
-	@Path("nodes/undrop/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/undrop")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node undropNode(int id) {
 		return nm.undropNode(id);
 	}
 
-	@POST
-	@Path("nodes/move/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/nodes/move")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Node moveNode(Node n) {
 		return nm.moveNode(n);
 	}
 	
-	@GET
-	@Path("/nodes/zoomUp/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/nodes/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> zoomUpNode(@PathParam("nodeid") int nodeid) {
 		return nm.zoomUp(nodeid);
 	}
-	@GET
-	@Path("/nodes/zoomDown/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/nodes/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Node> zoomDownNode(@PathParam("nodeid") int nodeid) {
 		return nm.zoomDown(nodeid);
@@ -243,94 +243,94 @@ public class KnowledgeTreeController {
 
 
 	// Links
-	@GET
-	@Path("links/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/links")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> getLinks(@PathParam("ktreeid") int ktreeid) {
 		return lm.getNodeLinks(ktreeid);
 	}
 
-	@POST
-	@Path("links/add/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/links/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink addNodeLink(NodeLink nl) {
 		return lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
 				nl.getTargetId(), nl.getKsnid());
 	}
 
-	@POST
-	@Path("links/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/links/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteNodeLink(int id) {
 		return new CDAR_Boolean(lm.deleteNodeLink(id));
 	}
 
-	@POST
-	@Path("links/update/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/links/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public NodeLink updateNodeLink(NodeLink nl) {
 		return lm.updateNodeLink(nl);
 	}
 	
-	@GET
-	@Path("/links/zoomUp/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/links/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> zoomUpLink(@PathParam("nodeid") int nodeid) {
 		return lm.zoomUp(nodeid);
 	}
 	
-	@GET
-	@Path("/links/zoomDown/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/links/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<NodeLink> zoomDownLink(@PathParam("nodeid") int nodeid) {
 		return lm.zoomDown(nodeid);
 	}
 
 	// Subnodes
-	@GET
-	@Path("subnodes/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
 		return sm.getSubnodesFromTree(ktreeid);
 	}
 
-	@GET
-	@Path("subnodes/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/subnodes/{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> getSubnodes(@PathParam("nodeid") int nodeid) {
 		return sm.getSubnodesFromNode(nodeid);
 	}
 
-	@POST
-	@Path("subnodes/rename")
+	@POST//Changed
+	@Path("{ktreeid}/subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_BooleanChanges<NodeLink> renameSubnode(Subnode subnode) {
 		return new CDAR_BooleanChanges<NodeLink>(sm.renameSubnode(subnode), lm.getNodeLinksBySubnode(subnode.getId()), "update");
 	}
 
-	@POST
-	@Path("subnodes/moveup")
+	@POST//Changed
+	@Path("{ktreeid}/subnodes/moveup")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean moveSubnodeUp(Subnode subnode) {
 		return new CDAR_Boolean(sm.moveSubnodeUp(subnode));
 	}
 
-	@POST
-	@Path("subnodes/movedown")
+	@POST//Changed
+	@Path("{ktreeid}/subnodes/movedown")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean moveSubnodeDown(Subnode subnode) {
 		return new CDAR_Boolean(sm.moveSubnodeDown(subnode));
 	}
 
-	@POST
-	@Path("subnodes/add/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/subnodes/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Subnode addSubnode(Subnode sN) {
 		return sm.addSubnode(sN.getKnid(), sN.getTitle());
 	}
 
-	@POST
-	@Path("subnodes/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/subnodes/delete/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_BooleanChanges<NodeLink> deleteSubnode(int id) {
 		List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
@@ -338,46 +338,46 @@ public class KnowledgeTreeController {
 				nodelinks, "delete");
 	}
 	
-	@GET
-	@Path("/subnodes/zoomUp/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/subnodes/{nodeid}/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> zoomUpSubnode(@PathParam("nodeid") int nodeid) {
 		return sm.zoomUp(nodeid);
 	}
 	
-	@GET
-	@Path("/subnodes/zoomDown/{ktreeid}/{nodeid}")
+	@GET//Changed
+	@Path("{ktreeid}/subnodes/{nodeid}/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<Subnode> zoomDownSubnode(@PathParam("nodeid") int nodeid) {
 		return sm.zoomDown(nodeid);
 	}
 
 	// TREE XML
-	@GET
-	@Path("simpleexport/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/simpleexport")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<XmlTree> getKnowledgeTreeSimpleXml(
 			@PathParam("ktreeid") int ktreeid) {
 		return xtm.getXmlTrees(ktreeid);
 	}
 
-	@POST
-	@Path("simpleexport/delete/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/simpleexport/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean deleteKnowledgeTreeSimpleXml(int id) {
 		return new CDAR_Boolean(xtm.deleteXmlTree(id));
 	}
 
-	@POST
-	@Path("singleexport/set/{ktreeid}")
+	@POST//Changed
+	@Path("{ktreeid}/singleexport/set")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CDAR_Boolean setKnowledgeTreeSimpleXml(int id) {
 		xtm.cleanTree(id);
 		return new CDAR_Boolean(xtm.setXmlTree(id));
 	}
 
-	@GET
-	@Path("simpleexport/add/{ktreeid}")
+	@GET//Changed
+	@Path("{ktreeid}/simpleexport/add/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public XmlTree addKnowledgeTreeSimpleXml(@PathParam("uid") int uid, @PathParam("ktreeid") int ktrid) {
 		return xtm.addXmlTree(uid, ktrid);
