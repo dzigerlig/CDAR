@@ -6,6 +6,7 @@ import cdar.bll.producer.models.SubnodeModel;
 import cdar.bll.user.User;
 import cdar.bll.user.UserModel;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiModel {
@@ -21,7 +22,7 @@ public class MediaWikiModel {
 		return new WikiEntry(nm.getNode(nodeid));
 	}
 
-	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeid) {
+	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeid) throws UnknownSubnodeException {
 		SubnodeModel sm = new SubnodeModel();
 		return new WikiEntry(sm.getSubnode(subnodeid));
 	}

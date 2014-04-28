@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
 public class Subnode extends WikiEntity {
 	private int knid;
@@ -18,10 +17,6 @@ public class Subnode extends WikiEntity {
 		super(id, creationDate, lastModification, title, wikititle);
 		setKnid(knid);
 		setPosition(position);
-	}
-
-	public Subnode(SubnodeDao snd) {
-		this(snd.getId(), snd.getCreationTime(), snd.getLastModificationTime(),snd.getTitle(),snd.getWikititle(),snd.getKnid(),snd.getPosition());
 	}
 
 	public int getKnid() {

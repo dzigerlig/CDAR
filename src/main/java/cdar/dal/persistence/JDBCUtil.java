@@ -34,12 +34,16 @@ public class JDBCUtil {
 						prop.getProperty("LOCAL_DB_PASSWORD"));
 			}
 		} catch (SQLException e) {
+			System.out.println(1);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			System.out.println(2);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			System.out.println(2);
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.out.println(3);
 			e.printStackTrace();
 		}
 		return connection;

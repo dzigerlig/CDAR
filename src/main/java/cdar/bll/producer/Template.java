@@ -5,10 +5,9 @@ import info.bliki.wiki.model.WikiModel;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.producer.TemplateDao;
 
 public class Template extends BasicEntity {
-	private int treeid;
+	private int treeId;
 	private String title;
 	private String templatetext;
 	private String templatetexthtml;
@@ -19,14 +18,10 @@ public class Template extends BasicEntity {
 		
 	}
 
-	public Template(TemplateDao template) {
-		this(template.getId(), template.getCreationTime(), template.getLastModificationTime(), template.getTitle(), template.getTemplatetext(), template.getKtrid(), template.getIsDefault(), template.getDecisionMade());
-	}
-
 	public Template(int id, Date creationTime, Date lastModificationTime,
 			String title, String templatetext, int treeid, boolean isDefault, boolean decisionMade) {
 		super(id, creationTime, lastModificationTime);
-		setTreeid(treeid);
+		setTreeId(treeid);
 		setTitle(title);
 		setTemplatetext(templatetext);
 		if (getTemplatetext()!=null) {
@@ -40,12 +35,12 @@ public class Template extends BasicEntity {
 		setId(id);
 	}
 
-	public int getTreeid() {
-		return treeid;
+	public int getTreeId() {
+		return treeId;
 	}
 
-	public void setTreeid(int treeid) {
-		this.treeid = treeid;
+	public void setTreeId(int treeId) {
+		this.treeId = treeId;
 	}
 	
 	public String getTitle() {

@@ -9,7 +9,6 @@ import java.util.List;
 
 import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
-import cdar.dal.persistence.jdbc.producer.SubnodeDao;
 
 public class ConsumerDaoRepository extends CdarJdbcHelper {
 	public List<ProjectTreeDao> getProjectTrees() {

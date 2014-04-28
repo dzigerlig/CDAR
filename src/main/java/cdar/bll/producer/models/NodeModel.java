@@ -42,7 +42,7 @@ public class NodeModel {
 			}
 
 			TemplateModel tm = new TemplateModel();
-			String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
+			String templateContent = tm.getDefaultKnowledgeTemplateText(treeid);
 			Node node = new Node();
 			node.setKtrid(treeid);
 			node.setTitle(title);

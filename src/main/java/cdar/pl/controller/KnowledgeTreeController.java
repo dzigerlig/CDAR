@@ -94,7 +94,7 @@ public class KnowledgeTreeController {
 	@Path("templates/add/{ktreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Template addTemplate(Template template) {
-		return tm.addKnowledgeTemplate(template.getTreeid(),
+		return tm.addKnowledgeTemplate(template.getTreeId(),
 				template.getTitle(), template.getTemplatetext(), template.getDecisionMade());
 	}
 

@@ -133,7 +133,7 @@ public class TestTreeController extends JerseyTest {
 		int quantityOfTemplatesAfterDelete = target(
 				getAuthString() + "/ktree/templates/" + treeid).request().get(Set.class)
 				.size();
-		assertEquals(treeid, addedTemplate.getTreeid());
+		assertEquals(treeid, addedTemplate.getTreeId());
 		assertEquals("TestTemplate", addedTemplate.getTitle());
 		assertEquals("TemplateText", addedTemplate.getTemplatetext());
 		assertEquals(quantityOfTemplatesBeforeAdd + 1,
@@ -626,7 +626,7 @@ public class TestTreeController extends JerseyTest {
 
 	private Template addTemplate(int treeid, String title, String templatetext) {
 		Template addTestTemplate = new Template();
-		addTestTemplate.setTreeid(treeid);
+		addTestTemplate.setTreeId(treeid);
 		addTestTemplate.setTitle(title);
 		addTestTemplate.setTemplatetext(templatetext);
 		return target(getAuthString() + "/ktree/templates/add/" + treeid)

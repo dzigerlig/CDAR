@@ -79,6 +79,7 @@ public class MediaWikiCreationModel extends Thread {
 			createNewWikiEntry(user.getUsername(), user.getPassword());
 			getWikiHelper().removeWikiEntry(getTitle());
 		} catch (UnknownUserException e) {
+			System.out.println("mediawiki creation model exception");
 			e.printStackTrace();
 		}
 	}

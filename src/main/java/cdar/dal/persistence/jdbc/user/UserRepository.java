@@ -65,34 +65,33 @@ public class UserRepository {
 
 	public User getUser(String username) throws UnknownUserException {
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = ?";
-		ResultSet result = null;
 		User user = new User();
 
 		try (Connection connection = JDBCUtil.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setString(1, username);
-			result = preparedStatement.executeQuery();
-
-			while (result.next()) {
-				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
-				user.setUsername(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setAccesstoken(result.getString(6));
-				return user;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					user.setId(result.getInt(1));
+					user.setCreationTime(result.getDate(2));
+					user.setLastModificationTime(result.getDate(3));
+					user.setUsername(result.getString(4));
+					user.setPassword(result.getString(5));
+					user.setAccesstoken(result.getString(6));
+					return user;
+				}
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new UnknownUserException();
 		}
+		System.out.println("ok");
 		throw new UnknownUserException();
 	}
 
 	public User createUser(User user) throws Exception {
 		final String sql = "INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)";
-		ResultSet generatedKeys = null;
 
 		try (Connection connection = JDBCUtil.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -104,7 +103,7 @@ public class UserRepository {
 
 			preparedStatement.executeUpdate();
 
-			generatedKeys = preparedStatement.getGeneratedKeys();
+			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				user.setId(generatedKeys.getInt(1));
 			}

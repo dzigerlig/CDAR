@@ -26,8 +26,11 @@ import cdar.bll.user.UserModel;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
+import cdar.dal.exceptions.UnknownSubnodeException;
+import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class TestBLLKnowledgeProducer {
 	private UserModel um = new UserModel();
@@ -129,10 +132,10 @@ public class TestBLLKnowledgeProducer {
 		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
-		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
+		tplm.setDefaultTemplate(template1.getTreeId(), template1.getId());
 		assertTrue(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
 		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
-		tplm.setDefaultTemplate(template1.getTreeid(), template2.getId());
+		tplm.setDefaultTemplate(template1.getTreeId(), template2.getId());
 		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
 		assertTrue(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
 	}
@@ -145,13 +148,13 @@ public class TestBLLKnowledgeProducer {
 		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
-		tplm.setDefaultTemplate(template1.getTreeid(), template1.getId());
+		tplm.setDefaultTemplate(template1.getTreeId(), template1.getId());
 		assertTrue(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
 		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
-		tplm.setDefaultTemplate(template2.getTreeid(), template2.getId());
+		tplm.setDefaultTemplate(template2.getTreeId(), template2.getId());
 		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
 		assertTrue(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
-		tplm.setDefaultTemplate(template1.getTreeid(), template2.getId());
+		tplm.setDefaultTemplate(template1.getTreeId(), template2.getId());
 		assertFalse(tplm.getKnowledgeTemplate(template1.getId()).getIsDefault());
 		assertFalse(tplm.getKnowledgeTemplate(template2.getId()).getIsDefault());
 	}
@@ -181,30 +184,29 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetTemplatesUnknownTreeId() {
+	public void testGetTemplatesUnknownTreeId() throws SQLException {
 		TemplateModel tplm = new TemplateModel();
 		assertEquals(0, tplm.getKnowledgeTemplates(unknownId).size());
 	}
 	
-	@Test
-	public void testGetUnknownTemplate() {
+	@Test (expected = UnknownTemplateException.class)
+	public void testGetUnknownTemplate() throws UnknownTemplateException {
 		TemplateModel tplm = new TemplateModel();
-		assertEquals(-1, tplm.getKnowledgeTemplate(unknownId).getId());
+		tplm.getKnowledgeTemplate(unknownId).getId();
 	}
 	
-	@Test
-	public void testUpdateUnknownTemplate() {
+	@Test (expected = UnknownTemplateException.class)
+	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException {
 		TemplateModel tplm = new TemplateModel();
 		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text", false);
 		template.setTitle("New title");
-		Template updatedTemplate = tplm.updateTemplate(template);
-		assertEquals(-1, updatedTemplate.getId());
+		tplm.updateTemplate(template);
 	}
 	
-	@Test
-	public void testDeleteUnknownTemplate() {
+	@Test (expected = UnknownTemplateException.class)
+	public void testDeleteUnknownTemplate() throws UnknownTemplateException {
 		TemplateModel tplm = new TemplateModel();
-		assertFalse(tplm.deleteTemplate(unknownId));
+		tplm.deleteTemplate(unknownId);
 	}
 	
 	@Test
@@ -421,19 +423,19 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetSubnodesUnknownNode() {
+	public void testGetSubnodesUnknownNode() throws SQLException {
 		SubnodeModel snm = new SubnodeModel();
 		assertEquals(0, snm.getSubnodesFromNode(unknownId).size());
 	}
 	
 	@Test
-	public void testGetUnknownSubnode() {
+	public void testGetUnknownSubnode() throws UnknownSubnodeException {
 		SubnodeModel snm = new SubnodeModel();
 		assertEquals(-1, snm.getSubnode(unknownId).getId());
 	}
 	
-	@Test
-	public void testUpdateUnknownSubnode() {
+	@Test (expected = UnknownSubnodeException.class)
+	public void testUpdateUnknownSubnode() throws UnknownSubnodeException, SQLException {
 		SubnodeModel snm = new SubnodeModel();
 		Subnode subnode = snm.addSubnode(unknownId, "Subnode Title");
 		subnode.setTitle("New subnode title");
@@ -441,8 +443,8 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(-1, updatedSubnode.getId());
 	}
 	
-	@Test
-	public void testDeleteUnknownSubnode() {
+	@Test (expected = UnknownSubnodeException.class)
+	public void testDeleteUnknownSubnode() throws UnknownSubnodeException {
 		SubnodeModel snm = new SubnodeModel();
 		assertFalse(snm.deleteSubnode(unknownId));
 	}

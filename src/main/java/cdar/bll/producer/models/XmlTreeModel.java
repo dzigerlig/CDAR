@@ -21,17 +21,17 @@ import cdar.bll.producer.XmlTree;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.persistence.jdbc.producer.NodeLinkRepository;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
-import cdar.dal.persistence.jdbc.producer.SubnodeDao;
-import cdar.dal.persistence.jdbc.producer.TemplateDao;
+import cdar.dal.persistence.jdbc.producer.SubnodeRepository;
+import cdar.dal.persistence.jdbc.producer.TemplateRepository;
 import cdar.dal.persistence.jdbc.producer.XmlTreeRepository;
 
 public class XmlTreeModel {
-	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 	private DirectoryModel dm = new DirectoryModel();
 	private NodeRepository nr = new NodeRepository();
 	private NodeLinkRepository nlr = new NodeLinkRepository();
 	private XmlTreeRepository xtr = new XmlTreeRepository();
+	private TemplateRepository tr = new TemplateRepository();
+	private SubnodeRepository sr = new SubnodeRepository();
 
 	public Set<XmlTree> getXmlTrees(int treeId) throws SQLException {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();
@@ -67,25 +67,25 @@ public class XmlTreeModel {
 		return xtr.updateXmlTree(updatedXmlTree);
 	}
 
-	public boolean cleanTree(int xmlTreeid) throws Exception {
+	public boolean cleanTree(int xmlTreeId) throws Exception {
 		NodeRepository nr = new NodeRepository();
 		
-		XmlTree xmlTree = getXmlTree(xmlTreeid);
-		int treeid = xmlTree.getKtrid();
-		for (Node node : nr.getNodes(treeid)) {
+		XmlTree xmlTree = getXmlTree(xmlTreeId);
+		int treeId = xmlTree.getKtrid();
+		for (Node node : nr.getNodes(treeId)) {
 			if (!nr.deleteNode(node)) {
 				return false;
 			}
 		}
 
-		for (Directory directory : dm.getDirectories(treeid)) {
+		for (Directory directory : dm.getDirectories(treeId)) {
 			if (directory.getParentid()!=0 && !dm.deleteDirectory(directory.getId())) {
 				return false;
 			}
 		}
 
-		for (TemplateDao template : pdc.getTemplates(treeid)) {
-			if (!template.delete()) {
+		for (Template template : tr.getTemplates(treeId)) {
+			if (!tr.deleteTemplate(template)) {
 				return false;
 			}
 		}
@@ -100,8 +100,13 @@ public class XmlTreeModel {
 
 		if (cts.getTemplates()!=null) {
 			for (Template template : cts.getTemplates()) {
-				TemplateDao templateDao = new TemplateDao(template);
-				templateDao.create();
+				Template newTemplate = new Template();
+				newTemplate.setDecisionMade(template.getDecisionMade());
+				newTemplate.setIsDefault(template.getIsDefault());
+				newTemplate.setTemplatetext(template.getTemplatetext());
+				newTemplate.setTitle(template.getTitle());
+				newTemplate.setTreeId(template.getTreeId());
+				tr.createTemplate(newTemplate);
 			}
 		}
 
@@ -146,10 +151,12 @@ public class XmlTreeModel {
 		Map<Integer, Integer> subnodeMapping = new HashMap<Integer, Integer>();
 		if (cts.getSubnodes() != null) {
 			for (Subnode subnode : cts.getSubnodes()) {
-				SubnodeDao subnodeDao = new SubnodeDao(subnode);
-				subnodeDao.setKnid(nodeMapping.get(subnode.getKnid()));
-				subnodeDao.create();
-				subnodeMapping.put(subnode.getId(), subnodeDao.getId());
+				Subnode newSubnode = new Subnode();
+				newSubnode.setPosition(subnode.getPosition());
+				newSubnode.setTitle(subnode.getTitle());
+				newSubnode.setKnid(nodeMapping.get(subnode.getKnid()));
+				newSubnode = sr.createSubnode(newSubnode);
+				subnodeMapping.put(subnode.getId(), newSubnode.getId());
 			}
 		}
 

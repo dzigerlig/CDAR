@@ -2,22 +2,23 @@ package cdar.bll.producer.models;
 
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
+import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
-import cdar.dal.persistence.jdbc.producer.SubnodeDao;
+import cdar.dal.persistence.jdbc.producer.SubnodeRepository;
 
 public class SubnodeModel {
-	private ProducerDaoRepository pdc = new ProducerDaoRepository();
+	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(int knid, String title) {
-		SubnodeDao subnode = new SubnodeDao(knid,
-				pdc.getNextSubnodePosition(knid), title);
-		return new Subnode(subnode.create());
+	public Subnode addSubnode(int knid, String title) throws UnknownSubnodeException, SQLException {
+		Subnode subnode = new Subnode();
+		subnode.setKnid(knid);
+		subnode.setTitle(title);
+		subnode.setPosition(sr.getNextSubnodePosition(knid));
+		return sr.createSubnode(subnode);
 	}
 
 	// whole tree
@@ -26,29 +27,29 @@ public class SubnodeModel {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
 		for (Node node : nr.getNodes(treeId)) {
-			for (SubnodeDao subnode : pdc.getSubnodes(node.getId())) {
-				subnodes.add(new Subnode(subnode));
+			for (Subnode subnode : sr.getSubnodes(node.getId())) {
+				subnodes.add(subnode);
 			}
 		}
 
 		return subnodes;
 	}
 
-	public Set<Subnode> getSubnodesFromNode(int nodeId) {
+	public Set<Subnode> getSubnodesFromNode(int nodeId) throws SQLException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
-		for (SubnodeDao subnode : pdc.getSubnodes(nodeId)) {
-			subnodes.add(new Subnode(subnode));
+		for (Subnode subnode : sr.getSubnodes(nodeId)) {
+			subnodes.add(subnode);
 		}
 
 		return subnodes;
 	}
 
-	public Subnode getSubnode(int subnodeid) {
-		return new Subnode(pdc.getSubnode(subnodeid));
+	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException {
+		return sr.getSubnode(subnodeId);
 	}
 
-	public boolean changeSubnodePosition(int id, boolean up) {
+	public boolean changeSubnodePosition(int id, boolean up) throws SQLException, UnknownSubnodeException {
 		int oldPosition = getSubnode(id).getPosition();
 		int newPosition = up ? oldPosition - 1 : oldPosition + 1;
 
@@ -86,79 +87,72 @@ public class SubnodeModel {
 		}
 	}
 
-	public Subnode updateSubnode(Subnode subnode) {
-		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
-		subnodedao.setKnid(subnode.getKnid());
-		subnodedao.setTitle(subnode.getTitle());
-		subnodedao.setPosition(subnode.getPosition());
-		return new Subnode(subnodedao.update());
+	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
+		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
+		updatedSubnode.setKnid(subnode.getKnid());
+		updatedSubnode.setTitle(subnode.getTitle());
+		updatedSubnode.setPosition(subnode.getPosition());
+		return sr.updateSubnode(updatedSubnode);
 	}
 
-	public boolean deleteSubnode(int id) {
-		return pdc.getSubnode(id).delete();
+	public boolean deleteSubnode(int id) throws UnknownSubnodeException {
+		return sr.deleteSubnode(sr.getSubnode(id));
 	}
 
-	public boolean renameSubnode(Subnode subnode) {
-		SubnodeDao subnodedao = pdc.getSubnode(subnode.getId());
-		subnodedao.setTitle(subnode.getTitle());
-		Subnode retSubnode = new Subnode(subnodedao.update());
-		if (retSubnode.getId() == -1) {
-			return false;
-		}
-		{
-			return true;
-		}
-
+	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException {
+		Subnode renamedSubnode = sr.getSubnode(subnode.getId());
+		renamedSubnode.setTitle(subnode.getTitle());
+		return sr.updateSubnode(renamedSubnode);
 	}
 
-	public int getNextSubnodePosition(int nodeid) {
-		return pdc.getNextSubnodePosition(nodeid);
+	public int getNextSubnodePosition(int nodeId) throws SQLException {
+		return sr.getNextSubnodePosition(nodeId);
 	}
 
-	public boolean moveSubnodeUp(Subnode subnode) {
+	public boolean moveSubnodeUp(Subnode subnode) throws SQLException, UnknownSubnodeException {
 		return changeSubnodePosition(subnode.getId(), true);
 	}
 
-	public boolean moveSubnodeDown(Subnode subnode) {
+	public boolean moveSubnodeDown(Subnode subnode) throws SQLException, UnknownSubnodeException {
 		return changeSubnodePosition(subnode.getId(), false);
 	}
 
-	public Set<Subnode> zoomUp(int nodeid) {
+	public Set<Subnode> zoomUp(int nodeId) throws SQLException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
-		for (SubnodeDao subnode : pdc.getSubnodes(nodeid)) {
-			subnodes.add(new Subnode(subnode));
+		for (Subnode subnode : sr.getSubnodes(nodeId)) {
+			subnodes.add(subnode);
 		}
-		return rekZoomUp(nodeid, 2, subnodes);
+		return recursiveZoomUp(nodeId, 2, subnodes);
 	}
 
-	private Set<Subnode> rekZoomUp(int nodeid, int quantity,
+	private Set<Subnode> recursiveZoomUp(int nodeid, int quantity,
 			Set<Subnode> subnodes) {
 		if (quantity > 0) {
-			for (SubnodeDao subnode : pdc.getSiblingSubnode(nodeid)) {
-				subnodes.add(new Subnode(subnode));
+			for (Subnode subnode : sr.getSiblingSubnode(nodeid)) {
+				subnodes.add(subnode);
 			}
-			for (SubnodeDao subnode : pdc.getParentSubnode(nodeid)) {
-				subnodes.add(new Subnode(subnode));
-				subnodes = rekZoomUp(subnode.getKnid(), quantity - 1, subnodes);
+			for (Subnode subnode : sr.getParentSubnode(nodeid)) {
+				subnodes.add(subnode);
+				subnodes = recursiveZoomUp(subnode.getKnid(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;
 	}
 
-	public Set<Subnode> zoomDown(int nodeid) {
+	public Set<Subnode> zoomDown(int nodeid) throws SQLException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
-		for (SubnodeDao subnode : pdc.getSubnodes(nodeid)) {
-			subnodes.add(new Subnode(subnode));
+		for (Subnode subnode : sr.getSubnodes(nodeid)) {
+			subnodes.add(subnode);
 		}
-		return rekZoomDown(nodeid, 2, subnodes);
+		return recursiveZoomDown(nodeid, 2, subnodes);
 	}
 
-	private Set<Subnode> rekZoomDown(int nodeid, int quantity,
+	private Set<Subnode> recursiveZoomDown(int nodeid, int quantity,
 			Set<Subnode> subnodes) {
 		if (quantity > 0) {
-			for (SubnodeDao node : pdc.getFollowerSubnode(nodeid)) {
-				subnodes.add(new Subnode(node));
-				subnodes = rekZoomDown(node.getKnid(), quantity - 1, subnodes);
+			for (Subnode subnode : sr.getFollowerSubnode(nodeid)) {
+				subnodes.add(subnode);
+				subnodes = recursiveZoomDown(subnode.getKnid(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;

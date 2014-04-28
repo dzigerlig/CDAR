@@ -1,75 +1,80 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.producer.Template;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
-import cdar.dal.persistence.jdbc.producer.TemplateDao;
+import cdar.dal.exceptions.UnknownTemplateException;
+import cdar.dal.exceptions.UnknownXmlTreeException;
+import cdar.dal.persistence.jdbc.producer.TemplateRepository;
 
 public class TemplateModel {
-	private ProducerDaoRepository pdc = new ProducerDaoRepository();
+	private TemplateRepository tr = new TemplateRepository();
 
-	public Set<Template> getKnowledgeTemplates(int ktreeid) {
+	public Set<Template> getKnowledgeTemplates(int ktreeId) throws SQLException {
 		Set<Template> templates = new HashSet<Template>();
-		for (TemplateDao template : pdc.getTemplates(ktreeid)) {
-			templates.add(new Template(template));
+		for (Template template : tr.getTemplates(ktreeId)) {
+			templates.add(template);
 		}
 		return templates;
 	}
 
-	public Template getKnowledgeTemplate(int templateid) {
-		return new Template(pdc.getTemplate(templateid));
+	public Template getKnowledgeTemplate(int templateId) throws UnknownTemplateException {
+		return tr.getTemplate(templateId);
 	}
 
-	public Template addKnowledgeTemplate(int treeid, String title, String text, boolean decisionMade) {
-		TemplateDao templatedao = new TemplateDao(treeid, title, text, decisionMade);
-		return new Template(templatedao.create());
+	public Template addKnowledgeTemplate(int treeId, String title, String text, boolean decisionMade) throws UnknownTemplateException  {
+		Template template = new Template();
+		template.setTreeId(treeId);
+		template.setTitle(title);
+		template.setTemplatetext(text);
+		template.setDecisionMade(decisionMade);
+		return tr.createTemplate(template);
 	}
 
-	public boolean deleteTemplate(int id) {
-		TemplateDao templatedao = pdc.getTemplate(id);
-		return templatedao.delete();
+	public boolean deleteTemplate(int id) throws UnknownTemplateException {
+		Template template = getKnowledgeTemplate(id);
+		return tr.deleteTemplate(template);
 	}
 
-	public Template updateTemplate(Template template) {
-		TemplateDao templatedao = pdc.getTemplate(template.getId());
-		templatedao.setKtrid(template.getTreeid());
-		templatedao.setTemplatetext(template.getTemplatetext());
-		templatedao.setTitle(template.getTitle());
-		return new Template(templatedao.update());
+	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {
+		Template updatedTemplate = getKnowledgeTemplate(template.getId());
+		updatedTemplate.setTemplatetext(template.getTemplatetext());
+		updatedTemplate.setTitle(template.getTitle());
+		updatedTemplate.setDecisionMade(template.getDecisionMade());
+		return tr.updateTemplate(updatedTemplate);
 	}
 
-	public Set<Template> setDefaultTemplate(int treeid, int templateId) {
-		TemplateDao srcTemplate = pdc.getTemplate(templateId);
+	public Set<Template> setDefaultTemplate(int treeId, int templateId) throws UnknownTemplateException, UnknownXmlTreeException, SQLException {
+		Template srcTemplate = getKnowledgeTemplate(templateId);
 		
 		if (srcTemplate.getIsDefault()) {
-			TemplateDao templatedao = pdc.getTemplate(templateId);
-			templatedao.setIsDefault(false);
-			templatedao.update();
+			srcTemplate.setIsDefault(false);
+			tr.updateTemplate(srcTemplate);
 		} else {
-			for (TemplateDao templatedao : pdc.getTemplates(treeid)) {
-				if (templatedao.getDecisionMade() == srcTemplate.getDecisionMade()) {
-					templatedao.setIsDefault(templatedao.getId() == templateId);
-					templatedao.update();
+			for (Template template : tr.getTemplates(treeId)) {
+				if (template.getDecisionMade() == srcTemplate.getDecisionMade()) {
+					template.setIsDefault(template.getId() == templateId);
+					tr.updateTemplate(template);
 				}
 			}
 		}
-		return getKnowledgeTemplates(treeid);
+		return getKnowledgeTemplates(treeId);
 	}
 
-	public String getDefaultKnowledgeTemplate(int ktrid) {
-		for (TemplateDao templatedao : pdc.getTemplates(ktrid)) {
-			if (templatedao.getIsDefault() && !templatedao.getDecisionMade()) {
-				return templatedao.getTemplatetext();
+	public String getDefaultKnowledgeTemplateText(int ktrid) throws SQLException {
+		for (Template template : tr.getTemplates(ktrid)) {
+			if (template.getIsDefault() && !template.getDecisionMade()) {
+				return template.getTemplatetext();
 			}
 		}
 		return null;
 	}
 
-	public Template renameTemplate(Template template) {
-		TemplateDao templatedao = pdc.getTemplate(template.getId());
-		templatedao.setTitle(template.getTitle());
-		return new Template(templatedao.update());
+	public Template renameTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {
+		Template renamedTemplate = tr.getTemplate(template.getId());
+		renamedTemplate.setTitle(template.getTitle());
+		return tr.updateTemplate(renamedTemplate);
 	}
 }
