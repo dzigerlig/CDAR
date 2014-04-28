@@ -12,7 +12,7 @@ import java.util.List;
 
 import cdar.bll.producer.Directory;
 import cdar.dal.exceptions.UnknownDirectoryException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class DirectoryRepository {
 	public List<Directory> getDirectories(int treeid) throws SQLException {
@@ -20,7 +20,7 @@ public class DirectoryRepository {
 
 		List<Directory> directories = new ArrayList<Directory>();
 
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeid);
 			ResultSet result = preparedStatement.executeQuery();
 			while (result.next()) {
@@ -42,7 +42,7 @@ public class DirectoryRepository {
 	public Directory getDirectory(int id) throws UnknownDirectoryException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = ?";
 
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 
 			ResultSet result = preparedStatement.executeQuery();
@@ -65,7 +65,7 @@ public class DirectoryRepository {
 	public Directory createDirectory(Directory directory) throws Exception {
 		final String sql = "INSERT INTO DIRECTORY (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -91,7 +91,7 @@ public class DirectoryRepository {
 	
 	public Directory updateDirectory(Directory directory) throws Exception {
 		final String sql = "UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -119,7 +119,7 @@ public class DirectoryRepository {
 	
 	public boolean deleteDirectory(Directory directory) throws Exception {
 		final String sql = "DELETE FROM DIRECTORY WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, directory.getId());

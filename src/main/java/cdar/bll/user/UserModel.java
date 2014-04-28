@@ -36,8 +36,7 @@ public class UserModel {
 	}
 
 	public boolean deleteUser(int userId) throws Exception {
-		User user;
-		user = userRepository.getUser(userId);
+		User user = userRepository.getUser(userId);
 		return userRepository.deleteUser(user);
 	}
 
@@ -49,8 +48,8 @@ public class UserModel {
 		return userRepository.getUser(username);
 	}
 
-	public User getUser(int userid) throws UnknownUserException {
-		return userRepository.getUser(userid);
+	public User getUser(int userId) throws UnknownUserException {
+		return userRepository.getUser(userId);
 	}
 
 	public List<User> getUsers() throws Exception {

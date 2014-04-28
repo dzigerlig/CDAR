@@ -13,7 +13,7 @@ import cdar.dal.persistence.jdbc.producer.SubnodeRepository;
 public class SubnodeModel {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(int knid, String title) throws UnknownSubnodeException, SQLException {
+	public Subnode addSubnode(int knid, String title) throws Exception {
 		Subnode subnode = new Subnode();
 		subnode.setKnid(knid);
 		subnode.setTitle(title);

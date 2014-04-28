@@ -11,7 +11,7 @@ import java.util.List;
 
 import cdar.bll.producer.Tree;
 import cdar.dal.exceptions.UnknownTreeException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class TreeRepository {
 
@@ -27,7 +27,7 @@ public class TreeRepository {
 		ResultSet result = null;
 		List<Tree> trees = new ArrayList<Tree>();
 
-		try (Connection connection = JDBCUtil.getConnection(); Statement statement = connection.createStatement()) {
+		try (Connection connection = DBConnection.getConnection(); Statement statement = connection.createStatement()) {
 			result = statement.executeQuery(sql);
 			while (result.next()) {
 				Tree tree = new Tree();
@@ -50,7 +50,7 @@ public class TreeRepository {
 		ResultSet result = null;
 		Tree tree = new Tree();
 
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 			result = preparedStatement.executeQuery();
@@ -75,7 +75,7 @@ public class TreeRepository {
 		final String sql2 = "INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)";
 		ResultSet generatedKeys = null;
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -91,7 +91,7 @@ public class TreeRepository {
 			throw ex;
 		}
 		
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
 			preparedStatement.setInt(1, tree.getUid());
 			preparedStatement.setInt(2, tree.getId());
 			preparedStatement.executeUpdate();
@@ -104,7 +104,7 @@ public class TreeRepository {
 	public Tree updateTree(Tree tree) throws Exception {
 		final String sql = "UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
 		ResultSet generatedKeys = null;
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -126,7 +126,7 @@ public class TreeRepository {
 	
 	public boolean deleteTree(Tree tree) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, tree.getId());

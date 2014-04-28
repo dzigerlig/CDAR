@@ -11,7 +11,7 @@ import java.util.List;
 
 import cdar.bll.user.User;
 import cdar.dal.exceptions.UnknownUserException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class UserRepository {
 
@@ -19,7 +19,7 @@ public class UserRepository {
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
 		ResultSet result = null;
 		List<User> users = new ArrayList<User>();
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				Statement statement = connection.createStatement()) {
 			result = statement.executeQuery(sql);
 			while (result.next()) {
@@ -40,22 +40,22 @@ public class UserRepository {
 
 	public User getUser(int id) throws UnknownUserException {
 		User user = new User();
-		ResultSet result = null;
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = ?";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
-			result = preparedStatement.executeQuery();
-			while (result.next()) {
-				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
-				user.setUsername(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setAccesstoken(result.getString(6));
-				return user;
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					user.setId(result.getInt(1));
+					user.setCreationTime(result.getDate(2));
+					user.setLastModificationTime(result.getDate(3));
+					user.setUsername(result.getString(4));
+					user.setPassword(result.getString(5));
+					user.setAccesstoken(result.getString(6));
+					return user;
+				}
 			}
 		} catch (SQLException e) {
 			throw new UnknownUserException();
@@ -67,7 +67,7 @@ public class UserRepository {
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = ?";
 		User user = new User();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setString(1, username);
@@ -86,14 +86,13 @@ public class UserRepository {
 			ex.printStackTrace();
 			throw new UnknownUserException();
 		}
-		System.out.println("ok");
 		throw new UnknownUserException();
 	}
 
 	public User createUser(User user) throws Exception {
 		final String sql = "INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1,
@@ -116,7 +115,7 @@ public class UserRepository {
 	public User updateUser(User user) throws Exception {
 		final String sql = "UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?";
 		ResultSet generatedKeys = null;
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1,
@@ -140,11 +139,8 @@ public class UserRepository {
 	}
 
 	public boolean deleteUser(User user) throws Exception {
-		// prepared statement cannot be used for tablename,
-		// preparedstatement is only for the column names
-		// http://stackoverflow.com/questions/11312155/how-to-use-a-tablename-variable-for-a-java-prepared-statement-insert
 		final String sql = "DELETE FROM USER WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, user.getId());

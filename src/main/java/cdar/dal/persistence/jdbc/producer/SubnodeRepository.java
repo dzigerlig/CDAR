@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Subnode;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class SubnodeRepository {
 	public List<Subnode> getSubnodes(int nodeId) throws SQLException {
@@ -19,7 +20,7 @@ public class SubnodeRepository {
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeId);
@@ -45,7 +46,7 @@ public class SubnodeRepository {
 	public Subnode getSubnode(int id) throws UnknownSubnodeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = ?";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
@@ -73,7 +74,7 @@ public class SubnodeRepository {
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeid);
@@ -101,7 +102,7 @@ public class SubnodeRepository {
 		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM NODELINK AS LINK WHERE ( SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>%d) AS NODES, KNOWLEDGESUBNODE AS SUBN WHERE SUBN.KNID=NODES.ID";
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeId);
@@ -131,7 +132,7 @@ public class SubnodeRepository {
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeId);
@@ -172,7 +173,7 @@ public class SubnodeRepository {
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
@@ -196,34 +197,47 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 	
-	public Subnode createSubnode(Subnode subnode) throws UnknownSubnodeException {
-		final String sql = "INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, WIKITITLE, POSITION) VALUES (?, ?, ?, ?, ?)";
+	public Subnode createSubnode(Subnode subnode) throws Exception {
+		final String sql = "INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, POSITION) VALUES (?, ?, ?, ?)";
+		final String sqlUpdate = "UPDATE KNOWLEDGESUBNODE SET WIKITITLE = ? where id = ?";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, subnode.getKnid());
 			preparedStatement.setString(3, subnode.getTitle());
-			preparedStatement.setString(4, subnode.getWikiTitle());
-			preparedStatement.setInt(5, subnode.getPosition());
-
+			preparedStatement.setInt(4, subnode.getPosition());
+			System.out.println(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 
 			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				subnode.setId(generatedKeys.getInt(1));
+				subnode.setWikiTitle(String.format("SUBNODE_%d", subnode.getId()));
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw new UnknownSubnodeException();
+			throw new UnknownNodeException();
 		}
+		
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sqlUpdate)) {
+			preparedStatement.setString(1, subnode.getWikiTitle());
+			preparedStatement.setInt(2, subnode.getId());
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			System.out.println("SUBNODE UPDATE EXCEPTION");
+			ex.printStackTrace();
+			throw ex;
+		}
+		
 		return subnode;
 	}
 	
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
 		final String sql = "UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?";
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, subnode.getKnid());
 			preparedStatement.setString(3, subnode.getTitle());
@@ -244,7 +258,7 @@ public class SubnodeRepository {
 	
 	public boolean deleteSubnode(Subnode subnode) throws UnknownSubnodeException {
 		final String sql = "DELETE FROM KNOWLEDGESUBNODE WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, subnode.getId());

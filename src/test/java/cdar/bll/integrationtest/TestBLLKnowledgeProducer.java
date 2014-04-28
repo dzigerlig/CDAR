@@ -428,14 +428,14 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(0, snm.getSubnodesFromNode(unknownId).size());
 	}
 	
-	@Test
+	@Test (expected = UnknownSubnodeException.class)
 	public void testGetUnknownSubnode() throws UnknownSubnodeException {
 		SubnodeModel snm = new SubnodeModel();
-		assertEquals(-1, snm.getSubnode(unknownId).getId());
+		snm.getSubnode(unknownId).getId();
 	}
 	
-	@Test (expected = UnknownSubnodeException.class)
-	public void testUpdateUnknownSubnode() throws UnknownSubnodeException, SQLException {
+	@Test (expected = UnknownNodeException.class)
+	public void testUpdateUnknownSubnode() throws Exception {
 		SubnodeModel snm = new SubnodeModel();
 		Subnode subnode = snm.addSubnode(unknownId, "Subnode Title");
 		subnode.setTitle("New subnode title");

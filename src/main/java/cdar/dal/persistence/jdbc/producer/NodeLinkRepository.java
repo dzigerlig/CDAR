@@ -13,7 +13,7 @@ import java.util.List;
 import cdar.bll.producer.NodeLink;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownTreeException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class NodeLinkRepository {
 	public List<NodeLink> getNodeLinks(int treeId) throws SQLException {
@@ -21,7 +21,7 @@ public class NodeLinkRepository {
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
@@ -48,7 +48,7 @@ public class NodeLinkRepository {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = TARGETID";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeid);
@@ -75,7 +75,7 @@ public class NodeLinkRepository {
 		final String sql = "SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeid);
@@ -103,7 +103,7 @@ public class NodeLinkRepository {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = SOURCEID";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, nodeId);
@@ -131,7 +131,7 @@ public class NodeLinkRepository {
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, subnodeId);
@@ -158,7 +158,7 @@ public class NodeLinkRepository {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = ?";
 
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
@@ -184,7 +184,7 @@ public class NodeLinkRepository {
 	public NodeLink createNodeLink(NodeLink nodeLink) throws UnknownTreeException {
 		final String sql = "INSERT INTO NODELINK (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -212,7 +212,7 @@ public class NodeLinkRepository {
 	public NodeLink updateNodeLink(NodeLink nodeLink) throws Exception {
 		final String sql = "UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?";
 		ResultSet generatedKeys = null;
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -240,7 +240,7 @@ public class NodeLinkRepository {
 	
 	public boolean deleteNodeLink(NodeLink nodeLink) throws Exception {
 		final String sql = "DELETE FROM NODELINK WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, nodeLink.getId());

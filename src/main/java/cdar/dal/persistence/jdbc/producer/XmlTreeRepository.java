@@ -11,7 +11,7 @@ import java.util.List;
 
 import cdar.bll.producer.XmlTree;
 import cdar.dal.exceptions.UnknownXmlTreeException;
-import cdar.dal.persistence.JDBCUtil;
+import cdar.dal.persistence.DBConnection;
 
 public class XmlTreeRepository {
 	public List<XmlTree> getXmlTrees(int treeId) throws SQLException {
@@ -19,7 +19,7 @@ public class XmlTreeRepository {
 
 		List<XmlTree> xmlTrees = new ArrayList<XmlTree>();
 
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
 			ResultSet result = preparedStatement.executeQuery();
@@ -42,7 +42,7 @@ public class XmlTreeRepository {
 	public XmlTree getXmlTree(int id) throws UnknownXmlTreeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE ID = ?";
 
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
 			ResultSet result = preparedStatement.executeQuery();
@@ -66,7 +66,7 @@ public class XmlTreeRepository {
 	public XmlTree createXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
 		final String sql = "INSERT INTO KNOWLEDGETREEXML (CREATION_TIME, uid, ktrid, xmlstring) VALUES (?, ?, ?, ?)";
 
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
@@ -88,7 +88,7 @@ public class XmlTreeRepository {
 	
 	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
 		final String sql = "UPDATE KNOWLEDGETREEXML SET LAST_MODIFICATION_TIME = ?, UID = ?, KTRID = ?, XMLSTRING = ? WHERE id = ?";
-		try (Connection connection = JDBCUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, xmlTree.getUid());
 			preparedStatement.setInt(3, xmlTree.getKtrid());
@@ -109,7 +109,7 @@ public class XmlTreeRepository {
 	
 	public boolean deleteXmlTree(XmlTree xmlTree) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGETREEXML WHERE ID = ?";
-		try (Connection connection = JDBCUtil.getConnection();
+		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, xmlTree.getId());

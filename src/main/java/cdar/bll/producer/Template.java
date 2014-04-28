@@ -24,9 +24,6 @@ public class Template extends BasicEntity {
 		setTreeId(treeid);
 		setTitle(title);
 		setTemplatetext(templatetext);
-		if (getTemplatetext()!=null) {
-			setTemplatetexthtml(WikiModel.toHtml(getTemplatetext()));
-		}
 		setIsDefault(isDefault);
 		setDecisionMade(decisionMade);
 	}
@@ -56,6 +53,9 @@ public class Template extends BasicEntity {
 	}
 
 	public void setTemplatetext(String templatetext) {
+		if (templatetext != null) {
+			setTemplatetexthtml(WikiModel.toHtml(templatetext));
+		}
 		this.templatetext = templatetext;
 	}
 

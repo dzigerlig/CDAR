@@ -1,23 +1,19 @@
 package cdar.dal.persistence;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
-public class JDBCUtil {
-	private static Connection connection = null;
-
+public class DBConnection {
 	public static Connection getConnection() {
 		String resourceName = "cdarconfig.properties";
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties prop = new Properties();
+		Connection connection = null;
 
 		try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-			
+
 			prop.load(resourceStream);
 
 			String hibernateConfig = System.getProperty("fileName");
@@ -33,18 +29,8 @@ public class JDBCUtil {
 						prop.getProperty("LOCAL_DB_USER"),
 						prop.getProperty("LOCAL_DB_PASSWORD"));
 			}
-		} catch (SQLException e) {
-			System.out.println(1);
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			System.out.println(2);
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println(2);
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println(3);
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return connection;
 	}
