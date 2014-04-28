@@ -13,9 +13,8 @@ import cdar.dal.persistence.jdbc.producer.NodeRepository;
 
 public class NodeModel {
 	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
-	
+
 	private NodeRepository nr = new NodeRepository();
-	
 
 	public Set<Node> getNodes(int treeid) throws SQLException {
 		Set<Node> nodes = new HashSet<Node>();
@@ -33,37 +32,32 @@ public class NodeModel {
 		return nr.deleteNode(getNode(id));
 	}
 
-	public Node addNode(int uid, int treeid, String title, int did) throws Exception {
-		if (treeid != -1) {
-			if (did == 0) {
-				DirectoryRepository dr = new DirectoryRepository();
-				int rootDirectoryId = dr.getDirectories(treeid).get(0).getId();
-				did = rootDirectoryId;
-			}
-
-			TemplateModel tm = new TemplateModel();
-			String templateContent = tm.getDefaultKnowledgeTemplateText(treeid);
-			Node node = new Node();
-			node.setKtrid(treeid);
-			node.setTitle(title);
-			node.setDid(did);
-			node = nr.createNode(node);
-
-			if (templateContent == null) {
-				templateContent = "== CDAR ==";
-			}
-
-			wikiHelper.addWikiEntry(node.getWikiTitle(), templateContent);
-
-			MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeid,
-					node.getWikiTitle(), templateContent, wikiHelper);
-			mwm.start();
-			return node;
-		} else {
-			Node node = new Node();
-			node.setId(-1);
-			return node;
+	public Node addNode(int uid, int treeId, String title, int did)
+			throws Exception {
+		if (did == 0) {
+			DirectoryRepository dr = new DirectoryRepository();
+			int rootDirectoryId = dr.getDirectories(treeId).get(0).getId();
+			did = rootDirectoryId;
 		}
+
+		TemplateModel tm = new TemplateModel();
+		String templateContent = tm.getDefaultKnowledgeTemplateText(treeId);
+		Node node = new Node();
+		node.setKtrid(treeId);
+		node.setTitle(title);
+		node.setDid(did);
+		node = nr.createNode(node);
+
+		if (templateContent == null) {
+			templateContent = "== CDAR ==";
+		}
+
+		wikiHelper.addWikiEntry(node.getWikiTitle(), templateContent);
+
+		MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeId,
+				node.getWikiTitle(), templateContent, wikiHelper);
+		mwm.start();
+		return node;
 	}
 
 	public Node dropNode(int id) throws Exception {
@@ -108,17 +102,17 @@ public class NodeModel {
 	public Set<Node> zoomUp(int nodeid) throws UnknownNodeException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeid));
-		return rekZoomUp(nodeid, 2, nodes);
+		return recursiveZoomUp(nodeid, 2, nodes);
 	}
 
-	private Set<Node> rekZoomUp(int nodeid, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomUp(int nodeid, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
 			for (Node node : nr.getSiblingNode(nodeid)) {
 				nodes.add(node);
 			}
 			for (Node node : nr.getParentNode(nodeid)) {
 				nodes.add(node);
-				nodes = rekZoomUp(node.getId(), quantity - 1, nodes);
+				nodes = recursiveZoomUp(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;
@@ -127,14 +121,14 @@ public class NodeModel {
 	public Set<Node> zoomDown(int nodeid) throws UnknownNodeException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeid));
-		return rekZoomDown(nodeid, 2, nodes);
+		return recursiveZoomDown(nodeid, 2, nodes);
 	}
 
-	private Set<Node> rekZoomDown(int nodeid, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomDown(int nodeid, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
 			for (Node node : nr.getFollowerNode(nodeid)) {
 				nodes.add(node);
-				nodes = rekZoomDown(node.getId(), quantity - 1, nodes);
+				nodes = recursiveZoomDown(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;
