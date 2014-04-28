@@ -20,7 +20,6 @@ public abstract  class CUDHelper<T> extends CdarJdbcHelper {
 		try {
 			connection = JDBCUtil.getConnection();
 			object = createVisit(connection, preparedStatement, generatedKeys);			
-
 		} catch (Exception ex) {
 			throw ex;
 		} finally {

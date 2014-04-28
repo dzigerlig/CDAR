@@ -28,11 +28,11 @@ public class SecurityFilter implements ContainerRequestFilter {
 				System.out.println("uid: "
 						+ requestContext.getHeaderString("uid"));
 				System.out.println("accesstoken: "
-						+ requestContext.getHeaderString("auth-token"));
+						+ requestContext.getHeaderString("accesstoken"));
 				final int uid = Integer.parseInt(requestContext
 						.getHeaderString("uid"));
 				final String accesstoken = requestContext
-						.getHeaderString("auth-token");
+						.getHeaderString("accesstoken");
 
 				User user = um.getUser(uid);
 
