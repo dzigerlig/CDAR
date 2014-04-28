@@ -31,6 +31,8 @@ import cdar.bll.producer.models.TreeModel;
 import cdar.bll.user.UserModel;
 import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
+import cdar.dal.exceptions.UnknownProjectNodeLinkException;
+import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
@@ -306,30 +308,29 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetProjectNodeLinksUnknownProjectTree() {
+	public void testGetProjectNodeLinksUnknownProjectTree() throws UnknownProjectTreeException {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
-		assertEquals(0, pnlm.getProjectNodeLinks(unknownId).size());
+		pnlm.getProjectNodeLinks(unknownId);
 	}
 	
 	@Test
-	public void testGetUnknownProjectNodeLink() {
+	public void testGetUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
-		assertEquals(-1, pnlm.getProjectNodeLink(unknownId).getId());
+		pnlm.getProjectNodeLink(unknownId);
 	}
 	
 	@Test
-	public void testUpdateUnknownProjectNodeLink() {
+	public void testUpdateUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
 		ProjectNodeLink projectNodeLink = pnlm.getProjectNodeLink(unknownId);
 		projectNodeLink.setSourceId(12);
-		ProjectNodeLink updatedProjectNodeLink = pnlm.updateLink(projectNodeLink);
-		assertEquals(-1, updatedProjectNodeLink.getId());
+		pnlm.updateLink(projectNodeLink);
 	}
 	
 	@Test
-	public void testDeleteUnknownProjectNodeLink() {
+	public void testDeleteUnknownProjectNodeLink() throws Exception {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
-		assertFalse(pnlm.removeProjectNodeLink(unknownId));
+		pnlm.removeProjectNodeLink(unknownId);
 	}
 	
 	@Test
@@ -373,34 +374,33 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetProjectSubnodesUnknownProjectNode() {
+	public void testGetProjectSubnodesUnknownProjectNode() throws UnknownProjectNodeLinkException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		assertEquals(0, psm.getProjectSubnodesFromProjectNode(unknownId).size());
+		psm.getProjectSubnodesFromProjectNode(unknownId);
 	}
 	
 	@Test
-	public void testGetProjectSubnodesUnknownProjectTree() throws UnknownProjectTreeException {
+	public void testGetProjectSubnodesUnknownProjectTree() throws UnknownProjectTreeException, UnknownProjectNodeLinkException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		psm.getProjectSubnodesFromProjectTree(unknownId);
 	}
 	
 	@Test
-	public void testGetUnknownProjectSubnode() {
+	public void testGetUnknownProjectSubnode() throws UnknownProjectSubnodeException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		assertEquals(-1, psm.getProjectSubnode(unknownId).getId());
+		psm.getProjectSubnode(unknownId);
 	}
 	
 	@Test
-	public void testUpdateUnknownProjectSubnode() {
+	public void testUpdateUnknownProjectSubnode() throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		ProjectSubnode projectSubnode = psm.getProjectSubnode(unknownId);
 		projectSubnode.setTitle("My unknown project subnode");
-		ProjectSubnode updatedProjectSubnode = psm.updateProjectSubnode(projectSubnode);
-		assertEquals(-1, updatedProjectSubnode.getId());
+		psm.updateProjectSubnode(projectSubnode);
 	}
 	
 	@Test
-	public void testDeleteUnknownProjectSubnode() {
+	public void testDeleteUnknownProjectSubnode() throws UnknownProjectSubnodeException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		assertFalse(psm.removeProjectSubnode(unknownId));
 	}

@@ -3,10 +3,10 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
 
 public class ProjectSubnode extends WikiEntity {
 	private int refProjectNodeId;
+	private int position;
 
 	public ProjectSubnode() {
 		super();
@@ -20,15 +20,19 @@ public class ProjectSubnode extends WikiEntity {
 		setRefProjectNodeId(refProjectNodeId);
 	}
 
-	public ProjectSubnode(ProjectSubnodeDao snd) {
-		this(snd.getId(), snd.getCreationTime(), snd.getLastModificationTime(), snd.getTitle(), snd.getWikititle(), snd.getKpnid());
-	}
-
 	public int getRefProjectNodeId() {
 		return refProjectNodeId;
 	}
 
 	public void setRefProjectNodeId(int refProjectNodeId) {
 		this.refProjectNodeId = refProjectNodeId;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }

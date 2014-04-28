@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import cdar.bll.consumer.ProjectNode;
+import cdar.bll.consumer.ProjectNodeLink;
+import cdar.bll.consumer.ProjectSubnode;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -16,15 +18,17 @@ import cdar.bll.producer.models.NodeModel;
 import cdar.bll.producer.models.SubnodeModel;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
-import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeRepository;
-import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeRepository;
 
 public class ProjectTreeModel {
 
 	private ProjectTreeRepository ptr = new ProjectTreeRepository();
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
+	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
+	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
 	public Set<ProjectTree> getProjectTrees(int uid) throws SQLException {
 		Set<ProjectTree> projectTrees = new HashSet<ProjectTree>();
@@ -63,19 +67,22 @@ public class ProjectTreeModel {
 		}
 
 		for (Subnode subnode : snm.getSubnodesFromTree(ktreeId)) {
-			ProjectSubnodeDao projectsubnode = new ProjectSubnodeDao(
-					linkMapping.get(subnode.getKnid()), subnode.getPosition());
-			projectsubnode.setTitle(subnode.getTitle());
-			projectsubnode.setWikititle(subnode.getWikiTitle());
-			projectsubnode.create();
+			ProjectSubnode projectSubnode = new ProjectSubnode();
+			projectSubnode.setTitle(subnode.getTitle());
+			projectSubnode.setWikiTitle(subnode.getWikiTitle());
+			projectSubnode.setRefProjectNodeId(linkMapping.get(subnode.getKnid()));
+			projectSubnode.setPosition(subnode.getPosition());
+			psr.createProjectSubnode(projectSubnode);
 		}
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
-			ProjectNodeLinkDao projectnodelink = new ProjectNodeLinkDao(
-					linkMapping.get(nodelink.getSourceId()),
-					linkMapping.get(nodelink.getTargetId()), ptreeId);
-			projectnodelink.setKpnsnid(nodelink.getKsnid());
-			projectnodelink.create();
+			
+			ProjectNodeLink projectNodeLink = new ProjectNodeLink();
+			projectNodeLink.setSourceId(nodelink.getSourceId());
+			projectNodeLink.setTargetId(nodelink.getTargetId());
+			projectNodeLink.setRefProjectSubNodeId(nodelink.getKsnid());
+			projectNodeLink.setRefProjectTreeId(ptreeId);
+			pnlr.createProjectNodeLink(projectNodeLink);
 		}
 	}
 

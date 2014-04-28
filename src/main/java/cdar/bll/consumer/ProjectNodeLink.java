@@ -3,7 +3,6 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkDao;
 
 public class ProjectNodeLink extends BasicEntity {
 	private int sourceId;
@@ -23,10 +22,6 @@ public class ProjectNodeLink extends BasicEntity {
 		setTargetId(targetId);
 		setRefProjectSubNodeId(refProjectSubNodeId);
 		setRefProjectTreeId(refProjectTreeId);
-	}
-
-	public ProjectNodeLink(ProjectNodeLinkDao pnld) {
-		this(pnld.getId(), pnld.getCreationTime(), pnld.getLastModificationTime(), pnld.getSourceid(), pnld.getTargetid(), pnld.getKpnsnid(), pnld.getKptid());
 	}
 
 	public int getSourceId() {

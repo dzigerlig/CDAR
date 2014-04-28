@@ -5,68 +5,74 @@ import java.util.Set;
 
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectSubnode;
+import cdar.dal.exceptions.UnknownProjectNodeException;
+import cdar.dal.exceptions.UnknownProjectNodeLinkException;
+import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
-import cdar.dal.persistence.jdbc.consumer.ConsumerDaoRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeRepository;
-import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeDao;
+import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeRepository;
 
 public class ProjectSubnodeModel {
-	private ConsumerDaoRepository cdc = new ConsumerDaoRepository();
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
+	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 	
-	public ProjectSubnode addProjectSubnode(int kpnid, String title) {
-		ProjectSubnodeDao projectSubnodeDao = new ProjectSubnodeDao(kpnid, cdc.getNextProjectSubnodePosition(kpnid), title);
-		return new ProjectSubnode(projectSubnodeDao.create());
+	public ProjectSubnode addProjectSubnode(int kpnid, String title) throws UnknownProjectNodeLinkException, UnknownProjectNodeException {
+		ProjectSubnode projectSubnode = new ProjectSubnode();
+		projectSubnode.setRefProjectNodeId(kpnid);
+		projectSubnode.setPosition(psr.getNextProjectSubnodePosition(kpnid));
+		projectSubnode.setTitle(title);
+		return psr.createProjectSubnode(projectSubnode);
 	}
 	
-	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) throws UnknownProjectTreeException {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) throws UnknownProjectTreeException, UnknownProjectNodeLinkException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
 		for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
-			for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(projectNode.getId())) {
-				projectSubnodes.add(new ProjectSubnode(subnode));
+			for (ProjectSubnode projectSubnode : psr.getProjectSubnodes(projectNode.getId())) {
+				projectSubnodes.add(projectSubnode);
 			}
 		}
 		
 		return projectSubnodes;
 	}
 	
-	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(int projectNodeId) {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(int projectNodeId) throws UnknownProjectNodeLinkException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
-		for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(projectNodeId)) {
-			projectSubnodes.add(new ProjectSubnode(subnode));
+		for (ProjectSubnode projectSubnode : psr.getProjectSubnodes(projectNodeId)) {
+			projectSubnodes.add(projectSubnode);
 		}
 		
 		return projectSubnodes;
 	}
 	
-	public ProjectSubnode getProjectSubnode(int projectSubnodeId) {
-		return new ProjectSubnode(cdc.getProjectSubnode(projectSubnodeId));
+	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+		return psr.getProjectSubnode(projectSubnodeId);
 	}
 	
-	public ProjectSubnode updateProjectSubnode(ProjectSubnode psn) {
-		ProjectSubnodeDao projectSubnodeDao = cdc.getProjectSubnode(psn.getId());
-		projectSubnodeDao.setKpnid(psn.getRefProjectNodeId());
-		projectSubnodeDao.setTitle(psn.getTitle());
-		return new ProjectSubnode(projectSubnodeDao.update());
+	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
+		ProjectSubnode updatedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
+		updatedProjectSubnode.setRefProjectNodeId(projectSubnode.getRefProjectNodeId());
+		updatedProjectSubnode.setTitle(projectSubnode.getTitle());
+		updatedProjectSubnode.setPosition(projectSubnode.getPosition());
+		return psr.updateProjectSubnode(updatedProjectSubnode);
 	}
 	
-	public void changeProjectSubnodePosition(int nodeid, int id, int position) {
-		for (ProjectSubnodeDao subnode : cdc.getProjectSubnodes(nodeid)) {
-			if (subnode.getId()==id) {
-				subnode.setPosition(position);
-				subnode.update();
+	public void changeProjectSubnodePosition(int projectNodeId, int id, int position) throws UnknownProjectNodeLinkException {
+		for (ProjectSubnode projectSubnode : psr.getProjectSubnodes(projectNodeId)) {
+			if (projectSubnode.getId()==id) {
+				projectSubnode.setPosition(position);
+				psr.updateProjectSubnode(projectSubnode);
 			} else {
-				if (subnode.getPosition()>=position) {
-					subnode.setPosition(subnode.getPosition()+1);
-					subnode.update();
+				if (projectSubnode.getPosition()>=position) {
+					projectSubnode.setPosition(projectSubnode.getPosition()+1);
+					psr.updateProjectSubnode(projectSubnode);
 				}
 			}
 		}
 	}
 	
-	public boolean removeProjectSubnode(int id) {
-		return cdc.getProjectSubnode(id).delete();
+	public boolean removeProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+		return psr.deleteProjectSubnode(projectSubnodeId);
 	}
 }
