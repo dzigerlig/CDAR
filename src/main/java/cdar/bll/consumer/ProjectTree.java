@@ -3,10 +3,10 @@ package cdar.bll.consumer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.consumer.ProjectTreeDao;
 
 public class ProjectTree extends BasicEntity {
 	private String title;
+	private int uid;
 
 	public ProjectTree() {
 		super();
@@ -16,10 +16,6 @@ public class ProjectTree extends BasicEntity {
 			String title) {
 		super(id, creationDate, lastModification);
 		setTitle(title);
-	}
-
-	public ProjectTree(ProjectTreeDao tree) {
-		this(tree.getId(), tree.getCreationTime(), tree.getLastModificationTime(), tree.getTitle());
 	}
 
 	public ProjectTree(int id) {
@@ -32,5 +28,13 @@ public class ProjectTree extends BasicEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 }
