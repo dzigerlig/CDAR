@@ -1,4 +1,4 @@
-package cdar.bll.test;
+package cdar.bll.integrationtest;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +25,7 @@ import cdar.bll.producer.models.XmlTreeModel;
 import cdar.bll.user.UserModel;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
@@ -315,30 +316,29 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetNodeLinksUnknownTreeId() {
+	public void testGetNodeLinksUnknownTreeId() throws SQLException {
 		NodeLinkModel nlm = new NodeLinkModel();
-		assertEquals(0, nlm.getNodeLinks(unknownId).size());
+		nlm.getNodeLinks(unknownId).size();
 	}
 	
-	@Test
-	public void testGetUnknownNodeLink() {
+	@Test(expected = UnknownNodeLinkException.class)
+	public void testGetUnknownNodeLink() throws UnknownNodeLinkException {
 		NodeLinkModel nlm = new NodeLinkModel();
-		assertEquals(-1, nlm.getNodeLink(unknownId).getId());
+		nlm.getNodeLink(unknownId).getId();
 	}
 	
-	@Test
-	public void testUpdateUnknownNodeLink() {
+	@Test(expected = UnknownTreeException.class)
+	public void testUpdateUnknownNodeLink() throws Exception {
 		NodeLinkModel nlm = new NodeLinkModel();
 		NodeLink nodeLink = nlm.addNodeLink(unknownId, unknownId, unknownId, unknownId);
 		nodeLink.setSourceId(unknownId);
-		NodeLink updatedNodeLink = nlm.updateNodeLink(nodeLink);
-		assertEquals(-1, updatedNodeLink.getId());
+		nlm.updateNodeLink(nodeLink);
 	}
 	
-	@Test
-	public void testDeleteUnknownNodeLink() {
+	@Test(expected = UnknownNodeLinkException.class)
+	public void testDeleteUnknownNodeLink() throws Exception {
 		NodeLinkModel nlm = new NodeLinkModel();
-		assertFalse(nlm.deleteNodeLink(unknownId));
+		nlm.deleteNodeLink(unknownId);
 	}
 	
 	@Test

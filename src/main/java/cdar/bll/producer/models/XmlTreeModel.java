@@ -17,7 +17,7 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.XmlTree;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
+import cdar.dal.persistence.jdbc.producer.NodeLinkRepository;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
@@ -28,6 +28,7 @@ public class XmlTreeModel {
 	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 	private DirectoryModel dm = new DirectoryModel();
 	private NodeRepository nr = new NodeRepository();
+	private NodeLinkRepository nlr = new NodeLinkRepository();
 
 	public Set<XmlTree> getXmlTrees(int treeid) {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();
@@ -150,16 +151,17 @@ public class XmlTreeModel {
 
 		if (cts.getLinks() != null) {
 			for (NodeLink nodeLink : cts.getLinks()) {
-				NodeLinkDao nodeLinkDao = new NodeLinkDao(nodeLink);
-				nodeLinkDao
-						.setSourceid(nodeMapping.get(nodeLink.getSourceId()));
-				nodeLinkDao
-						.setTargetid(nodeMapping.get(nodeLink.getTargetId()));
+				NodeLink newNodeLink = new NodeLink();
+				newNodeLink.setKtrid(nodeLink.getKtrid());
+				newNodeLink
+						.setSourceId(nodeMapping.get(nodeLink.getSourceId()));
+				newNodeLink
+						.setTargetId(nodeMapping.get(nodeLink.getTargetId()));
 				if (nodeLink.getKsnid() != 0) {
-					nodeLinkDao
+					newNodeLink
 							.setKsnid(subnodeMapping.get(nodeLink.getKsnid()));
 				}
-				nodeLinkDao.create();
+				nlr.createNodeLink(newNodeLink);
 			}
 		}
 

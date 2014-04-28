@@ -1,93 +1,92 @@
 package cdar.bll.producer.models;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
+import cdar.dal.exceptions.UnknownNodeLinkException;
+import cdar.dal.persistence.jdbc.producer.NodeLinkRepository;
 
 public class NodeLinkModel {
-	private ProducerDaoRepository pdc = new ProducerDaoRepository();
+	private NodeLinkRepository nlr = new NodeLinkRepository();
 
-
-	public Set<NodeLink> getNodeLinks(int treeid) {
+	public Set<NodeLink> getNodeLinks(int treeId) throws SQLException {
 		Set<NodeLink> nodeLinks = new HashSet<NodeLink>();
 
-		for (NodeLinkDao nld : pdc.getNodeLinks(treeid)) {
-			nodeLinks.add(new NodeLink(nld));
+		for (NodeLink nodeLink : nlr.getNodeLinks(treeId)) {
+			nodeLinks.add(nodeLink);
 		}
 		
 		return nodeLinks;
 	}
 	
-	public boolean deleteNodeLink(int id)
+	public boolean deleteNodeLink(int nodeLinkId) throws Exception
 	{
-		NodeLinkDao nld = pdc.getNodeLink(id);
-		return nld.delete();
+		NodeLink nodeLink = nlr.getNodeLink(nodeLinkId);
+		return nlr.deleteNodeLink(nodeLink);
 	}
 	
-	public NodeLink addNodeLink(int ktrid, int sourceid, int targetid, int ksnid)
+	public NodeLink addNodeLink(int ktrid, int sourceid, int targetid, int ksnid) throws Exception
 	{
-		NodeLinkDao nld = new NodeLinkDao();
-		nld.setKtrid(ktrid);
-		nld.setSourceid(sourceid);
-		nld.setTargetid(targetid);
-		nld.setKsnid(ksnid);
-		return new NodeLink(nld.create());
+		NodeLink nodeLink = new NodeLink();
+		nodeLink.setKtrid(ktrid);
+		nodeLink.setSourceId(sourceid);
+		nodeLink.setTargetId(targetid);
+		nodeLink.setKsnid(ksnid);
+		return nlr.createNodeLink(nodeLink);
 	}
 
-	public NodeLink updateNodeLink(NodeLink nl) {
-		NodeLinkDao nodeLink = pdc.getNodeLink(nl.getId());
-		nodeLink.setKsnid(nl.getKsnid());
-		return new NodeLink(nodeLink.update());	
+	public NodeLink updateNodeLink(NodeLink nodelink) throws Exception {
+		NodeLink updatedNodeLink = nlr.getNodeLink(nodelink.getId());
+		updatedNodeLink.setKsnid(nodelink.getKsnid());
+		return nlr.updateNodeLink(updatedNodeLink);
 	}
 
-	public NodeLink getNodeLink(int id) {
-		return new NodeLink(pdc.getNodeLink(id));
+	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
+		return nlr.getNodeLink(nodeLinkId);
 	}
 
-	public List<NodeLink> getNodeLinksBySubnode(int subnodeid) {
+	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws SQLException {
 		List<NodeLink> nodeLinks = new ArrayList<NodeLink>();
 
-		for (NodeLinkDao nld : pdc.getNodeLinksBySubnode(subnodeid)) {
-			nodeLinks.add(new NodeLink(nld));
+		for (NodeLink nodeLink : nlr.getNodeLinksBySubnode(subnodeId)) {
+			nodeLinks.add(nodeLink);
 		}
 		
 		return nodeLinks;
 	}
 	
-	public Set<NodeLink> zoomUp(int nodeid) {
+	public Set<NodeLink> zoomUp(int nodeid) throws SQLException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return rekZoomUp(nodeid, 2, links);
+		return recursiveZoomUp(nodeid, 2, links);
+	}
+	
+	public Set<NodeLink> zoomDown(int nodeid) throws SQLException {
+		Set<NodeLink> links = new HashSet<NodeLink>();
+		return recursiveZoomDown(nodeid, 2, links);
 	}
 
-	private Set<NodeLink> rekZoomUp(int nodeid, int quantity, Set<NodeLink> links) {
+	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws SQLException {
 		if (quantity > 0) {
-			for (NodeLinkDao link : pdc.getSiblingNodeLinks(nodeid)) {
-				links.add(new NodeLink(link));
+			for (NodeLink nodeLink : nlr.getSiblingNodeLinks(nodeId)) {
+				links.add(nodeLink);
 			}
-			for (NodeLinkDao link : pdc.getParentNodeLinks(nodeid)) {
-				links.add(new NodeLink(link));
-				links=rekZoomUp(link.getSourceid(), quantity-1, links);
+			for (NodeLink nodeLink : nlr.getParentNodeLinks(nodeId)) {
+				links.add(nodeLink);
+				links=recursiveZoomUp(nodeLink.getSourceId(), quantity-1, links);
 			}
 		}
 		return links;
 	}
 	
-	public Set<NodeLink> zoomDown(int nodeid) {
-		Set<NodeLink> links = new HashSet<NodeLink>();
-		return rekZoomDown(nodeid, 2, links);
-	}
-
-	private Set<NodeLink> rekZoomDown(int nodeid, int quantity, Set<NodeLink> links) {
+	private Set<NodeLink> recursiveZoomDown(int nodeId, int quantity, Set<NodeLink> links) throws SQLException {
 		if (quantity > 0) {
-			for (NodeLinkDao link : pdc.getFollowerNodeLinks(nodeid)) {
-				links.add(new NodeLink(link));
-				links = rekZoomDown(link.getTargetid(), quantity-1, links);
+			for (NodeLink nodeLink : nlr.getFollowerNodeLinks(nodeId)) {
+				links.add(nodeLink);
+				links = recursiveZoomDown(nodeLink.getTargetId(), quantity-1, links);
 			}
 		}
 		return links;

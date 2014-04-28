@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.BasicEntity;
-import cdar.dal.persistence.jdbc.producer.NodeLinkDao;
 
 public class NodeLink extends BasicEntity {
 	private int sourceId;
@@ -24,10 +23,6 @@ public class NodeLink extends BasicEntity {
 		setKtrid(treeid);
 	}
 	
-	public NodeLink(NodeLinkDao nld) {
-		this(nld.getId(), nld.getCreationTime(), nld.getLastModificationTime(), nld.getSourceid(), nld.getTargetid(), nld.getKsnid(), nld.getKtrid());
-	}
-
 	public int getSourceId() {
 		return sourceId;
 	}

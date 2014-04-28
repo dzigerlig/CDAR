@@ -1,4 +1,4 @@
-package cdar.bll.test;
+package cdar.bll.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 

@@ -25,8 +25,8 @@ public class NodeModel {
 		return nodes;
 	}
 
-	public Node getNode(int nodeid) throws UnknownNodeException {
-		return nr.getNode(nodeid);
+	public Node getNode(int nodeId) throws UnknownNodeException {
+		return nr.getNode(nodeId);
 	}
 
 	public boolean deleteNode(int id) throws UnknownNodeException, Exception {
