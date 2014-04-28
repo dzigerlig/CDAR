@@ -11,6 +11,7 @@ import java.util.List;
 
 import cdar.bll.producer.Node;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.JDBCUtil;
 
 public class NodeRepository {
@@ -31,7 +32,7 @@ public class NodeRepository {
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
 				node.setTitle(result.getString(4));
-				node.setWikititle(result.getString(5));
+				node.setWikiTitle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setDid(result.getInt(7));
 				nodes.add(node);
@@ -58,7 +59,7 @@ public class NodeRepository {
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
 				node.setTitle(result.getString(4));
-				node.setWikititle(result.getString(5));
+				node.setWikiTitle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setKtrid(result.getInt(7));
 				node.setDid(result.getInt(8));
@@ -87,7 +88,7 @@ public class NodeRepository {
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
 				node.setTitle(result.getString(4));
-				node.setWikititle(result.getString(5));
+				node.setWikiTitle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setKtrid(result.getInt(7));
 				node.setDid(result.getInt(8));
@@ -117,7 +118,7 @@ public class NodeRepository {
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
 				node.setTitle(result.getString(4));
-				node.setWikititle(result.getString(5));
+				node.setWikiTitle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setKtrid(result.getInt(7));
 				node.setDid(result.getInt(8));
@@ -146,7 +147,7 @@ public class NodeRepository {
 				node.setCreationTime(result.getDate(2));
 				node.setLastModificationTime(result.getDate(3));
 				node.setTitle(result.getString(4));
-				node.setWikititle(result.getString(5));
+				node.setWikiTitle(result.getString(5));
 				node.setDynamicTreeFlag(result.getInt(6));
 				node.setKtrid(result.getInt(7));
 				node.setDid(result.getInt(8));
@@ -177,17 +178,18 @@ public class NodeRepository {
 			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			if (generatedKeys.next()) {
 				node.setId(generatedKeys.getInt(1));
-				node.setWikititle(String.format("NODE_%d", node.getId()));
+				node.setWikiTitle(String.format("NODE_%d", node.getId()));
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 		
 		//sqlWiki
 		try (Connection connection = JDBCUtil.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlWiki)) {
-			preparedStatement.setString(1, node.getWikititle());
+			preparedStatement.setString(1, node.getWikiTitle());
+			preparedStatement.setInt(2, node.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			throw ex;

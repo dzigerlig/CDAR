@@ -251,8 +251,8 @@ public class TestBLLKnowledgeProducer {
 		nm.getNode(unknownId).getId();
 	}
 	
-	@Test(expected = UnknownNodeException.class)
-	public void testUpdateUnknownNode() throws Exception {
+	@Test(expected = UnknownTreeException.class)
+	public void testUpdateNodeUnknownTreeId() throws Exception {
 		NodeModel nm = new NodeModel();
 		Node node = nm.addNode(um.getUser(username).getId(), unknownId, "Node title", 2);
 		node.setTitle("Updated title");

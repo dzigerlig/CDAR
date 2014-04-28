@@ -3,7 +3,6 @@ package cdar.bll.producer;
 import java.util.Date;
 
 import cdar.bll.WikiEntity;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
 
 public class Node extends WikiEntity {
 	private int ktrid;
@@ -21,13 +20,6 @@ public class Node extends WikiEntity {
 		setKtrid(ktrid);
 		setDynamicTreeFlag(dynamicTreeFlag);
 		setDid(did);
-	}
-
-	public Node(NodeDao nodeDao) {
-		this(nodeDao.getId(), nodeDao.getCreationTime(), nodeDao
-				.getLastModificationTime(), nodeDao.getTitle(), nodeDao
-				.getWikititle(), nodeDao.getKtrid(), nodeDao
-				.getDynamicTreeFlag(), nodeDao.getDid());
 	}
 
 	public int getKtrid() {
@@ -114,13 +106,5 @@ public class Node extends WikiEntity {
 		else if (ktrid != other.ktrid)
 			return false;
 		return true;
-	}
-
-	public String getWikititle() {
-		return wikititle;
-	}
-
-	public void setWikititle(String wikititle) {
-		this.wikititle = wikititle;
 	}
 }

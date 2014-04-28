@@ -83,7 +83,8 @@ public class UserRepository {
 				user.setAccesstoken(result.getString(6));
 				return user;
 			}
-		} catch (SQLException e) {
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new UnknownUserException();
 		}
 		throw new UnknownUserException();

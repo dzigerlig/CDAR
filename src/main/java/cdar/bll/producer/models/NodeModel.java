@@ -9,12 +9,9 @@ import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
-import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 
 public class NodeModel {
-	private ProducerDaoRepository pdc = new ProducerDaoRepository();
 	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
 	
 	private NodeRepository nr = new NodeRepository();
@@ -36,7 +33,7 @@ public class NodeModel {
 		return nr.deleteNode(getNode(id));
 	}
 
-	public Node addNode(int uid, int treeid, String title, int did) throws SQLException {
+	public Node addNode(int uid, int treeid, String title, int did) throws Exception {
 		if (treeid != -1) {
 			if (did == 0) {
 				DirectoryRepository dr = new DirectoryRepository();
@@ -46,19 +43,22 @@ public class NodeModel {
 
 			TemplateModel tm = new TemplateModel();
 			String templateContent = tm.getDefaultKnowledgeTemplate(treeid);
-			NodeDao node = new NodeDao(treeid, title, did);
-			node.create();
+			Node node = new Node();
+			node.setKtrid(treeid);
+			node.setTitle(title);
+			node.setDid(did);
+			node = nr.createNode(node);
 
 			if (templateContent == null) {
 				templateContent = "== CDAR ==";
 			}
 
-			wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
+			wikiHelper.addWikiEntry(node.getWikiTitle(), templateContent);
 
 			MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeid,
-					node.getWikititle(), templateContent, wikiHelper);
+					node.getWikiTitle(), templateContent, wikiHelper);
 			mwm.start();
-			return new Node(node);
+			return node;
 		} else {
 			Node node = new Node();
 			node.setId(-1);

@@ -7,7 +7,6 @@ import java.util.Set;
 
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Subnode;
-import cdar.dal.persistence.jdbc.producer.NodeDao;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.ProducerDaoRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeDao;
