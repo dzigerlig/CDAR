@@ -11,9 +11,6 @@ import cdar.dal.persistence.CdarJdbcHelper;
 import cdar.dal.persistence.JDBCUtil;
 
 public class ConsumerDaoRepository extends CdarJdbcHelper {
-	public List<ProjectTreeDao> getProjectTrees() {
-		return getProjectTrees(0);
-	}
 	
 	public List<ProjectTreeDao> getProjectTrees(int uid) {
 		String getUsers = null;
@@ -272,60 +269,4 @@ public class ConsumerDaoRepository extends CdarJdbcHelper {
 		}
 		return projectsubnode;
 	}
-	
-	public List<CommentDao> getComments(int kpnid) {
-		String getProjectSubNodes = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM USERCOMMENT WHERE KPNID = %d;", kpnid);
-
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet result = null;
-		List<CommentDao> usercomments = new ArrayList<CommentDao>();
-
-		try {
-			connection = JDBCUtil.getConnection();
-			statement = connection.createStatement();
-
-			result = statement.executeQuery(getProjectSubNodes);
-			while (result.next()) {
-				CommentDao usercomment = new CommentDao(kpnid, result.getInt(4), result.getString(5));
-				usercomment.setId(result.getInt(1));
-				usercomment.setCreationTime(result.getDate(2));
-				usercomment.setLastModificationTime(result.getDate(3));
-				usercomments.add(usercomment);
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			closeConnections(connection, null, statement, null);
-		}
-		return usercomments;
-	}
-	
-	public CommentDao getComment(int id) {
-		String getUserComment = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM USERCOMMENT WHERE ID = %d;", id);
-
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet result = null;
-		CommentDao usercomment = new CommentDao(-1);
-
-		try {
-			connection = JDBCUtil.getConnection();
-			statement = connection.createStatement();
-
-			result = statement.executeQuery(getUserComment);
-			while (result.next()) {
-				usercomment = new CommentDao(result.getInt(4), result.getInt(5), result.getString(6));
-				usercomment.setId(result.getInt(1));
-				usercomment.setCreationTime(result.getDate(2));
-				usercomment.setLastModificationTime(result.getDate(3));
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} finally {
-			closeConnections(connection, null, statement, null);
-		}
-		return usercomment;
-	}
-
 }
