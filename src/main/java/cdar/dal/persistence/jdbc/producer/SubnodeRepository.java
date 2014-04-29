@@ -244,7 +244,7 @@ public class SubnodeRepository {
 	
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
 		final String sql = "UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?";
-		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, subnode.getKnid());
 			preparedStatement.setString(3, subnode.getTitle());
@@ -252,12 +252,6 @@ public class SubnodeRepository {
 			preparedStatement.setInt(5, subnode.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					subnode.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw new UnknownSubnodeException();
 		}

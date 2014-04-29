@@ -103,18 +103,12 @@ public class TreeRepository {
 		final String sql = "UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, tree.getTitle());
 			preparedStatement.setInt(3, tree.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					tree.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw ex;
 		}

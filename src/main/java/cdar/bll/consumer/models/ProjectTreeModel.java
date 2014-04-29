@@ -78,8 +78,8 @@ public class ProjectTreeModel {
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
 			
 			ProjectNodeLink projectNodeLink = new ProjectNodeLink();
-			projectNodeLink.setSourceId(nodelink.getSourceId());
-			projectNodeLink.setTargetId(nodelink.getTargetId());
+			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
+			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
 			projectNodeLink.setRefProjectSubNodeId(nodelink.getKsnid());
 			projectNodeLink.setRefProjectTreeId(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);

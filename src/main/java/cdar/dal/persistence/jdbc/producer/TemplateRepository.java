@@ -110,7 +110,7 @@ public class TemplateRepository {
 	
 	public Template updateTemplate(Template template) throws UnknownTemplateException {
 		final String sql = "UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?";
-		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, template.getTitle());
 			preparedStatement.setString(3, template.getTemplatetext());
@@ -126,11 +126,6 @@ public class TemplateRepository {
 			}
 			preparedStatement.setInt(6, template.getId());
 			preparedStatement.executeUpdate();
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					template.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw new UnknownTemplateException();
 		}

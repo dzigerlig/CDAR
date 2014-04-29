@@ -18,8 +18,10 @@ public class ProjectNodeRepository {
 	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, NODESTATUS, KPTID FROM KNOWLEDGEPROJECTNODE WHERE KPTID = ?";
 		List<ProjectNode> projectNodes = new ArrayList<ProjectNode>();
-		try (Connection connection = DBConnection.getConnection(); Statement statement = connection.createStatement()) {
-			try (ResultSet result = statement.executeQuery(sql)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
+				.prepareStatement(sql)) {
+			preparedStatement.setInt(1, projectTreeId);
+			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					ProjectNode projectNode = new ProjectNode();
 					projectNode.setId(result.getInt(1));
@@ -43,6 +45,7 @@ public class ProjectNodeRepository {
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
+			preparedStatement.setInt(1, projectNodeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					ProjectNode projectNode = new ProjectNode();

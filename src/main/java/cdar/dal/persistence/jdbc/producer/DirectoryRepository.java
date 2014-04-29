@@ -101,7 +101,7 @@ public class DirectoryRepository {
 		final String sql = "UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sql)) {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
 			if (directory.getParentid() != 0) {
@@ -114,12 +114,6 @@ public class DirectoryRepository {
 			preparedStatement.setInt(5, directory.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					directory.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw ex;
 		}

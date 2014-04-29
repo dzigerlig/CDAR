@@ -98,7 +98,7 @@ public class CommentRepository {
 		final String sql = "UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, comment.getRefUserId());
 			preparedStatement.setInt(3, comment.getRefProjectNode());
@@ -106,12 +106,6 @@ public class CommentRepository {
 			preparedStatement.setInt(5, comment.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					comment.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw ex;
 		}

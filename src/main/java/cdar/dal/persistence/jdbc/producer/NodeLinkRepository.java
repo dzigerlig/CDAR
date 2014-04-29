@@ -220,7 +220,7 @@ public class NodeLinkRepository {
 		final String sql = "UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, nodeLink.getSourceId());
 			preparedStatement.setInt(3, nodeLink.getTargetId());
@@ -233,12 +233,6 @@ public class NodeLinkRepository {
 			preparedStatement.setInt(6, nodeLink.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					nodeLink.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw ex;
 		}

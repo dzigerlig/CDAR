@@ -43,12 +43,12 @@ public class ProjectTreeRepository {
 		return projectTrees;
 	}
 	
-	public ProjectTree getProjectTree(int id) throws UnknownProjectTreeException {
+	public ProjectTree getProjectTree(int projectTreeId) throws UnknownProjectTreeException {
 		final String sql = "SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
-
+			preparedStatement.setInt(1, projectTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				if (result.next()) {
 					ProjectTree projectTree = new ProjectTree();

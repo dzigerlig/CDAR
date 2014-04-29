@@ -92,7 +92,7 @@ public class TestBLLKnowledgeConsumer {
 		ptm.getProjectTrees(unknownId).size();
 	}
 	
-	@Test
+	@Test (expected = UnknownProjectTreeException.class)
 	public void testUpdateUnknownProjectTree() throws Exception {
 		ProjectTree tree = ptm.getProjectTree(unknownId);
 		tree.setTitle("Unknown Tree");
@@ -246,13 +246,13 @@ public class TestBLLKnowledgeConsumer {
 		pnm.getProjectNodes(unknownId).size();
 	}
 	
-	@Test
+	@Test (expected = UnknownProjectNodeException.class)
 	public void testGetUnknownProjectNode() throws UnknownProjectNodeException {
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		pnm.getProjectNode(unknownId).getId();
 	}
 	
-	@Test
+	@Test (expected = UnknownProjectNodeException.class)
 	public void testUpdateUnknownProjectNode() throws UnknownProjectNodeException {
 		ProjectNodeModel pnm = new ProjectNodeModel();
 		ProjectNode projectNode = pnm.getProjectNode(unknownId);
@@ -313,13 +313,13 @@ public class TestBLLKnowledgeConsumer {
 		pnlm.getProjectNodeLinks(unknownId);
 	}
 	
-	@Test
+	@Test(expected = UnknownProjectNodeLinkException.class)
 	public void testGetUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
 		pnlm.getProjectNodeLink(unknownId);
 	}
 	
-	@Test
+	@Test(expected = UnknownProjectNodeLinkException.class)
 	public void testUpdateUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
 		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
 		ProjectNodeLink projectNodeLink = pnlm.getProjectNodeLink(unknownId);
@@ -385,13 +385,13 @@ public class TestBLLKnowledgeConsumer {
 		psm.getProjectSubnodesFromProjectTree(unknownId);
 	}
 	
-	@Test
+	@Test(expected = UnknownProjectSubnodeException.class)
 	public void testGetUnknownProjectSubnode() throws UnknownProjectSubnodeException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		psm.getProjectSubnode(unknownId);
 	}
 	
-	@Test
+	@Test(expected = UnknownProjectSubnodeException.class)
 	public void testUpdateUnknownProjectSubnode() throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
 		ProjectSubnode projectSubnode = psm.getProjectSubnode(unknownId);
@@ -402,7 +402,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test
 	public void testDeleteUnknownProjectSubnode() throws UnknownProjectSubnodeException {
 		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		assertFalse(psm.removeProjectSubnode(unknownId));
+		psm.removeProjectSubnode(unknownId);
 	}
 	
 	@Test
@@ -445,13 +445,13 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(0, cm.getComments(unknownId).size());
 	}
 	
-	@Test
+	@Test(expected = UnknownCommentException.class)
 	public void testGetUnknownComment() throws UnknownCommentException {
 		CommentModel cm = new CommentModel();
 		cm.getComment(unknownId).getId();
 	}
 	
-	@Test
+	@Test(expected = UnknownCommentException.class)
 	public void testUpdateUnknownComment() throws Exception {
 		CommentModel cm = new CommentModel();
 		Comment comment = cm.getComment(unknownId);

@@ -231,8 +231,7 @@ public class NodeRepository {
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sqlNode,
-								Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sqlNode)) {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, node.getTitle());
@@ -240,12 +239,6 @@ public class NodeRepository {
 			preparedStatement.setInt(4, node.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					node.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw ex;
 		}

@@ -22,7 +22,7 @@ public class ProjectNodeLinkRepository {
 		List<ProjectNodeLink> projectNodeLinks = new ArrayList<ProjectNodeLink>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
-
+			preparedStatement.setInt(1, projectTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					ProjectNodeLink projectNodeLink = new ProjectNodeLink();
@@ -82,7 +82,6 @@ public class ProjectNodeLinkRepository {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
 			preparedStatement.setInt(5, projectNodeLink.getRefProjectTreeId());
-			preparedStatement.setInt(6, projectNodeLink.getId());
 
 			preparedStatement.executeUpdate();
 

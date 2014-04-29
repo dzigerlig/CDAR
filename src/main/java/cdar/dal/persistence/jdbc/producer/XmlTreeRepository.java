@@ -91,7 +91,7 @@ public class XmlTreeRepository {
 	
 	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
 		final String sql = "UPDATE KNOWLEDGETREEXML SET LAST_MODIFICATION_TIME = ?, UID = ?, KTRID = ?, XMLSTRING = ? WHERE id = ?";
-		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, xmlTree.getUid());
 			preparedStatement.setInt(3, xmlTree.getKtrid());
@@ -99,12 +99,6 @@ public class XmlTreeRepository {
 			preparedStatement.setInt(5, xmlTree.getId());
 
 			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					xmlTree.setId(generatedKeys.getInt(1));
-				}
-			}
 		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();
 		}
