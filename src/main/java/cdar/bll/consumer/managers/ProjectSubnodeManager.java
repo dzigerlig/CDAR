@@ -55,6 +55,7 @@ public class ProjectSubnodeManager {
 		updatedProjectSubnode.setRefProjectNodeId(projectSubnode.getRefProjectNodeId());
 		updatedProjectSubnode.setTitle(projectSubnode.getTitle());
 		updatedProjectSubnode.setPosition(projectSubnode.getPosition());
+		updatedProjectSubnode.setStatus(projectSubnode.getStatus());
 		return psr.updateProjectSubnode(updatedProjectSubnode);
 	}
 	

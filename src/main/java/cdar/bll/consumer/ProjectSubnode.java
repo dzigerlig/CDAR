@@ -7,6 +7,7 @@ import cdar.bll.WikiEntity;
 public class ProjectSubnode extends WikiEntity {
 	private int refProjectNodeId;
 	private int position;
+	private int status;
 
 	public ProjectSubnode() {
 		super();
@@ -34,5 +35,13 @@ public class ProjectSubnode extends WikiEntity {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

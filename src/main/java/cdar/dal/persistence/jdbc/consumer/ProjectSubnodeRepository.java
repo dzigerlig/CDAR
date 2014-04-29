@@ -17,7 +17,7 @@ import cdar.dal.persistence.DBConnection;
 
 public class ProjectSubnodeRepository {
 	public List<ProjectSubnode> getProjectSubnodes(int kpnid) throws UnknownProjectNodeLinkException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = ?";
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = ?";
 
 		List<ProjectSubnode> projectsubnodes = new ArrayList<ProjectSubnode>();
 
@@ -33,18 +33,20 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setTitle(result.getString(4));
 					projectSubnode.setWikiTitle(result.getString(5));
 					projectSubnode.setPosition(result.getInt(6));
+					projectSubnode.setStatus(result.getInt(7));
 					projectSubnode.setRefProjectNodeId(kpnid);
 					projectsubnodes.add(projectSubnode);
 				}
 			}
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new UnknownProjectNodeLinkException();
 		}
 		return projectsubnodes;
 	}
 	
 	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = ?";
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = ?";
 
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -61,6 +63,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setWikiTitle(result.getString(6));
 					projectSubnode.setRefProjectNodeId(result.getInt(4));
 					projectSubnode.setPosition(result.getInt(7));
+					projectSubnode.setStatus(result.getInt(8));
 					return projectSubnode;
 				}
 			}
@@ -82,7 +85,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException {
-		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE, POSITION) VALUES (?, ?, ?, ?, ?)";
+		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -91,7 +94,7 @@ public class ProjectSubnodeRepository {
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setString(4, projectSubnode.getTitle());
 			preparedStatement.setInt(5, projectSubnode.getPosition());
-
+			preparedStatement.setInt(6, 0);
 			preparedStatement.executeUpdate();
 
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -106,7 +109,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException {
-		final String sql = "UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, POSITION = ? WHERE id = ?";
+		final String sql = "UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, POSITION = ?, SUBNODESTATUS = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -114,7 +117,8 @@ public class ProjectSubnodeRepository {
 			preparedStatement.setInt(2, projectSubnode.getRefProjectNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setInt(4, projectSubnode.getPosition());
-			preparedStatement.setInt(5, projectSubnode.getId());
+			preparedStatement.setInt(5, projectSubnode.getStatus());
+			preparedStatement.setInt(6, projectSubnode.getId());
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

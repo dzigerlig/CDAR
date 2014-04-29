@@ -29,7 +29,7 @@ public class ProjectNodeRepository {
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikiTitle(result.getString(5));
-					projectNode.setNodeStatus(result.getInt(6));
+					projectNode.setStatus(result.getInt(6));
 					projectNode.setRefProjectTreeId(projectTreeId);
 					projectNodes.add(projectNode);
 				}
@@ -54,7 +54,7 @@ public class ProjectNodeRepository {
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikiTitle(result.getString(5));
-					projectNode.setNodeStatus(result.getInt(6));
+					projectNode.setStatus(result.getInt(6));
 					projectNode.setRefProjectTreeId(result.getInt(7));
 					return projectNode;
 				}
@@ -74,7 +74,7 @@ public class ProjectNodeRepository {
 			preparedStatement.setString(2, projectNode.getTitle());
 			preparedStatement.setString(3, projectNode.getWikiTitle());
 			preparedStatement.setInt(4, projectNode.getRefProjectTreeId());
-			preparedStatement.setInt(5, projectNode.getNodeStatus());
+			preparedStatement.setInt(5, 0);
 			
 			preparedStatement.executeUpdate();
 
@@ -96,7 +96,7 @@ public class ProjectNodeRepository {
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, projectNode.getTitle());
-			preparedStatement.setInt(3, projectNode.getNodeStatus());
+			preparedStatement.setInt(3, projectNode.getStatus());
 			preparedStatement.setInt(4, projectNode.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

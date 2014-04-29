@@ -5,7 +5,7 @@ import java.util.Date;
 import cdar.bll.WikiEntity;
 
 public class ProjectNode extends WikiEntity {
-	private int nodeStatus;
+	private int status;
 	private int refProjectTreeId;
 	
 	public ProjectNode() {
@@ -15,16 +15,16 @@ public class ProjectNode extends WikiEntity {
 	public ProjectNode(int id, Date creationDate, Date lastModification,
 			String title, String wikititle, int nodeStatus, int refProjectTreeId) {
 		super(id, creationDate, lastModification, title, wikititle);
-		setNodeStatus(nodeStatus);
+		setStatus(nodeStatus);
 		setRefProjectTreeId(refProjectTreeId);
 	}
 
-	public int getNodeStatus() {
-		return nodeStatus;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setNodeStatus(int nodeStatus) {
-		this.nodeStatus = nodeStatus;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getRefProjectTreeId() {

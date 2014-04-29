@@ -40,7 +40,7 @@ public class ProjectNodeManager {
 		ProjectNode projectNode = pnr.getProjectNode(node.getId());
 		projectNode.setRefProjectTreeId(node.getRefProjectTreeId());
 		projectNode.setTitle(node.getTitle());
-		projectNode.setNodeStatus(node.getNodeStatus());
+		projectNode.setStatus(node.getStatus());
 		return pnr.updateProjectNode(projectNode);
 	}
 }

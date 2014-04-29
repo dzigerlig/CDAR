@@ -215,6 +215,7 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
 		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
 		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getRefProjectTreeId());
+		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
 		pnm.deleteProjectNode(node.getId());
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 	}
@@ -230,12 +231,12 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
 		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
 		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getRefProjectTreeId());
-		assertEquals(0, pnm.getProjectNode(node.getId()).getNodeStatus());
+		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
 		node.setTitle(newProjectNodeName);
-		node.setNodeStatus(2);
+		node.setStatus(2);
 		pnm.updateProjectNode(node);
 		assertEquals(newProjectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(2, pnm.getProjectNode(node.getId()).getNodeStatus());
+		assertEquals(2, pnm.getProjectNode(node.getId()).getStatus());
 		pnm.deleteProjectNode(node.getId());
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 	}
@@ -346,6 +347,7 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		assertEquals(0, psm.getProjectSubnode(subnode.getId()).getStatus());
 		psm.removeProjectSubnode(subnode.getId());
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
@@ -365,9 +367,12 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		assertEquals(0, psm.getProjectSubnode(subnode.getId()).getStatus());
 		subnode.setTitle(newProjectSubnodeName);
+		subnode.setStatus(3);
 		psm.updateProjectSubnode(subnode);
 		assertEquals(newProjectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
+		assertEquals(3, psm.getProjectSubnode(subnode.getId()).getStatus());
 		psm.removeProjectSubnode(subnode.getId());
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
@@ -376,7 +381,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test
 	public void testGetProjectSubnodesUnknownProjectNode() throws UnknownProjectNodeLinkException {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		psm.getProjectSubnodesFromProjectNode(unknownId);
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(unknownId).size());
 	}
 	
 	@Test
