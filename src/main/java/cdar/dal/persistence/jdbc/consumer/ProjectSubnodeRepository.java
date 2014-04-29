@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.consumer.ProjectSubnode;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;

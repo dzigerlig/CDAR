@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Directory;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.persistence.DBConnection;
 

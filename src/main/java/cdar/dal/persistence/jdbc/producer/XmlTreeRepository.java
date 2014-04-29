@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.XmlTree;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.persistence.DBConnection;
 

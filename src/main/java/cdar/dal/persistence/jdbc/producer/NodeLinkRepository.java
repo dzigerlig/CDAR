@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.NodeLink;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.DBConnection;

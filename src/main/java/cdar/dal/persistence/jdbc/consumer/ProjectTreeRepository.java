@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.consumer.ProjectTree;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.persistence.DBConnection;
 

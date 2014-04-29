@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Template;
-import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.persistence.DBConnection;
 
