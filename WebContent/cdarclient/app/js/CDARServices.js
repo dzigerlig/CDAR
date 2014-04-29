@@ -78,7 +78,7 @@ app.factory('TreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
-			return $resource('../webapi/ktree/:entity/:action/:ktreeid/:entityid/', {}, {
+			return $resource('../webapi/ktree/:ktreeid/:entity/:action/:entityid/', {}, {
 				// Tree
 
 				'getTrees' : {
