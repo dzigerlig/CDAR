@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import cdar.bll.consumer.ProjectTree;
+import cdar.bll.consumer.managers.ProjectTreeManager;
+import cdar.bll.producer.Tree;
+import cdar.bll.producer.managers.TreeManager;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.persistence.jdbc.user.UserRepository;
@@ -36,6 +40,17 @@ public class UserManager {
 	}
 
 	public boolean deleteUser(int userId) throws Exception {
+		TreeManager tm = new TreeManager();
+		ProjectTreeManager ptm = new ProjectTreeManager();
+		
+		for (Tree tree : tm.getTrees(userId)) {
+			tm.deleteTree(tree.getId());
+		}
+		
+		for (ProjectTree projectTree : ptm.getProjectTrees(userId)) {
+			ptm.deleteProjectTree(projectTree.getId());
+		}
+		
 		return userRepository.deleteUser(userId);
 	}
 

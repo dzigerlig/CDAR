@@ -144,8 +144,11 @@ public class UserRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, userId);
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownUserException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

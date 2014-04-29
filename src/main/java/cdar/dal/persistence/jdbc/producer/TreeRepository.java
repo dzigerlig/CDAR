@@ -94,6 +94,7 @@ public class TreeRepository {
 			preparedStatement.setInt(2, tree.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw ex;
 		}
 		return tree;
