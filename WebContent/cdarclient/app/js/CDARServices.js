@@ -2,7 +2,7 @@ app.factory('ProjectTreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
-			return $resource('../webapi/ptree/:action/:treeid/:ktreeid/',
+			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
 					{}, {
 						'getTrees' : {
 							headers: customHeaders,

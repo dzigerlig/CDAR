@@ -2,6 +2,7 @@ package cdar.pl.controller;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -48,7 +49,7 @@ public class KnowledgeNodeController {
 	// Changed
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNode(@PathParam("uid") int uid, Node n) {
+	public Response addNode(@HeaderParam("uid") int uid, Node n) {
 		try {
 			if (n.getTitle() == null) {
 				return Response.ok(

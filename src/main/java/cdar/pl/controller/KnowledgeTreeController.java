@@ -2,6 +2,7 @@ package cdar.pl.controller;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,7 +23,7 @@ public class KnowledgeTreeController {
 	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getKnowledgeTreesByUid(@PathParam("uid") int uid) {
+	public Response getKnowledgeTreesByUid(@HeaderParam("uid") int uid) {
 		try {
 			return Response.ok(ktm.getTrees(uid), MediaType.APPLICATION_JSON)
 					.build();
@@ -46,7 +47,7 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("tree/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTree(String treeTitle, @PathParam("uid") int uid) {
+	public Response addKnowledgeTree(String treeTitle, @HeaderParam("uid") int uid) {
 		try {
 			return Response.ok(ktm.addTree(uid, treeTitle),
 					MediaType.APPLICATION_JSON).build();
@@ -128,7 +129,7 @@ public class KnowledgeTreeController {
 	// Changed
 	@Path("{ktreeid}/simpleexport/add/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTreeSimpleXml(@PathParam("uid") int uid,
+	public Response addKnowledgeTreeSimpleXml(@HeaderParam("uid") int uid,
 			@PathParam("ktreeid") int ktrid) {
 		try {
 			return Response.ok(xtm.addXmlTree(uid, ktrid),
