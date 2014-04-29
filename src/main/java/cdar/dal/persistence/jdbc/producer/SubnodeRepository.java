@@ -215,7 +215,6 @@ public class SubnodeRepository {
 			preparedStatement.setInt(2, subnode.getKnid());
 			preparedStatement.setString(3, subnode.getTitle());
 			preparedStatement.setInt(4, subnode.getPosition());
-			System.out.println(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
