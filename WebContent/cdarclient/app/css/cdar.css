@@ -6,6 +6,8 @@
 	text-align: center;
 }
 
+.userrole { margin-top: -30px; }
+
 .sidebar-cdar-role {
 	margin-top: -45px;
 }
@@ -91,8 +93,6 @@ body.dragging,body.dragging * {
 		background-color: orange;
 	background-size: 1em;
 	background-image: url(../img/treedown.png);
-	
-	
 }
 
 .uptree {
