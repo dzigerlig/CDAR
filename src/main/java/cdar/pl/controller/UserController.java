@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import cdar.bll.user.User;
 import cdar.bll.user.UserManager;
@@ -49,10 +50,8 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
-			return Response
-					.ok(userModel.createUser(user.getUsername(),
-							user.getPassword()), MediaType.APPLICATION_JSON)
-					.build();
+			return Response.status(Response.Status.CREATED).entity(userModel.createUser(user.getUsername(),
+							user.getPassword())).build();
 		} catch (Exception ex) {
 			return Response.status(Response.Status.CONFLICT).build();
 		}
