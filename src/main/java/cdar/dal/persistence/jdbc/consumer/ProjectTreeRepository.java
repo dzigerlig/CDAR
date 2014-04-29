@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.consumer.ProjectTree;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.persistence.DBConnection;
 
@@ -119,8 +120,11 @@ public class ProjectTreeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectTreeId);
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownProjectTreeException();
+			}
 		} catch (Exception ex) {
 			throw new UnknownProjectTreeException();
 		}

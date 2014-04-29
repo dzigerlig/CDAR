@@ -28,8 +28,8 @@ public class NodeManager {
 		return nr.getNode(nodeId);
 	}
 
-	public boolean deleteNode(int id) throws UnknownNodeException, Exception {
-		return nr.deleteNode(getNode(id));
+	public boolean deleteNode(int nodeId) throws UnknownNodeException, Exception {
+		return nr.deleteNode(nodeId);
 	}
 
 	public Node addNode(int uid, int treeId, String title, int did)
@@ -99,18 +99,18 @@ public class NodeManager {
 		return nr.updateNode(updatedNode);
 	}
 
-	public Set<Node> zoomUp(int nodeid) throws UnknownNodeException {
+	public Set<Node> zoomUp(int nodeId) throws UnknownNodeException {
 		Set<Node> nodes = new HashSet<Node>();
-		nodes.add(nr.getNode(nodeid));
-		return recursiveZoomUp(nodeid, 2, nodes);
+		nodes.add(nr.getNode(nodeId));
+		return recursiveZoomUp(nodeId, 2, nodes);
 	}
 
-	private Set<Node> recursiveZoomUp(int nodeid, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomUp(int nodeId, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
-			for (Node node : nr.getSiblingNode(nodeid)) {
+			for (Node node : nr.getSiblingNode(nodeId)) {
 				nodes.add(node);
 			}
-			for (Node node : nr.getParentNode(nodeid)) {
+			for (Node node : nr.getParentNode(nodeId)) {
 				nodes.add(node);
 				nodes = recursiveZoomUp(node.getId(), quantity - 1, nodes);
 			}
@@ -118,15 +118,15 @@ public class NodeManager {
 		return nodes;
 	}
 
-	public Set<Node> zoomDown(int nodeid) throws UnknownNodeException {
+	public Set<Node> zoomDown(int nodeId) throws UnknownNodeException {
 		Set<Node> nodes = new HashSet<Node>();
-		nodes.add(nr.getNode(nodeid));
-		return recursiveZoomDown(nodeid, 2, nodes);
+		nodes.add(nr.getNode(nodeId));
+		return recursiveZoomDown(nodeId, 2, nodes);
 	}
 
-	private Set<Node> recursiveZoomDown(int nodeid, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomDown(int nodeId, int quantity, Set<Node> nodes) {
 		if (quantity > 0) {
-			for (Node node : nr.getFollowerNode(nodeid)) {
+			for (Node node : nr.getFollowerNode(nodeId)) {
 				nodes.add(node);
 				nodes = recursiveZoomDown(node.getId(), quantity - 1, nodes);
 			}

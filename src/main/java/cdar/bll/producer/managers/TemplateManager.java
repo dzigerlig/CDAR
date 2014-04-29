@@ -33,9 +33,8 @@ public class TemplateManager {
 		return tr.createTemplate(template);
 	}
 
-	public boolean deleteTemplate(int id) throws UnknownTemplateException {
-		Template template = getKnowledgeTemplate(id);
-		return tr.deleteTemplate(template);
+	public boolean deleteTemplate(int templateId) throws UnknownTemplateException {
+		return tr.deleteTemplate(templateId);
 	}
 
 	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {

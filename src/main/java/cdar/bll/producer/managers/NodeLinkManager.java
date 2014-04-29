@@ -25,16 +25,15 @@ public class NodeLinkManager {
 	
 	public boolean deleteNodeLink(int nodeLinkId) throws Exception
 	{
-		NodeLink nodeLink = nlr.getNodeLink(nodeLinkId);
-		return nlr.deleteNodeLink(nodeLink);
+		return nlr.deleteNodeLink(nodeLinkId);
 	}
 	
-	public NodeLink addNodeLink(int ktrid, int sourceid, int targetid, int ksnid) throws Exception
+	public NodeLink addNodeLink(int ktrid, int sourceId, int targetId, int ksnid) throws Exception
 	{
 		NodeLink nodeLink = new NodeLink();
 		nodeLink.setKtrid(ktrid);
-		nodeLink.setSourceId(sourceid);
-		nodeLink.setTargetId(targetid);
+		nodeLink.setSourceId(sourceId);
+		nodeLink.setTargetId(targetId);
 		nodeLink.setKsnid(ksnid);
 		return nlr.createNodeLink(nodeLink);
 	}
@@ -59,14 +58,14 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public Set<NodeLink> zoomUp(int nodeid) throws SQLException {
+	public Set<NodeLink> zoomUp(int nodeId) throws SQLException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomUp(nodeid, 2, links);
+		return recursiveZoomUp(nodeId, 2, links);
 	}
 	
-	public Set<NodeLink> zoomDown(int nodeid) throws SQLException {
+	public Set<NodeLink> zoomDown(int nodeId) throws SQLException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomDown(nodeid, 2, links);
+		return recursiveZoomDown(nodeId, 2, links);
 	}
 
 	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws SQLException {

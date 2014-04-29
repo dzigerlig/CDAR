@@ -118,8 +118,11 @@ public class CommentRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, commentId);
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownCommentException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

@@ -138,12 +138,12 @@ public class UserRepository {
 		return user;
 	}
 
-	public boolean deleteUser(User user) throws Exception {
+	public boolean deleteUser(int userId) throws Exception {
 		final String sql = "DELETE FROM USER WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, user.getId());
+			preparedStatement.setInt(1, userId);
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (Exception ex) {

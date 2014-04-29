@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Subnode;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.persistence.DBConnection;
@@ -44,13 +45,13 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
-	public Subnode getSubnode(int id) throws UnknownSubnodeException {
+	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, subnodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -71,7 +72,7 @@ public class SubnodeRepository {
 		throw new UnknownSubnodeException();
 	}
 	
-	public List<Subnode> getParentSubnode(int nodeid) {
+	public List<Subnode> getParentSubnode(int nodeId) {
 		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KNID) AS NODES, KNOWLEDGESUBNODE AS SUBN WHERE SUBN.KNID=NODES.ID;";
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
@@ -79,7 +80,7 @@ public class SubnodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, nodeid);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -258,14 +259,17 @@ public class SubnodeRepository {
 		return subnode;
 	}
 	
-	public boolean deleteSubnode(Subnode subnode) throws UnknownSubnodeException {
+	public boolean deleteSubnode(int subnodeId) throws UnknownSubnodeException {
 		final String sql = "DELETE FROM KNOWLEDGESUBNODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, subnode.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, subnodeId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownSubnodeException();
+			}
 		} catch (Exception ex) {
 			throw new UnknownSubnodeException();
 		}

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.NodeLink;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.DBConnection;
@@ -239,14 +240,17 @@ public class NodeLinkRepository {
 		return nodeLink;
 	}
 	
-	public boolean deleteNodeLink(NodeLink nodeLink) throws Exception {
+	public boolean deleteNodeLink(int nodeLinkId) throws Exception {
 		final String sql = "DELETE FROM NODELINK WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, nodeLink.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, nodeLinkId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownNodeLinkException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

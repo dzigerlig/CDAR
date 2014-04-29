@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.consumer.ProjectNodeLink;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.persistence.DBConnection;
@@ -125,8 +126,11 @@ public class ProjectNodeLinkRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectNodeLinkId);
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownProjectNodeLinkException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

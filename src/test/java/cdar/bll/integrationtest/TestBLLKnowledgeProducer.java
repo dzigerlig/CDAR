@@ -203,7 +203,7 @@ public class TestBLLKnowledgeProducer {
 		tplm.updateTemplate(template);
 	}
 	
-	@Test (expected = UnknownTemplateException.class)
+	@Test(expected = UnknownTemplateException.class)
 	public void testDeleteUnknownTemplate() throws UnknownTemplateException {
 		TemplateManager tplm = new TemplateManager();
 		tplm.deleteTemplate(unknownId);
@@ -259,7 +259,7 @@ public class TestBLLKnowledgeProducer {
 		NodeManager nm = new NodeManager();
 		Node node = nm.addNode(um.getUser(username).getId(), unknownId, "Node title", 2);
 		node.setTitle("Updated title");
-		Node updatedNode = nm.updateNode(node);
+		nm.updateNode(node);
 	}
 	
 	@Test(expected = UnknownNodeException.class)
@@ -446,7 +446,7 @@ public class TestBLLKnowledgeProducer {
 	@Test (expected = UnknownSubnodeException.class)
 	public void testDeleteUnknownSubnode() throws UnknownSubnodeException {
 		SubnodeManager snm = new SubnodeManager();
-		assertFalse(snm.deleteSubnode(unknownId));
+		snm.deleteSubnode(unknownId);
 	}
 	
 	@Test

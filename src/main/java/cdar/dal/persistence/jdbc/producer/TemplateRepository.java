@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Template;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.persistence.DBConnection;
 
@@ -44,13 +45,13 @@ public class TemplateRepository {
 		return templates;
 	}
 
-	public Template getTemplate(int id) throws UnknownTemplateException {
+	public Template getTemplate(int templateId) throws UnknownTemplateException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, templateId);
 			
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
@@ -132,14 +133,17 @@ public class TemplateRepository {
 		return template;
 	}
 	
-	public boolean deleteTemplate(Template template) throws UnknownTemplateException  {
+	public boolean deleteTemplate(int templateId) throws UnknownTemplateException  {
 		final String sql = "DELETE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, template.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, templateId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownTemplateException();
+			}
 		} catch (Exception ex) {
 			throw new UnknownTemplateException();
 		}

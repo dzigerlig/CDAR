@@ -95,8 +95,8 @@ public class SubnodeManager {
 		return sr.updateSubnode(updatedSubnode);
 	}
 
-	public boolean deleteSubnode(int id) throws UnknownSubnodeException {
-		return sr.deleteSubnode(sr.getSubnode(id));
+	public boolean deleteSubnode(int subnodeId) throws UnknownSubnodeException {
+		return sr.deleteSubnode(subnodeId);
 	}
 
 	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException {
@@ -125,13 +125,13 @@ public class SubnodeManager {
 		return recursiveZoomUp(nodeId, 2, subnodes);
 	}
 
-	private Set<Subnode> recursiveZoomUp(int nodeid, int quantity,
+	private Set<Subnode> recursiveZoomUp(int nodeId, int quantity,
 			Set<Subnode> subnodes) {
 		if (quantity > 0) {
-			for (Subnode subnode : sr.getSiblingSubnode(nodeid)) {
+			for (Subnode subnode : sr.getSiblingSubnode(nodeId)) {
 				subnodes.add(subnode);
 			}
-			for (Subnode subnode : sr.getParentSubnode(nodeid)) {
+			for (Subnode subnode : sr.getParentSubnode(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveZoomUp(subnode.getKnid(), quantity - 1, subnodes);
 			}
@@ -139,18 +139,18 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Set<Subnode> zoomDown(int nodeid) throws SQLException {
+	public Set<Subnode> zoomDown(int nodeId) throws SQLException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
-		for (Subnode subnode : sr.getSubnodes(nodeid)) {
+		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
-		return recursiveZoomDown(nodeid, 2, subnodes);
+		return recursiveZoomDown(nodeId, 2, subnodes);
 	}
 
-	private Set<Subnode> recursiveZoomDown(int nodeid, int quantity,
+	private Set<Subnode> recursiveZoomDown(int nodeId, int quantity,
 			Set<Subnode> subnodes) {
 		if (quantity > 0) {
-			for (Subnode subnode : sr.getFollowerSubnode(nodeid)) {
+			for (Subnode subnode : sr.getFollowerSubnode(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveZoomDown(subnode.getKnid(), quantity - 1, subnodes);
 			}

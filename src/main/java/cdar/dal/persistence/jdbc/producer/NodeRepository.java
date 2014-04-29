@@ -10,12 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Node;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.DBConnection;
 
 public class NodeRepository {
-	public List<Node> getNodes(int treeid) throws SQLException {
+	public List<Node> getNodes(int treeId) throws SQLException {
 		final String sql = "SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.KTRID = ? AND NODE.ID = MAPPING.KNID";
 
 		List<Node> nodes = new ArrayList<Node>();
@@ -23,12 +24,12 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, treeid);
+			preparedStatement.setInt(1, treeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Node node = new Node();
-					node.setKtrid(treeid);
+					node.setKtrid(treeId);
 					node.setId(result.getInt(1));
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
@@ -46,13 +47,13 @@ public class NodeRepository {
 		return nodes;
 	}
 
-	public Node getNode(int id) throws UnknownNodeException {
+	public Node getNode(int nodeId) throws UnknownNodeException {
 		final String sql = "SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE NODE.ID = ? AND NODE.ID = MAPPING.KNID";
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -74,7 +75,7 @@ public class NodeRepository {
 		throw new UnknownNodeException();
 	}
 
-	public List<Node> getSiblingNode(int nodeid) {
+	public List<Node> getSiblingNode(int nodeId) {
 		final String sql = "SELECT DISTINCT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT * FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?";
 
 		List<Node> nodes = new ArrayList<Node>();
@@ -82,8 +83,8 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, nodeid);
-			preparedStatement.setInt(2, nodeid);
+			preparedStatement.setInt(1, nodeId);
+			preparedStatement.setInt(2, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -106,7 +107,7 @@ public class NodeRepository {
 		return nodes;
 	}
 
-	public List<Node> getParentNode(int nodeid) {
+	public List<Node> getParentNode(int nodeId) {
 		final String sql = "SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KNID";
 
 		List<Node> nodes = new ArrayList<Node>();
@@ -115,7 +116,7 @@ public class NodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 
-			preparedStatement.setInt(1, nodeid);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -138,7 +139,7 @@ public class NodeRepository {
 		return nodes;
 	}
 
-	public List<Node> getFollowerNode(int nodeid) {
+	public List<Node> getFollowerNode(int nodeId) {
 		final String sql = "SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM(SELECT LINKTO.TARGETID FROM NODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID";
 
 		List<Node> nodes = new ArrayList<Node>();
@@ -146,7 +147,7 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, nodeid);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -258,14 +259,17 @@ public class NodeRepository {
 		return node;
 	}
 
-	public boolean deleteNode(Node node) throws Exception {
+	public boolean deleteNode(int nodeId) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGENODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, node.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, nodeId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownNodeException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

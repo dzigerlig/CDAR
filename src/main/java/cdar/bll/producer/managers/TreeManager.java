@@ -37,8 +37,8 @@ public class TreeManager {
 		return tree;
 	}
 
-	public boolean deleteTree(int ktreeid) throws Exception {
-		return tr.deleteTree(tr.getTree(ktreeid));
+	public boolean deleteTree(int ktreeId) throws Exception {
+		return tr.deleteTree(ktreeId);
 	}
 
 	public Tree getTree(int treeId) throws Exception {

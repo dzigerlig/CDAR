@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Directory;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.persistence.DBConnection;
 
@@ -120,14 +121,17 @@ public class DirectoryRepository {
 		return directory;
 	}
 
-	public boolean deleteDirectory(Directory directory) throws Exception {
+	public boolean deleteDirectory(int directoryId) throws Exception {
 		final String sql = "DELETE FROM DIRECTORY WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, directory.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, directoryId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownDirectoryException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

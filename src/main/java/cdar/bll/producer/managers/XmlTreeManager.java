@@ -73,7 +73,7 @@ public class XmlTreeManager {
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
 		int treeId = xmlTree.getKtrid();
 		for (Node node : nr.getNodes(treeId)) {
-			if (!nr.deleteNode(node)) {
+			if (!nr.deleteNode(node.getId())) {
 				return false;
 			}
 		}
@@ -85,7 +85,7 @@ public class XmlTreeManager {
 		}
 
 		for (Template template : tr.getTemplates(treeId)) {
-			if (!tr.deleteTemplate(template)) {
+			if (!tr.deleteTemplate(template.getId())) {
 				return false;
 			}
 		}

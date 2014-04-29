@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.consumer.ProjectSubnode;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
@@ -129,8 +130,11 @@ public class ProjectSubnodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectSubnodeId);
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownProjectSubnodeException();
+			}
 		} catch (Exception ex) {
 			throw new UnknownProjectSubnodeException();
 		}

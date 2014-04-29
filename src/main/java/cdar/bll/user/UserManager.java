@@ -36,8 +36,7 @@ public class UserManager {
 	}
 
 	public boolean deleteUser(int userId) throws Exception {
-		User user = userRepository.getUser(userId);
-		return userRepository.deleteUser(user);
+		return userRepository.deleteUser(userId);
 	}
 
 	public User updateUser(User user) throws Exception {

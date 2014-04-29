@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.XmlTree;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.persistence.DBConnection;
 
@@ -111,8 +112,11 @@ public class XmlTreeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, xmlTree.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownXmlTreeException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.producer.Tree;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.persistence.DBConnection;
 
@@ -44,12 +45,12 @@ public class TreeRepository {
 		return trees;
 	}
 
-	public Tree getTree(int id) throws Exception {
+	public Tree getTree(int treeId) throws Exception {
 		final String sql = "SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, treeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Tree tree = new Tree();
@@ -115,14 +116,17 @@ public class TreeRepository {
 		return tree;
 	}
 	
-	public boolean deleteTree(Tree tree) throws Exception {
+	public boolean deleteTree(int treeId) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, tree.getId());
-			preparedStatement.executeUpdate();
-			return true;
+			preparedStatement.setInt(1, treeId);
+			if (preparedStatement.executeUpdate()==1) {
+				return true;
+			} else {
+				throw new UnknownTreeException();
+			}
 		} catch (Exception ex) {
 			throw ex;
 		}

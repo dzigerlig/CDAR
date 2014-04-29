@@ -11,28 +11,27 @@ import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 public class DirectoryManager {
 	private DirectoryRepository dr = new DirectoryRepository();
 
-	public Set<Directory> getDirectories(int treeid) throws SQLException {
+	public Set<Directory> getDirectories(int treeId) throws SQLException {
 		Set<Directory> directories = new HashSet<Directory>();
-		for (Directory directory : dr.getDirectories(treeid)) {
+		for (Directory directory : dr.getDirectories(treeId)) {
 			directories.add(directory);		
 		}
 		return directories;
 	}
 	
-	public Directory getDirectory(int id) throws UnknownDirectoryException {
-		return dr.getDirectory(id);
+	public Directory getDirectory(int directoryId) throws UnknownDirectoryException {
+		return dr.getDirectory(directoryId);
 	}
 
-	public boolean deleteDirectory(int id) throws Exception {
-		Directory directory = getDirectory(id);
-		return dr.deleteDirectory(directory);
+	public boolean deleteDirectory(int directoryId) throws Exception {
+		return dr.deleteDirectory(directoryId);
 	}
 
-	public Directory addDirectory(int treeid, int parentid, String title) throws Exception	
+	public Directory addDirectory(int treeId, int parentId, String title) throws Exception	
 	{ 
 		Directory directory = new Directory();
-		directory.setKtrid(treeid);
-		directory.setParentid(parentid);
+		directory.setKtrid(treeId);
+		directory.setParentid(parentId);
 		directory.setTitle(title);
 		return dr.createDirectory(directory);
 	}
@@ -43,7 +42,6 @@ public class DirectoryManager {
 		return dr.updateDirectory(updatedDirectory);
 	}
 	
-	//unused except tests
 	public Directory updateDirectory(Directory directory) throws Exception {
 		return dr.updateDirectory(directory);
 	}
