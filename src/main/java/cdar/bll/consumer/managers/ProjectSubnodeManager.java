@@ -19,7 +19,7 @@ public class ProjectSubnodeManager {
 	public ProjectSubnode addProjectSubnode(int kpnid, String title) throws UnknownProjectNodeLinkException, UnknownProjectNodeException {
 		ProjectSubnode projectSubnode = new ProjectSubnode();
 		projectSubnode.setRefProjectNodeId(kpnid);
-		projectSubnode.setPosition(psr.getNextProjectSubnodePosition(kpnid));
+		projectSubnode.setPosition(getNextProjectSubnodePosition(kpnid));
 		projectSubnode.setTitle(title);
 		return psr.createProjectSubnode(projectSubnode);
 	}
@@ -57,6 +57,18 @@ public class ProjectSubnodeManager {
 		updatedProjectSubnode.setPosition(projectSubnode.getPosition());
 		updatedProjectSubnode.setStatus(projectSubnode.getStatus());
 		return psr.updateProjectSubnode(updatedProjectSubnode);
+	}
+	
+	public int getNextProjectSubnodePosition(int projectNodeId) throws UnknownProjectNodeLinkException {
+		int position = 0;
+		
+		for (ProjectSubnode projectSubnode : getProjectSubnodesFromProjectNode(projectNodeId)) {
+			if (projectSubnode.getPosition() > position) {
+				position = projectSubnode.getPosition();
+			}
+		}
+		
+		return ++position;
 	}
 	
 	public void changeProjectSubnodePosition(int projectNodeId, int id, int position) throws UnknownProjectNodeLinkException {

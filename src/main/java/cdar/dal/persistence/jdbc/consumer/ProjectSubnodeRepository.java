@@ -72,17 +72,6 @@ public class ProjectSubnodeRepository {
 		}
 		throw new UnknownProjectSubnodeException();
 	}
-	public int getNextProjectSubnodePosition(int projectNodeId) throws UnknownProjectNodeLinkException {
-		int position = 0;
-		
-		for (ProjectSubnode projectSubnode : getProjectSubnodes(projectNodeId)) {
-			if (projectSubnode.getPosition() > position) {
-				position = projectSubnode.getPosition();
-			}
-		}
-		
-		return ++position;
-	}
 	
 	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
