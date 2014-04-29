@@ -1,3 +1,9 @@
+//workaround used for ressource service headers
+var customHeaders = {
+		'uid': 'none',
+		'accesstoken': 'no-token'
+};
+
 var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
 
 app.config(function ($routeProvider,$httpProvider) {
@@ -58,12 +64,6 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
-    $routeProvider.when('/sortable', {
-    	templateUrl: 'sortable.html',
-    	controller: 'SortableController',
-    	needsLogin: false
-    });
-
     $routeProvider.otherwise({
         redirectTo: '/login'
     });
@@ -71,7 +71,7 @@ app.config(function ($routeProvider,$httpProvider) {
 });
 
 
-app.run(function ($rootScope, $location, AuthenticationService, $templateCache, editableOptions, UserService) {
+app.run(function ($rootScope, $location, UserService) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!UserService.isLoggedIn() && next.needsLogin) {
             $location.url("/login");
@@ -79,5 +79,6 @@ app.run(function ($rootScope, $location, AuthenticationService, $templateCache, 
         event.preventDefault();
     });
     
-    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+    customHeaders.uid = UserService.getUserId();
+    customHeaders.accesstoken = UserService.getAccesstoken();
 });

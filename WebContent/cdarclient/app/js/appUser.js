@@ -1,6 +1,5 @@
 app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
 		AuthenticationService, UserService) {
-
 	UserService.removeCookies();
 	
 	$scope.chkbKnowledgeProducer = "";
@@ -15,6 +14,9 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 				UserService.setUsername(response.username);
 				UserService.setAccesstoken(response.accesstoken);
 				UserService.setUserId(response.id);
+				
+				customHeaders.uid = response.id;
+				customHeaders.accesstoken = response.accesstoken;
 				
 				if ($scope.chkbKnowledgeProducer) {
 					UserService.setIsProducer('true');
