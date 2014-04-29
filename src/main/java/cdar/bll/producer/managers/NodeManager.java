@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
 
-public class NodeModel {
+public class NodeManager {
 	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
 
 	private NodeRepository nr = new NodeRepository();
@@ -40,7 +40,7 @@ public class NodeModel {
 			did = rootDirectoryId;
 		}
 
-		TemplateModel tm = new TemplateModel();
+		TemplateManager tm = new TemplateManager();
 		String templateContent = tm.getDefaultKnowledgeTemplateText(treeId);
 		Node node = new Node();
 		node.setKtrid(treeId);

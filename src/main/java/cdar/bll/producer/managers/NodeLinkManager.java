@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import cdar.bll.producer.NodeLink;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.persistence.jdbc.producer.NodeLinkRepository;
 
-public class NodeLinkModel {
+public class NodeLinkManager {
 	private NodeLinkRepository nlr = new NodeLinkRepository();
 
 	public Set<NodeLink> getNodeLinks(int treeId) throws SQLException {

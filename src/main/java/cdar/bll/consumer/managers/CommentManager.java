@@ -1,4 +1,4 @@
-package cdar.bll.consumer.models;
+package cdar.bll.consumer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import cdar.bll.consumer.Comment;
 import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.persistence.jdbc.consumer.CommentRepository;
 
-public class CommentModel {
+public class CommentManager {
 	private CommentRepository cr = new CommentRepository();
 	
 	public Set<Comment> getComments(int pnodeId) throws SQLException {

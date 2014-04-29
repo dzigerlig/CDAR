@@ -10,11 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.user.User;
-import cdar.bll.user.UserModel;
+import cdar.bll.user.UserManager;
 
 @Path("users")
 public class UserController {
-	private UserModel userModel = new UserModel();
+	private UserManager userModel = new UserManager();
 
 	public UserController() {
 	}

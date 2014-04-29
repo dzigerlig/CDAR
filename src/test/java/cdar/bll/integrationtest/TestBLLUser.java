@@ -6,12 +6,12 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import cdar.bll.user.User;
-import cdar.bll.user.UserModel;
+import cdar.bll.user.UserManager;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 
 public class TestBLLUser {
-	private UserModel um = new UserModel();
+	private UserManager um = new UserManager();
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";
 

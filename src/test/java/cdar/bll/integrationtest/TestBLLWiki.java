@@ -9,18 +9,18 @@ import org.junit.Test;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.Tree;
-import cdar.bll.producer.models.DirectoryModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.TreeModel;
-import cdar.bll.user.UserModel;
+import cdar.bll.producer.managers.DirectoryManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.TreeManager;
+import cdar.bll.user.UserManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLWiki {
-	private UserModel um = new UserModel();
-	private TreeModel tm = new TreeModel();
-	private NodeModel nm = new NodeModel();
-	private DirectoryModel dm = new DirectoryModel();
+	private UserManager um = new UserManager();
+	private TreeManager tm = new TreeManager();
+	private NodeManager nm = new NodeManager();
+	private DirectoryManager dm = new DirectoryManager();
 	
 	private MediaWikiModel mwm = new MediaWikiModel();
 	

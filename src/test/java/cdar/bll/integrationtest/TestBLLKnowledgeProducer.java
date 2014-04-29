@@ -15,14 +15,14 @@ import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.producer.XmlTree;
-import cdar.bll.producer.models.DirectoryModel;
-import cdar.bll.producer.models.NodeLinkModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
-import cdar.bll.producer.models.TemplateModel;
-import cdar.bll.producer.models.TreeModel;
-import cdar.bll.producer.models.XmlTreeModel;
-import cdar.bll.user.UserModel;
+import cdar.bll.producer.managers.DirectoryManager;
+import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.SubnodeManager;
+import cdar.bll.producer.managers.TemplateManager;
+import cdar.bll.producer.managers.TreeManager;
+import cdar.bll.producer.managers.XmlTreeManager;
+import cdar.bll.user.UserManager;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
@@ -33,8 +33,8 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class TestBLLKnowledgeProducer {
-	private UserModel um = new UserModel();
-	private TreeModel tm = new TreeModel();
+	private UserManager um = new UserManager();
+	private TreeManager tm = new TreeManager();
 	
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";
@@ -104,7 +104,7 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplate() throws Exception {
 		final String templateName = "MyTemplate";
 		final String templateText = "MyTemplateText";
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
@@ -118,7 +118,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testTemplateIsDefault() throws Exception {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		assertFalse(template.getIsDefault());
@@ -126,7 +126,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testTemplateDefaultChangeMultipleTemplates() throws Exception {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
@@ -142,7 +142,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() throws Exception {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
 		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
@@ -165,7 +165,7 @@ public class TestBLLKnowledgeProducer {
 		final String newTemplateName = "My new template name";
 		final String templateText = "MyTemplateText";
 		final String newTemplateText = "My new template text";
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
@@ -185,19 +185,19 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetTemplatesUnknownTreeId() throws SQLException {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		assertEquals(0, tplm.getKnowledgeTemplates(unknownId).size());
 	}
 	
 	@Test (expected = UnknownTemplateException.class)
 	public void testGetUnknownTemplate() throws UnknownTemplateException {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		tplm.getKnowledgeTemplate(unknownId).getId();
 	}
 	
 	@Test (expected = UnknownTemplateException.class)
 	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text", false);
 		template.setTitle("New title");
 		tplm.updateTemplate(template);
@@ -205,15 +205,15 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test (expected = UnknownTemplateException.class)
 	public void testDeleteUnknownTemplate() throws UnknownTemplateException {
-		TemplateModel tplm = new TemplateModel();
+		TemplateManager tplm = new TemplateManager();
 		tplm.deleteTemplate(unknownId);
 	}
 	
 	@Test
 	public void testNode() throws Exception {
 		final String nodeTitle = "Node";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		assertEquals(0, nm.getNodes(tree.getId()).size());
@@ -231,8 +231,8 @@ public class TestBLLKnowledgeProducer {
 	public void testUpdateNode() throws Exception {
 		final String nodeTitle = "Node";
 		final String newNodeTitle = "MyNewTitle";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle, directoryId);
@@ -244,19 +244,19 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetNodesUnknownTreeId() throws SQLException {
-		NodeModel nm = new NodeModel();
+		NodeManager nm = new NodeManager();
 		assertEquals(0, nm.getNodes(unknownId).size());
 	}
 	
 	@Test(expected = UnknownNodeException.class)
 	public void testGetUnknownNode() throws UnknownNodeException {
-		NodeModel nm = new NodeModel();
+		NodeManager nm = new NodeManager();
 		nm.getNode(unknownId).getId();
 	}
 	
 	@Test(expected = UnknownTreeException.class)
 	public void testUpdateNodeUnknownTreeId() throws Exception {
-		NodeModel nm = new NodeModel();
+		NodeManager nm = new NodeManager();
 		Node node = nm.addNode(um.getUser(username).getId(), unknownId, "Node title", 2);
 		node.setTitle("Updated title");
 		Node updatedNode = nm.updateNode(node);
@@ -264,7 +264,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test(expected = UnknownNodeException.class)
 	public void testDeleteUnknownNode() throws UnknownNodeException, Exception {
-		NodeModel nm = new NodeModel();
+		NodeManager nm = new NodeManager();
 		nm.deleteNode(unknownId);
 	}
 	
@@ -272,9 +272,9 @@ public class TestBLLKnowledgeProducer {
 	public void testNodeLink() throws Exception {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
+		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
@@ -294,10 +294,10 @@ public class TestBLLKnowledgeProducer {
 		final String nameNode2 = "Node2";
 		final String nameSubnode1 = "Subnode1";
 		final String nameSubnode2 = "Subnode2";
-		NodeModel nm = new NodeModel();
-		SubnodeModel snm = new SubnodeModel();
-		DirectoryModel dm = new DirectoryModel();
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeManager nm = new NodeManager();
+		SubnodeManager snm = new SubnodeManager();
+		DirectoryManager dm = new DirectoryManager();
+		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
@@ -319,19 +319,19 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetNodeLinksUnknownTreeId() throws SQLException {
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeLinkManager nlm = new NodeLinkManager();
 		nlm.getNodeLinks(unknownId).size();
 	}
 	
 	@Test(expected = UnknownNodeLinkException.class)
 	public void testGetUnknownNodeLink() throws UnknownNodeLinkException {
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeLinkManager nlm = new NodeLinkManager();
 		nlm.getNodeLink(unknownId).getId();
 	}
 	
 	@Test(expected = UnknownTreeException.class)
 	public void testUpdateUnknownNodeLink() throws Exception {
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeLinkManager nlm = new NodeLinkManager();
 		NodeLink nodeLink = nlm.addNodeLink(unknownId, unknownId, unknownId, unknownId);
 		nodeLink.setSourceId(unknownId);
 		nlm.updateNodeLink(nodeLink);
@@ -339,16 +339,16 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test(expected = UnknownNodeLinkException.class)
 	public void testDeleteUnknownNodeLink() throws Exception {
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeLinkManager nlm = new NodeLinkManager();
 		nlm.deleteNodeLink(unknownId);
 	}
 	
 	@Test
 	public void testSubnode() throws Exception {
 		final String subnodename = "My Subnode";
-		SubnodeModel snm = new SubnodeModel();
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		SubnodeManager snm = new SubnodeManager();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
@@ -367,9 +367,9 @@ public class TestBLLKnowledgeProducer {
 	public void testSubnodeUpdate() throws Exception {
 		final String subnodename = "My Subnode";
 		final String newSubnodename = "My New Subnode";
-		SubnodeModel snm = new SubnodeModel();
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		SubnodeManager snm = new SubnodeManager();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
@@ -387,10 +387,10 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void TestKnowledgeSubnodePositionChange() throws Exception {
 		final String subnodename = "My Subnode";
-		SubnodeModel snm = new SubnodeModel();
-		NodeModel nm = new NodeModel();
+		SubnodeManager snm = new SubnodeManager();
+		NodeManager nm = new NodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		DirectoryModel dm = new DirectoryModel();
+		DirectoryManager dm = new DirectoryManager();
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
 		Subnode subnode1 = snm.addSubnode(node.getId(), subnodename);
@@ -418,25 +418,25 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testGetSubnodesUnknownTree() throws SQLException {
-		SubnodeModel snm = new SubnodeModel();
+		SubnodeManager snm = new SubnodeManager();
 		assertEquals(0, snm.getSubnodesFromTree(unknownId).size());
 	}
 	
 	@Test
 	public void testGetSubnodesUnknownNode() throws SQLException {
-		SubnodeModel snm = new SubnodeModel();
+		SubnodeManager snm = new SubnodeManager();
 		assertEquals(0, snm.getSubnodesFromNode(unknownId).size());
 	}
 	
 	@Test (expected = UnknownSubnodeException.class)
 	public void testGetUnknownSubnode() throws UnknownSubnodeException {
-		SubnodeModel snm = new SubnodeModel();
+		SubnodeManager snm = new SubnodeManager();
 		snm.getSubnode(unknownId).getId();
 	}
 	
 	@Test (expected = UnknownNodeException.class)
 	public void testUpdateUnknownSubnode() throws Exception {
-		SubnodeModel snm = new SubnodeModel();
+		SubnodeManager snm = new SubnodeManager();
 		Subnode subnode = snm.addSubnode(unknownId, "Subnode Title");
 		subnode.setTitle("New subnode title");
 		Subnode updatedSubnode = snm.updateSubnode(subnode);
@@ -445,7 +445,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test (expected = UnknownSubnodeException.class)
 	public void testDeleteUnknownSubnode() throws UnknownSubnodeException {
-		SubnodeModel snm = new SubnodeModel();
+		SubnodeManager snm = new SubnodeManager();
 		assertFalse(snm.deleteSubnode(unknownId));
 	}
 	
@@ -453,8 +453,8 @@ public class TestBLLKnowledgeProducer {
 	public void testDirectory() throws Exception {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
@@ -471,8 +471,8 @@ public class TestBLLKnowledgeProducer {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
 		final String newDirectoryName = "MyNewDirectory";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
@@ -486,18 +486,18 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	public void testDirectoryUnknownTreeId() throws SQLException {
-		DirectoryModel dm = new DirectoryModel();
+		DirectoryManager dm = new DirectoryManager();
 		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
 	@Test(expected = UnknownDirectoryException.class)
 	public void testGetUnknownDirectory() throws UnknownDirectoryException {
-		DirectoryModel dm = new DirectoryModel();
+		DirectoryManager dm = new DirectoryManager();
 		dm.getDirectory(unknownId).getId();
 	}
 	
 	@Test(expected = Exception.class)
 	public void testUpdateUnknownDirectory() throws Exception {
-		DirectoryModel dm = new DirectoryModel();
+		DirectoryManager dm = new DirectoryManager();
 		Directory directory = dm.addDirectory(unknownId, 0, "My directory");
 		directory.setTitle("My new directory");
 		Directory updatedDirectory = dm.updateDirectory(directory);
@@ -506,7 +506,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test(expected = UnknownDirectoryException.class)
 	public void testDeleteUnknownDirectory() throws Exception {
-		DirectoryModel dm = new DirectoryModel();
+		DirectoryManager dm = new DirectoryManager();
 		dm.deleteDirectory(unknownId);
 	}
 	
@@ -563,7 +563,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test
 	public void testSimpleImportExportEmptyTree() throws Exception {
-		XmlTreeModel xtm = new XmlTreeModel();
+		XmlTreeManager xtm = new XmlTreeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
 		assertTrue(xtm.cleanTree(xmlTree.getId()));

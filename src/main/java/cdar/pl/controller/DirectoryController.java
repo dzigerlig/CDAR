@@ -11,11 +11,11 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Directory;
-import cdar.bll.producer.models.DirectoryModel;
+import cdar.bll.producer.managers.DirectoryManager;
 
 @Path("ktree/{ktreeid}/directories")
 public class DirectoryController {
-	private DirectoryModel dm = new DirectoryModel();
+	private DirectoryManager dm = new DirectoryManager();
 
 	// Directory
 		@GET

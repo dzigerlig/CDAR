@@ -1,4 +1,4 @@
-package cdar.bll.consumer.models;
+package cdar.bll.consumer.managers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeRepository;
 
-public class ProjectSubnodeModel {
+public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 	

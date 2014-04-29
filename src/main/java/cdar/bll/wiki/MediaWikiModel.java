@@ -1,30 +1,30 @@
 package cdar.bll.wiki;
 
-import cdar.bll.consumer.models.ProjectNodeModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
+import cdar.bll.consumer.managers.ProjectNodeManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.SubnodeManager;
 import cdar.bll.user.User;
-import cdar.bll.user.UserModel;
+import cdar.bll.user.UserManager;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiModel {
-	private UserModel um = new UserModel();
+	private UserManager um = new UserManager();
 
 	public WikiEntry getProjectNodeWikiEntry(int nodeid) throws UnknownProjectNodeException {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		return new WikiEntry(pnm.getProjectNode(nodeid));
 	}
 
 	public WikiEntry getKnowledgeNodeWikiEntry(int nodeid) throws UnknownNodeException {
-		NodeModel nm = new NodeModel();
+		NodeManager nm = new NodeManager();
 		return new WikiEntry(nm.getNode(nodeid));
 	}
 
 	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeid) throws UnknownSubnodeException {
-		SubnodeModel sm = new SubnodeModel();
+		SubnodeManager sm = new SubnodeManager();
 		return new WikiEntry(sm.getSubnode(subnodeid));
 	}
 

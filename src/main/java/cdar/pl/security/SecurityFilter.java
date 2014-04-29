@@ -12,14 +12,14 @@ import javax.ws.rs.ext.Provider;
 import org.glassfish.jersey.server.ExtendedUriInfo;
 
 import cdar.bll.user.User;
-import cdar.bll.user.UserModel;
+import cdar.bll.user.UserManager;
 
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 			throws IOException {
-		UserModel um = new UserModel();
+		UserManager um = new UserManager();
 		final ExtendedUriInfo extendendUriInfo = (ExtendedUriInfo) requestContext
 				.getUriInfo();
 

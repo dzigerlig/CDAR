@@ -9,10 +9,10 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.persistence.jdbc.user.UserRepository;
 
-public class UserModel {
+public class UserManager {
 	private UserRepository userRepository = new UserRepository();
 
-	public UserModel() {
+	public UserManager() {
 	}
 
 	public User loginUser(String username, String password) throws Exception {

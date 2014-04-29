@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.persistence.jdbc.producer.NodeRepository;
 import cdar.dal.persistence.jdbc.producer.SubnodeRepository;
 
-public class SubnodeModel {
+public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
 	public Subnode addSubnode(int knid, String title) throws Exception {

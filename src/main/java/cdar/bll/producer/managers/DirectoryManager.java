@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import cdar.bll.producer.Directory;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 
-public class DirectoryModel {
+public class DirectoryManager {
 	private DirectoryRepository dr = new DirectoryRepository();
 
 	public Set<Directory> getDirectories(int treeid) throws SQLException {

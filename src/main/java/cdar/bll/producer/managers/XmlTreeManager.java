@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ import cdar.dal.persistence.jdbc.producer.SubnodeRepository;
 import cdar.dal.persistence.jdbc.producer.TemplateRepository;
 import cdar.dal.persistence.jdbc.producer.XmlTreeRepository;
 
-public class XmlTreeModel {
-	private DirectoryModel dm = new DirectoryModel();
+public class XmlTreeManager {
+	private DirectoryManager dm = new DirectoryManager();
 	private NodeRepository nr = new NodeRepository();
 	private NodeLinkRepository nlr = new NodeLinkRepository();
 	private XmlTreeRepository xtr = new XmlTreeRepository();

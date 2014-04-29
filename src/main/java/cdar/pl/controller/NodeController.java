@@ -11,12 +11,12 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Node;
-import cdar.bll.producer.models.NodeModel;
+import cdar.bll.producer.managers.NodeManager;
 
 public class NodeController {
 	@Path("ktree/{ktreeid}/nodes")
 	public class KnowledgeNodeController{
-		private NodeModel nm = new NodeModel();
+		private NodeManager nm = new NodeManager();
 
 		// Nodes
 		@GET

@@ -1,4 +1,4 @@
-package cdar.bll.consumer.models;
+package cdar.bll.consumer.managers;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,9 +13,9 @@ import cdar.bll.consumer.ProjectTree;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
-import cdar.bll.producer.models.NodeLinkModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
+import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.SubnodeManager;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.persistence.jdbc.consumer.ProjectNodeLinkRepository;
@@ -23,7 +23,7 @@ import cdar.dal.persistence.jdbc.consumer.ProjectNodeRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectSubnodeRepository;
 import cdar.dal.persistence.jdbc.consumer.ProjectTreeRepository;
 
-public class ProjectTreeModel {
+public class ProjectTreeManager {
 
 	private ProjectTreeRepository ptr = new ProjectTreeRepository();
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -53,9 +53,9 @@ public class ProjectTreeModel {
 	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId)
 			throws SQLException, UnknownProjectNodeException, UnknownProjectTreeException {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
-		NodeModel nm = new NodeModel();
-		SubnodeModel snm = new SubnodeModel();
-		NodeLinkModel nlm = new NodeLinkModel();
+		NodeManager nm = new NodeManager();
+		SubnodeManager snm = new SubnodeManager();
+		NodeLinkManager nlm = new NodeLinkManager();
 
 		for (Node node : nm.getNodes(ktreeId)) {
 			ProjectNode projectNode = new ProjectNode();

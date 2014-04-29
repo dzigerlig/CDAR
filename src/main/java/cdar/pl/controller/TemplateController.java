@@ -11,11 +11,11 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Template;
-import cdar.bll.producer.models.TemplateModel;
+import cdar.bll.producer.managers.TemplateManager;
 
 @Path("ktree/{ktreeid}/templates")
 public class TemplateController {
-	private TemplateModel tm = new TemplateModel();
+	private TemplateManager tm = new TemplateManager();
 	// TEMPLATES
 		@GET
 		// Changed

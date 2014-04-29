@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import cdar.dal.persistence.jdbc.producer.DirectoryRepository;
 import cdar.dal.persistence.jdbc.producer.TreeRepository;
 import cdar.dal.persistence.jdbc.user.UserRepository;
 
-public class TreeModel {
+public class TreeManager {
 	private TreeRepository tr = new TreeRepository();
 
 	public Set<Tree> getTrees(int uid) throws SQLException {

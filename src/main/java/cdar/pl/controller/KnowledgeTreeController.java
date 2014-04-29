@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Tree;
-import cdar.bll.producer.models.TreeModel;
-import cdar.bll.producer.models.XmlTreeModel;
+import cdar.bll.producer.managers.TreeManager;
+import cdar.bll.producer.managers.XmlTreeManager;
 
 @Path("ktree")
 public class KnowledgeTreeController {
-	private TreeModel ktm = new TreeModel();
-	private XmlTreeModel xtm = new XmlTreeModel();
+	private TreeManager ktm = new TreeManager();
+	private XmlTreeManager xtm = new XmlTreeManager();
 
 	// Dynamic Tree
 	@GET

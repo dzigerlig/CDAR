@@ -8,7 +8,7 @@ import javax.security.auth.login.LoginException;
 import org.wikipedia.Wiki;
 
 import cdar.bll.user.User;
-import cdar.bll.user.UserModel;
+import cdar.bll.user.UserManager;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiCreationModel extends Thread {
@@ -74,7 +74,7 @@ public class MediaWikiCreationModel extends Thread {
 
 	public void run() {
 		try {
-			UserModel um = new UserModel();
+			UserManager um = new UserManager();
 			User user = um.getUser(getUid());
 			createNewWikiEntry(user.getUsername(), user.getPassword());
 			getWikiHelper().removeWikiEntry(getTitle());

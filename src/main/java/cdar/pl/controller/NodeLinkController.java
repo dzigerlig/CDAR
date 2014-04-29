@@ -11,13 +11,13 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.models.NodeLinkModel;
+import cdar.bll.producer.managers.NodeLinkManager;
 
 public class NodeLinkController {
 
 	@Path("ktree/{ktreeid}/links")
 	public class KnowledgeNodeLinkController {
-		private NodeLinkModel lm = new NodeLinkModel();
+		private NodeLinkManager lm = new NodeLinkManager();
 
 		// Links
 		@GET

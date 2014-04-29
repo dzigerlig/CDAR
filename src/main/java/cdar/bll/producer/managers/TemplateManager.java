@@ -1,4 +1,4 @@
-package cdar.bll.producer.models;
+package cdar.bll.producer.managers;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -9,7 +9,7 @@ import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.persistence.jdbc.producer.TemplateRepository;
 
-public class TemplateModel {
+public class TemplateManager {
 	private TemplateRepository tr = new TemplateRepository();
 
 	public Set<Template> getKnowledgeTemplates(int ktreeId) throws SQLException {

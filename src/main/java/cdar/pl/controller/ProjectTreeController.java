@@ -13,12 +13,12 @@ import javax.ws.rs.core.MediaType;
 import cdar.bll.CDAR_Boolean;
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
-import cdar.bll.consumer.models.ProjectNodeModel;
-import cdar.bll.consumer.models.ProjectTreeModel;
+import cdar.bll.consumer.managers.ProjectNodeManager;
+import cdar.bll.consumer.managers.ProjectTreeManager;
 
 @Path("ptree")
 public class ProjectTreeController {
-	private ProjectTreeModel ptm = new ProjectTreeModel();
+	private ProjectTreeManager ptm = new ProjectTreeManager();
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -59,7 +59,7 @@ public class ProjectTreeController {
 	@Path("nodes/{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Set<ProjectNode> getNodes(@PathParam("ptreeid") int ptreeid) {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		return pnm.getProjectNodes(ptreeid);
 	}
 }

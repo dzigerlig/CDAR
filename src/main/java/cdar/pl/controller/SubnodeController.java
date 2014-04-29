@@ -15,15 +15,15 @@ import cdar.bll.CDAR_Boolean;
 import cdar.bll.CDAR_BooleanChanges;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
-import cdar.bll.producer.models.NodeLinkModel;
-import cdar.bll.producer.models.SubnodeModel;
+import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.producer.managers.SubnodeManager;
 
 public class SubnodeController {
 
 	@Path("ktree/{ktreeid}/subnodes")
 	public class KnowledgeSubnodeController {
-		private SubnodeModel sm = new SubnodeModel();
-		private NodeLinkModel lm = new NodeLinkModel();
+		private SubnodeManager sm = new SubnodeManager();
+		private NodeLinkManager lm = new NodeLinkManager();
 
 		// Subnodes
 		@GET

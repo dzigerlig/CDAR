@@ -14,21 +14,21 @@ import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectNodeLink;
 import cdar.bll.consumer.ProjectSubnode;
 import cdar.bll.consumer.ProjectTree;
-import cdar.bll.consumer.models.CommentModel;
-import cdar.bll.consumer.models.ProjectNodeLinkModel;
-import cdar.bll.consumer.models.ProjectNodeModel;
-import cdar.bll.consumer.models.ProjectSubnodeModel;
-import cdar.bll.consumer.models.ProjectTreeModel;
+import cdar.bll.consumer.managers.CommentManager;
+import cdar.bll.consumer.managers.ProjectNodeLinkManager;
+import cdar.bll.consumer.managers.ProjectNodeManager;
+import cdar.bll.consumer.managers.ProjectSubnodeManager;
+import cdar.bll.consumer.managers.ProjectTreeManager;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Tree;
-import cdar.bll.producer.models.DirectoryModel;
-import cdar.bll.producer.models.NodeLinkModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
-import cdar.bll.producer.models.TreeModel;
-import cdar.bll.user.UserModel;
+import cdar.bll.producer.managers.DirectoryManager;
+import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.SubnodeManager;
+import cdar.bll.producer.managers.TreeManager;
+import cdar.bll.user.UserManager;
 import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
@@ -38,8 +38,8 @@ import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeConsumer {
 	
-	private UserModel um = new UserModel();
-	private ProjectTreeModel ptm = new ProjectTreeModel();
+	private UserManager um = new UserManager();
+	private ProjectTreeManager ptm = new ProjectTreeManager();
 	
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";
@@ -106,9 +106,9 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testKnowledgeTreeToProjectTreeZeroEntries() throws Exception {
-		NodeModel nm = new NodeModel();
-		TreeModel tm = new TreeModel();
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		NodeManager nm = new NodeManager();
+		TreeManager tm = new TreeManager();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, nm.getNodes(tree.getId()).size());
@@ -122,12 +122,12 @@ public class TestBLLKnowledgeConsumer {
 	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() throws Exception {
 		final String nodeTitle1 = "MyNode 1";
 		final String nodeTitle2 = "MyNode 2";
-		NodeModel nm = new NodeModel();
-		DirectoryModel dm = new DirectoryModel();
-		TreeModel tm = new TreeModel();
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
-		NodeLinkModel nlm = new NodeLinkModel();
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		NodeManager nm = new NodeManager();
+		DirectoryManager dm = new DirectoryManager();
+		TreeManager tm = new TreeManager();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
+		NodeLinkManager nlm = new NodeLinkManager();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
@@ -157,14 +157,14 @@ public class TestBLLKnowledgeConsumer {
 		final String subnodeTitle1 = "My Subnode 1";
 		final String subnodeTitle2 = "My Subnode 2";
 		final String subnodeTitle3 = "My Subnode 3";
-		NodeModel nm = new NodeModel();
-		SubnodeModel snm = new SubnodeModel();
-		ProjectSubnodeModel psnm = new ProjectSubnodeModel();
-		DirectoryModel dm = new DirectoryModel();
-		TreeModel tm = new TreeModel();
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
-		NodeLinkModel nlm = new NodeLinkModel();
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		NodeManager nm = new NodeManager();
+		SubnodeManager snm = new SubnodeManager();
+		ProjectSubnodeManager psnm = new ProjectSubnodeManager();
+		DirectoryManager dm = new DirectoryManager();
+		TreeManager tm = new TreeManager();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
+		NodeLinkManager nlm = new NodeLinkManager();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
@@ -198,7 +198,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testUnknownKnowledgeTreeToProjectTree() throws Exception {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
 		ptm.addKnowledgeTreeToProjectTree(unknownId, projectTree.getId());
@@ -208,7 +208,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test
 	public void testProjectNode() throws Exception {
 		final String projectNodeName = "My project node";
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName);
@@ -223,7 +223,7 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectNodeUpdate() throws Exception {
 		final String projectNodeName = "My project node";
 		final String newProjectNodeName = "My new project node name";
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName);
@@ -242,19 +242,19 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectNodesUnknownProjectTree() throws UnknownProjectTreeException {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.getProjectNodes(unknownId).size();
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)
 	public void testGetUnknownProjectNode() throws UnknownProjectNodeException {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.getProjectNode(unknownId).getId();
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)
 	public void testUpdateUnknownProjectNode() throws UnknownProjectNodeException {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectNode projectNode = pnm.getProjectNode(unknownId);
 		projectNode.setTitle("Unknown project node");
 		pnm.updateProjectNode(projectNode);
@@ -262,7 +262,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testDeleteUnknownProjectNode() throws UnknownProjectNodeException {
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.deleteProjectNode(unknownId);
 	}
 	
@@ -270,8 +270,8 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectNodeLink() throws Exception {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
-		ProjectNodeModel pnm = new ProjectNodeModel();
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2);
@@ -288,8 +288,8 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectNodeLinkUpdate() throws Exception {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
-		ProjectNodeModel pnm = new ProjectNodeModel();
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2);
@@ -309,19 +309,19 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectNodeLinksUnknownProjectTree() throws UnknownProjectTreeException {
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.getProjectNodeLinks(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectNodeLinkException.class)
 	public void testGetUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.getProjectNodeLink(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectNodeLinkException.class)
 	public void testUpdateUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		ProjectNodeLink projectNodeLink = pnlm.getProjectNodeLink(unknownId);
 		projectNodeLink.setSourceId(12);
 		pnlm.updateLink(projectNodeLink);
@@ -329,15 +329,15 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testDeleteUnknownProjectNodeLink() throws Exception {
-		ProjectNodeLinkModel pnlm = new ProjectNodeLinkModel();
+		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.removeProjectNodeLink(unknownId);
 	}
 	
 	@Test
 	public void testProjectSubnode() throws Exception {
 		final String projectSubnodeName = "My project subnode";
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
@@ -355,8 +355,8 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectSubnodeUpdate() throws Exception {
 		final String projectSubnodeName = "My project subnode";
 		final String newProjectSubnodeName = "Another project subnode name";
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
@@ -375,25 +375,25 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetProjectSubnodesUnknownProjectNode() throws UnknownProjectNodeLinkException {
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.getProjectSubnodesFromProjectNode(unknownId);
 	}
 	
 	@Test
 	public void testGetProjectSubnodesUnknownProjectTree() throws UnknownProjectTreeException, UnknownProjectNodeLinkException {
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.getProjectSubnodesFromProjectTree(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectSubnodeException.class)
 	public void testGetUnknownProjectSubnode() throws UnknownProjectSubnodeException {
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.getProjectSubnode(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectSubnodeException.class)
 	public void testUpdateUnknownProjectSubnode() throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		ProjectSubnode projectSubnode = psm.getProjectSubnode(unknownId);
 		projectSubnode.setTitle("My unknown project subnode");
 		psm.updateProjectSubnode(projectSubnode);
@@ -401,17 +401,17 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testDeleteUnknownProjectSubnode() throws UnknownProjectSubnodeException {
-		ProjectSubnodeModel psm = new ProjectSubnodeModel();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.removeProjectSubnode(unknownId);
 	}
 	
 	@Test
 	public void testComment() throws Exception {
 		final String commentString = "This is a comment";
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
 		assertEquals(1, cm.getComments(pnode.getId()).size());
@@ -424,10 +424,10 @@ public class TestBLLKnowledgeConsumer {
 	public void testCommentUpdate() throws Exception {
 		final String commentString = "This is a comment";
 		final String newCommentString = "This is another comment";
-		ProjectNodeModel pnm = new ProjectNodeModel();
+		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
 		assertEquals(1, cm.getComments(pnode.getId()).size());
@@ -441,19 +441,19 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testGetCommentsUnknownProjectNode() throws SQLException {
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(unknownId).size());
 	}
 	
 	@Test(expected = UnknownCommentException.class)
 	public void testGetUnknownComment() throws UnknownCommentException {
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		cm.getComment(unknownId).getId();
 	}
 	
 	@Test(expected = UnknownCommentException.class)
 	public void testUpdateUnknownComment() throws Exception {
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		Comment comment = cm.getComment(unknownId);
 		comment.setComment("Unknown comment");
 		Comment updatedComment = cm.updateComment(comment);
@@ -462,7 +462,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test
 	public void testDeleteUnknownComment() throws Exception {
-		CommentModel cm = new CommentModel();
+		CommentManager cm = new CommentManager();
 		cm.removeComment(unknownId);
 	}
 }

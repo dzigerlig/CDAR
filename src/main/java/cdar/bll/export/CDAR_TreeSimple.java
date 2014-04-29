@@ -11,12 +11,12 @@ import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
-import cdar.bll.producer.models.DirectoryModel;
-import cdar.bll.producer.models.NodeLinkModel;
-import cdar.bll.producer.models.NodeModel;
-import cdar.bll.producer.models.SubnodeModel;
-import cdar.bll.producer.models.TemplateModel;
-import cdar.bll.producer.models.TreeModel;
+import cdar.bll.producer.managers.DirectoryManager;
+import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.producer.managers.NodeManager;
+import cdar.bll.producer.managers.SubnodeManager;
+import cdar.bll.producer.managers.TemplateManager;
+import cdar.bll.producer.managers.TreeManager;
 import cdar.dal.persistence.jdbc.producer.TreeRepository;
 
 @XmlRootElement
@@ -30,11 +30,11 @@ public class CDAR_TreeSimple {
 	private Set<NodeLink> links;
 	private Set<Directory> directories;
 	
-	private TemplateModel tem = new TemplateModel();
-	private NodeModel nm = new NodeModel();
-	private SubnodeModel snm = new SubnodeModel();
-	private NodeLinkModel nlm = new NodeLinkModel();
-	private DirectoryModel dm = new DirectoryModel();
+	private TemplateManager tem = new TemplateManager();
+	private NodeManager nm = new NodeManager();
+	private SubnodeManager snm = new SubnodeManager();
+	private NodeLinkManager nlm = new NodeLinkManager();
+	private DirectoryManager dm = new DirectoryManager();
 	
 	private TreeRepository tr = new TreeRepository();
 	
