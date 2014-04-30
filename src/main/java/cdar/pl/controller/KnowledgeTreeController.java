@@ -33,7 +33,7 @@ public class KnowledgeTreeController {
 
 	@POST
 	@Path("delete")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteTreeById(int ktreeid) {
 		try {
 			return Response.ok(ktm.deleteTree(ktreeid),
