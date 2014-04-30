@@ -8,10 +8,6 @@
 
 .userrole { margin-top: -30px; }
 
-.sidebar-cdar-role {
-	margin-top: -45px;
-}
-
 body.dragging,body.dragging * {
 	cursor: move !important;
 }

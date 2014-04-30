@@ -1,27 +1,11 @@
-<div class="row">
-	<div class="content-header">
-		<div class="col-md-10">
-			<h1>
-				<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>Collaborative Decision and Architectural Refactoring Tool
-			</h1>
-			<h2 class="inset">{{title}}</h2>
-		</div>
-		<div class="col-md-2">
-			<div class="row">
-				<div class="col-xs-2">
-					<a href="#/account"><img src="app/img/user.png" height="18"
-						width="18" /></a>
-				</div>
-				<div class="col-xs-10 text-left">
-					<a href="#/account" style="color: inherit; text-decoration: none;">{{UserService.getUsername()}}</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-2 userrole">
-					<img src="app/img/switch.png" height="18" width="18" />
-				</div>
-				<div class="col-xs-10 text-left userrole">{{UserService.getUsername()}}</div>
-			</div>
-		</div>
+<div class="col-md-3">
+	<div class="row">
+		<a href="#/account"><div class="col-xs-2"><img src="app/img/user.png" height="18" width="18" /></div></a>
+		<a href="#/account"><div class="col-xs-10 text-left">User: {{UserService.getUsername()}}</div></a>
+	</div>
+	<div class="row">
+		<a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-2 userrole"><img src="app/img/switch.png" height="18" width="18" /></div></a>
+		<div data-ng-show="UserService.getIsProducer()=='false'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-10 text-left userrole">Current Role: Knowledge Consumer</div></a></div>
+		<div data-ng-show="UserService.getIsProducer()=='true'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-10 text-left userrole">Current Role: Knowledge Producer</div></a></div>
 	</div>
 </div>

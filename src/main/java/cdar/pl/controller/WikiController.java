@@ -2,6 +2,7 @@ package cdar.pl.controller;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,7 +41,7 @@ public class WikiController {
 	@Path("/producer/node")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WikiEntry postKnowledgeNodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
+	public WikiEntry postKnowledgeNodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
 			return mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry);
 		} catch (UnknownUserException uue) {
@@ -52,7 +53,7 @@ public class WikiController {
 	@Path("/producer/subnode")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WikiEntry postKnowledgeSubnodeWikiEntry(@PathParam("uid") int uid, WikiEntry wikiEntry) {
+	public WikiEntry postKnowledgeSubnodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
 		return mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry);
 		} catch (UnknownUserException uue) {
