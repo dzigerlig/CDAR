@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
-import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -16,9 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.owlike.genson.convert.DefaultConverters.PrimitiveConverterFactory.booleanConverter;
-
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.user.User;
 import cdar.pl.controller.UserController;
 
