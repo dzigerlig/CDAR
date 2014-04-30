@@ -17,13 +17,14 @@ import cdar.bll.producer.Subnode;
 import cdar.bll.producer.managers.NodeLinkManager;
 import cdar.bll.producer.managers.SubnodeManager;
 
-@Path("ktree/{ktreeid}/subnodes")
+@Path("ktree/{ktreeid}")
 public class KnowledgeSubnodeController {
 	private SubnodeManager sm = new SubnodeManager();
 	private NodeLinkManager lm = new NodeLinkManager();
 
 	// Subnodes
 	@GET
+	@Path("subnodes")
 	// Changed
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodesByTree(@PathParam("ktreeid") int ktreeid) {
@@ -37,7 +38,7 @@ public class KnowledgeSubnodeController {
 
 	@GET
 	// Changed
-	@Path("{nodeid}")
+	@Path("/nodes/{nodeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("nodeid") int nodeid) {
 		try {
@@ -50,7 +51,7 @@ public class KnowledgeSubnodeController {
 
 	@POST
 	// Changed
-	@Path("rename")
+	@Path("/nodes/{nodeid}/subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response renameSubnode(Subnode subnode) {
 		try {
@@ -66,7 +67,7 @@ public class KnowledgeSubnodeController {
 
 	@POST
 	// Changed
-	@Path("moveup")
+	@Path("/nodes/{nodeid}/subnodes/moveup")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeUp(Subnode subnode) {
 		try {
@@ -79,7 +80,7 @@ public class KnowledgeSubnodeController {
 
 	@POST
 	// Changed
-	@Path("movedown")
+	@Path("/nodes/{nodeid}/subnodes/movedown")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeDown(Subnode subnode) {
 		try {
@@ -92,7 +93,7 @@ public class KnowledgeSubnodeController {
 
 	@POST
 	// Changed
-	@Path("add")
+	@Path("/nodes/{nodeid}/subnodes/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(Subnode sn) {
 		try {
@@ -104,7 +105,7 @@ public class KnowledgeSubnodeController {
 
 	@POST
 	// Changed
-	@Path("delete")
+	@Path("/nodes/{nodeid}/subnodes/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteSubnode(int id) {
 		try {
@@ -120,7 +121,7 @@ public class KnowledgeSubnodeController {
 
 	@GET
 	// Changed
-	@Path("{nodeid}/zoomUp")
+	@Path("nodes/{nodeid}/subnodes/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpSubnode(@PathParam("nodeid") int nodeid) {
 		try {
@@ -133,7 +134,7 @@ public class KnowledgeSubnodeController {
 
 	@GET
 	// Changed
-	@Path("{nodeid}/zoomDown")
+	@Path("nodes/{nodeid}/subnodes/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownSubnode(@PathParam("nodeid") int nodeid) {
 		try {

@@ -257,10 +257,12 @@ public class TestTreeController extends JerseyTest {
 		Template addedTemplate = addTemplate(treeid, "TestTemplate",
 				"TemplateText");
 		Response getTemplateResponse = target(
-				"/ktree/"+treeid +"/templates/"	+ addedTemplate.getId()).request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class);
-		addedTemplate=getTemplateResponse.readEntity(Template.class);
+				"/ktree/" + treeid + "/templates/" + addedTemplate.getId())
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		addedTemplate = getTemplateResponse.readEntity(Template.class);
 		deleteTemplate(addedTemplate.getId());
-		assertTrue(addedTemplate.getId()>0);
+		assertTrue(addedTemplate.getId() > 0);
 		assertEquals(200, getTemplateResponse.getStatus());
 	}
 
@@ -271,10 +273,12 @@ public class TestTreeController extends JerseyTest {
 		addedTemplate.setTemplatetext(TREENAME);
 		addedTemplate.setTitle(USERNAME);
 		Response editTemplateResponse = target(
-				"/ktree/"+treeid+"/templates/edit"
-						).request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
-				Entity.entity(addedTemplate, MediaType.APPLICATION_JSON),
-				Response.class);
+				"/ktree/" + treeid + "/templates/edit")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedTemplate, MediaType.APPLICATION_JSON),
+						Response.class);
 		Template editTemplate = editTemplateResponse.readEntity(Template.class);
 		deleteTemplate(addedTemplate.getId());
 		assertEquals(200, editTemplateResponse.getStatus());
@@ -285,44 +289,62 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testAddAndDeleteDirectories() {
 		int quantityOfDirectoriesBeforeAdd = target(
-				"/ktree/"+treeid+"/directories/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/directories/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Directory addDirectory = new Directory();
 		addDirectory.setKtrid(treeid);
 		addDirectory.setParentid(0);
-		Response addedDirectoryResponse= target("/ktree/"+treeid+"/directories/add")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addDirectory,
-						MediaType.APPLICATION_JSON), Response.class);
-		Directory addedDirectory = addedDirectoryResponse.readEntity(Directory.class);
+		Response addedDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/add")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addDirectory, MediaType.APPLICATION_JSON),
+						Response.class);
+		Directory addedDirectory = addedDirectoryResponse
+				.readEntity(Directory.class);
 		Directory addSubDirectory = new Directory();
 		addSubDirectory.setKtrid(treeid);
 		addSubDirectory.setParentid(addedDirectory.getId());
-		Response addedSubDirectoryResponse= target("/ktree/"+treeid+"/directories/add")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addSubDirectory,
-						MediaType.APPLICATION_JSON), Response.class);
-		Directory addedSubDirectory = addedSubDirectoryResponse.readEntity(Directory.class);	
+		Response addedSubDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/add")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity
+						.entity(addSubDirectory, MediaType.APPLICATION_JSON),
+						Response.class);
+		Directory addedSubDirectory = addedSubDirectoryResponse
+				.readEntity(Directory.class);
 		int quantityOfDirectoriesAfterAdd = target(
-				"/ktree/"+treeid+"/directories/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/directories/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		
-		Response deletedSubDirectoryResponse = target("/ktree/"+treeid+"/directories/delete")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedSubDirectory.getId(), MediaType.APPLICATION_JSON),
-						Response.class);
-		boolean isSubDirectoryDeleted = deletedSubDirectoryResponse.readEntity(boolean.class);
-		
-		Response deletedDirectoryResponse = target("/ktree/"+treeid+"/directories/delete")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedDirectory.getId(), MediaType.APPLICATION_JSON),
-						Response.class);
-		boolean isDirectoryDeleted = deletedDirectoryResponse.readEntity(boolean.class);
-		
-		
+
+		Response deletedSubDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedSubDirectory.getId(),
+						MediaType.APPLICATION_JSON), Response.class);
+		boolean isSubDirectoryDeleted = deletedSubDirectoryResponse
+				.readEntity(boolean.class);
+
+		Response deletedDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedDirectory.getId(),
+						MediaType.APPLICATION_JSON), Response.class);
+		boolean isDirectoryDeleted = deletedDirectoryResponse
+				.readEntity(boolean.class);
 
 		int quantityOfDirectoriesAfterDelete = target(
-				"/ktree/"+treeid+"/directories/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/directories/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, addedDirectoryResponse.getStatus());
 		assertEquals(201, addedSubDirectoryResponse.getStatus());
@@ -343,25 +365,33 @@ public class TestTreeController extends JerseyTest {
 
 	@Test
 	public void testDeleteNotExistingDirectory() {
-		boolean isDirectoryDeleted = deleteDirectory(999999999);
-		assertEquals(false, isDirectoryDeleted);
+		Response deletedDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						Response.class);
+		assertEquals(400, deletedDirectoryResponse.getStatus());
 	}
 
 	@Test
 	public void testGetAllDirectories() {
 		int quantityOfDirectoriesBefore = target(
-				getAuthString() + "/ktree/directories/" + treeid).request()
-				.get(Set.class).size();
-
+				"/ktree/" + treeid + "/directories").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 		Directory addedDirectory1 = addDirectory(treeid, 0);
 		Directory addedDirectory2 = addDirectory(treeid, 0);
-
-		int quantityOfDirectoriesAfter = target(
-				getAuthString() + "/ktree/directories/" + treeid).request()
-				.get(Set.class).size();
-
+		Response quantityOfDirectoriesAfterResponse = target(
+				"/ktree/" + treeid + "/directories").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		int quantityOfDirectoriesAfter = quantityOfDirectoriesAfterResponse
+				.readEntity(Set.class).size();
 		deleteDirectory(addedDirectory1.getId());
 		deleteDirectory(addedDirectory2.getId());
+		assertEquals(200, quantityOfDirectoriesAfterResponse.getStatus());
 		assertEquals(quantityOfDirectoriesBefore + 2,
 				quantityOfDirectoriesAfter);
 	}
@@ -371,13 +401,17 @@ public class TestTreeController extends JerseyTest {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		addedDirectory.setTitle(USERNAME);
 
-		Directory renamedDirectory = target(
-				getAuthString() + "/ktree/directories/rename/" + treeid)
-				.request().post(
-						Entity.entity(addedDirectory,
-								MediaType.APPLICATION_JSON), Directory.class);
-
+		Response renamedDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/rename")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedDirectory, MediaType.APPLICATION_JSON),
+						Response.class);
+		Directory renamedDirectory = renamedDirectoryResponse
+				.readEntity(Directory.class);
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, renamedDirectoryResponse.getStatus());
 		assertEquals(USERNAME, renamedDirectory.getTitle());
 		assertEquals(treeid, renamedDirectory.getKtrid());
 	}
@@ -389,14 +423,18 @@ public class TestTreeController extends JerseyTest {
 		Directory addedChildDirectory = addDirectory(treeid, 0);
 		addedChildDirectory.setParentid(addedParentDirectory.getId());
 
-		Directory movedDirectory = target(
-				getAuthString() + "/ktree/directories/move/" + treeid)
-				.request().post(
-						Entity.entity(addedChildDirectory,
-								MediaType.APPLICATION_JSON), Directory.class);
+		Response movedDirectoryResponse = target(
+				"/ktree/" + treeid + "/directories/move")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedChildDirectory,
+						MediaType.APPLICATION_JSON), Response.class);
+		Directory movedDirectory = movedDirectoryResponse
+				.readEntity(Directory.class);
 		deleteDirectory(addedParentDirectory.getId());
 		deleteDirectory(addedChildDirectory.getId());
-
+		assertEquals(200, movedDirectoryResponse.getStatus());
 		assertEquals(addedParentDirectory.getId(), movedDirectory.getParentid());
 	}
 
@@ -792,16 +830,18 @@ public class TestTreeController extends JerseyTest {
 		Directory addTestDirectory = new Directory();
 		addTestDirectory.setKtrid(treeid);
 		addTestDirectory.setParentid(parentid);
-		return target("/ktree/"+treeid+"/directories/add")
-				.request()
+		return target("/ktree/" + treeid + "/directories/add")
+				.request()			.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestDirectory,
 						MediaType.APPLICATION_JSON), Response.class)
 				.readEntity(Directory.class);
 	}
 
 	private boolean deleteDirectory(int directoryid) {
-		return target("/ktree/"+treeid+"/directories/delete")
-				.request()
+		return target("/ktree/" + treeid + "/directories/delete")
+				.request()			.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(directoryid, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
