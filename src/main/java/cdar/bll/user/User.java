@@ -2,6 +2,8 @@ package cdar.bll.user;
 
 import java.util.Date;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import cdar.bll.BasicEntity;
 
 public class User extends BasicEntity {
@@ -38,6 +40,7 @@ public class User extends BasicEntity {
 		this.username = username;
 	}
 	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
