@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,7 +23,7 @@ public class ProjectTreeController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<ProjectTree> getProjectTreesByUid(@PathParam("uid") int uid) {
+	public Set<ProjectTree> getProjectTreesByUid(@HeaderParam("uid") int uid) {
 		return ptm.getProjectTrees(uid);
 	}
 	
@@ -44,14 +45,14 @@ public class ProjectTreeController {
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ProjectTree addProjectTree(String treeTitle, @PathParam("uid") int uid) {
+	public ProjectTree addProjectTree(String treeTitle, @HeaderParam("uid") int uid) {
 		return ptm.addProjectTree(uid, treeTitle);
 	}
 	
 	@GET
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProjectTree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @PathParam("uid") int uid) {
+	public ProjectTree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @HeaderParam("uid") int uid) {
 		return ptm.getProjectTree(ptreeid);
 	}
 	
