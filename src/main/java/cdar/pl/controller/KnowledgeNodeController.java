@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.managers.NodeManager;
 
@@ -72,7 +71,7 @@ public class KnowledgeNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNode(int id) {
 		try {
-			return Response.ok(new CDAR_Boolean(nm.deleteNode(id)),
+			return Response.ok(nm.deleteNode(id),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();

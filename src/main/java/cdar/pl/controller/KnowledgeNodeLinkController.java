@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.managers.NodeLinkManager;
 
@@ -51,7 +50,7 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNodeLink(int id) {
 		try {
-			return Response.ok(new CDAR_Boolean(lm.deleteNodeLink(id)),
+			return Response.ok(lm.deleteNodeLink(id),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();

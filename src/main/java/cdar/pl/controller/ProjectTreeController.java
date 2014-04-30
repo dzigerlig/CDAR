@@ -11,7 +11,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.consumer.ProjectNode;
 import cdar.bll.consumer.ProjectTree;
 import cdar.bll.consumer.managers.ProjectNodeManager;
@@ -30,8 +29,8 @@ public class ProjectTreeController {
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CDAR_Boolean deleteTreeById(int ptreeid) {
-		return new CDAR_Boolean(ptm.deleteProjectTree(ptreeid));
+	public boolean deleteTreeById(int ptreeid) {
+		return new ptm.deleteProjectTree(ptreeid);
 	}
 	
 	@GET

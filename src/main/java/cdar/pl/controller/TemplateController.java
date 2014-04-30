@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.managers.TemplateManager;
 
@@ -106,7 +105,7 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteTemplate(int id) {
 			try {
-				return Response.ok(new CDAR_Boolean(tm.deleteTemplate(id)),
+				return Response.ok(tm.deleteTemplate(id),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
