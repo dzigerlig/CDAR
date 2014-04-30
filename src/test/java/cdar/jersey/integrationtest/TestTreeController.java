@@ -34,6 +34,8 @@ public class TestTreeController extends JerseyTest {
 	private final String USERNAME = "testuser";
 	private final String PASSWORD = "testpassword";
 	private final String TREENAME = "testtree";
+	private final String UID = "uid";
+	private final String ACCESSTOKEN = "accesstoken";
 	private int userId;
 	private int treeid;
 	private String accesstoken;
@@ -63,20 +65,23 @@ public class TestTreeController extends JerseyTest {
 				.queryParam("username", USERNAME).request().get(Response.class)
 				.readEntity(User.class);
 		userId = user.getId();
+		System.out.println(userId);
 		accesstoken = user.getAccesstoken();
-		int quantityOfTreesBeforeAdd = target("/ktree")
-				.request().get(Response.class).readEntity(Set.class).size();
+		int quantityOfTreesBeforeAdd = target("/ktree").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 		System.out.println(quantityOfTreesBeforeAdd);
 		Response createdTreeResponse = target(
-				getAuthString() + "/ktree/tree/add").request().post(
+				"/ktree/tree/add").request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
 				Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
 				Response.class);
 		Tree tree = createdTreeResponse.readEntity(Tree.class);
 
 		treeid = tree.getId();
+		System.out.println(treeid);
 
-		int quantityOfTreesAfterAdd = target(getAuthString() + "/ktree")
-				.request().get(Response.class).readEntity(Set.class).size();
+		int quantityOfTreesAfterAdd = target("/ktree")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, createdTreeResponse.getStatus());
 		assertEquals(quantityOfTreesBeforeAdd + 1, quantityOfTreesAfterAdd);
 	}
@@ -86,22 +91,24 @@ public class TestTreeController extends JerseyTest {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
-		int quantityOfTreesBeforeDelete = target(getAuthString() + "/ktree")
-				.request().get(Response.class).readEntity(Set.class).size();
-
-		Response deletedTreeResponse = target(getAuthString() + "/ktree/delete")
-				.request().post(
+		int quantityOfTreesBeforeDelete = target("/ktree")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class).readEntity(Set.class).size();
+System.out.println(quantityOfTreesBeforeDelete);
+		Response deletedTreeResponse = target("/ktree/delete")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
 						Entity.entity(treeid, MediaType.APPLICATION_JSON),
 						Response.class);
-
 		boolean isTreeDeleted = deletedTreeResponse.readEntity(boolean.class);
+System.out.println(isTreeDeleted);
+		int quantityOfTreesAfterDelete = target("/ktree")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Set.class).size();
 
-		int quantityOfTreesAfterDelete = target(getAuthString() + "/ktree")
-				.request().get(Set.class).size();
-
-		target("users/delete").request().post(
-				Entity.entity(userId, MediaType.APPLICATION_JSON),
-				CDAR_Boolean.class);
+		target("users/delete")
+				.queryParam("password", PASSWORD)
+				.queryParam("username", USERNAME)
+				.request()
+				.post(Entity.entity(userId, MediaType.APPLICATION_JSON),
+						Response.class);
 
 		assertEquals(200, deletedTreeResponse.getStatus());
 		assertEquals(true, isTreeDeleted);
@@ -111,10 +118,11 @@ public class TestTreeController extends JerseyTest {
 
 	@Test
 	public void testDeleteNotExistingTree() {
-		Response deletedTreeResponse = target(getAuthString() + "/ktree/delete")
-				.request().post(
+		Response deletedTreeResponse = target("/ktree/delete")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
 						Entity.entity(999999999, MediaType.APPLICATION_JSON),
-						Response.class);		
+						Response.class);
+		System.out.println(deletedTreeResponse.getStatus());
 		assertEquals(400, deletedTreeResponse.getStatus());
 	}
 

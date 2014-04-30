@@ -37,7 +37,7 @@ public class KnowledgeTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteTreeById(int ktreeid) {
 		try {
-			return Response.ok(new CDAR_Boolean(ktm.deleteTree(ktreeid)),
+			return Response.ok(ktm.deleteTree(ktreeid),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -49,8 +49,7 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(String treeTitle, @HeaderParam("uid") int uid) {
 		try {
-			return Response.ok(ktm.addTree(uid, treeTitle),
-					MediaType.APPLICATION_JSON).build();
+			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, treeTitle)).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}

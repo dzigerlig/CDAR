@@ -68,7 +68,7 @@ public class TestUserController extends JerseyTest {
 	}
 
 	@Test
-	public void testRegisteruserTwice() {
+	public void testRegisterUserTwice() {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
