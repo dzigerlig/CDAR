@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Tree;
 import cdar.bll.producer.managers.TreeManager;
 import cdar.bll.producer.managers.XmlTreeManager;
@@ -103,7 +102,7 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteKnowledgeTreeSimpleXml(int id) {
 		try {
-			return Response.ok(new CDAR_Boolean(xtm.deleteXmlTree(id)),
+			return Response.ok(xtm.deleteXmlTree(id),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -117,7 +116,7 @@ public class KnowledgeTreeController {
 	public Response setKnowledgeTreeSimpleXml(int id) {
 		try {
 			xtm.cleanTree(id);
-			return Response.ok(new CDAR_Boolean(xtm.setXmlTree(id)),
+			return Response.ok(xtm.setXmlTree(id),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
