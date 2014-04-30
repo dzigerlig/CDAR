@@ -35,10 +35,9 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nl) {
 		try {
-			return Response.ok(
+			return Response.status(Response.Status.CREATED).entity(
 					lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
-							nl.getTargetId(), nl.getKsnid()),
-					MediaType.APPLICATION_JSON).build();
+							nl.getTargetId(), nl.getKsnid())).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}

@@ -44,7 +44,7 @@ public class KnowledgeTreeController {
 	}
 
 	@POST
-	@Path("tree/add")
+	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(String treeTitle, @HeaderParam("uid") int uid) {
 		try {
@@ -55,7 +55,7 @@ public class KnowledgeTreeController {
 	}
 
 	@POST
-	@Path("tree/rename")
+	@Path("rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response renameKnowledgeTree(Tree tree) {

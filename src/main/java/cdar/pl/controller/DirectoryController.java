@@ -36,9 +36,9 @@ public class DirectoryController {
 		public Response addDirectory(Directory d) {
 			try {
 				if (d.getTitle() == null) {
-					return Response.ok(
+					return Response.status(Response.Status.CREATED).entity(
 							dm.addDirectory(d.getKtrid(), d.getParentid(),
-									"new Folder"), MediaType.APPLICATION_JSON)
+									"new Folder"))
 							.build();
 				} else {
 					return Response.ok(

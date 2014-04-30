@@ -96,8 +96,7 @@ public class KnowledgeSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(Subnode sn) {
 		try {
-			return Response.ok(sm.addSubnode(sn.getKnid(), sn.getTitle()),
-					MediaType.APPLICATION_JSON).build();
+			return Response.status(Response.Status.CREATED).entity(sm.addSubnode(sn.getKnid(), sn.getTitle())).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}

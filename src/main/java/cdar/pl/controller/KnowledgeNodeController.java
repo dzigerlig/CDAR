@@ -51,9 +51,9 @@ public class KnowledgeNodeController {
 	public Response addNode(@HeaderParam("uid") int uid, Node n) {
 		try {
 			if (n.getTitle() == null) {
-				return Response.ok(
-						nm.addNode(uid, n.getKtrid(), "new Node", n.getDid()),
-						MediaType.APPLICATION_JSON).build();
+				return Response.status(Response.Status.CREATED).entity(
+						nm.addNode(uid, n.getKtrid(), "new Node", n.getDid())
+						).build();
 			} else {
 				return Response
 						.ok(nm.addNode(uid, n.getKtrid(), n.getTitle(),

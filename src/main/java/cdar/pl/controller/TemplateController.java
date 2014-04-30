@@ -84,7 +84,7 @@ public class TemplateController {
 
 		@POST
 		// Changed
-		@Path("{ktreeid}/templates/edit")
+		@Path("edit")
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response editTemplate(Template template) {
 			try {
