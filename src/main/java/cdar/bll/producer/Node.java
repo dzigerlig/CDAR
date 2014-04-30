@@ -8,7 +8,6 @@ public class Node extends WikiEntity {
 	private int ktrid;
 	private int dynamicTreeFlag;
 	private int did;
-	private String wikititle;
 
 	public Node() {
 		super();
