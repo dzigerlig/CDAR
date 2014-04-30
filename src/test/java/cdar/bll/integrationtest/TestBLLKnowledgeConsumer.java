@@ -1,7 +1,6 @@
 package cdar.bll.integrationtest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.sql.SQLException;
 
