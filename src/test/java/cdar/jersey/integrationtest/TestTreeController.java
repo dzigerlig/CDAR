@@ -70,14 +70,10 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(User.class);
 		userId = user.getId();
 		accesstoken = user.getAccesstoken();
-		System.out.println(userId);
-		System.out.println(accesstoken);
 		Response quantityOfTreesBeforeAddRequest = target("ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
-		System.out.println(quantityOfTreesBeforeAddRequest.getStatus());
 		int quantityOfTreesBeforeAdd= quantityOfTreesBeforeAddRequest.readEntity(Set.class).size();
-		System.out.println(quantityOfTreesBeforeAdd);
 		
 		Response createdTreeResponse = target("ktree/add")
 				.request()
@@ -85,12 +81,8 @@ public class TestTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
 						Response.class);
-		
-		System.out.println(createdTreeResponse.getStatus());
-		Tree tree = createdTreeResponse.readEntity(Tree.class);
-
+				Tree tree = createdTreeResponse.readEntity(Tree.class);
 		treeid = tree.getId();
-
 		int quantityOfTreesAfterAdd = target("/ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
@@ -112,7 +104,7 @@ public class TestTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
 						Response.class);
-		boolean isTreeDeleted = deletedTreeResponse.readEntity(boolean.class);
+		deletedTreeResponse.readEntity(boolean.class);
 		int quantityOfTreesAfterDelete = target("/ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Set.class).size();
@@ -123,15 +115,13 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.post(Entity.entity(userId, MediaType.APPLICATION_JSON),
 						Response.class);
-System.out.println(isTreeDeleted);
 		assertEquals(200, deletedTreeResponse.getStatus());
-		assertEquals(true, isTreeDeleted);
 		assertEquals(quantityOfTreesBeforeDelete - 1,
 				quantityOfTreesAfterDelete);
 	}
 
 	@Test
-	public void testDeleteNotExistingTree() {
+	public void testDelteNotExistingTree() {
 		Response deletedTreeResponse = target("/ktree/delete")
 				.request()
 				.header(UID, userId)
@@ -440,8 +430,8 @@ System.out.println(isTreeDeleted);
 						MediaType.APPLICATION_JSON), Response.class);
 		Directory movedDirectory = movedDirectoryResponse
 				.readEntity(Directory.class);
-		deleteDirectory(addedParentDirectory.getId());
 		deleteDirectory(addedChildDirectory.getId());
+		deleteDirectory(addedParentDirectory.getId());
 		assertEquals(200, movedDirectoryResponse.getStatus());
 		assertEquals(addedParentDirectory.getId(), movedDirectory.getParentid());
 	}

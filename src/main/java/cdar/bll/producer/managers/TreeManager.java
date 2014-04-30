@@ -23,8 +23,7 @@ public class TreeManager {
 	} 
 
 	public Tree addTree(int uid, String treeTitle) throws Exception {
-		DirectoryRepository dr = new DirectoryRepository();
-		
+		DirectoryRepository dr = new DirectoryRepository();		
 		User user = new UserRepository().getUser(uid);
 		Tree tree = new Tree();
 		tree.setUid(user.getId());

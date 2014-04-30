@@ -47,7 +47,6 @@ public class KnowledgeTreeController {
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(String treeTitle, @HeaderParam("uid") int uid) {
-		System.out.println("try to add tree");
 		try {
 			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, treeTitle)).build();
 		} catch (Exception e) {

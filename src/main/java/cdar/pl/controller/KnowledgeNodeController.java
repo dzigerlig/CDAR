@@ -16,6 +16,7 @@ import cdar.bll.ChangesWrapper;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
+import cdar.bll.producer.managers.NodeLinkManager;
 import cdar.bll.producer.managers.NodeManager;
 import cdar.bll.producer.managers.SubnodeManager;
 
@@ -23,7 +24,7 @@ import cdar.bll.producer.managers.SubnodeManager;
 public class KnowledgeNodeController {
 	private NodeManager nm = new NodeManager();
 	private SubnodeManager sm = new SubnodeManager();
-
+	private NodeLinkManager lm = new NodeLinkManager();
 
 	// Nodes
 	@GET
@@ -59,9 +60,10 @@ public class KnowledgeNodeController {
 	public Response addNode(@HeaderParam("uid") int uid, Node n) {
 		try {
 			if (n.getTitle() == null) {
-				return Response.status(Response.Status.CREATED).entity(
-						nm.addNode(uid, n.getKtrid(), "new Node", n.getDid())
-						).build();
+				return Response
+						.status(Response.Status.CREATED)
+						.entity(nm.addNode(uid, n.getKtrid(), "new Node",
+								n.getDid())).build();
 			} else {
 				return Response
 						.ok(nm.addNode(uid, n.getKtrid(), n.getTitle(),
@@ -79,8 +81,8 @@ public class KnowledgeNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNode(int id) {
 		try {
-			return Response.ok(nm.deleteNode(id),
-					MediaType.APPLICATION_JSON).build();
+			return Response.ok(nm.deleteNode(id), MediaType.APPLICATION_JSON)
+					.build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
@@ -163,10 +165,10 @@ public class KnowledgeNodeController {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
-	
+
 	@GET
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes")
+	@Path("{nodeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("nodeid") int nodeid) {
 		try {
@@ -179,7 +181,7 @@ public class KnowledgeNodeController {
 
 	@POST
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes/rename")
+	@Path("{nodeid}/subnodes/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response renameSubnode(Subnode subnode) {
 		try {
@@ -195,7 +197,7 @@ public class KnowledgeNodeController {
 
 	@POST
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes/moveup")
+	@Path("{nodeid}/subnodes/moveup")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeUp(Subnode subnode) {
 		try {
@@ -208,7 +210,7 @@ public class KnowledgeNodeController {
 
 	@POST
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes/movedown")
+	@Path("{nodeid}/subnodes/movedown")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeDown(Subnode subnode) {
 		try {
@@ -221,11 +223,12 @@ public class KnowledgeNodeController {
 
 	@POST
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes/add")
+	@Path("{nodeid}/subnodes/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(Subnode sn) {
 		try {
-			return Response.status(Response.Status.CREATED).entity(sm.addSubnode(sn.getKnid(), sn.getTitle())).build();
+			return Response.status(Response.Status.CREATED)
+					.entity(sm.addSubnode(sn.getKnid(), sn.getTitle())).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
@@ -233,15 +236,15 @@ public class KnowledgeNodeController {
 
 	@POST
 	// Changed
-	@Path("/nodes/{nodeid}/subnodes/delete")
+	@Path("{nodeid}/subnodes/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteSubnode(int id) {
 		try {
 			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
 
 			return Response.ok(
-					new ChangesWrapper<NodeLink>(nodelinks, "delete"), MediaType.APPLICATION_JSON)
-					.build();
+					new ChangesWrapper<NodeLink>(nodelinks, "delete"),
+					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
@@ -249,7 +252,7 @@ public class KnowledgeNodeController {
 
 	@GET
 	// Changed
-	@Path("nodes/{nodeid}/subnodes/zoomUp")
+	@Path("{nodeid}/subnodes/zoomUp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpSubnode(@PathParam("nodeid") int nodeid) {
 		try {
@@ -262,7 +265,7 @@ public class KnowledgeNodeController {
 
 	@GET
 	// Changed
-	@Path("nodes/{nodeid}/subnodes/zoomDown")
+	@Path("{nodeid}/subnodes/zoomDown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownSubnode(@PathParam("nodeid") int nodeid) {
 		try {
@@ -271,5 +274,5 @@ public class KnowledgeNodeController {
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
-
+	}
 }
