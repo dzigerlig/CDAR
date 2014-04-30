@@ -4,11 +4,16 @@
 		<div ng-include src="'templates/navigation.html'"></div>
 
 		<div id="page-content-wrapper">
-			<div class="content-header">
-				<h1>
-					<a id="menu-toggle" class="btn btn-default"><i
-						class="icon-reorder"></i></a> Account settings:
-				</h1>
+			<div class="row">
+				<div class="content-header">
+					<div class="col-md-9">
+						<h1>
+							<a id="menu-toggle" class="btn btn-default"><i
+								class="icon-reorder"></i></a> Account settings:
+						</h1>
+					</div>
+					<div ng-include src="'templates/heading.html'"></div>
+				</div>
 			</div>
 			<div class="page-content inset">
 				<div class="row">
@@ -18,7 +23,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Username</label>
 								<div class="col-sm-9">
-									<p class="form-control-static">{{UserService.user.username}}</p>
+									<p class="form-control-static">{{UserService.getUsername()}}</p>
 								</div>
 							</div>
 
