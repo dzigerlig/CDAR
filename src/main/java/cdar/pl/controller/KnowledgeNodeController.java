@@ -30,7 +30,6 @@ public class KnowledgeNodeController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNodes(@PathParam("ktreeid") int ktreeid) {
-		System.out.println("asdf");
 		try {
 			return Response
 					.ok(nm.getNodes(ktreeid), MediaType.APPLICATION_JSON)

@@ -73,15 +73,16 @@ public class TestTreeController extends JerseyTest {
 		Response quantityOfTreesBeforeAddRequest = target("ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
-		int quantityOfTreesBeforeAdd= quantityOfTreesBeforeAddRequest.readEntity(Set.class).size();
-		
+		int quantityOfTreesBeforeAdd = quantityOfTreesBeforeAddRequest
+				.readEntity(Set.class).size();
+
 		Response createdTreeResponse = target("ktree/add")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
 						Response.class);
-				Tree tree = createdTreeResponse.readEntity(Tree.class);
+		Tree tree = createdTreeResponse.readEntity(Tree.class);
 		treeid = tree.getId();
 		int quantityOfTreesAfterAdd = target("/ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
@@ -440,55 +441,74 @@ public class TestTreeController extends JerseyTest {
 	public void testAddAndDeleteNode() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
+		int quantityOfNodesBeforeAdd = target("/ktree/" + treeid + "/nodes")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 
-		Node addedNode = addNode(treeid, addedDirectory.getId());
+		Node addTestNode = new Node();
+		addTestNode.setKtrid(treeid);
+		addTestNode.setDid(addedDirectory.getId());
+		Response addedNodeResponse = target("/ktree/" + treeid + "/nodes/add")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addTestNode, MediaType.APPLICATION_JSON),
+						Response.class);
+		Node addedNode = addedNodeResponse.readEntity(Node.class);
 
-		int quantityOfNodesAfterAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		boolean isNodeDeleted = deleteNode(addedNode.getId());
-
-		int quantityOfNodesAfterDelete = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
+		int quantityOfNodesAfterAdd = target("/ktree/" + treeid + "/nodes")
+				.request().get(Response.class).readEntity(Set.class).size();
+		Response deletedNodeResponse = target(
+				"/ktree/" + treeid + "/nodes/delete/")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedNode.getId(),
+						MediaType.APPLICATION_JSON), Response.class);
+		int quantityOfNodesAfterDelete = target("/ktree/" + treeid + "/nodes")
+				.request().get(Response.class).readEntity(Set.class).size();
 		deleteDirectory(addedDirectory.getId());
-
+		assertEquals(201, addedNodeResponse.getStatus());
+		assertEquals(200, deletedNodeResponse.getStatus());
 		assertEquals(treeid, addedNode.getKtrid());
 		assertEquals(addedDirectory.getId(), addedNode.getDid());
-		assertTrue(isNodeDeleted);
 		assertEquals(quantityOfNodesBeforeAdd + 1, quantityOfNodesAfterAdd);
 		assertEquals(quantityOfNodesBeforeAdd, quantityOfNodesAfterDelete);
 	}
 
 	@Test
 	public void testDeleteNotExistingNode() {
-		boolean isNodeDeleted = deleteNode(999999999);
-		assertFalse(isNodeDeleted);
+		Response deletedNodeResponse = target(
+				"/ktree/" + treeid + "/nodes/delete/")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						Response.class);
+		assertEquals(400, deletedNodeResponse.getStatus());
 	}
 
 	@Test
 	public void testGetAllNodes() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
+		int quantityOfNodesBeforeAdd = target("/ktree/" + treeid + "/nodes")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
-		int quantityOfNodesAfterAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
+		Response quantityOfNodesAfterAddResponse = target(
+				"/ktree/" + treeid + "/nodes/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfNodesAfterAdd = quantityOfNodesAfterAddResponse
+				.readEntity(Set.class).size();
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
 
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, quantityOfNodesAfterAddResponse.getStatus());
 		assertEquals(quantityOfNodesBeforeAdd + 2, quantityOfNodesAfterAdd);
 	}
 
@@ -496,118 +516,15 @@ public class TestTreeController extends JerseyTest {
 	public void testGetNodes() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode = addNode(treeid, addedDirectory.getId());
-		Node receivedNode = target(
-				getAuthString() + "/ktree/nodes/" + treeid + "/"
-						+ addedNode.getId()).request().get(Node.class);
+		Response receivedNodeResponse = target(
+				"/ktree/treeid/nodes/" + addedNode.getId()).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
 		deleteNode(addedNode.getId());
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, receivedNodeResponse.getStatus());
 		assertEquals(treeid, addedNode.getKtrid());
 		assertEquals(addedDirectory.getId(), addedNode.getDid());
-		assertNotEquals(-1, receivedNode.getId());
-	}
-
-	@Test
-	public void testDropNode() {
-		Directory addedDirectory = addDirectory(treeid, 0);
-
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		Node addedNode = addNode(treeid, addedDirectory.getId());
-		Node droppedNode = target(
-				getAuthString() + "/ktree/nodes/drop/" + treeid).request()
-				.post(Entity.entity(addedNode.getId(),
-						MediaType.APPLICATION_JSON), Node.class);
-
-		int quantityOfNodesAfterDrop = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		deleteNode(addedNode.getId());
-		deleteDirectory(addedDirectory.getId());
-		assertEquals(1, droppedNode.getDynamicTreeFlag());
-		assertEquals(quantityOfNodesBeforeAdd + 1, quantityOfNodesAfterDrop);
-	}
-
-	@Test
-	public void testUndropNode() {
-		Directory addedDirectory = addDirectory(treeid, 0);
-
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		Node addedNode = addNode(treeid, addedDirectory.getId());
-
-		addedNode = target(getAuthString() + "/ktree/nodes/drop/" + treeid)
-				.request().post(
-						Entity.entity(addedNode.getId(),
-								MediaType.APPLICATION_JSON), Node.class);
-		Node undroppedNode = target(
-				getAuthString() + "/ktree/nodes/undrop/" + treeid).request()
-				.post(Entity.entity(addedNode.getId(),
-						MediaType.APPLICATION_JSON), Node.class);
-
-		int quantityOfNodesAfterDrop = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		deleteNode(addedNode.getId());
-		deleteDirectory(addedDirectory.getId());
-		assertEquals(1, addedNode.getDynamicTreeFlag());
-		assertEquals(0, undroppedNode.getDynamicTreeFlag());
-		assertEquals(quantityOfNodesBeforeAdd + 1, quantityOfNodesAfterDrop);
-	}
-
-	@Test
-	public void testRenameNode() {
-		Directory addedDirectory = addDirectory(treeid, 0);
-
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-
-		Node addedNode = addNode(treeid, addedDirectory.getId());
-		addedNode.setTitle(USERNAME);
-
-		Node renamedNode = target(
-				getAuthString() + "/ktree/nodes/rename/" + treeid).request()
-				.post(Entity.entity(addedNode, MediaType.APPLICATION_JSON),
-						Node.class);
-
-		int quantityOfNodesAfterDrop = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-		deleteNode(addedNode.getId());
-		deleteDirectory(addedDirectory.getId());
-		assertEquals(addedNode.getId(), renamedNode.getId());
-		assertEquals(USERNAME, renamedNode.getTitle());
-		assertEquals(quantityOfNodesBeforeAdd + 1, quantityOfNodesAfterDrop);
-	}
-
-	@Test
-	public void testMoveNode() {
-		Directory addedDirectory1 = addDirectory(treeid, 0);
-		Directory addedDirectory2 = addDirectory(treeid, 0);
-
-		int quantityOfNodesBeforeAdd = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-		Node addedNode = addNode(treeid, addedDirectory1.getId());
-		addedNode.setDid(addedDirectory2.getId());
-		Node movedNode = target(getAuthString() + "/ktree/nodes/move/" + treeid)
-				.request().post(
-						Entity.entity(addedNode, MediaType.APPLICATION_JSON),
-						Node.class);
-		int quantityOfNodesAfterDrop = target(
-				getAuthString() + "/ktree/nodes/" + treeid).request()
-				.get(Set.class).size();
-		deleteNode(addedNode.getId());
-		deleteDirectory(addedDirectory1.getId());
-		deleteDirectory(addedDirectory2.getId());
-		assertEquals(addedDirectory2.getId(), movedNode.getDid());
-		assertEquals(quantityOfNodesBeforeAdd + 1, quantityOfNodesAfterDrop);
 	}
 
 	@Test
@@ -616,28 +533,48 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
-		int quantityOfNodeLinksBeforeAdd = target(
-				getAuthString() + "/ktree/links/" + treeid).request()
-				.get(Set.class).size();
-		NodeLink addedNodeLink = addNodeLink(treeid, addedNode1.getId(),
-				addedNode2.getId());
+		int quantityOfNodeLinksBeforeAdd = target("/ktree/" + treeid + "/links")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 
-		int quantityOfNodeLinksAfterAdd = target(
-				getAuthString() + "/ktree/links/" + treeid).request()
-				.get(Set.class).size();
+		NodeLink addTestNodeLink = new NodeLink();
+		addTestNodeLink.setKtrid(treeid);
+		addTestNodeLink.setSourceId(addedNode1.getId());
+		addTestNodeLink.setTargetId(addedNode2.getId());
+		Response addedNodeLinkResponse = target(
+				"/ktree/" + treeid + "/links/add")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity
+						.entity(addTestNodeLink, MediaType.APPLICATION_JSON),
+						Response.class);
+		NodeLink addedNodeLink = addedNodeLinkResponse
+				.readEntity(NodeLink.class);
 
-		boolean isNodeLinkDeleted = deleteNodeLink(addedNodeLink.getId());
+		int quantityOfNodeLinksAfterAdd = target("/ktree/" + treeid + "/links/")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+
+		Response deleteNodeLinkResponse = target(
+				"/ktree/" + treeid + "/links/delete/")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedNodeLink.getId(),
+						MediaType.APPLICATION_JSON), Response.class);
 
 		int quantityOfNodeLinksAfterDelete = target(
-				getAuthString() + "/ktree/links/" + treeid).request()
-				.get(Set.class).size();
+				"/ktree/" + treeid + "/links").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Set.class).size();
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(201, addedNodeLinkResponse.getStatus());
+		assertEquals(200, deleteNodeLinkResponse.getStatus());
 		assertEquals(treeid, addedNodeLink.getKtrid());
 		assertEquals(addedNode1.getId(), addedNodeLink.getSourceId());
 		assertEquals(addedNode2.getId(), addedNodeLink.getTargetId());
-		assertTrue(isNodeLinkDeleted);
 		assertEquals(quantityOfNodeLinksBeforeAdd + 1,
 				quantityOfNodeLinksAfterAdd);
 		assertEquals(quantityOfNodeLinksBeforeAdd,
@@ -646,8 +583,14 @@ public class TestTreeController extends JerseyTest {
 
 	@Test
 	public void testDeleteNotExistingNodeLink() {
-		boolean isNodeLinkDeleted = deleteNodeLink(999999999);
-		assertFalse(isNodeLinkDeleted);
+		Response deleteNodeLinkResponse = target(
+				"/ktree/" + treeid + "/links/delete/")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						Response.class);
+		assertEquals(400, deleteNodeLinkResponse.getStatus());
 	}
 
 	@Test
@@ -656,16 +599,18 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
-		int quantityOfNodeLinksBeforeAdd = target(
-				getAuthString() + "/ktree/links/" + treeid).request()
-				.get(Set.class).size();
+		Response quantityOfNodeLinksBeforeAddResponse = target(
+				"/ktree/" + treeid + "/links/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfNodeLinksBeforeAdd = quantityOfNodeLinksBeforeAddResponse
+				.readEntity(Set.class).size();
 		NodeLink addedNodeLink1 = addNodeLink(treeid, addedNode1.getId(),
 				addedNode2.getId());
 		NodeLink addedNodeLink2 = addNodeLink(treeid, addedNode2.getId(),
 				addedNode1.getId());
 
-		int quantityOfNodeLinksAfterAdd = target(
-				getAuthString() + "/ktree/links/" + treeid).request()
+		int quantityOfNodeLinksAfterAdd = target("/ktree/" + treeid + "/links/")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Set.class).size();
 
 		deleteNodeLink(addedNodeLink1.getId());
@@ -673,12 +618,12 @@ public class TestTreeController extends JerseyTest {
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
 		deleteDirectory(addedDirectory.getId());
-
+		assertEquals(200, quantityOfNodeLinksBeforeAddResponse.getStatus());
 		assertEquals(quantityOfNodeLinksBeforeAdd + 2,
 				quantityOfNodeLinksAfterAdd);
 	}
 
-	@Test
+	@Test//not working
 	public void testUpdateNodeLinks() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
@@ -688,15 +633,18 @@ public class TestTreeController extends JerseyTest {
 				addedNode2.getId());
 		Subnode addedSubnode = addSubnode(addedNode1.getId(), TREENAME);
 		addedNodeLink.setKsnid(addedSubnode.getId());
-		NodeLink updatedNodeLink = target(
-				getAuthString() + "/ktree/links/update/" + treeid).request()
+		Response updatedNodeLinkResponse = target(
+				"/ktree/"+treeid+"/links/update").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedNodeLink, MediaType.APPLICATION_JSON),
-						NodeLink.class);
-		deleteSubnode(addedSubnode.getId());
+						Response.class);
+		System.out.println(updatedNodeLinkResponse.getStatus());
+		NodeLink updatedNodeLink = updatedNodeLinkResponse.readEntity(NodeLink.class);
+		deleteSubnode(addedSubnode.getId(),addedSubnode.getKnid());
 		deleteNodeLink(addedNodeLink.getId());
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, updatedNodeLinkResponse.getStatus());
 		assertEquals(addedSubnode.getId(), updatedNodeLink.getKsnid());
 	}
 
@@ -829,7 +777,8 @@ public class TestTreeController extends JerseyTest {
 		addTestDirectory.setKtrid(treeid);
 		addTestDirectory.setParentid(parentid);
 		return target("/ktree/" + treeid + "/directories/add")
-				.request()			.header(UID, userId)
+				.request()
+				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestDirectory,
 						MediaType.APPLICATION_JSON), Response.class)
@@ -838,7 +787,8 @@ public class TestTreeController extends JerseyTest {
 
 	private boolean deleteDirectory(int directoryid) {
 		return target("/ktree/" + treeid + "/directories/delete")
-				.request()			.header(UID, userId)
+				.request()
+				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(directoryid, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
@@ -848,15 +798,19 @@ public class TestTreeController extends JerseyTest {
 		Node addTestNode = new Node();
 		addTestNode.setKtrid(treeid);
 		addTestNode.setDid(did);
-		return target(getAuthString() + "/ktree/nodes/add/" + "" + treeid)
+		return target("/ktree/" + treeid + "/nodes/add")
 				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestNode, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Node.class);
 	}
 
 	private boolean deleteNode(int nodeid) {
-		return target(getAuthString() + "/ktree/nodes/delete/" + treeid)
+		return target("/ktree/" + treeid + "/nodes/delete/")
 				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(nodeid, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
@@ -866,16 +820,20 @@ public class TestTreeController extends JerseyTest {
 		addTestNodeLink.setKtrid(treeid);
 		addTestNodeLink.setSourceId(sourceid);
 		addTestNodeLink.setTargetId(targetid);
-		return target(getAuthString() + "/ktree/links/add/" + "" + treeid)
+		return target("/ktree/" + treeid + "/links/add")
 				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity
 						.entity(addTestNodeLink, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(NodeLink.class);
 	}
 
 	private boolean deleteNodeLink(int nodeLinkId) {
-		return target(getAuthString() + "/ktree/links/delete/" + treeid)
+		return target("/ktree/" + treeid + "/links/delete/")
 				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(nodeLinkId, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
@@ -884,15 +842,17 @@ public class TestTreeController extends JerseyTest {
 		Subnode addTestSubnode = new Subnode();
 		addTestSubnode.setKnid(knid);
 		addTestSubnode.setTitle(title);
-		return target(getAuthString() + "/ktree/subnodes/add/" + "" + treeid)
-				.request()
+		return target("/ktree/"+treeid+"/nodes/"+knid+"/subnodes/add")
+				.request()	.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestSubnode, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Subnode.class);
 	}
 
-	private boolean deleteSubnode(int subnodeId) {
-		return target(getAuthString() + "/ktree/subnodes/delete/" + treeid)
-				.request()
+	private boolean deleteSubnode(int subnodeId, int knid) {
+		return target("/ktree/"+treeid+"/nodes/"+knid+"/subnodes/delete")
+				.request()	.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(subnodeId, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
