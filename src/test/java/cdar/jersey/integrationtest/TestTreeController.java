@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import sun.security.krb5.internal.tools.Ktab;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.Node;
 import cdar.bll.producer.NodeLink;
@@ -22,10 +23,12 @@ import cdar.bll.producer.Subnode;
 import cdar.bll.producer.Template;
 import cdar.bll.producer.Tree;
 import cdar.bll.user.User;
+import cdar.pl.controller.DirectoryController;
 import cdar.pl.controller.KnowledgeNodeController;
 import cdar.pl.controller.KnowledgeNodeLinkController;
 import cdar.pl.controller.KnowledgeSubnodeController;
 import cdar.pl.controller.KnowledgeTreeController;
+import cdar.pl.controller.TemplateController;
 import cdar.pl.controller.UserController;
 
 public class TestTreeController extends JerseyTest {
@@ -42,7 +45,7 @@ public class TestTreeController extends JerseyTest {
 	@Override
 	protected Application configure() {
 		return new ResourceConfig(KnowledgeTreeController.class,
-				UserController.class, KnowledgeNodeController.class,
+				UserController.class, KnowledgeNodeController.class,TemplateController.class,DirectoryController.class,
 				KnowledgeNodeLinkController.class,
 				KnowledgeSubnodeController.class);
 	}
@@ -64,23 +67,23 @@ public class TestTreeController extends JerseyTest {
 				.queryParam("username", USERNAME).request().get(Response.class)
 				.readEntity(User.class);
 		userId = user.getId();
-		System.out.println(userId);
 		accesstoken = user.getAccesstoken();
 		int quantityOfTreesBeforeAdd = target("/ktree").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		System.out.println(quantityOfTreesBeforeAdd);
-		Response createdTreeResponse = target(
-				"/ktree/tree/add").request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
-				Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
-				Response.class);
+		Response createdTreeResponse = target("/ktree/tree/add")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
+						Response.class);
 		Tree tree = createdTreeResponse.readEntity(Tree.class);
 
 		treeid = tree.getId();
-		System.out.println(treeid);
 
-		int quantityOfTreesAfterAdd = target("/ktree")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class).readEntity(Set.class).size();
+		int quantityOfTreesAfterAdd = target("/ktree").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, createdTreeResponse.getStatus());
 		assertEquals(quantityOfTreesBeforeAdd + 1, quantityOfTreesAfterAdd);
 	}
@@ -90,17 +93,19 @@ public class TestTreeController extends JerseyTest {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
-		int quantityOfTreesBeforeDelete = target("/ktree")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class).readEntity(Set.class).size();
-System.out.println(quantityOfTreesBeforeDelete);
+		int quantityOfTreesBeforeDelete = target("/ktree").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 		Response deletedTreeResponse = target("/ktree/delete")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
-						Entity.entity(treeid, MediaType.APPLICATION_JSON),
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
 						Response.class);
 		boolean isTreeDeleted = deletedTreeResponse.readEntity(boolean.class);
-System.out.println(isTreeDeleted);
-		int quantityOfTreesAfterDelete = target("/ktree")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Set.class).size();
+		int quantityOfTreesAfterDelete = target("/ktree").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Set.class).size();
 
 		target("users/delete")
 				.queryParam("password", PASSWORD)
@@ -118,55 +123,76 @@ System.out.println(isTreeDeleted);
 	@Test
 	public void testDeleteNotExistingTree() {
 		Response deletedTreeResponse = target("/ktree/delete")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken).post(
-						Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
 						Response.class);
-		System.out.println(deletedTreeResponse.getStatus());
 		assertEquals(400, deletedTreeResponse.getStatus());
 	}
 
 	@Test
 	public void testGetTree() {
-		Tree testTree = target(getAuthString() + "/ktree/" + treeid).request()
-				.get(Tree.class);
+		Response testTreeResponse = target("/ktree/" + treeid).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		Tree testTree = testTreeResponse.readEntity(Tree.class);
 		assertEquals(TREENAME, testTree.getTitle());
-		assertNotEquals(testTree.getId(), -1);
+		assertEquals(200, testTreeResponse.getStatus());
 	}
 
 	@Test
 	public void testGetAllTrees() {
-		int quantityOfTreesBeforeAdd = target(getAuthString() + "/ktree")
-				.request().get(Set.class).size();
+		int quantityOfTreesBeforeAdd = target("/ktree").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
 		Tree addedtree1 = addTree(TREENAME);
 		Tree addedtree2 = addTree(TREENAME);
 
-		int quantityOfTreesAfterAdd = target(getAuthString() + "/ktree")
-				.request().get(Set.class).size();
+		Response quantityOfTreesAfterAddResponse = target(
+				"/ktree").request().header(UID, userId).header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfTreesAfterAdd = quantityOfTreesAfterAddResponse
+				.readEntity(Set.class).size();
 		deleteTree(addedtree1.getId());
 		deleteTree(addedtree2.getId());
-
+		assertEquals(200, quantityOfTreesAfterAddResponse.getStatus());
 		assertEquals(quantityOfTreesBeforeAdd + 2, quantityOfTreesAfterAdd);
-
 	}
 
 	@Test
 	public void testAddAndDeleteTemplate() {
 		int quantityOfTemplatesBeforeAdd = target(
-				getAuthString() + "/ktree/templates/" + treeid).request()
-				.get(Set.class).size();
-
-		Template addedTemplate = addTemplate(treeid, "TestTemplate",
-				"TemplateText");
+				"/ktree/"+treeid+"/templates").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+		Template addTestTemplate = new Template();
+		addTestTemplate.setTreeId(treeid);
+		addTestTemplate.setTitle("TestTemplate");
+		addTestTemplate.setTemplatetext("TemplateText");
+		
+		Response addedTemplateResponse =  target("/ktree/"+ treeid+"/templates/add" )
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.post(Entity
+						.entity(addTestTemplate, MediaType.APPLICATION_JSON),
+						Response.class);		
+		Template addedTemplate= addedTemplateResponse.readEntity(Template.class);
 
 		int quantityOfTemplatesAfterAdd = target(
-				getAuthString() + "/ktree/templates/" + treeid).request()
-				.get(Set.class).size();
+				"/ktree/"+treeid+"/templates/").request()
+				.get(Response.class).readEntity(Set.class).size();
+		
+		Response deletedTemplateRequest=  target("/ktree/"+treeid+"/templates/delete")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedTemplate.getId(), MediaType.APPLICATION_JSON),
+						Response.class);
+		
 
-		boolean isTemplateDeleted = deleteTemplate(addedTemplate.getId());
+		boolean isTemplateDeleted = deletedTemplateRequest.readEntity(boolean.class);
 
 		int quantityOfTemplatesAfterDelete = target(
-				getAuthString() + "/ktree/templates/" + treeid).request()
-				.get(Set.class).size();
+				"/ktree/"+treeid+"/templates/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+		
+		assertEquals(201, addedTemplateResponse.getStatus());
+		assertEquals(200, deletedTemplateRequest.getStatus());
 		assertEquals(treeid, addedTemplate.getTreeId());
 		assertEquals("TestTemplate", addedTemplate.getTitle());
 		assertEquals("TemplateText", addedTemplate.getTemplatetext());
@@ -179,8 +205,13 @@ System.out.println(isTreeDeleted);
 
 	@Test
 	public void testDeleteNotExistingTemplate() {
-		boolean isTemplateDeleted = deleteTemplate(999999999);
-		assertFalse(isTemplateDeleted);
+		Response deletedTemplateResponse = target("/ktree/"+treeid+"/templates/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						Response.class);
+		assertEquals(400, deletedTemplateResponse.getStatus());	
 	}
 
 	@Test
@@ -668,15 +699,15 @@ System.out.println(isTreeDeleted);
 	}
 
 	private Tree addTree(String treename) {
-		return target(getAuthString() + "/ktree/tree/add")
-				.request()
+		return target("/ktree/tree/add")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(treename, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Tree.class);
 	}
 
 	private boolean deleteTree(int treeid) {
-		return target(getAuthString() + "/ktree/delete")
-				.request()
+		return target("/ktree/delete")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
@@ -686,16 +717,16 @@ System.out.println(isTreeDeleted);
 		addTestTemplate.setTreeId(treeid);
 		addTestTemplate.setTitle(title);
 		addTestTemplate.setTemplatetext(templatetext);
-		return target(getAuthString() + "/ktree/templates/add/" + treeid)
-				.request()
+		return target("/ktree/"+treeid+"/templates/add")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.post(Entity
 						.entity(addTestTemplate, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Template.class);
 	}
 
 	private boolean deleteTemplate(int templateid) {
-		return target(getAuthString() + "/ktree/templates/delete/" + treeid)
-				.request()
+		return target("/ktree/"+treeid+"/templates/delete")
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(templateid, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	};

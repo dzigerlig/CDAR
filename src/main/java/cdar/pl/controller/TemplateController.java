@@ -49,11 +49,7 @@ public class TemplateController {
 		public Response addTemplate(Template template) {
 
 			try {
-				return Response.ok(
-						tm.addKnowledgeTemplate(template.getTreeId(),
-								template.getTitle(), template.getTemplatetext(),
-								template.getDecisionMade()),
-						MediaType.APPLICATION_JSON).build();
+				return Response.status(Response.Status.CREATED).entity(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade())).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
