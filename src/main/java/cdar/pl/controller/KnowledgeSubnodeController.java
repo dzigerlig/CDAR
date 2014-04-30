@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_BooleanChanges;
+import cdar.bll.ChangesWrapper;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
 import cdar.bll.producer.managers.NodeLinkManager;
@@ -56,7 +56,7 @@ public class KnowledgeSubnodeController {
 		try {
 			sm.renameSubnode(subnode);
 			return Response
-					.ok(new CDAR_BooleanChanges<NodeLink>(lm
+					.ok(new ChangesWrapper<NodeLink>(lm
 							.getNodeLinksBySubnode(subnode.getId()), "update"),
 							MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
@@ -112,7 +112,7 @@ public class KnowledgeSubnodeController {
 			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
 
 			return Response.ok(
-					new CDAR_BooleanChanges<NodeLink>(nodelinks, "delete"), MediaType.APPLICATION_JSON)
+					new ChangesWrapper<NodeLink>(nodelinks, "delete"), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();

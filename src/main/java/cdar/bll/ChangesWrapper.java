@@ -2,11 +2,11 @@ package cdar.bll;
 
 import java.util.List;
 
-public class CDAR_BooleanChanges<T> {
+public class ChangesWrapper<T> {
 	private List<T> changedEntities;
 	private String operation;
 
-	public CDAR_BooleanChanges(List<T> changes, String operation) {
+	public ChangesWrapper(List<T> changes, String operation) {
 		setChangedEntities(changes);
 		setOperation(operation);
 	}
