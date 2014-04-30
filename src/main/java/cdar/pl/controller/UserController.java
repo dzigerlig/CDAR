@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@POST
-	@Path("/registration")
+	@Path("registration")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
@@ -58,7 +58,7 @@ public class UserController {
 	}
 
 	@POST
-	@Path("/edit")
+	@Path("edit")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editUser(User user) {
 		try {
