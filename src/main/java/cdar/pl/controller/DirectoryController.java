@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.producer.Directory;
 import cdar.bll.producer.managers.DirectoryManager;
 
@@ -58,7 +57,7 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteDirectory(int id) {
 			try {
-				return Response.ok(new CDAR_Boolean(dm.deleteDirectory(id)),
+				return Response.ok(dm.deleteDirectory(id),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.BAD_REQUEST).build();

@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.CDAR_Boolean;
 import cdar.bll.CDAR_BooleanChanges;
 import cdar.bll.producer.NodeLink;
 import cdar.bll.producer.Subnode;
@@ -57,7 +56,7 @@ public class KnowledgeSubnodeController {
 		try {
 			sm.renameSubnode(subnode);
 			return Response
-					.ok(new CDAR_BooleanChanges<NodeLink>(true, lm
+					.ok(new CDAR_BooleanChanges<NodeLink>(lm
 							.getNodeLinksBySubnode(subnode.getId()), "update"),
 							MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
@@ -71,7 +70,7 @@ public class KnowledgeSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeUp(Subnode subnode) {
 		try {
-			return Response.ok(new CDAR_Boolean(sm.moveSubnodeUp(subnode)),
+			return Response.ok(sm.moveSubnodeUp(subnode),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -84,7 +83,7 @@ public class KnowledgeSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response moveSubnodeDown(Subnode subnode) {
 		try {
-			return Response.ok(new CDAR_Boolean(sm.moveSubnodeDown(subnode)),
+			return Response.ok(sm.moveSubnodeDown(subnode),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -113,8 +112,7 @@ public class KnowledgeSubnodeController {
 			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
 
 			return Response.ok(
-					new CDAR_BooleanChanges<NodeLink>(sm.deleteSubnode(id),
-							nodelinks, "delete"), MediaType.APPLICATION_JSON)
+					new CDAR_BooleanChanges<NodeLink>(nodelinks, "delete"), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
