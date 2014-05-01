@@ -240,7 +240,7 @@ public class KnowledgeNodeController {
 	public Response deleteSubnode(int id) {
 		try {
 			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(id);
-
+			sm.deleteSubnode(id);
 			return Response.ok(
 					new ChangesWrapper<NodeLink>(nodelinks, "delete"),
 					MediaType.APPLICATION_JSON).build();
