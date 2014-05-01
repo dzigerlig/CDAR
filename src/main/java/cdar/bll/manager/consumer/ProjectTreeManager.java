@@ -12,7 +12,6 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.consumer.ProjectNode;
-import cdar.bll.entity.consumer.ProjectNodeLink;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeLinkManager;
@@ -105,11 +104,11 @@ public class ProjectTreeManager {
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
 			
-			ProjectNodeLink projectNodeLink = new ProjectNodeLink();
+			NodeLink projectNodeLink = new NodeLink();
 			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
 			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			projectNodeLink.setRefProjectSubNodeId(nodelink.getKsnid());
-			projectNodeLink.setRefProjectTreeId(ptreeId);
+			projectNodeLink.setKsnid(nodelink.getKsnid());
+			projectNodeLink.setKtrid(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);
 		}
 	}

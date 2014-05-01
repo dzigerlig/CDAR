@@ -10,29 +10,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.consumer.ProjectNodeLink;
+import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeLinkRepository {
-	public List<ProjectNodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException {
+	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE KPTID = ?";
 
-		List<ProjectNodeLink> projectNodeLinks = new ArrayList<ProjectNodeLink>();
+		List<NodeLink> projectNodeLinks = new ArrayList<NodeLink>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, projectTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
-					ProjectNodeLink projectNodeLink = new ProjectNodeLink();
+					NodeLink projectNodeLink = new NodeLink();
 					projectNodeLink.setId(result.getInt(1));
 					projectNodeLink.setCreationTime(result.getDate(2));
 					projectNodeLink.setLastModificationTime(result.getDate(3));
 					projectNodeLink.setSourceId(result.getInt(4));
 					projectNodeLink.setTargetId(result.getInt(5));
-					projectNodeLink.setRefProjectSubNodeId(result.getInt(6));
-					projectNodeLink.setRefProjectTreeId(projectTreeId);
+					projectNodeLink.setKsnid(result.getInt(6));
+					projectNodeLink.setKtrid(projectTreeId);
 					projectNodeLinks.add(projectNodeLink);
 				}
 			}
@@ -42,7 +42,7 @@ public class ProjectNodeLinkRepository {
 		return projectNodeLinks;
 	}
 	
-	public ProjectNodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
+	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -51,14 +51,14 @@ public class ProjectNodeLinkRepository {
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
-					ProjectNodeLink projectNodeLink = new ProjectNodeLink();
+					NodeLink projectNodeLink = new NodeLink();
 					projectNodeLink.setId(result.getInt(1));
 					projectNodeLink.setCreationTime(result.getDate(2));
 					projectNodeLink.setLastModificationTime(result.getDate(3));
 					projectNodeLink.setSourceId(result.getInt(4));
 					projectNodeLink.setTargetId(result.getInt(5));
-					projectNodeLink.setRefProjectTreeId(result.getInt(6));
-					projectNodeLink.setRefProjectSubNodeId(result.getInt(7));
+					projectNodeLink.setKtrid(result.getInt(6));
+					projectNodeLink.setKsnid(result.getInt(7));
 					return projectNodeLink;
 				}
 			}
@@ -68,7 +68,7 @@ public class ProjectNodeLinkRepository {
 		throw new UnknownProjectNodeLinkException();
 	}
 	
-	public ProjectNodeLink createProjectNodeLink(ProjectNodeLink projectNodeLink) throws UnknownProjectTreeException {
+	public NodeLink createProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -76,12 +76,12 @@ public class ProjectNodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, projectNodeLink.getSourceId());
 			preparedStatement.setInt(3, projectNodeLink.getTargetId());
-			if (projectNodeLink.getRefProjectSubNodeId() != 0) {
-				preparedStatement.setInt(4, projectNodeLink.getRefProjectSubNodeId());
+			if (projectNodeLink.getKsnid() != 0) {
+				preparedStatement.setInt(4, projectNodeLink.getKsnid());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, projectNodeLink.getRefProjectTreeId());
+			preparedStatement.setInt(5, projectNodeLink.getKtrid());
 
 			preparedStatement.executeUpdate();
 
@@ -96,7 +96,7 @@ public class ProjectNodeLinkRepository {
 		return projectNodeLink;
 	}
 	
-	public ProjectNodeLink updateProjectNodeLink(ProjectNodeLink projectNodeLink) throws UnknownProjectNodeLinkException {
+	public NodeLink updateProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectNodeLinkException {
 		final String sql = "UPDATE KNOWLEDGEPROJECTNODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -104,12 +104,12 @@ public class ProjectNodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, projectNodeLink.getSourceId());
 			preparedStatement.setInt(3, projectNodeLink.getTargetId());
-			if (projectNodeLink.getRefProjectSubNodeId() != 0) {
-				preparedStatement.setInt(4, projectNodeLink.getRefProjectSubNodeId());
+			if (projectNodeLink.getKsnid() != 0) {
+				preparedStatement.setInt(4, projectNodeLink.getKsnid());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, projectNodeLink.getRefProjectTreeId());
+			preparedStatement.setInt(5, projectNodeLink.getKtrid());
 			preparedStatement.setInt(6, projectNodeLink.getId());
 
 			preparedStatement.executeUpdate();
