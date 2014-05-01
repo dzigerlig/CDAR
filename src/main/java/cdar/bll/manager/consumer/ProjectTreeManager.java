@@ -70,7 +70,6 @@ public class ProjectTreeManager {
 		
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		for (Directory directory : dm.getDirectories(ktreeId)) {
-			System.out.println("parent: " + directory.getParentid());
 			Directory projectDirectory = new Directory();
 			projectDirectory.setKtrid(ptreeId);
 			projectDirectory.setTitle(directory.getTitle());
