@@ -29,8 +29,8 @@ public class XmlTreeRepository {
 					xmlTree.setCreationTime(result.getDate(2));
 					xmlTree.setLastModificationTime(result.getDate(3));
 					xmlTree.setXmlString(result.getString(4));
-					xmlTree.setUid(result.getInt(5));
-					xmlTree.setKtrid(result.getInt(6));
+					xmlTree.setUserId(result.getInt(5));
+					xmlTree.setTreeId(result.getInt(6));
 					xmlTrees.add(xmlTree);
 				}
 			}
@@ -53,8 +53,8 @@ public class XmlTreeRepository {
 					xmlTree.setCreationTime(result.getDate(2));
 					xmlTree.setLastModificationTime(result.getDate(3));
 					xmlTree.setXmlString(result.getString(4));
-					xmlTree.setUid(result.getInt(5));
-					xmlTree.setKtrid(result.getInt(6));
+					xmlTree.setUserId(result.getInt(5));
+					xmlTree.setTreeId(result.getInt(6));
 					return xmlTree;
 				}
 			}
@@ -72,8 +72,8 @@ public class XmlTreeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, xmlTree.getUid());
-			preparedStatement.setInt(3, xmlTree.getKtrid());
+			preparedStatement.setInt(2, xmlTree.getUserId());
+			preparedStatement.setInt(3, xmlTree.getTreeId());
 			preparedStatement.setString(4, xmlTree.getXmlString());
 
 			preparedStatement.executeUpdate();
@@ -93,8 +93,8 @@ public class XmlTreeRepository {
 		final String sql = "UPDATE KNOWLEDGETREEXML SET LAST_MODIFICATION_TIME = ?, UID = ?, KTRID = ?, XMLSTRING = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, xmlTree.getUid());
-			preparedStatement.setInt(3, xmlTree.getKtrid());
+			preparedStatement.setInt(2, xmlTree.getUserId());
+			preparedStatement.setInt(3, xmlTree.getTreeId());
 			preparedStatement.setString(4, xmlTree.getXmlString());
 			preparedStatement.setInt(5, xmlTree.getId());
 

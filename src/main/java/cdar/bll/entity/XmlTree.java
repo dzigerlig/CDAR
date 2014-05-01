@@ -3,35 +3,35 @@ package cdar.bll.entity;
 import java.util.Date;
 
 public class XmlTree extends BasicEntity {
-	private int uid;
-	private int ktrid;
+	private int userId;
+	private int treeId;
 	private String xmlString;
 	
 	public XmlTree() {
 		super();
 	}
 	
-	public XmlTree(int id, Date creationDate, Date lastModification, int uid, int ktrid, String xmlString) {
+	public XmlTree(int id, Date creationDate, Date lastModification, int userId, int treeId, String xmlString) {
 		super(id, creationDate, lastModification);
-		setUid(uid);
-		setKtrid(ktrid);
+		setUserId(userId);
+		setTreeId(treeId);
 		setXmlString(xmlString);
 	}
 
-	public int getUid() {
-		return uid;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public int getKtrid() {
-		return ktrid;
+	public int getTreeId() {
+		return treeId;
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public void setTreeId(int treeId) {
+		this.treeId = treeId;
 	}
 
 	public String getXmlString() {

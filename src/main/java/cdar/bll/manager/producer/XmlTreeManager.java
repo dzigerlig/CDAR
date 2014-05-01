@@ -47,8 +47,8 @@ public class XmlTreeManager {
 		CDAR_TreeExportModel tem = new CDAR_TreeExportModel();
 		final String xmlString = tem.getTreeSimpleXmlString(ktrid);
 		XmlTree xmlTree = new XmlTree();
-		xmlTree.setUid(uid);
-		xmlTree.setKtrid(ktrid);
+		xmlTree.setUserId(uid);
+		xmlTree.setTreeId(ktrid);
 		xmlTree.setXmlString(xmlString);
 		return xtr.createXmlTree(xmlTree);
 	}
@@ -71,7 +71,7 @@ public class XmlTreeManager {
 		NodeRepository nr = new NodeRepository();
 		
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
-		int treeId = xmlTree.getKtrid();
+		int treeId = xmlTree.getTreeId();
 		for (Node node : nr.getNodes(treeId)) {
 			if (!nr.deleteNode(node.getId())) {
 				return false;
