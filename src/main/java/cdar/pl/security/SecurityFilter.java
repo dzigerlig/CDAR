@@ -11,8 +11,8 @@ import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.server.ExtendedUriInfo;
 
-import cdar.bll.user.User;
-import cdar.bll.user.UserManager;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
 
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {

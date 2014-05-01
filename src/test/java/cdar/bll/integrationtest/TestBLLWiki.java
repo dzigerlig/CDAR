@@ -6,13 +6,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cdar.bll.producer.Directory;
-import cdar.bll.producer.Node;
-import cdar.bll.producer.Tree;
-import cdar.bll.producer.managers.DirectoryManager;
-import cdar.bll.producer.managers.NodeManager;
-import cdar.bll.producer.managers.TreeManager;
-import cdar.bll.user.UserManager;
+import cdar.bll.entity.Directory;
+import cdar.bll.entity.Node;
+import cdar.bll.entity.Tree;
+import cdar.bll.manager.UserManager;
+import cdar.bll.manager.producer.DirectoryManager;
+import cdar.bll.manager.producer.NodeManager;
+import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.exceptions.UnknownUserException;
 

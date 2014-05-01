@@ -10,9 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.producer.Tree;
-import cdar.bll.producer.managers.TreeManager;
-import cdar.bll.producer.managers.XmlTreeManager;
+import cdar.bll.entity.Tree;
+import cdar.bll.manager.producer.TreeManager;
+import cdar.bll.manager.producer.XmlTreeManager;
 
 @Path("ktree")
 public class KnowledgeTreeController {

@@ -9,8 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.producer.Template;
-import cdar.bll.producer.managers.TemplateManager;
+import cdar.bll.entity.producer.Template;
+import cdar.bll.manager.producer.TemplateManager;
 
 @Path("ktree/{ktreeid}/templates")
 public class TemplateController {

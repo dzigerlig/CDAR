@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cdar.bll.user.User;
+import cdar.bll.entity.User;
 import cdar.pl.controller.UserController;
 
 public class TestUserController extends JerseyTest {

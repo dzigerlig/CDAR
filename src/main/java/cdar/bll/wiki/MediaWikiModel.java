@@ -1,10 +1,10 @@
 package cdar.bll.wiki;
 
-import cdar.bll.consumer.managers.ProjectNodeManager;
-import cdar.bll.producer.managers.NodeManager;
-import cdar.bll.producer.managers.SubnodeManager;
-import cdar.bll.user.User;
-import cdar.bll.user.UserManager;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
+import cdar.bll.manager.consumer.ProjectNodeManager;
+import cdar.bll.manager.producer.NodeManager;
+import cdar.bll.manager.producer.SubnodeManager;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;

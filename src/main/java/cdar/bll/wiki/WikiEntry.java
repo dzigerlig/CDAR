@@ -4,10 +4,10 @@ import info.bliki.wiki.model.WikiModel;
 
 import org.wikipedia.Wiki;
 
-import cdar.bll.WikiEntity;
-import cdar.bll.consumer.ProjectNode;
-import cdar.bll.producer.Node;
-import cdar.bll.producer.Subnode;
+import cdar.bll.entity.Node;
+import cdar.bll.entity.Subnode;
+import cdar.bll.entity.WikiEntity;
+import cdar.bll.entity.consumer.ProjectNode;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;

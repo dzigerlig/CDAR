@@ -11,11 +11,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.ChangesWrapper;
-import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.Subnode;
-import cdar.bll.producer.managers.NodeLinkManager;
-import cdar.bll.producer.managers.SubnodeManager;
+import cdar.bll.entity.ChangesWrapper;
+import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.Subnode;
+import cdar.bll.manager.producer.NodeLinkManager;
+import cdar.bll.manager.producer.SubnodeManager;
 
 @Path("ktree/{ktreeid}/subnodes")
 public class KnowledgeSubnodeController {

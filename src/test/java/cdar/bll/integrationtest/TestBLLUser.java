@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import cdar.bll.user.User;
-import cdar.bll.user.UserManager;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 

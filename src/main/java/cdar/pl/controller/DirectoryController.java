@@ -9,8 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.producer.Directory;
-import cdar.bll.producer.managers.DirectoryManager;
+import cdar.bll.entity.Directory;
+import cdar.bll.manager.producer.DirectoryManager;
 
 @Path("ktree/{ktreeid}/directories")
 public class DirectoryController {

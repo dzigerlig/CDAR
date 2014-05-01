@@ -9,8 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.producer.NodeLink;
-import cdar.bll.producer.managers.NodeLinkManager;
+import cdar.bll.entity.NodeLink;
+import cdar.bll.manager.producer.NodeLinkManager;
 
 @Path("ktree/{ktreeid}/links")
 public class KnowledgeNodeLinkController {
