@@ -5,8 +5,8 @@ import java.util.Date;
 import cdar.bll.entity.BasicEntity;
 
 public class Comment extends BasicEntity {
-	private int refUserId;
-	private int refProjectNodeId;
+	private int userId;
+	private int nodeId;
 	private String comment;
 	
 	public Comment() {
@@ -14,27 +14,27 @@ public class Comment extends BasicEntity {
 	}
 
 	public Comment(int id, Date creationDate, Date lastModification,
-			int refUserId, int refProjectNode, String comment) {
+			int userId, int nodeId, String comment) {
 		super(id, creationDate, lastModification);
-		setRefUserId(refUserId);
-		setRefProjectNode(refProjectNode);
+		setUserId(userId);
+		setNodeId(nodeId);
 		setComment(comment);
 	}
 
-	public int getRefUserId() {
-		return refUserId;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setRefUserId(int refUserId) {
-		this.refUserId = refUserId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	
-	public int getRefProjectNode() {
-		return refProjectNodeId;
+	public int getNodeId() {
+		return nodeId;
 	}
 
-	public void setRefProjectNode(int refProjectNode) {
-		this.refProjectNodeId = refProjectNode;
+	public void setNodeId(int nodeId) {
+		this.nodeId = nodeId;
 	}
 
 	public String getComment() {

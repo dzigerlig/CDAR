@@ -31,8 +31,8 @@ public class CommentRepository {
 					usercomment.setId(result.getInt(1));
 					usercomment.setCreationTime(result.getDate(2));
 					usercomment.setLastModificationTime(result.getDate(3));
-					usercomment.setRefProjectNode(kpnid);
-					usercomment.setRefUserId(result.getInt(4));
+					usercomment.setNodeId(kpnid);
+					usercomment.setUserId(result.getInt(4));
 					usercomment.setComment(result.getString(5));
 					usercomments.add(usercomment);
 				}
@@ -58,8 +58,8 @@ public class CommentRepository {
 					usercomment.setId(result.getInt(1));
 					usercomment.setCreationTime(result.getDate(2));
 					usercomment.setLastModificationTime(result.getDate(3));
-					usercomment.setRefProjectNode(4);
-					usercomment.setRefUserId(result.getInt(5));
+					usercomment.setNodeId(4);
+					usercomment.setUserId(result.getInt(5));
 					usercomment.setComment(result.getString(6));
 					return usercomment;
 				}
@@ -76,8 +76,8 @@ public class CommentRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, comment.getRefUserId());
-			preparedStatement.setInt(3, comment.getRefProjectNode());
+			preparedStatement.setInt(2, comment.getUserId());
+			preparedStatement.setInt(3, comment.getNodeId());
 			preparedStatement.setString(4, comment.getComment());
 
 			preparedStatement.executeUpdate();
@@ -99,8 +99,8 @@ public class CommentRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, comment.getRefUserId());
-			preparedStatement.setInt(3, comment.getRefProjectNode());
+			preparedStatement.setInt(2, comment.getUserId());
+			preparedStatement.setInt(3, comment.getNodeId());
 			preparedStatement.setString(4, comment.getComment());
 			preparedStatement.setInt(5, comment.getId());
 

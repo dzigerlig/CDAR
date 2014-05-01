@@ -27,8 +27,8 @@ public class CommentManager {
 	
 	public Comment addComment(int uid, int kpnid, String commentText) throws Exception {
 		Comment comment = new Comment();
-		comment.setRefUserId(uid);
-		comment.setRefProjectNode(kpnid);
+		comment.setUserId(uid);
+		comment.setNodeId(kpnid);
 		comment.setComment(commentText);
 		return cr.createComment(comment);
 	}
