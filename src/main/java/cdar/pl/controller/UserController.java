@@ -15,7 +15,7 @@ import cdar.bll.manager.UserManager;
 
 @Path("users")
 public class UserController {
-	private UserManager userModel = new UserManager();
+	private UserManager userManager = new UserManager();
 
 	@GET
 	@Path("login")
@@ -23,7 +23,9 @@ public class UserController {
 	public Response login(@QueryParam("username") String username,
 			@QueryParam("password") String password) {
 		try {
-			return Response.ok(userModel.loginUser(username, password),
+			User loggedInUser = userManager.loginUser(username, password);
+			loggedInUser.setPassword(null);
+			return Response.ok(loggedInUser,
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -34,8 +36,9 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
-			return Response.status(Response.Status.CREATED).entity(userModel.createUser(user.getUsername(),
-							user.getPassword())).build();
+			user = userManager.createUser(user.getUsername(), user.getPassword());
+			user.setPassword(null);
+			return Response.status(Response.Status.CREATED).entity(user).build();
 		} catch (Exception ex) {
 			return Response.status(Response.Status.CONFLICT).build();
 		}
@@ -46,7 +49,9 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editUser(User user) {
 		try {
-			return Response.ok(userModel.updateUser(user),
+			user = userManager.updateUser(user);
+			user.setPassword(null);
+			return Response.ok(user,
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -56,9 +61,9 @@ public class UserController {
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteUser(int userid) {
+	public Response deleteUser(int userId) {
 		try {
-			return Response.ok(userModel.deleteUser(userid), MediaType.APPLICATION_JSON).build();
+			return Response.ok(userManager.deleteUser(userId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
