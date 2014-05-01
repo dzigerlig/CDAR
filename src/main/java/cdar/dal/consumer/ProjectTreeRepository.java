@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.consumer.ProjectTree;
+import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectTreeRepository {
-	public List<ProjectTree> getProjectTrees(int uid) throws SQLException {
+	public List<Tree> getProjectTrees(int uid) throws SQLException {
 		String sql = null;
 		if (uid==0) {
 			sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE";
@@ -23,12 +23,12 @@ public class ProjectTreeRepository {
 		}
 		
 
-		List<ProjectTree> projectTrees = new ArrayList<ProjectTree>();
+		List<Tree> projectTrees = new ArrayList<Tree>();
 
 		try (Connection connection = DBConnection.getConnection(); Statement statement = connection.createStatement()) {
 			try (ResultSet result = statement.executeQuery(sql)) {
 				while (result.next()) {
-					ProjectTree projectTree = new ProjectTree();
+					Tree projectTree = new Tree();
 					projectTree.setId(result.getInt(1));
 					projectTree.setCreationTime(result.getDate(2));
 					projectTree.setLastModificationTime(result.getDate(3));
@@ -43,7 +43,7 @@ public class ProjectTreeRepository {
 		return projectTrees;
 	}
 	
-	public ProjectTree getProjectTree(int projectTreeId) throws UnknownProjectTreeException {
+	public Tree getProjectTree(int projectTreeId) throws UnknownProjectTreeException {
 		final String sql = "SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -51,7 +51,7 @@ public class ProjectTreeRepository {
 			preparedStatement.setInt(1, projectTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				if (result.next()) {
-					ProjectTree projectTree = new ProjectTree();
+					Tree projectTree = new Tree();
 					projectTree.setUid(result.getInt(1));
 					projectTree.setId(result.getInt(2));
 					projectTree.setCreationTime(result.getDate(3));
@@ -66,7 +66,7 @@ public class ProjectTreeRepository {
 		throw new UnknownProjectTreeException();
 	}
 	
-	public ProjectTree createProjectTree(ProjectTree projectTree) throws Exception {
+	public Tree createProjectTree(Tree projectTree) throws Exception {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (uid, kptid) VALUES (?, ?)";
 
@@ -97,7 +97,7 @@ public class ProjectTreeRepository {
 		return projectTree;
 	}
 	
-	public ProjectTree updateProjectTree(ProjectTree projectTree) throws Exception {
+	public Tree updateProjectTree(Tree projectTree) throws Exception {
 		final String sql = "UPDATE KNOWLEDGEPROJECTTREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

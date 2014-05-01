@@ -9,10 +9,10 @@ import java.util.Set;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
+import cdar.bll.entity.Tree;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectNodeLink;
 import cdar.bll.entity.consumer.ProjectSubnode;
-import cdar.bll.entity.consumer.ProjectTree;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
@@ -30,23 +30,23 @@ public class ProjectTreeManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
-	public Set<ProjectTree> getProjectTrees(int uid) throws SQLException {
-		Set<ProjectTree> projectTrees = new HashSet<ProjectTree>();
-		for (ProjectTree projectTree : ptr.getProjectTrees(uid)) {
+	public Set<Tree> getProjectTrees(int uid) throws SQLException {
+		Set<Tree> projectTrees = new HashSet<Tree>();
+		for (Tree projectTree : ptr.getProjectTrees(uid)) {
 			projectTrees.add(projectTree);
 		}
 		return projectTrees;
 	}
 
-	public ProjectTree addProjectTree(int uid, String treeTitle)
+	public Tree addProjectTree(int uid, String treeTitle)
 			throws Exception {
-		ProjectTree projectTree = new ProjectTree();
+		Tree projectTree = new Tree();
 		projectTree.setUid(uid);
 		projectTree.setTitle(treeTitle);
 		return ptr.createProjectTree(projectTree);
 	}
 
-	public ProjectTree getProjectTree(int ptreeId) throws UnknownProjectTreeException {
+	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException {
 		return ptr.getProjectTree(ptreeId);
 	}
 
@@ -90,8 +90,8 @@ public class ProjectTreeManager {
 		return ptr.deleteProjectTree(ptreeId);
 	}
 
-	public ProjectTree updateProjectTree(ProjectTree projectTree) throws Exception {
-		ProjectTree updatedProjectTree = ptr.getProjectTree(projectTree.getId());
+	public Tree updateProjectTree(Tree projectTree) throws Exception {
+		Tree updatedProjectTree = ptr.getProjectTree(projectTree.getId());
 		updatedProjectTree.setTitle(projectTree.getTitle());
 		return ptr.updateProjectTree(updatedProjectTree);
 	}

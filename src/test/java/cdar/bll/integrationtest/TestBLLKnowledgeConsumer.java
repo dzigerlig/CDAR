@@ -16,7 +16,6 @@ import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectNodeLink;
 import cdar.bll.entity.consumer.ProjectSubnode;
-import cdar.bll.entity.consumer.ProjectTree;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
@@ -59,7 +58,7 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectTree() throws Exception {
 		final String treeName = "Project Tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
 		assertEquals(projectTreeCount + 1, ptm.getProjectTrees(um.getUser(username).getId()).size());
 		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getTitle());
 		ptm.deleteProjectTree(tree.getId());
@@ -71,7 +70,7 @@ public class TestBLLKnowledgeConsumer {
 		final String treeName = "Project Tree";
 		final String newTreeName = "My new project tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), treeName);
 		assertEquals(projectTreeCount + 1, ptm.getProjectTrees(um.getUser(username).getId()).size());
 		assertEquals(treeName, ptm.getProjectTree(tree.getId()).getTitle());
 		tree.setTitle(newTreeName);
@@ -93,7 +92,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Test (expected = UnknownProjectTreeException.class)
 	public void testUpdateUnknownProjectTree() throws Exception {
-		ProjectTree tree = ptm.getProjectTree(unknownId);
+		Tree tree = ptm.getProjectTree(unknownId);
 		tree.setTitle("Unknown Tree");
 		ptm.updateProjectTree(tree);
 	}
@@ -109,7 +108,7 @@ public class TestBLLKnowledgeConsumer {
 		TreeManager tm = new TreeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
-		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		Tree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, nm.getNodes(tree.getId()).size());
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
 		ptm.addKnowledgeTreeToProjectTree(tree.getId(), projectTree.getId());
@@ -128,7 +127,7 @@ public class TestBLLKnowledgeConsumer {
 		NodeLinkManager nlm = new NodeLinkManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
-		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		Tree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle1, directoryId);
 		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle2, directoryId);
@@ -165,7 +164,7 @@ public class TestBLLKnowledgeConsumer {
 		NodeLinkManager nlm = new NodeLinkManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
-		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		Tree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle1, directoryId);
 		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nodeTitle2, directoryId);
@@ -198,7 +197,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test
 	public void testUnknownKnowledgeTreeToProjectTree() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
+		Tree projectTree = ptm.addProjectTree(um.getUser(username).getId(), "My Project Tree");
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
 		ptm.addKnowledgeTreeToProjectTree(unknownId, projectTree.getId());
 		assertEquals(0, pnm.getProjectNodes(projectTree.getId()).size());
@@ -208,7 +207,7 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectNode() throws Exception {
 		final String projectNodeName = "My project node";
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
@@ -224,7 +223,7 @@ public class TestBLLKnowledgeConsumer {
 		final String projectNodeName = "My project node";
 		final String newProjectNodeName = "My new project node name";
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
@@ -272,7 +271,7 @@ public class TestBLLKnowledgeConsumer {
 		final String nameNode2 = "Node2";
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
@@ -290,7 +289,7 @@ public class TestBLLKnowledgeConsumer {
 		final String nameNode2 = "Node2";
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
@@ -338,7 +337,7 @@ public class TestBLLKnowledgeConsumer {
 		final String projectSubnodeName = "My project subnode";
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
@@ -358,7 +357,7 @@ public class TestBLLKnowledgeConsumer {
 		final String newProjectSubnodeName = "Another project subnode name";
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
@@ -413,7 +412,7 @@ public class TestBLLKnowledgeConsumer {
 	public void testComment() throws Exception {
 		final String commentString = "This is a comment";
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());
@@ -429,7 +428,7 @@ public class TestBLLKnowledgeConsumer {
 		final String commentString = "This is a comment";
 		final String newCommentString = "This is another comment";
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		ProjectTree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
+		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node");
 		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());

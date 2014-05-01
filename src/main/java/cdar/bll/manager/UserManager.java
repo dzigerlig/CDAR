@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.bll.entity.consumer.ProjectTree;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.bll.manager.producer.TreeManager;
 import cdar.dal.exceptions.UnknownUserException;
@@ -48,7 +47,7 @@ public class UserManager {
 			tm.deleteTree(tree.getId());
 		}
 		
-		for (ProjectTree projectTree : ptm.getProjectTrees(userId)) {
+		for (Tree projectTree : ptm.getProjectTrees(userId)) {
 			ptm.deleteProjectTree(projectTree.getId());
 		}
 		
