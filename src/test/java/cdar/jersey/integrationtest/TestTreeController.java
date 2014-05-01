@@ -15,7 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import sun.security.krb5.internal.tools.Ktab;
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
@@ -624,7 +623,8 @@ public class TestTreeController extends JerseyTest {
 				quantityOfNodeLinksAfterAdd);
 	}
 
-	@Test//not working
+	@Test
+	// not working
 	public void testUpdateNodeLinks() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
@@ -635,13 +635,18 @@ public class TestTreeController extends JerseyTest {
 		Subnode addedSubnode = addSubnode(addedNode1.getId(), TREENAME);
 		addedNodeLink.setSubnodeId(addedSubnode.getId());
 		Response updatedNodeLinkResponse = target(
-				"/ktree/"+treeid+"/links/update").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/links/update")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedNodeLink, MediaType.APPLICATION_JSON),
 						Response.class);
-		NodeLink updatedNodeLink = updatedNodeLinkResponse.readEntity(NodeLink.class);
-		deleteSubnode(addedSubnode.getId(),addedSubnode.getNodeId());
-
+		NodeLink updatedNodeLink = updatedNodeLinkResponse
+				.readEntity(NodeLink.class);
 		deleteNodeLink(addedNodeLink.getId());
+
+		deleteSubnode(addedSubnode.getId(), addedSubnode.getNodeId());
+
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
 		deleteDirectory(addedDirectory.getId());
@@ -655,33 +660,39 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfSubnodesBeforeAdd = target(
-			"/ktree/"+treeid+"/subnodes/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/subnodes/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		System.out.println(quantityOfSubnodesBeforeAdd);
 		Subnode addTestSubnode = new Subnode();
 		addTestSubnode.setNodeId(addedNode.getId());
 		addTestSubnode.setTitle(TREENAME);
-		Response addedSubnodeResponse= target("/ktree/"+treeid+"/nodes/"+addedNode.getId()+"/subnodes/add")
-				.request()	.header(UID, userId)
+		Response addedSubnodeResponse = target(
+				"/ktree/" + treeid + "/nodes/" + addedNode.getId()
+						+ "/subnodes/add")
+				.request()
+				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestSubnode, MediaType.APPLICATION_JSON),
-						Response.class);		
+						Response.class);
 		Subnode addedSubnode = addedSubnodeResponse.readEntity(Subnode.class);
 
 		int quantityOfSubnodesAfterAdd = target(
-			"/ktree/"+treeid+"/subnodes/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/subnodes/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		System.out.println(quantityOfSubnodesAfterAdd);
-		
-		Response deletedSubnodeResponse= target("/ktree/"+treeid+"/nodes/"+addedNode.getId()+"/subnodes/delete")
-				.request()	.header(UID, userId)
-				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedSubnode.getId(), MediaType.APPLICATION_JSON),
-						Response.class);
 
-System.out.println(deletedSubnodeResponse.getStatus());
+		Response deletedSubnodeResponse = target(
+				"/ktree/" + treeid + "/nodes/" + addedNode.getId()
+						+ "/subnodes/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedSubnode.getId(),
+						MediaType.APPLICATION_JSON), Response.class);
+
 		int quantityOfSubnodesAfterDelete = target(
-			"/ktree/"+treeid+"/subnodes/").request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktree/" + treeid + "/subnodes/").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		System.out.println(quantityOfSubnodesAfterDelete);
 		deleteNode(addedNode.getId());
@@ -697,8 +708,20 @@ System.out.println(deletedSubnodeResponse.getStatus());
 
 	@Test
 	public void testDeleteNonExistingSubnode() {
-		boolean isSubnodeDeleted = deleteSubnode(999999999);
-		assertFalse(isSubnodeDeleted);
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		Response deleteSubnodeResponse = target(
+				"/ktree/" + treeid + "/nodes/" + addedNode.getId()
+						+ "/subnodes/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+						Response.class);
+
+		deleteNode(addedNode.getId());
+		deleteDirectory(addedDirectory.getId());
+		assertEquals(400, deleteSubnodeResponse.getStatus());
 	}
 
 	@Test
@@ -707,47 +730,79 @@ System.out.println(deletedSubnodeResponse.getStatus());
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfSubnodesBeforeAdd = target(
-				getAuthString() + "/ktree/subnodes/" + treeid).request()
-				.get(Set.class).size();
+				"/ktree/" + treeid + "/subnodes").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class)
+				.readEntity(Set.class).size();
 		Subnode addedSubnode1 = addSubnode(addedNode.getId(), PASSWORD);
 		Subnode addedSubnode2 = addSubnode(addedNode.getId(), USERNAME);
 
-		int quantityOfSubnodesAfterAdd = target(
-				getAuthString() + "/ktree/subnodes/" + treeid).request()
-				.get(Set.class).size();
-		deleteSubnode(addedSubnode1.getId());
-		deleteSubnode(addedSubnode2.getId());
+		Response quantityOfSubnodesAfterAddResponse = target(
+				"/ktree/" + treeid + "/subnodes").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfSubnodesAfterAdd = quantityOfSubnodesAfterAddResponse
+				.readEntity(Set.class).size();
+
+		deleteSubnode(addedSubnode1.getId(), addedNode.getId());
+		deleteSubnode(addedSubnode2.getId(), addedNode.getId());
 
 		deleteNode(addedNode.getId());
 
 		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, quantityOfSubnodesAfterAddResponse.getStatus());
 		assertEquals(quantityOfSubnodesBeforeAdd + 2,
 				quantityOfSubnodesAfterAdd);
 	}
-
+	@Test
+	public void testGetSubnodesOfNode() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		
+		int quantityOfSubnodesBeforeAdd = target(
+				"/ktree/" + treeid +"/nodes/"+addedNode.getId()+ "/subnodes").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class)
+				.readEntity(Set.class).size();
+		Subnode addedSubnode1 = addSubnode(addedNode.getId(), PASSWORD);
+		Subnode addedSubnode2 = addSubnode(addedNode.getId(), USERNAME);
+		
+		Response quantityOfSubnodesAfterAddResponse = target(
+				"/ktree/" + treeid +"/nodes/"+addedNode.getId()+ "/subnodes").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfSubnodesAfterAdd = quantityOfSubnodesAfterAddResponse
+				.readEntity(Set.class).size();
+		
+		deleteSubnode(addedSubnode1.getId(), addedNode.getId());
+		deleteSubnode(addedSubnode2.getId(), addedNode.getId());
+		
+		deleteNode(addedNode.getId());
+		
+		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, quantityOfSubnodesAfterAddResponse.getStatus());
+		assertEquals(quantityOfSubnodesBeforeAdd + 2,
+				quantityOfSubnodesAfterAdd);
+	}
+	
+	/*Not Implemented
 	@Test
 	public void testGetSubnode() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode = addNode(treeid, addedDirectory.getId());
-
-		int quantityOfSubnodesBeforeAdd = target(
-				getAuthString() + "/ktree/subnodes/" + treeid + "/"
-						+ addedNode.getId()).request().get(Set.class).size();
+		
 		Subnode addedSubnode1 = addSubnode(addedNode.getId(), PASSWORD);
-		Subnode addedSubnode2 = addSubnode(addedNode.getId(), USERNAME);
-
-		int quantityOfSubnodesAfterAdd = target(
-				getAuthString() + "/ktree/subnodes/" + treeid + "/"
-						+ addedNode.getId()).request().get(Set.class).size();
-		deleteSubnode(addedSubnode1.getId());
-		deleteSubnode(addedSubnode2.getId());
-
+		
+		Response queryAddedSubnodeResponse = target(
+				"/ktree/" + treeid +"/nodes/"+addedNode.getId()+ "/subnodes/"+addedSubnode1.getId()).request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		Subnode queryAddedSubnode = queryAddedSubnodeResponse
+				.readEntity(Subnode.class);
+		
+		deleteSubnode(addedSubnode1.getId(), addedNode.getId());
+		
 		deleteNode(addedNode.getId());
-
+		
 		deleteDirectory(addedDirectory.getId());
-		assertEquals(quantityOfSubnodesBeforeAdd + 2,
-				quantityOfSubnodesAfterAdd);
-	}
+		assertNotEquals(null, queryAddedSubnode);
+		assertEquals(200, queryAddedSubnodeResponse.getStatus());
+	}*/
 
 	private Tree addTree(String treename) {
 		return target("/ktree/add")
@@ -860,16 +915,19 @@ System.out.println(deletedSubnodeResponse.getStatus());
 		Subnode addTestSubnode = new Subnode();
 		addTestSubnode.setNodeId(knid);
 		addTestSubnode.setTitle(title);
-		return target("/ktree/"+treeid+"/nodes/"+knid+"/subnodes/add")
-				.request()	.header(UID, userId)
+		return target("/ktree/" + treeid + "/nodes/" + knid + "/subnodes/add")
+				.request()
+				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTestSubnode, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Subnode.class);
 	}
 
-	private ChangesWrapper deleteSubnode(int subnodeId, int knid) {
-		return target("/ktree/"+treeid+"/nodes/"+knid+"/subnodes/delete")
-				.request()	.header(UID, userId)
+	private ChangesWrapper<?> deleteSubnode(int subnodeId, int knid) {
+		return target(
+				"/ktree/" + treeid + "/nodes/" + knid + "/subnodes/delete")
+				.request()
+				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(subnodeId, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(ChangesWrapper.class);
