@@ -60,9 +60,9 @@ public class UserController {
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteUser(int userId) {
+	public Response deleteUser(User user) {
 		try {
-			return Response.ok(userManager.deleteUser(userId), MediaType.APPLICATION_JSON).build();
+			return Response.ok(userManager.deleteUser(user.getId()), MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}

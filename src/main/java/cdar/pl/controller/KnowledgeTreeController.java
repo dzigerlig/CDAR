@@ -17,12 +17,11 @@ import cdar.bll.manager.producer.XmlTreeManager;
 @Path("ktree")
 public class KnowledgeTreeController {
 	private TreeManager ktm = new TreeManager();
-	private XmlTreeManager xtm = new XmlTreeManager();
 
 	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getKnowledgeTreesByUid(@HeaderParam("uid") int uid) {
+	public Response getKnowledgeTrees(@HeaderParam("uid") int uid) {
 		try {
 			return Response.ok(ktm.getTrees(uid), MediaType.APPLICATION_JSON)
 					.build();
@@ -34,9 +33,9 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteTreeById(int ktreeid) {
+	public Response deleteTree(Tree tree) {
 		try {
-			return Response.ok(ktm.deleteTree(ktreeid),
+			return Response.ok(ktm.deleteTree(tree.getId()),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -44,27 +43,12 @@ public class KnowledgeTreeController {
 	}
 
 	@POST
-	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTree(String treeTitle, @HeaderParam("uid") int uid) {
+	public Response addKnowledgeTree(Tree tree, @HeaderParam("uid") int uid) {
 		try {
-			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, treeTitle)).build();
+			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, tree.getTitle())).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
-	}
-
-	@POST
-	@Path("rename")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response renameKnowledgeTree(Tree tree) {
-		try {
-			return Response
-					.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON)
-					.build();
-		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
@@ -81,59 +65,14 @@ public class KnowledgeTreeController {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
-
 	
-	// TREE XML
-	@GET
-	// Changed
-	@Path("{ktreeid}/simpleexport")
+	@POST
+	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
+	public Response updateKnowledgeTree(Tree tree) {
 		try {
-			return Response.ok(xtm.getXmlTrees(ktreeid),
-					MediaType.APPLICATION_JSON).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-	}
-
-	@POST
-	// Changed
-	@Path("{ktreeid}/simpleexport/delete")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteKnowledgeTreeSimpleXml(int id) {
-		try {
-			return Response.ok(xtm.deleteXmlTree(id),
-					MediaType.APPLICATION_JSON).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-	}
-
-	@POST
-	// Changed
-	@Path("{ktreeid}/singleexport/set")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response setKnowledgeTreeSimpleXml(int id) {
-		try {
-			xtm.cleanTree(id);
-			return Response.ok(xtm.setXmlTree(id),
-					MediaType.APPLICATION_JSON).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-	}
-
-	@GET
-	// Changed
-	@Path("{ktreeid}/simpleexport/add/")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTreeSimpleXml(@HeaderParam("uid") int uid,
-			@PathParam("ktreeid") int ktrid) {
-		try {
-			return Response.ok(xtm.addXmlTree(uid, ktrid),
-					MediaType.APPLICATION_JSON).build();
-		} catch (Exception e) {
+			return Response.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON).build();
+		} catch (Exception ex) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
