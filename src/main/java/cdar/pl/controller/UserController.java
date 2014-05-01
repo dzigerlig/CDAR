@@ -17,21 +17,6 @@ import cdar.bll.manager.UserManager;
 public class UserController {
 	private UserManager userModel = new UserManager();
 
-	public UserController() {
-	}
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers() {
-		try {
-			return Response
-					.ok(userModel.getUsers(), MediaType.APPLICATION_JSON)
-					.build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		}
-	}
-
 	@GET
 	@Path("login")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +31,6 @@ public class UserController {
 	}
 
 	@POST
-	@Path("registration")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
@@ -58,7 +42,7 @@ public class UserController {
 	}
 
 	@POST
-	@Path("edit")
+	@Path("{uid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response editUser(User user) {
 		try {
@@ -68,7 +52,7 @@ public class UserController {
 			return Response.status(Response.Status.CONFLICT).build();
 		}
 	}
-
+	
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
