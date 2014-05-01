@@ -31,7 +31,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setCreationTime(result.getDate(2));
 					projectSubnode.setLastModificationTime(result.getDate(3));
 					projectSubnode.setTitle(result.getString(4));
-					projectSubnode.setWikiTitle(result.getString(5));
+					projectSubnode.setWikititle(result.getString(5));
 					projectSubnode.setPosition(result.getInt(6));
 					projectSubnode.setStatus(result.getInt(7));
 					projectSubnode.setRefProjectNodeId(kpnid);
@@ -60,7 +60,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setCreationTime(result.getDate(2));
 					projectSubnode.setLastModificationTime(result.getDate(3));
 					projectSubnode.setTitle(result.getString(5));
-					projectSubnode.setWikiTitle(result.getString(6));
+					projectSubnode.setWikititle(result.getString(6));
 					projectSubnode.setRefProjectNodeId(result.getInt(4));
 					projectSubnode.setPosition(result.getInt(7));
 					projectSubnode.setStatus(result.getInt(8));

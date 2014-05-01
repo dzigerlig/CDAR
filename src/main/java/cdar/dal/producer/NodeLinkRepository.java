@@ -29,13 +29,13 @@ public class NodeLinkRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					NodeLink nodelink = new NodeLink();
-					nodelink.setKtrid(treeId);
+					nodelink.setTreeId(treeId);
 					nodelink.setId(result.getInt(1));
 					nodelink.setCreationTime(result.getDate(2));
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKsnid(result.getInt(6));
+					nodelink.setSubnodeId(result.getInt(6));
 					nodelinks.add(nodelink);
 				}
 			}
@@ -62,8 +62,8 @@ public class NodeLinkRepository {
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKsnid(result.getInt(6));
-					nodelink.setKtrid(result.getInt(7));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
 					nodelinks.add(nodelink);
 				}
 			}
@@ -91,8 +91,8 @@ public class NodeLinkRepository {
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKsnid(result.getInt(6));
-					nodelink.setKtrid(result.getInt(7));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
 					nodelinks.add(nodelink);
 				}
 			}
@@ -119,8 +119,8 @@ public class NodeLinkRepository {
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKsnid(result.getInt(6));
-					nodelink.setKtrid(result.getInt(7));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
 					nodelinks.add(nodelink);
 				}
 			}
@@ -148,8 +148,8 @@ public class NodeLinkRepository {
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKsnid(result.getInt(6));
-					nodelink.setKtrid(result.getInt(7));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
 					nodelinks.add(nodelink);
 				}
 			}
@@ -176,8 +176,8 @@ public class NodeLinkRepository {
 					nodelink.setLastModificationTime(result.getDate(3));
 					nodelink.setSourceId(result.getInt(4));
 					nodelink.setTargetId(result.getInt(5));
-					nodelink.setKtrid(result.getInt(6));
-					nodelink.setKsnid(result.getInt(7));
+					nodelink.setTreeId(result.getInt(6));
+					nodelink.setSubnodeId(result.getInt(7));
 					return nodelink;
 				}
 			}
@@ -196,12 +196,12 @@ public class NodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, nodeLink.getSourceId());
 			preparedStatement.setInt(3, nodeLink.getTargetId());
-			if (nodeLink.getKsnid() != 0) {
-				preparedStatement.setInt(4, nodeLink.getKsnid());
+			if (nodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, nodeLink.getSubnodeId());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, nodeLink.getKtrid());
+			preparedStatement.setInt(5, nodeLink.getTreeId());
 
 			preparedStatement.executeUpdate();
 
@@ -224,12 +224,12 @@ public class NodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, nodeLink.getSourceId());
 			preparedStatement.setInt(3, nodeLink.getTargetId());
-			if (nodeLink.getKsnid() != 0) {
-				preparedStatement.setInt(4, nodeLink.getKsnid());
+			if (nodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, nodeLink.getSubnodeId());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, nodeLink.getKtrid());
+			preparedStatement.setInt(5, nodeLink.getTreeId());
 			preparedStatement.setInt(6, nodeLink.getId());
 
 			preparedStatement.executeUpdate();

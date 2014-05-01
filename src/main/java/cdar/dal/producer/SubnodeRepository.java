@@ -32,8 +32,8 @@ public class SubnodeRepository {
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
 					subnode.setTitle(result.getString(4));
-					subnode.setWikiTitle(result.getString(5));
-					subnode.setKnid(nodeId);
+					subnode.setWikititle(result.getString(5));
+					subnode.setNodeId(nodeId);
 					subnode.setPosition(result.getInt(6));
 					subnodes.add(subnode);
 				}
@@ -58,9 +58,9 @@ public class SubnodeRepository {
 					subnode.setId(result.getInt(1));
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setKnid(result.getInt(4));
+					subnode.setNodeId(result.getInt(4));
 					subnode.setTitle(result.getString(5));
-					subnode.setWikiTitle(result.getString(6));
+					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					return subnode;
 				}
@@ -87,9 +87,9 @@ public class SubnodeRepository {
 					subnode.setId(result.getInt(1));
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setKnid(result.getInt(4));
+					subnode.setNodeId(result.getInt(4));
 					subnode.setTitle(result.getString(5));
-					subnode.setWikiTitle(result.getString(6));
+					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnodes.add(subnode);
 				}
@@ -117,9 +117,9 @@ public class SubnodeRepository {
 					subnode.setId(result.getInt(1));
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setKnid(result.getInt(4));
+					subnode.setNodeId(result.getInt(4));
 					subnode.setTitle(result.getString(5));
-					subnode.setWikiTitle(result.getString(6));
+					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnodes.add(subnode);
 				}
@@ -147,9 +147,9 @@ public class SubnodeRepository {
 					subnode.setId(result.getInt(1));
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setKnid(result.getInt(4));
+					subnode.setNodeId(result.getInt(4));
 					subnode.setTitle(result.getString(5));
-					subnode.setWikiTitle(result.getString(6));
+					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnodes.add(subnode);
 				}
@@ -189,9 +189,9 @@ public class SubnodeRepository {
 					subnode.setId(result.getInt(1));
 					subnode.setCreationTime(result.getDate(2));
 					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setKnid(result.getInt(4));
+					subnode.setNodeId(result.getInt(4));
 					subnode.setTitle(result.getString(5));
-					subnode.setWikiTitle(result.getString(6));
+					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnodes.add(subnode);
 				}
@@ -211,7 +211,7 @@ public class SubnodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, subnode.getKnid());
+			preparedStatement.setInt(2, subnode.getNodeId());
 			preparedStatement.setString(3, subnode.getTitle());
 			preparedStatement.setInt(4, subnode.getPosition());
 			preparedStatement.executeUpdate();
@@ -219,7 +219,7 @@ public class SubnodeRepository {
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					subnode.setId(generatedKeys.getInt(1));
-					subnode.setWikiTitle(String.format("SUBNODE_%d", subnode.getId()));
+					subnode.setWikititle(String.format("SUBNODE_%d", subnode.getId()));
 				}
 			}
 		} catch (Exception ex) {
@@ -229,7 +229,7 @@ public class SubnodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlUpdate)) {
-			preparedStatement.setString(1, subnode.getWikiTitle());
+			preparedStatement.setString(1, subnode.getWikititle());
 			preparedStatement.setInt(2, subnode.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
@@ -245,7 +245,7 @@ public class SubnodeRepository {
 		final String sql = "UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, subnode.getKnid());
+			preparedStatement.setInt(2, subnode.getNodeId());
 			preparedStatement.setString(3, subnode.getTitle());
 			preparedStatement.setInt(4, subnode.getPosition());
 			preparedStatement.setInt(5, subnode.getId());

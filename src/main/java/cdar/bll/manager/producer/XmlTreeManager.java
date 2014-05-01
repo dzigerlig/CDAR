@@ -79,7 +79,7 @@ public class XmlTreeManager {
 		}
 
 		for (Directory directory : dm.getDirectories(treeId)) {
-			if (directory.getParentid()!=0 && !dm.deleteDirectory(directory.getId())) {
+			if (directory.getParentId()!=0 && !dm.deleteDirectory(directory.getId())) {
 				return false;
 			}
 		}
@@ -116,21 +116,21 @@ public class XmlTreeManager {
 		Collections.sort(directoryList, new Comparator<Directory>() {
 			@Override
 			public int compare(Directory directory1, Directory directory2) {
-				return new Integer(directory1.getParentid())
-						.compareTo(directory2.getParentid());
+				return new Integer(directory1.getParentId())
+						.compareTo(directory2.getParentId());
 			}
 		});
 
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 
 		for (Directory directory : directoryList) {
-			if (directory.getParentid()==0) {
+			if (directory.getParentId()==0) {
 				directoryMapping.put(directory.getId(), directory.getId());
 			} else {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
-				newDirectory.setKtrid(directory.getKtrid());
-				newDirectory = dm.addDirectory(directory.getKtrid(), directoryMapping.get(directory.getParentid()), directory.getTitle());
+				newDirectory.setTreeId(directory.getTreeId());
+				newDirectory = dm.addDirectory(directory.getTreeId(), directoryMapping.get(directory.getParentId()), directory.getTitle());
 				directoryMapping.put(directory.getId(), newDirectory.getId());
 			}
 		}
@@ -139,8 +139,8 @@ public class XmlTreeManager {
 		if (cts.getNodes() != null) {
 			for (Node node : cts.getNodes()) {
 				Node newNode = new Node();
-				newNode.setKtrid(node.getKtrid());
-				newNode.setDid(directoryMapping.get(node.getDid()));
+				newNode.setTreeId(node.getTreeId());
+				newNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
 				newNode.setTitle(node.getTitle());
 				newNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
 				newNode = nr.createNode(newNode);
@@ -154,7 +154,7 @@ public class XmlTreeManager {
 				Subnode newSubnode = new Subnode();
 				newSubnode.setPosition(subnode.getPosition());
 				newSubnode.setTitle(subnode.getTitle());
-				newSubnode.setKnid(nodeMapping.get(subnode.getKnid()));
+				newSubnode.setNodeId(nodeMapping.get(subnode.getNodeId()));
 				newSubnode = sr.createSubnode(newSubnode);
 				subnodeMapping.put(subnode.getId(), newSubnode.getId());
 			}
@@ -163,14 +163,14 @@ public class XmlTreeManager {
 		if (cts.getLinks() != null) {
 			for (NodeLink nodeLink : cts.getLinks()) {
 				NodeLink newNodeLink = new NodeLink();
-				newNodeLink.setKtrid(nodeLink.getKtrid());
+				newNodeLink.setTreeId(nodeLink.getTreeId());
 				newNodeLink
 						.setSourceId(nodeMapping.get(nodeLink.getSourceId()));
 				newNodeLink
 						.setTargetId(nodeMapping.get(nodeLink.getTargetId()));
-				if (nodeLink.getKsnid() != 0) {
+				if (nodeLink.getSubnodeId() != 0) {
 					newNodeLink
-							.setKsnid(subnodeMapping.get(nodeLink.getKsnid()));
+							.setSubnodeId(subnodeMapping.get(nodeLink.getSubnodeId()));
 				}
 				nlr.createNodeLink(newNodeLink);
 			}

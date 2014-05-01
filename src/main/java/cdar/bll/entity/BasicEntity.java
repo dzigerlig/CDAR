@@ -35,8 +35,8 @@ public class BasicEntity {
 		return creationTime;
 	}
 	
-	public void setCreationTime(Date created) {
-		this.creationTime = created;
+	public void setCreationTime(Date creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public Date getLastModificationTime() {

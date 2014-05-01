@@ -43,19 +43,19 @@ public class NodeManager {
 		TemplateManager tm = new TemplateManager();
 		String templateContent = tm.getDefaultKnowledgeTemplateText(treeId);
 		Node node = new Node();
-		node.setKtrid(treeId);
+		node.setTreeId(treeId);
 		node.setTitle(title);
-		node.setDid(did);
+		node.setDirectoryId(did);
 		node = nr.createNode(node);
 
 		if (templateContent == null) {
 			templateContent = "== CDAR ==";
 		}
 
-		wikiHelper.addWikiEntry(node.getWikiTitle(), templateContent);
+		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 
 		MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeId,
-				node.getWikiTitle(), templateContent, wikiHelper);
+				node.getWikititle(), templateContent, wikiHelper);
 		mwm.start();
 		return node;
 	}
@@ -69,7 +69,7 @@ public class NodeManager {
 	public Node renameNode(Node node) throws Exception {
 		Node renamedNode = nr.getNode(node.getId());
 		renamedNode.setTitle(node.getTitle());
-		renamedNode.setDid(node.getDid());
+		renamedNode.setDirectoryId(node.getDirectoryId());
 		return nr.updateNode(renamedNode);
 	}
 
@@ -81,7 +81,7 @@ public class NodeManager {
 
 	public Node moveNode(Node node) throws Exception {
 		Node movedNode = getNode(node.getId());
-		movedNode.setDid(node.getDid());
+		movedNode.setDirectoryId(node.getDirectoryId());
 		return nr.updateNode(movedNode);
 
 		// TODO
@@ -93,7 +93,7 @@ public class NodeManager {
 
 	public Node updateNode(Node node) throws Exception {
 		Node updatedNode = getNode(node.getId());
-		updatedNode.setDid(node.getDid());
+		updatedNode.setDirectoryId(node.getDirectoryId());
 		updatedNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
 		updatedNode.setTitle(node.getTitle());
 		return nr.updateNode(updatedNode);

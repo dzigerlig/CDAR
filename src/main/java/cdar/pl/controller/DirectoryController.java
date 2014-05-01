@@ -37,12 +37,12 @@ public class DirectoryController {
 			try {
 				if (d.getTitle() == null) {
 					return Response.status(Response.Status.CREATED).entity(
-							dm.addDirectory(d.getKtrid(), d.getParentid(),
+							dm.addDirectory(d.getTreeId(), d.getParentId(),
 									"new Folder"))
 							.build();
 				} else {
 					return Response.ok(
-							dm.addDirectory(d.getKtrid(), d.getParentid(),
+							dm.addDirectory(d.getTreeId(), d.getParentId(),
 									d.getTitle()), MediaType.APPLICATION_JSON)
 							.build();
 				}

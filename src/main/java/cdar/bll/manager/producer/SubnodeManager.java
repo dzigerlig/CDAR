@@ -15,7 +15,7 @@ public class SubnodeManager {
 
 	public Subnode addSubnode(int knid, String title) throws Exception {
 		Subnode subnode = new Subnode();
-		subnode.setKnid(knid);
+		subnode.setNodeId(knid);
 		subnode.setTitle(title);
 		subnode.setPosition(sr.getNextSubnodePosition(knid));
 		return sr.createSubnode(subnode);
@@ -53,7 +53,7 @@ public class SubnodeManager {
 		int oldPosition = getSubnode(id).getPosition();
 		int newPosition = up ? oldPosition - 1 : oldPosition + 1;
 
-		Set<Subnode> subnodes = getSubnodesFromNode(getSubnode(id).getKnid());
+		Set<Subnode> subnodes = getSubnodesFromNode(getSubnode(id).getNodeId());
 
 		if (subnodes.size() == 0 || newPosition > subnodes.size()
 				|| newPosition < 1) {
@@ -89,7 +89,7 @@ public class SubnodeManager {
 
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
 		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
-		updatedSubnode.setKnid(subnode.getKnid());
+		updatedSubnode.setNodeId(subnode.getNodeId());
 		updatedSubnode.setTitle(subnode.getTitle());
 		updatedSubnode.setPosition(subnode.getPosition());
 		return sr.updateSubnode(updatedSubnode);
@@ -133,7 +133,7 @@ public class SubnodeManager {
 			}
 			for (Subnode subnode : sr.getParentSubnode(nodeId)) {
 				subnodes.add(subnode);
-				subnodes = recursiveZoomUp(subnode.getKnid(), quantity - 1, subnodes);
+				subnodes = recursiveZoomUp(subnode.getNodeId(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;
@@ -152,7 +152,7 @@ public class SubnodeManager {
 		if (quantity > 0) {
 			for (Subnode subnode : sr.getFollowerSubnode(nodeId)) {
 				subnodes.add(subnode);
-				subnodes = recursiveZoomDown(subnode.getKnid(), quantity - 1, subnodes);
+				subnodes = recursiveZoomDown(subnode.getNodeId(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;

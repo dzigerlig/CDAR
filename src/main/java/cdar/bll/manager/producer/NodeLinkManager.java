@@ -31,16 +31,16 @@ public class NodeLinkManager {
 	public NodeLink addNodeLink(int ktrid, int sourceId, int targetId, int ksnid) throws Exception
 	{
 		NodeLink nodeLink = new NodeLink();
-		nodeLink.setKtrid(ktrid);
+		nodeLink.setTreeId(ktrid);
 		nodeLink.setSourceId(sourceId);
 		nodeLink.setTargetId(targetId);
-		nodeLink.setKsnid(ksnid);
+		nodeLink.setSubnodeId(ksnid);
 		return nlr.createNodeLink(nodeLink);
 	}
 
 	public NodeLink updateNodeLink(NodeLink nodelink) throws Exception {
 		NodeLink updatedNodeLink = nlr.getNodeLink(nodelink.getId());
-		updatedNodeLink.setKsnid(nodelink.getKsnid());
+		updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());
 		return nlr.updateNodeLink(updatedNodeLink);
 	}
 

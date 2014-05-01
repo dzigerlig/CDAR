@@ -61,12 +61,12 @@ public class KnowledgeNodeController {
 			if (n.getTitle() == null) {
 				return Response
 						.status(Response.Status.CREATED)
-						.entity(nm.addNode(uid, n.getKtrid(), "new Node",
-								n.getDid())).build();
+						.entity(nm.addNode(uid, n.getTreeId(), "new Node",
+								n.getDirectoryId())).build();
 			} else {
 				return Response
-						.ok(nm.addNode(uid, n.getKtrid(), n.getTitle(),
-								n.getDid()), MediaType.APPLICATION_JSON)
+						.ok(nm.addNode(uid, n.getTreeId(), n.getTitle(),
+								n.getDirectoryId()), MediaType.APPLICATION_JSON)
 						.build();
 			}
 		} catch (Exception e) {
@@ -227,7 +227,7 @@ public class KnowledgeNodeController {
 	public Response addSubnode(Subnode sn) {
 		try {
 			return Response.status(Response.Status.CREATED)
-					.entity(sm.addSubnode(sn.getKnid(), sn.getTitle())).build();
+					.entity(sm.addSubnode(sn.getNodeId(), sn.getTitle())).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}

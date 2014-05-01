@@ -3,28 +3,28 @@ package cdar.bll.entity;
 import java.util.Date;
 
 public class Node extends WikiEntity {
-	private int ktrid;
+	private int treeId;
 	private int dynamicTreeFlag;
-	private int did;
+	private int directoryId;
 
 	public Node() {
 		super();
 	}
 
 	public Node(int id, Date creationDate, Date lastModification, String title,
-			String wikititle, int ktrid, int dynamicTreeFlag, int did) {
+			String wikititle, int treeId, int dynamicTreeFlag, int directoryId) {
 		super(id, creationDate, lastModification, title, wikititle);
-		setKtrid(ktrid);
+		setTreeId(treeId);
 		setDynamicTreeFlag(dynamicTreeFlag);
-		setDid(did);
+		setDirectoryId(directoryId);
 	}
 
-	public int getKtrid() {
-		return ktrid;
+	public int getTreeId() {
+		return treeId;
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public void setTreeId(int treeId) {
+		this.treeId = treeId;
 	}
 
 	public int getDynamicTreeFlag() {
@@ -35,12 +35,12 @@ public class Node extends WikiEntity {
 		this.dynamicTreeFlag = dynamicTreeFlag;
 	}
 
-	public int getDid() {
-		return did;
+	public int getDirectoryId() {
+		return directoryId;
 	}
 
-	public void setDid(int did) {
-		this.did = did;
+	public void setDirectoryId(int directoryId) {
+		this.directoryId = directoryId;
 	}
 
 	@Override
@@ -56,10 +56,10 @@ public class Node extends WikiEntity {
 						.hashCode());		
 		result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
 		result = prime * result
-				+ ((getWikiTitle() == null) ? 0 : getWikiTitle().hashCode());	
-		result = prime * result + did;
+				+ ((getWikititle() == null) ? 0 : getWikititle().hashCode());	
+		result = prime * result + directoryId;
 		result = prime * result + dynamicTreeFlag;
-		result = prime * result + ktrid;
+		result = prime * result + treeId;
 		return result;
 	}
 
@@ -91,16 +91,16 @@ public class Node extends WikiEntity {
 				return false;
 		} else if (!getTitle().equals(other.getTitle()))
 			return false;
-		if (getWikiTitle() == null) {
-			if (other.getWikiTitle() != null)
+		if (getWikititle() == null) {
+			if (other.getWikititle() != null)
 				return false;
-		} else if (!getWikiTitle().equals(other.getWikiTitle()))
+		} else if (!getWikititle().equals(other.getWikititle()))
 			return false;
-		else if (did != other.did)
+		else if (directoryId != other.directoryId)
 			return false;
 		else if (dynamicTreeFlag != other.dynamicTreeFlag)
 			return false;
-		else if (ktrid != other.ktrid)
+		else if (treeId != other.treeId)
 			return false;
 		return true;
 	}

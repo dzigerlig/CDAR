@@ -30,8 +30,8 @@ public class DirectoryManager {
 	public Directory addDirectory(int treeId, int parentId, String title) throws Exception	
 	{ 
 		Directory directory = new Directory();
-		directory.setKtrid(treeId);
-		directory.setParentid(parentId);
+		directory.setTreeId(treeId);
+		directory.setParentId(parentId);
 		directory.setTitle(title);
 		return dr.createDirectory(directory);
 	}
@@ -48,7 +48,7 @@ public class DirectoryManager {
 
 	public Directory moveDirectory(Directory directory) throws Exception {
 		Directory movedDirectory = dr.getDirectory(directory.getId());
-		movedDirectory.setParentid(directory.getParentid());
+		movedDirectory.setParentId(directory.getParentId());
 		return dr.updateDirectory(movedDirectory);
 	}
 }

@@ -27,11 +27,11 @@ public class ProjectDirectoryRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Directory directory = new Directory();
-					directory.setKtrid(treeid);
+					directory.setTreeId(treeid);
 					directory.setId(result.getInt(1));
 					directory.setCreationTime(result.getDate(2));
 					directory.setLastModificationTime(result.getDate(3));
-					directory.setParentid(result.getInt(4));
+					directory.setParentId(result.getInt(4));
 					directory.setTitle(result.getString(5));
 					directories.add(directory);
 				}
@@ -56,8 +56,8 @@ public class ProjectDirectoryRepository {
 					directory.setId(result.getInt(1));
 					directory.setCreationTime(result.getDate(2));
 					directory.setLastModificationTime(result.getDate(3));
-					directory.setParentid(result.getInt(4));
-					directory.setKtrid(result.getInt(5));
+					directory.setParentId(result.getInt(4));
+					directory.setTreeId(result.getInt(5));
 					directory.setTitle(result.getString(6));
 					return directory;
 				}
@@ -76,12 +76,12 @@ public class ProjectDirectoryRepository {
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
-			if (directory.getParentid() != 0) {
-				preparedStatement.setInt(2, directory.getParentid());
+			if (directory.getParentId() != 0) {
+				preparedStatement.setInt(2, directory.getParentId());
 			} else {
 				preparedStatement.setNull(2, Types.INTEGER);
 			}
-			preparedStatement.setInt(3, directory.getKtrid());
+			preparedStatement.setInt(3, directory.getTreeId());
 			preparedStatement.setString(4, directory.getTitle());
 			preparedStatement.executeUpdate();
 
@@ -104,12 +104,12 @@ public class ProjectDirectoryRepository {
 						.prepareStatement(sql)) {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
-			if (directory.getParentid() != 0) {
-				preparedStatement.setInt(2, directory.getParentid());
+			if (directory.getParentId() != 0) {
+				preparedStatement.setInt(2, directory.getParentId());
 			} else {
 				preparedStatement.setNull(2, Types.INTEGER);
 			}
-			preparedStatement.setInt(3, directory.getKtrid());
+			preparedStatement.setInt(3, directory.getTreeId());
 			preparedStatement.setString(4, directory.getTitle());
 			preparedStatement.setInt(5, directory.getId());
 

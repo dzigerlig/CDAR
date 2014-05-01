@@ -3,8 +3,8 @@ package cdar.bll.entity;
 import java.util.Date;
 
 public class Directory extends BasicEntity {
-	private int parentid;
-	private int ktrid;
+	private int parentId;
+	private int treeId;
 	private String title;
 
 
@@ -15,25 +15,25 @@ public class Directory extends BasicEntity {
 	public Directory(int id, Date creationTime, Date lastModificationTime,
 			int parentid,int ktrid, String title) {
 		super(id, creationTime, lastModificationTime);
-		setParentid(parentid);
-		setKtrid(ktrid);
+		setParentId(parentid);
+		setTreeId(ktrid);
 		setTitle(title);
 	}
 
-	public int getParentid() {
-		return parentid;
+	public int getParentId() {
+		return parentId;
 	}
 
-	public void setParentid(int parentid) {
-		this.parentid = parentid;
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
 	}
 
-	public int getKtrid() {
-		return ktrid;
+	public int getTreeId() {
+		return treeId;
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public void setTreeId(int treeId) {
+		this.treeId = treeId;
 	}
 
 	public String getTitle() {

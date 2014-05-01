@@ -20,17 +20,17 @@ public class WikiEntry extends WikiEntity {
 	public WikiEntry(ProjectNode node) {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
-				.getWikiTitle());
+				.getWikititle());
 		fillWikiContent();
 	}
 
 	public WikiEntry(Node node) {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
-				.getWikiTitle());
+				.getWikititle());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
-		if (wec.isKeyInMap(node.getWikiTitle())) {
-			setWikiContentPlain(wec.getValue(node.getWikiTitle()));
+		if (wec.isKeyInMap(node.getWikititle())) {
+			setWikiContentPlain(wec.getValue(node.getWikititle()));
 			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
 		} else {
 			fillWikiContent();
@@ -40,7 +40,7 @@ public class WikiEntry extends WikiEntity {
 	public WikiEntry(Subnode subnode) {
 		super(subnode.getId(), subnode.getCreationTime(), subnode
 				.getLastModificationTime(), subnode.getTitle(), subnode
-				.getWikiTitle());
+				.getWikititle());
 		fillWikiContent();
 	}
 
@@ -48,7 +48,7 @@ public class WikiEntry extends WikiEntity {
 		Wiki wiki = new Wiki();
 		
 		try {
-			setWikiContentPlain(wiki.getPageText(getWikiTitle()));
+			setWikiContentPlain(wiki.getPageText(getWikititle()));
 			StringBuilder sb = new StringBuilder();
 			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
 			setWikiContentHtml(sb.toString());
@@ -83,7 +83,7 @@ public class WikiEntry extends WikiEntity {
 		try {
 			Wiki c = new Wiki();
 			c.login(username, password);
-			c.edit(getWikiTitle(), getWikiContentPlain(), "");
+			c.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();
 			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
 			setWikiContentHtml(sb.toString());

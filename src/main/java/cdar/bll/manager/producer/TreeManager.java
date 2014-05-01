@@ -26,11 +26,11 @@ public class TreeManager {
 		DirectoryRepository dr = new DirectoryRepository();		
 		User user = new UserRepository().getUser(uid);
 		Tree tree = new Tree();
-		tree.setUid(user.getId());
+		tree.setUserId(user.getId());
 		tree.setTitle(treeTitle);
 		tree = tr.createTree(tree);
 		Directory directory = new Directory();
-		directory.setKtrid(tree.getId());
+		directory.setTreeId(tree.getId());
 		directory.setTitle(treeTitle);
 		dr.createDirectory(directory);
 		return tree;

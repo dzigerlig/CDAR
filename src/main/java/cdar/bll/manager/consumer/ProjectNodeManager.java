@@ -27,9 +27,9 @@ public class ProjectNodeManager {
 
 	public ProjectNode addProjectNode(int projectTreeId, String projectNodeTitle, int pdid) throws Exception {
 		ProjectNode projectNode = new ProjectNode();
-		projectNode.setKtrid(projectTreeId);
+		projectNode.setTreeId(projectTreeId);
 		projectNode.setTitle(projectNodeTitle);
-		projectNode.setDid(pdid);
+		projectNode.setDirectoryId(pdid);
 		return pnr.createProjectNode(projectNode);
 	}
 
@@ -39,7 +39,7 @@ public class ProjectNodeManager {
 
 	public ProjectNode updateProjectNode(ProjectNode node) throws UnknownProjectNodeException {
 		ProjectNode projectNode = pnr.getProjectNode(node.getId());
-		projectNode.setKtrid(node.getKtrid());
+		projectNode.setTreeId(node.getTreeId());
 		projectNode.setTitle(node.getTitle());
 		projectNode.setStatus(node.getStatus());
 		return pnr.updateProjectNode(projectNode);

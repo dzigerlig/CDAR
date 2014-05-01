@@ -5,20 +5,20 @@ import java.util.Date;
 public class NodeLink extends BasicEntity {
 	private int sourceId;
 	private int targetId;
-	private int ksnid;
-	private int ktrid;
+	private int subnodeId;
+	private int treeId;
 	
 	public NodeLink() {
 		super();
 	}
 	
 	public NodeLink(int id, Date creationDate, Date lastModification,
-			int sourceId, int targetId, int ksnid, int treeid) {
+			int sourceId, int targetId, int subnodeId, int treeId) {
 		super(id, creationDate, lastModification);
 		setSourceId(sourceId);
 		setTargetId(targetId);
-		setKsnid(ksnid);
-		setKtrid(treeid);
+		setSubnodeId(subnodeId);
+		setTreeId(treeId);
 	}
 	
 	public int getSourceId() {
@@ -37,20 +37,20 @@ public class NodeLink extends BasicEntity {
 		this.targetId = targetId;
 	}
 
-	public int getKsnid() {
-		return ksnid;
+	public int getSubnodeId() {
+		return subnodeId;
 	}
 
-	public void setKsnid(int ksnid) {
-		this.ksnid = ksnid;
+	public void setSubnodeId(int subnodeId) {
+		this.subnodeId = subnodeId;
 	}
 
-	public int getKtrid() {
-		return ktrid;
+	public int getTreeId() {
+		return treeId;
 	}
 
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
+	public void setTreeId(int treeId) {
+		this.treeId = treeId;
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public class NodeLink extends BasicEntity {
 				* result
 				+ ((getLastModificationTime() == null) ? 0 : getLastModificationTime()
 						.hashCode());		
-		result = prime * result + ksnid;
-		result = prime * result + ktrid;
+		result = prime * result + subnodeId;
+		result = prime * result + treeId;
 		result = prime * result + sourceId;
 		result = prime * result + targetId;
 		return result;
@@ -95,9 +95,9 @@ public class NodeLink extends BasicEntity {
 		} else if (!getLastModificationTime().equals(
 				other.getLastModificationTime()))
 			return false;
-		if (ksnid != other.ksnid)
+		if (subnodeId != other.subnodeId)
 			return false;
-		if (ktrid != other.ktrid)
+		if (treeId != other.treeId)
 			return false;
 		if (sourceId != other.sourceId)
 			return false;

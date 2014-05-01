@@ -33,7 +33,7 @@ public class ProjectTreeRepository {
 					projectTree.setCreationTime(result.getDate(2));
 					projectTree.setLastModificationTime(result.getDate(3));
 					projectTree.setTitle(result.getString(4));
-					projectTree.setUid(uid);
+					projectTree.setUserId(uid);
 					projectTrees.add(projectTree);
 				}
 			}
@@ -52,7 +52,7 @@ public class ProjectTreeRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				if (result.next()) {
 					Tree projectTree = new Tree();
-					projectTree.setUid(result.getInt(1));
+					projectTree.setUserId(result.getInt(1));
 					projectTree.setId(result.getInt(2));
 					projectTree.setCreationTime(result.getDate(3));
 					projectTree.setLastModificationTime(result.getDate(4));
@@ -88,7 +88,7 @@ public class ProjectTreeRepository {
 		}
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
-			preparedStatement.setInt(1, projectTree.getUid());
+			preparedStatement.setInt(1, projectTree.getUserId());
 			preparedStatement.setInt(2, projectTree.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

@@ -3,7 +3,7 @@ package cdar.bll.entity;
 import java.util.Date;
 
 public class Subnode extends WikiEntity {
-	private int knid;
+	private int nodeId;
 	private int position;
 
 	public Subnode() {
@@ -11,18 +11,18 @@ public class Subnode extends WikiEntity {
 	}
 
 	public Subnode(int id, Date creationDate, Date lastModification,
-			String title, String wikititle, int knid, int position) {
+			String title, String wikititle, int nodeId, int position) {
 		super(id, creationDate, lastModification, title, wikititle);
-		setKnid(knid);
+		setNodeId(nodeId);
 		setPosition(position);
 	}
 
-	public int getKnid() {
-		return knid;
+	public int getNodeId() {
+		return nodeId;
 	}
 
-	public void setKnid(int knid) {
-		this.knid = knid;
+	public void setNodeId(int nodeId) {
+		this.nodeId = nodeId;
 	}
 
 	public int getPosition() {
@@ -46,8 +46,8 @@ public class Subnode extends WikiEntity {
 						.hashCode());		
 		result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
 		result = prime * result
-				+ ((getWikiTitle() == null) ? 0 : getWikiTitle().hashCode());
-		result = prime * result + knid;
+				+ ((getWikititle() == null) ? 0 : getWikititle().hashCode());
+		result = prime * result + nodeId;
 		result = prime * result + position;
 		return result;
 	}
@@ -80,12 +80,12 @@ public class Subnode extends WikiEntity {
 				return false;
 		} else if (!getTitle().equals(other.getTitle()))
 			return false;
-		if (getWikiTitle() == null) {
-			if (other.getWikiTitle() != null)
+		if (getWikititle() == null) {
+			if (other.getWikititle() != null)
 				return false;
-		} else if (!getWikiTitle().equals(other.getWikiTitle()))
+		} else if (!getWikititle().equals(other.getWikititle()))
 			return false;
-		if (knid != other.knid)
+		if (nodeId != other.nodeId)
 			return false;
 		if (position != other.position)
 			return false;

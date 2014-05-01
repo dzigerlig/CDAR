@@ -28,14 +28,14 @@ public class NodeRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Node node = new Node();
-					node.setKtrid(treeId);
+					node.setTreeId(treeId);
 					node.setId(result.getInt(1));
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
 					node.setTitle(result.getString(4));
-					node.setWikiTitle(result.getString(5));
+					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
-					node.setDid(result.getInt(7));
+					node.setDirectoryId(result.getInt(7));
 					nodes.add(node);
 				}
 			}
@@ -61,10 +61,10 @@ public class NodeRepository {
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
 					node.setTitle(result.getString(4));
-					node.setWikiTitle(result.getString(5));
+					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
-					node.setKtrid(result.getInt(7));
-					node.setDid(result.getInt(8));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(8));
 					return node;
 				}
 			}
@@ -92,10 +92,10 @@ public class NodeRepository {
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
 					node.setTitle(result.getString(4));
-					node.setWikiTitle(result.getString(5));
+					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
-					node.setKtrid(result.getInt(7));
-					node.setDid(result.getInt(8));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(8));
 					nodes.add(node);
 				}
 			}
@@ -124,10 +124,10 @@ public class NodeRepository {
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
 					node.setTitle(result.getString(4));
-					node.setWikiTitle(result.getString(5));
+					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
-					node.setKtrid(result.getInt(7));
-					node.setDid(result.getInt(8));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(8));
 					nodes.add(node);
 				}
 			}
@@ -155,10 +155,10 @@ public class NodeRepository {
 					node.setCreationTime(result.getDate(2));
 					node.setLastModificationTime(result.getDate(3));
 					node.setTitle(result.getString(4));
-					node.setWikiTitle(result.getString(5));
+					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
-					node.setKtrid(result.getInt(7));
-					node.setDid(result.getInt(8));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(8));
 					nodes.add(node);
 				}
 			}
@@ -181,7 +181,7 @@ public class NodeRepository {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, node.getTitle());
-			preparedStatement.setInt(3, node.getKtrid());
+			preparedStatement.setInt(3, node.getTreeId());
 			preparedStatement.setInt(4, node.getDynamicTreeFlag());
 
 			preparedStatement.executeUpdate();
@@ -189,7 +189,7 @@ public class NodeRepository {
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					node.setId(generatedKeys.getInt(1));
-					node.setWikiTitle(String.format("NODE_%d", node.getId()));
+					node.setWikititle(String.format("NODE_%d", node.getId()));
 				}
 			}
 		} catch (Exception ex) {
@@ -200,7 +200,7 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlWiki)) {
-			preparedStatement.setString(1, node.getWikiTitle());
+			preparedStatement.setString(1, node.getWikititle());
 			preparedStatement.setInt(2, node.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
@@ -214,7 +214,7 @@ public class NodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlMapping)) {
 			preparedStatement.setInt(1, node.getId());
-			preparedStatement.setInt(2, node.getDid());
+			preparedStatement.setInt(2, node.getDirectoryId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			System.out.println("SQL MAPPING EXCEPTION: ");
@@ -246,9 +246,9 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlMapping)) {
-			preparedStatement.setInt(1, node.getDid());
+			preparedStatement.setInt(1, node.getDirectoryId());
 			preparedStatement.setInt(2, node.getId());
-			preparedStatement.setInt(3, node.getDid());
+			preparedStatement.setInt(3, node.getDirectoryId());
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

@@ -34,7 +34,7 @@ public class TreeRepository {
 					tree.setCreationTime(result.getDate(2));
 					tree.setLastModificationTime(result.getDate(3));
 					tree.setTitle(result.getString(4));
-					tree.setUid(uid);
+					tree.setUserId(uid);
 					trees.add(tree);
 				}
 			}
@@ -53,7 +53,7 @@ public class TreeRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Tree tree = new Tree();
-					tree.setUid(result.getInt(1));
+					tree.setUserId(result.getInt(1));
 					tree.setId(result.getInt(2));
 					tree.setCreationTime(result.getDate(3));
 					tree.setLastModificationTime(result.getDate(4));
@@ -90,7 +90,7 @@ public class TreeRepository {
 		}
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
-			preparedStatement.setInt(1, tree.getUid());
+			preparedStatement.setInt(1, tree.getUserId());
 			preparedStatement.setInt(2, tree.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

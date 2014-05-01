@@ -36,8 +36,8 @@ public class KnowledgeNodeLinkController {
 	public Response addNodeLink(NodeLink nl) {
 		try {
 			return Response.status(Response.Status.CREATED).entity(
-					lm.addNodeLink(nl.getKtrid(), nl.getSourceId(),
-							nl.getTargetId(), nl.getKsnid())).build();
+					lm.addNodeLink(nl.getTreeId(), nl.getSourceId(),
+							nl.getTargetId(), nl.getSubnodeId())).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}

@@ -214,7 +214,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName, directoryId);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
 		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getKtrid());
+		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getTreeId());
 		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
 		pnm.deleteProjectNode(node.getId());
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
@@ -231,7 +231,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName, directoryId);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
 		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getKtrid());
+		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getTreeId());
 		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
 		node.setTitle(newProjectNodeName);
 		node.setStatus(2);

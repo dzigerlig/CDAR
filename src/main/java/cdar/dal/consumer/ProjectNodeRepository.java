@@ -28,11 +28,11 @@ public class ProjectNodeRepository {
 					projectNode.setCreationTime(result.getDate(2));
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
-					projectNode.setWikiTitle(result.getString(5));
+					projectNode.setWikititle(result.getString(5));
 					projectNode.setDynamicTreeFlag(result.getInt(6));
 					projectNode.setStatus(result.getInt(7));
-					projectNode.setDid(result.getInt(8));
-					projectNode.setKtrid(projectTreeId);
+					projectNode.setDirectoryId(result.getInt(8));
+					projectNode.setTreeId(projectTreeId);
 					projectNodes.add(projectNode);
 				}
 			}
@@ -56,11 +56,11 @@ public class ProjectNodeRepository {
 					projectNode.setCreationTime(result.getDate(2));
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
-					projectNode.setWikiTitle(result.getString(5));
+					projectNode.setWikititle(result.getString(5));
 					projectNode.setDynamicTreeFlag(result.getInt(6));
 					projectNode.setStatus(result.getInt(7));
-					projectNode.setKtrid(result.getInt(8));
-					projectNode.setDid(result.getInt(9));
+					projectNode.setTreeId(result.getInt(8));
+					projectNode.setDirectoryId(result.getInt(9));
 					return projectNode;
 				}
 			}
@@ -79,8 +79,8 @@ public class ProjectNodeRepository {
 						.prepareStatement(sqlProjectNode, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, projectNode.getTitle());
-			preparedStatement.setInt(3, projectNode.getKtrid());
-			preparedStatement.setString(4, projectNode.getWikiTitle());
+			preparedStatement.setInt(3, projectNode.getTreeId());
+			preparedStatement.setString(4, projectNode.getWikititle());
 			preparedStatement.setInt(5, projectNode.getDynamicTreeFlag());
 			preparedStatement.setInt(6, 0);
 			
@@ -100,7 +100,7 @@ public class ProjectNodeRepository {
 						PreparedStatement preparedStatement = connection
 								.prepareStatement(sqlMapping)) {
 					preparedStatement.setInt(1, projectNode.getId());
-					preparedStatement.setInt(2, projectNode.getDid());
+					preparedStatement.setInt(2, projectNode.getDirectoryId());
 					preparedStatement.executeUpdate();
 				} catch (Exception ex) {
 					System.out.println(1);

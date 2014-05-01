@@ -14,7 +14,7 @@ public class WikiEntity extends BasicEntity {
             String title, String wikititle) {
         super(id, creationTime, lastModification);
         setTitle(title);
-        setWikiTitle(wikititle);
+        setWikititle(wikititle);
     }   
      
     public String getTitle() {
@@ -25,11 +25,11 @@ public class WikiEntity extends BasicEntity {
         this.title = title;
     }
      
-    public String getWikiTitle() {
+    public String getWikititle() {
         return wikititle;
     }
      
-    public void setWikiTitle(String wikititle) {
+    public void setWikititle(String wikititle) {
         this.wikititle = wikititle;
     }
 }

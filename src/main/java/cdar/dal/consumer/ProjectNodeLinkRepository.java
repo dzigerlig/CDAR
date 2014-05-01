@@ -31,8 +31,8 @@ public class ProjectNodeLinkRepository {
 					projectNodeLink.setLastModificationTime(result.getDate(3));
 					projectNodeLink.setSourceId(result.getInt(4));
 					projectNodeLink.setTargetId(result.getInt(5));
-					projectNodeLink.setKsnid(result.getInt(6));
-					projectNodeLink.setKtrid(projectTreeId);
+					projectNodeLink.setSubnodeId(result.getInt(6));
+					projectNodeLink.setTreeId(projectTreeId);
 					projectNodeLinks.add(projectNodeLink);
 				}
 			}
@@ -57,8 +57,8 @@ public class ProjectNodeLinkRepository {
 					projectNodeLink.setLastModificationTime(result.getDate(3));
 					projectNodeLink.setSourceId(result.getInt(4));
 					projectNodeLink.setTargetId(result.getInt(5));
-					projectNodeLink.setKtrid(result.getInt(6));
-					projectNodeLink.setKsnid(result.getInt(7));
+					projectNodeLink.setTreeId(result.getInt(6));
+					projectNodeLink.setSubnodeId(result.getInt(7));
 					return projectNodeLink;
 				}
 			}
@@ -76,12 +76,12 @@ public class ProjectNodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, projectNodeLink.getSourceId());
 			preparedStatement.setInt(3, projectNodeLink.getTargetId());
-			if (projectNodeLink.getKsnid() != 0) {
-				preparedStatement.setInt(4, projectNodeLink.getKsnid());
+			if (projectNodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, projectNodeLink.getSubnodeId());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, projectNodeLink.getKtrid());
+			preparedStatement.setInt(5, projectNodeLink.getTreeId());
 
 			preparedStatement.executeUpdate();
 
@@ -104,12 +104,12 @@ public class ProjectNodeLinkRepository {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setInt(2, projectNodeLink.getSourceId());
 			preparedStatement.setInt(3, projectNodeLink.getTargetId());
-			if (projectNodeLink.getKsnid() != 0) {
-				preparedStatement.setInt(4, projectNodeLink.getKsnid());
+			if (projectNodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, projectNodeLink.getSubnodeId());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, projectNodeLink.getKtrid());
+			preparedStatement.setInt(5, projectNodeLink.getTreeId());
 			preparedStatement.setInt(6, projectNodeLink.getId());
 
 			preparedStatement.executeUpdate();

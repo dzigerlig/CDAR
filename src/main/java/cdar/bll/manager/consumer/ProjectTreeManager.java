@@ -45,11 +45,11 @@ public class ProjectTreeManager {
 			throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		Tree projectTree = new Tree();
-		projectTree.setUid(uid);
+		projectTree.setUserId(uid);
 		projectTree.setTitle(treeTitle);
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
-		directory.setKtrid(projectTree.getId());
+		directory.setTreeId(projectTree.getId());
 		directory.setTitle(treeTitle);
 		pdr.createDirectory(directory);
 		return projectTree;
@@ -71,12 +71,12 @@ public class ProjectTreeManager {
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		for (Directory directory : dm.getDirectories(ktreeId)) {
 			Directory projectDirectory = new Directory();
-			projectDirectory.setKtrid(ptreeId);
+			projectDirectory.setTreeId(ptreeId);
 			projectDirectory.setTitle(directory.getTitle());
-			if (directory.getParentid()==0) {
-				projectDirectory.setParentid(0);
+			if (directory.getParentId()==0) {
+				projectDirectory.setParentId(0);
 			} else {
-				projectDirectory.setParentid(directoryMapping.get(directory.getId()));
+				projectDirectory.setParentId(directoryMapping.get(directory.getId()));
 			}
 			projectDirectory = pdr.createDirectory(projectDirectory);
 			directoryMapping.put(directory.getId(), projectDirectory.getId());
@@ -84,10 +84,10 @@ public class ProjectTreeManager {
 
 		for (Node node : nm.getNodes(ktreeId)) {
 			ProjectNode projectNode = new ProjectNode();
-			projectNode.setKtrid(ptreeId);
+			projectNode.setTreeId(ptreeId);
 			projectNode.setTitle(node.getTitle());
-			projectNode.setWikiTitle(node.getWikiTitle());
-			projectNode.setDid(directoryMapping.get(node.getDid()));
+			projectNode.setWikititle(node.getWikititle());
+			projectNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
 			projectNode = pnr.createProjectNode(projectNode);
 			linkMapping.put(node.getId(), projectNode.getId());
 		}
@@ -95,8 +95,8 @@ public class ProjectTreeManager {
 		for (Subnode subnode : snm.getSubnodesFromTree(ktreeId)) {
 			ProjectSubnode projectSubnode = new ProjectSubnode();
 			projectSubnode.setTitle(subnode.getTitle());
-			projectSubnode.setWikiTitle(subnode.getWikiTitle());
-			projectSubnode.setRefProjectNodeId(linkMapping.get(subnode.getKnid()));
+			projectSubnode.setWikititle(subnode.getWikititle());
+			projectSubnode.setRefProjectNodeId(linkMapping.get(subnode.getNodeId()));
 			projectSubnode.setPosition(subnode.getPosition());
 			psr.createProjectSubnode(projectSubnode);
 		}
@@ -106,8 +106,8 @@ public class ProjectTreeManager {
 			NodeLink projectNodeLink = new NodeLink();
 			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
 			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			projectNodeLink.setKsnid(nodelink.getKsnid());
-			projectNodeLink.setKtrid(ptreeId);
+			projectNodeLink.setSubnodeId(nodelink.getSubnodeId());
+			projectNodeLink.setTreeId(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);
 		}
 	}

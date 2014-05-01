@@ -5,7 +5,7 @@ import java.util.Date;
 public class Tree extends BasicEntity {
 
 	private String title;
-	private int uid;
+	private int userId;
 	
 	public Tree() {
 		super();
@@ -25,11 +25,11 @@ public class Tree extends BasicEntity {
 		this.title = title;
 	}
 
-	public int getUid() {
-		return uid;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

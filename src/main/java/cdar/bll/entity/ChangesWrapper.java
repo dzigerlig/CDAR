@@ -6,8 +6,8 @@ public class ChangesWrapper<T> {
 	private List<T> changedEntities;
 	private String operation;
 
-	public ChangesWrapper(List<T> changes, String operation) {
-		setChangedEntities(changes);
+	public ChangesWrapper(List<T> changedEntities, String operation) {
+		setChangedEntities(changedEntities);
 		setOperation(operation);
 	}
 
