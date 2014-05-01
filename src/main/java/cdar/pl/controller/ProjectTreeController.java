@@ -11,8 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import cdar.bll.entity.Tree;
 import cdar.bll.entity.consumer.ProjectNode;
-import cdar.bll.entity.consumer.ProjectTree;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 
@@ -22,7 +22,7 @@ public class ProjectTreeController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Set<ProjectTree> getProjectTreesByUid(@HeaderParam("uid") int uid) {
+	public Set<Tree> getProjectTreesByUid(@HeaderParam("uid") int uid) {
 		return ptm.getProjectTrees(uid);
 	}
 	
@@ -44,14 +44,14 @@ public class ProjectTreeController {
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ProjectTree addProjectTree(String treeTitle, @HeaderParam("uid") int uid) {
+	public Tree addProjectTree(String treeTitle, @HeaderParam("uid") int uid) {
 		return ptm.addProjectTree(uid, treeTitle);
 	}
 	
 	@GET
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProjectTree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @HeaderParam("uid") int uid) {
+	public Tree getProjectTreeById(@PathParam("ptreeid") int ptreeid, @HeaderParam("uid") int uid) {
 		return ptm.getProjectTree(ptreeid);
 	}
 	
