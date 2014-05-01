@@ -16,9 +16,7 @@ import cdar.bll.manager.producer.NodeLinkManager;
 public class KnowledgeNodeLinkController {
 	private NodeLinkManager lm = new NodeLinkManager();
 
-	// Links
 	@GET
-	// Changed
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLinks(@PathParam("ktreeid") int ktreeid) {
 		try {
@@ -31,7 +29,6 @@ public class KnowledgeNodeLinkController {
 
 	@POST
 	// Changed
-	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nl) {
 		try {
@@ -39,17 +36,16 @@ public class KnowledgeNodeLinkController {
 					lm.addNodeLink(nl.getTreeId(), nl.getSourceId(),
 							nl.getTargetId(), nl.getSubnodeId())).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
 	@POST
-	// Changed
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNodeLink(int id) {
+	public Response deleteNodeLink(NodeLink nodeLink) {
 		try {
-			return Response.ok(lm.deleteNodeLink(id),
+			return Response.ok(lm.deleteNodeLink(nodeLink.getId()),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -57,21 +53,20 @@ public class KnowledgeNodeLinkController {
 	}
 
 	@POST
-	// Changed
-	@Path("update")
+	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateNodeLink(NodeLink nl) {
 		try {
 			return Response.ok(lm.updateNodeLink(nl),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
 	@GET
 	// Changed
-	@Path("{nodeid}/zoomUp")
+	@Path("nodeid/{nodeid}/zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpLink(@PathParam("nodeid") int nodeid) {
 		try {
@@ -84,7 +79,7 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	// Changed
-	@Path("{nodeid}/zoomDown")
+	@Path("nodeid/{nodeid}/zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownLink(@PathParam("nodeid") int nodeid) {
 		try {

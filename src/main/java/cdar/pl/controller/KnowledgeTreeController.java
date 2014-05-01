@@ -11,14 +11,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
-import cdar.bll.manager.producer.XmlTreeManager;
 
 @Path("ktree")
 public class KnowledgeTreeController {
 	private TreeManager ktm = new TreeManager();
 
-	// Dynamic Tree
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getKnowledgeTrees(@HeaderParam("uid") int uid) {
@@ -73,6 +72,19 @@ public class KnowledgeTreeController {
 		try {
 			return Response.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+	
+	@GET
+	@Path("subnodes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubnodesByTree(@PathParam("ktreeid") int treeId) {
+		try {
+			SubnodeManager sm = new SubnodeManager();
+			return Response.ok(sm.getSubnodesFromTree(treeId),
+					MediaType.APPLICATION_JSON).build();
+		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}

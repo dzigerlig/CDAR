@@ -15,9 +15,8 @@ import cdar.bll.manager.producer.TemplateManager;
 @Path("ktree/{ktreeid}/templates")
 public class TemplateController {
 	private TemplateManager tm = new TemplateManager();
-	// TEMPLATES
+
 		@GET
-		// Changed
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getTemplates(@PathParam("ktreeid") int ktreeid) {
 			try {
@@ -28,8 +27,17 @@ public class TemplateController {
 			}
 		}
 
+		@POST
+		@Consumes(MediaType.APPLICATION_JSON)
+		public Response addTemplate(Template template) {
+			try {
+				return Response.status(Response.Status.CREATED).entity(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade())).build();
+			} catch (Exception e) {
+				return Response.status(Response.Status.BAD_REQUEST).build();
+			}
+		}
+		
 		@GET
-		// Changed
 		@Path("{templateid}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getTemplate(@PathParam("ktreeid") int ktreeid,
@@ -43,69 +51,26 @@ public class TemplateController {
 		}
 
 		@POST
-		// Changed
-		@Path("add")
+		@Path("{templateid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response addTemplate(Template template) {
-
-			try {
-				return Response.status(Response.Status.CREATED).entity(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade())).build();
-			} catch (Exception e) {
-				return Response.status(Response.Status.UNAUTHORIZED).build();
-			}
-
-		}
-
-		@POST
-		// Changed
-		@Path("rename")
-		@Consumes(MediaType.APPLICATION_JSON)
-		public Response renameTemplate(Template template) {
-			try {
-				return Response.ok(tm.renameTemplate(template),
-						MediaType.APPLICATION_JSON).build();
-			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
-			}
-		}
-
-		@POST
-		@Path("default")
-		@Consumes(MediaType.APPLICATION_JSON)
-		public Response setDefaultTemplate(@PathParam("ktreeid") int ktreeid,
-				int templateId) {
-			try {
-				return Response.ok(tm.setDefaultTemplate(ktreeid, templateId),
-						MediaType.APPLICATION_JSON).build();
-			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
-			}
-		}
-
-		@POST
-		// Changed
-		@Path("edit")
-		@Consumes(MediaType.APPLICATION_JSON)
-		public Response editTemplate(Template template) {
+		public Response updateTemplate(Template template) {
 			try {
 				return Response.ok(tm.updateTemplate(template),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.UNAUTHORIZED).build();
+				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 		}
 
 		@POST
-		// Changed
 		@Path("delete")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response deleteTemplate(int id) {
+		public Response deleteTemplate(Template template) {
 			try {
-				return Response.ok(tm.deleteTemplate(id),
+				return Response.ok(tm.deleteTemplate(template.getId()),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 		}
-
 }

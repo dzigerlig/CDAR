@@ -67,7 +67,7 @@ public class DirectoryController {
 				return Response.ok(dm.updateDirectory(directory),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.UNAUTHORIZED).build();
+				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 		}
 		

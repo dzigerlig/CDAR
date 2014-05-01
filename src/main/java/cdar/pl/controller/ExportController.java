@@ -16,7 +16,6 @@ import cdar.bll.manager.producer.XmlTreeManager;
 public class ExportController {
 	private XmlTreeManager xtm = new XmlTreeManager();
 		@GET
-		// Changed
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
 			try {
@@ -28,7 +27,6 @@ public class ExportController {
 		}
 
 		@POST
-		// Changed
 		@Path("delete")
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteKnowledgeTreeSimpleXml(int id) {
@@ -41,7 +39,6 @@ public class ExportController {
 		}
 
 		@POST
-		// Changed
 		@Path("set")
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response setKnowledgeTreeSimpleXml(int id) {
@@ -55,7 +52,6 @@ public class ExportController {
 		}
 
 		@GET
-		// Changed
 		@Path("add")
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response addKnowledgeTreeSimpleXml(@HeaderParam("uid") int uid,
