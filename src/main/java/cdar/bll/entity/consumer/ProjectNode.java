@@ -2,21 +2,20 @@ package cdar.bll.entity.consumer;
 
 import java.util.Date;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.WikiEntity;
 
-public class ProjectNode extends WikiEntity {
+public class ProjectNode extends Node {
 	private int status;
-	private int refProjectTreeId;
 	
 	public ProjectNode() {
 		super();
 	}
 
-	public ProjectNode(int id, Date creationDate, Date lastModification,
-			String title, String wikititle, int nodeStatus, int refProjectTreeId) {
-		super(id, creationDate, lastModification, title, wikititle);
+	public ProjectNode(int id, Date creationDate, Date lastModificationDate,
+			String title, String wikititle, int treeid, int dynamicTreeFlag, int did, int nodeStatus) {
+		super(id, creationDate, lastModificationDate, title, wikititle, treeid, dynamicTreeFlag, did);
 		setStatus(nodeStatus);
-		setRefProjectTreeId(refProjectTreeId);
 	}
 
 	public int getStatus() {
@@ -26,13 +25,4 @@ public class ProjectNode extends WikiEntity {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-	public int getRefProjectTreeId() {
-		return refProjectTreeId;
-	}
-
-	public void setRefProjectTreeId(int refProjectTreeId) {
-		this.refProjectTreeId = refProjectTreeId;
-	}
-	
 }

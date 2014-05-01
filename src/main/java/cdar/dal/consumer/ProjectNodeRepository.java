@@ -16,7 +16,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeRepository {
 	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, NODESTATUS, KPTID FROM KNOWLEDGEPROJECTNODE WHERE KPTID = ?";
+		final String sql = "SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, MAPPING.PDID FROM KNOWLEDGEPROJECTNODE AS PNODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID";
 		List<ProjectNode> projectNodes = new ArrayList<ProjectNode>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -29,19 +29,22 @@ public class ProjectNodeRepository {
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikiTitle(result.getString(5));
-					projectNode.setStatus(result.getInt(6));
-					projectNode.setRefProjectTreeId(projectTreeId);
+					projectNode.setDynamicTreeFlag(result.getInt(6));
+					projectNode.setStatus(result.getInt(7));
+					projectNode.setDid(result.getInt(8));
+					projectNode.setKtrid(projectTreeId);
 					projectNodes.add(projectNode);
 				}
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new UnknownProjectTreeException();
 		}
 		return projectNodes;
 	}
 	
 	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, NODESTATUS, KPTID FROM KNOWLEDGEPROJECTNODE WHERE ID = ?";
+		final String sql = "SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, MAPPING.PDID FROM KNOWLEDGEPROJECTNODE AS PNODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE PNODE.ID = ? AND PNODE.ID = MAPPING.KPNID";
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -54,8 +57,10 @@ public class ProjectNodeRepository {
 					projectNode.setLastModificationTime(result.getDate(3));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikiTitle(result.getString(5));
-					projectNode.setStatus(result.getInt(6));
-					projectNode.setRefProjectTreeId(result.getInt(7));
+					projectNode.setDynamicTreeFlag(result.getInt(6));
+					projectNode.setStatus(result.getInt(7));
+					projectNode.setKtrid(result.getInt(8));
+					projectNode.setDid(result.getInt(9));
 					return projectNode;
 				}
 			}
@@ -65,16 +70,19 @@ public class ProjectNodeRepository {
 		throw new UnknownProjectNodeException();
 	}
 	
-	public ProjectNode createProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException, UnknownProjectTreeException {
-		final String sql = "INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, WIKITITLE, KPTID, NODESTATUS) VALUES (?, ?, ?, ?, ?)";
+	public ProjectNode createProjectNode(ProjectNode projectNode) throws Exception {
+		final String sqlProjectNode = "INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
+		final String sqlMapping = "INSERT INTO KNOWLEDGEPROJECTNODEMAPPING (kpnid, pdid) VALUES (?, ?)";
+		
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sqlProjectNode, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, projectNode.getTitle());
-			preparedStatement.setString(3, projectNode.getWikiTitle());
-			preparedStatement.setInt(4, projectNode.getRefProjectTreeId());
-			preparedStatement.setInt(5, 0);
+			preparedStatement.setInt(3, projectNode.getKtrid());
+			preparedStatement.setString(4, projectNode.getWikiTitle());
+			preparedStatement.setInt(5, projectNode.getDynamicTreeFlag());
+			preparedStatement.setInt(6, 0);
 			
 			preparedStatement.executeUpdate();
 
@@ -86,6 +94,20 @@ public class ProjectNodeRepository {
 		} catch (Exception ex) {
 			throw new UnknownProjectTreeException();
 		}
+		
+		// projectNodeMapping
+				try (Connection connection = DBConnection.getConnection();
+						PreparedStatement preparedStatement = connection
+								.prepareStatement(sqlMapping)) {
+					preparedStatement.setInt(1, projectNode.getId());
+					preparedStatement.setInt(2, projectNode.getDid());
+					preparedStatement.executeUpdate();
+				} catch (Exception ex) {
+					System.out.println(1);
+					ex.printStackTrace();
+					throw ex;
+				}
+		
 		return projectNode;
 	}
 	
