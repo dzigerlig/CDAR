@@ -49,7 +49,7 @@ public class UserController {
 			return Response.ok(userModel.updateUser(user),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
-			return Response.status(Response.Status.CONFLICT).build();
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class UserController {
 		try {
 			return Response.ok(userModel.deleteUser(userid), MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
-			return Response.status(Response.Status.EXPECTATION_FAILED).build();
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 }

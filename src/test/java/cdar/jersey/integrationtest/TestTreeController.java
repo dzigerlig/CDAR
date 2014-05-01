@@ -61,7 +61,7 @@ public class TestTreeController extends JerseyTest {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
-		user = target("users/registration")
+		user = target("users")
 				.request()
 				.post(Entity.entity(user, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(User.class);
