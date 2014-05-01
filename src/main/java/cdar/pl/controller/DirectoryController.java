@@ -16,13 +16,11 @@ import cdar.bll.manager.producer.DirectoryManager;
 public class DirectoryController {
 	private DirectoryManager dm = new DirectoryManager();
 
-	// Directory
 		@GET
-		// Changed
 		@Produces(MediaType.APPLICATION_JSON)
-		public Response getDirectories(@PathParam("ktreeid") int ktreeid) {
+		public Response getDirectories(@PathParam("ktreeid") int treeId) {
 			try {
-				return Response.ok(dm.getDirectories(ktreeid),
+				return Response.ok(dm.getDirectories(treeId),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
@@ -30,34 +28,31 @@ public class DirectoryController {
 		}
 
 		@POST
-		// Changed
-		@Path("add")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response addDirectory(Directory d) {
+		public Response addDirectory(Directory directory) {
 			try {
-				if (d.getTitle() == null) {
+				if (directory.getTitle() == null) {
 					return Response.status(Response.Status.CREATED).entity(
-							dm.addDirectory(d.getTreeId(), d.getParentId(),
+							dm.addDirectory(directory.getTreeId(), directory.getParentId(),
 									"new Folder"))
 							.build();
 				} else {
 					return Response.ok(
-							dm.addDirectory(d.getTreeId(), d.getParentId(),
-									d.getTitle()), MediaType.APPLICATION_JSON)
+							dm.addDirectory(directory.getTreeId(), directory.getParentId(),
+									directory.getTitle()), MediaType.APPLICATION_JSON)
 							.build();
 				}
 			} catch (Exception e) {
-				return Response.status(Response.Status.UNAUTHORIZED).build();
+				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 		}
 
 		@POST
-		// Changed
 		@Path("delete")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response deleteDirectory(int id) {
+		public Response deleteDirectory(Directory directory) {
 			try {
-				return Response.ok(dm.deleteDirectory(id),
+				return Response.ok(dm.deleteDirectory(directory.getId()),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
@@ -65,28 +60,25 @@ public class DirectoryController {
 		}
 
 		@POST
-		// Changed
-		@Path("rename")
+		@Path("{directoryid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response renameDirectory(Directory d) {
+		public Response updateDirectory(Directory directory) {
 			try {
-				return Response.ok(dm.renameDirectory(d),
+				return Response.ok(dm.updateDirectory(directory),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return Response.status(Response.Status.UNAUTHORIZED).build();
 			}
 		}
-
-		@POST
-		// Changed
-		@Path("move")
+		
+		@GET
+		@Path("{directoryid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response moveDirectory(Directory d) {
+		public Response getDirectory(@PathParam("directoryid") int directoryId) {
 			try {
-				return Response.ok(dm.moveDirectory(d), MediaType.APPLICATION_JSON)
-						.build();
+				return Response.ok(dm.getDirectory(directoryId), MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.UNAUTHORIZED).build();
+				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 		}
 }
