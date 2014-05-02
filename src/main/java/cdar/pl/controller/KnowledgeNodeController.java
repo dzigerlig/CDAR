@@ -16,7 +16,7 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 
-@Path("ktree/{ktreeid}/nodes")
+@Path("ktrees/{ktreeid}/nodes")
 public class KnowledgeNodeController {
 	private NodeManager nm = new NodeManager();
 

@@ -16,7 +16,7 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 
-@Path("ptree")
+@Path("ptrees")
 public class ProjectTreeController {
 	private ProjectTreeManager ptm = new ProjectTreeManager();
 	

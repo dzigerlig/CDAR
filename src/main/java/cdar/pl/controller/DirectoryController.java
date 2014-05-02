@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.Directory;
 import cdar.bll.manager.producer.DirectoryManager;
 
-@Path("ktree/{ktreeid}/directories")
+@Path("ktrees/{ktreeid}/directories")
 public class DirectoryController {
 	private DirectoryManager dm = new DirectoryManager();
 

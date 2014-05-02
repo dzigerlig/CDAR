@@ -21,7 +21,7 @@ import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 import cdar.dal.exceptions.UnknownUserException;
 
-@Path("ktree/{ktreeid}/nodes/{nodeid}/subnodes")
+@Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class KnowledgeSubnodeController {
 	private SubnodeManager sm = new SubnodeManager();
 	private NodeLinkManager lm = new NodeLinkManager();

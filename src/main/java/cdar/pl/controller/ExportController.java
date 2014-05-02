@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.manager.producer.XmlTreeManager;
 
-@Path("ktree/{ktreeid}/simpleexport")
+@Path("ktrees/{ktreeid}/simpleexport")
 public class ExportController {
 	private XmlTreeManager xtm = new XmlTreeManager();
 		@GET

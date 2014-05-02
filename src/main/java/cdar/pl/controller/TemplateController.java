@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.producer.Template;
 import cdar.bll.manager.producer.TemplateManager;
 
-@Path("ktree/{ktreeid}/templates")
+@Path("ktrees/{ktreeid}/templates")
 public class TemplateController {
 	private TemplateManager tm = new TemplateManager();
 

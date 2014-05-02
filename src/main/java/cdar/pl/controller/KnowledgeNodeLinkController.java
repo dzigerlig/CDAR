@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.manager.producer.NodeLinkManager;
 
-@Path("ktree/{ktreeid}/links")
+@Path("ktrees/{ktreeid}/links")
 public class KnowledgeNodeLinkController {
 	private NodeLinkManager lm = new NodeLinkManager();
 

@@ -14,7 +14,7 @@ import cdar.bll.entity.Tree;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
 
-@Path("ktree")
+@Path("ktrees")
 public class KnowledgeTreeController {
 	private TreeManager ktm = new TreeManager();
 
