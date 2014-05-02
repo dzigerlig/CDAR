@@ -70,21 +70,22 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(User.class);
 		userId = user.getId();
 		accesstoken = user.getAccesstoken();
-		Response quantityOfTreesBeforeAddRequest = target("producer").request()
+		Response quantityOfTreesBeforeAddRequest = target("ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		int quantityOfTreesBeforeAdd = quantityOfTreesBeforeAddRequest
 				.readEntity(Set.class).size();
-
-		Response createdTreeResponse = target("producer/add")
+		Tree addTree = new Tree();
+		addTree.setTitle(TREENAME);
+		Response createdTreeResponse = target("ktrees")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(TREENAME, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(addTree, MediaType.APPLICATION_JSON),
 						Response.class);
 		Tree tree = createdTreeResponse.readEntity(Tree.class);
 		treeid = tree.getId();
-		int quantityOfTreesAfterAdd = target("/producer").request()
+		int quantityOfTreesAfterAdd = target("/ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, createdTreeResponse.getStatus());
@@ -96,20 +97,21 @@ public class TestTreeController extends JerseyTest {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
-		int quantityOfTreesBeforeDelete = target("/producer").request()
+		int quantityOfTreesBeforeDelete = target("/ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		Response deletedTreeResponse = target("/producer/delete")
+		Tree deleteTree = new Tree();
+		deleteTree.setId(treeid);
+		Response deletedTreeResponse = target("/ktrees/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTree, MediaType.APPLICATION_JSON),
 						Response.class);
-		deletedTreeResponse.readEntity(boolean.class);
-		int quantityOfTreesAfterDelete = target("/producer").request()
+		int quantityOfTreesAfterDelete = target("/ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Set.class).size();
-		User deleteUser = new User(); 
+		User deleteUser = new User();
 		deleteUser.setId(userId);
 		target("users/delete")
 				.queryParam("password", PASSWORD)
@@ -124,37 +126,59 @@ public class TestTreeController extends JerseyTest {
 
 	@Test
 	public void testDelteNotExistingTree() {
-		User deleteUser = new User();
-		deleteUser.setId(999999999);
-		Response deletedTreeResponse = target("/producer/delete")
+		Tree deleteTree = new Tree();
+		deleteTree.setId(999999999);
+		Response deletedTreeResponse = target("/ktrees/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(deleteUser, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTree, MediaType.APPLICATION_JSON),
 						Response.class);
 		assertEquals(400, deletedTreeResponse.getStatus());
 	}
 
 	@Test
 	public void testGetTree() {
-		Response testTreeResponse = target("/producer/" + treeid).request()
+		Response testTreeResponse = target("/ktrees/" + treeid).request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		Tree testTree = testTreeResponse.readEntity(Tree.class);
 		assertEquals(TREENAME, testTree.getTitle());
 		assertEquals(200, testTreeResponse.getStatus());
 	}
+	
+	@Test
+	public void testEditTree() {
+		Tree editTree = new Tree();
+		editTree.setTitle("editTree");
+		Response editedTreeResponse = target("ktrees/"+editTree.getId())
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(editTree, MediaType.APPLICATION_JSON),
+						Response.class);
+		Tree resetEditTree = new Tree();
+		resetEditTree.setTitle("editTree");
+		target("ktrees/"+editTree.getId())
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(resetEditTree, MediaType.APPLICATION_JSON),
+						Response.class);
+		Tree editedTree = editedTreeResponse.readEntity(Tree.class);
+		assertEquals(200, editedTreeResponse.getStatus());		assertEquals("editTree", editedTree.getTitle());
+	}
 
 	@Test
 	public void testGetAllTrees() {
-		int quantityOfTreesBeforeAdd = target("/producer").request()
+		int quantityOfTreesBeforeAdd = target("/ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Tree addedtree1 = addTree(TREENAME);
 		Tree addedtree2 = addTree(TREENAME);
 
-		Response quantityOfTreesAfterAddResponse = target("/producer")
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+		Response quantityOfTreesAfterAddResponse = target("/ktrees").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		int quantityOfTreesAfterAdd = quantityOfTreesAfterAddResponse
 				.readEntity(Set.class).size();
@@ -167,7 +191,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testAddAndDeleteTemplate() {
 		int quantityOfTemplatesBeforeAdd = target(
-				"/producer/" + treeid + "/templates").request()
+				"/ktrees/" + treeid + "/templates").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Template addTestTemplate = new Template();
@@ -176,7 +200,7 @@ public class TestTreeController extends JerseyTest {
 		addTestTemplate.setTemplatetext("TemplateText");
 
 		Response addedTemplateResponse = target(
-				"/producer/" + treeid + "/templates/add")
+				"/ktrees/" + treeid + "/templates")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -187,11 +211,11 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(Template.class);
 
 		int quantityOfTemplatesAfterAdd = target(
-				"/producer/" + treeid + "/templates/").request()
+				"/ktrees/" + treeid + "/templates/").request()
 				.get(Response.class).readEntity(Set.class).size();
 
 		Response deletedTemplateRequest = target(
-				"/producer/" + treeid + "/templates/delete")
+				"/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -202,7 +226,7 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(boolean.class);
 
 		int quantityOfTemplatesAfterDelete = target(
-				"/producer/" + treeid + "/templates/").request()
+				"/ktrees/" + treeid + "/templates/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
@@ -221,7 +245,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDeleteNotExistingTemplate() {
 		Response deletedTemplateResponse = target(
-				"/producer/" + treeid + "/templates/delete")
+				"/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -233,7 +257,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testGetAllTemplates() {
 		int quantityOfTemplatesBeforeAdd = target(
-				"/producer/" + treeid + "/templates").request()
+				"/ktrees/" + treeid + "/templates").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Set.class).size();
 		Template addedTemplate1 = addTemplate(treeid, "TestTemplate",
@@ -241,7 +265,7 @@ public class TestTreeController extends JerseyTest {
 		Template addedTemplate2 = addTemplate(treeid, "TestTemplate",
 				"TemplateText");
 		Response quantityOfTemplatesAfterAddResponse = target(
-				"/producer/" + treeid + "/templates").request()
+				"/ktrees/" + treeid + "/templates").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		int quantityOfTemplateAfterAdd = quantityOfTemplatesAfterAddResponse
@@ -259,7 +283,7 @@ public class TestTreeController extends JerseyTest {
 		Template addedTemplate = addTemplate(treeid, "TestTemplate",
 				"TemplateText");
 		Response getTemplateResponse = target(
-				"/producer/" + treeid + "/templates/" + addedTemplate.getId())
+				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
 				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		addedTemplate = getTemplateResponse.readEntity(Template.class);
@@ -275,7 +299,7 @@ public class TestTreeController extends JerseyTest {
 		addedTemplate.setTemplatetext(TREENAME);
 		addedTemplate.setTitle(USERNAME);
 		Response editTemplateResponse = target(
-				"/producer/" + treeid + "/templates/edit")
+				"/ktrees/" + treeid + "/templates/edit")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -291,14 +315,14 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testAddAndDeleteDirectories() {
 		int quantityOfDirectoriesBeforeAdd = target(
-				"/producer/" + treeid + "/directories/").request()
+				"/ktrees/" + treeid + "/directories/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Directory addDirectory = new Directory();
 		addDirectory.setTreeId(treeid);
 		addDirectory.setParentId(0);
 		Response addedDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/add")
+				"/ktrees/" + treeid + "/directories")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -310,7 +334,7 @@ public class TestTreeController extends JerseyTest {
 		addSubDirectory.setTreeId(treeid);
 		addSubDirectory.setParentId(addedDirectory.getId());
 		Response addedSubDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/add")
+				"/ktrees/" + treeid + "/directories")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -320,12 +344,12 @@ public class TestTreeController extends JerseyTest {
 		Directory addedSubDirectory = addedSubDirectoryResponse
 				.readEntity(Directory.class);
 		int quantityOfDirectoriesAfterAdd = target(
-				"/producer/" + treeid + "/directories/").request()
+				"/ktrees/" + treeid + "/directories/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
 		Response deletedSubDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/delete")
+				"/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -334,7 +358,7 @@ public class TestTreeController extends JerseyTest {
 		boolean isSubDirectoryDeleted = deletedSubDirectoryResponse
 				.readEntity(boolean.class);
 		Response deletedDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/delete")
+				"/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -343,7 +367,7 @@ public class TestTreeController extends JerseyTest {
 		boolean isDirectoryDeleted = deletedDirectoryResponse
 				.readEntity(boolean.class);
 		int quantityOfDirectoriesAfterDelete = target(
-				"/producer/" + treeid + "/directories/").request()
+				"/ktrees/" + treeid + "/directories/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, addedDirectoryResponse.getStatus());
@@ -366,7 +390,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDeleteNotExistingDirectory() {
 		Response deletedDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/delete")
+				"/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -379,9 +403,8 @@ public class TestTreeController extends JerseyTest {
 	public void testGetDirectory() {
 		Directory addedDirectory1 = addDirectory(treeid, 0);
 		Response getDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/"
-						+ addedDirectory1.getId()).request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				"/ktrees/" + treeid + "/directories/" + addedDirectory1.getId())
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		Directory getDirectory = getDirectoryResponse
 				.readEntity(Directory.class);
@@ -393,13 +416,13 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testGetAllDirectories() {
 		int quantityOfDirectoriesBefore = target(
-				"/producer/" + treeid + "/directories").request()
+				"/ktrees/" + treeid + "/directories").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Directory addedDirectory1 = addDirectory(treeid, 0);
 		Directory addedDirectory2 = addDirectory(treeid, 0);
 		Response quantityOfDirectoriesAfterResponse = target(
-				"/producer/" + treeid + "/directories").request()
+				"/ktrees/" + treeid + "/directories").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		int quantityOfDirectoriesAfter = quantityOfDirectoriesAfterResponse
@@ -417,7 +440,7 @@ public class TestTreeController extends JerseyTest {
 		addedDirectory.setTitle(USERNAME);
 
 		Response renamedDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/rename")
+				"/ktrees/" + treeid + "/directories/rename")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -439,7 +462,7 @@ public class TestTreeController extends JerseyTest {
 		addedChildDirectory.setParentId(addedParentDirectory.getId());
 
 		Response movedDirectoryResponse = target(
-				"/producer/" + treeid + "/directories/move")
+				"/ktrees/" + treeid + "/directories/move")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -457,15 +480,14 @@ public class TestTreeController extends JerseyTest {
 	public void testAddAndDeleteNode() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 
-		int quantityOfNodesBeforeAdd = target("/producer/" + treeid + "/nodes")
+		int quantityOfNodesBeforeAdd = target("/ktrees/" + treeid + "/nodes")
 				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
 		Node addTestNode = new Node();
 		addTestNode.setTreeId(treeid);
 		addTestNode.setDirectoryId(addedDirectory.getId());
-		Response addedNodeResponse = target(
-				"/producer/" + treeid + "/nodes/add")
+		Response addedNodeResponse = target("/ktrees/" + treeid + "/nodes")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -473,18 +495,17 @@ public class TestTreeController extends JerseyTest {
 						Response.class);
 		Node addedNode = addedNodeResponse.readEntity(Node.class);
 
-		int quantityOfNodesAfterAdd = target("/producer/" + treeid + "/nodes")
+		int quantityOfNodesAfterAdd = target("/ktrees/" + treeid + "/nodes")
 				.request().get(Response.class).readEntity(Set.class).size();
 		Response deletedNodeResponse = target(
-				"/producer/" + treeid + "/nodes/delete/")
+				"/ktrees/" + treeid + "/nodes/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedNode.getId(),
 						MediaType.APPLICATION_JSON), Response.class);
-		int quantityOfNodesAfterDelete = target(
-				"/producer/" + treeid + "/nodes").request().get(Response.class)
-				.readEntity(Set.class).size();
+		int quantityOfNodesAfterDelete = target("/ktrees/" + treeid + "/nodes")
+				.request().get(Response.class).readEntity(Set.class).size();
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(201, addedNodeResponse.getStatus());
 		assertEquals(200, deletedNodeResponse.getStatus());
@@ -497,7 +518,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDeleteNotExistingNode() {
 		Response deletedNodeResponse = target(
-				"/producer/" + treeid + "/nodes/delete/")
+				"/ktrees/" + treeid + "/nodes/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -510,7 +531,7 @@ public class TestTreeController extends JerseyTest {
 	public void testGetAllNodes() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 
-		int quantityOfNodesBeforeAdd = target("/producer/" + treeid + "/nodes")
+		int quantityOfNodesBeforeAdd = target("/ktrees/" + treeid + "/nodes")
 				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
@@ -518,9 +539,8 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
 		Response quantityOfNodesAfterAddResponse = target(
-				"/producer/" + treeid + "/nodes/").request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class);
+				"/ktrees/" + treeid + "/nodes/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
 		int quantityOfNodesAfterAdd = quantityOfNodesAfterAddResponse
 				.readEntity(Set.class).size();
 		deleteNode(addedNode1.getId());
@@ -536,7 +556,7 @@ public class TestTreeController extends JerseyTest {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 		Response receivedNodeResponse = target(
-				"/producer/treeid/nodes/" + addedNode.getId()).request()
+				"/ktrees/treeid/nodes/" + addedNode.getId()).request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		deleteNode(addedNode.getId());
@@ -553,7 +573,7 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfNodeLinksBeforeAdd = target(
-				"/producer/" + treeid + "/links").request().header(UID, userId)
+				"/ktrees/" + treeid + "/links").request().header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken).get(Response.class)
 				.readEntity(Set.class).size();
 
@@ -562,7 +582,7 @@ public class TestTreeController extends JerseyTest {
 		addTestNodeLink.setSourceId(addedNode1.getId());
 		addTestNodeLink.setTargetId(addedNode2.getId());
 		Response addedNodeLinkResponse = target(
-				"/producer/" + treeid + "/links/add")
+				"/ktrees/" + treeid + "/links")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -573,12 +593,12 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(NodeLink.class);
 
 		int quantityOfNodeLinksAfterAdd = target(
-				"/producer/" + treeid + "/links/").request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class).readEntity(Set.class).size();
+				"/ktrees/" + treeid + "/links/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class)
+				.readEntity(Set.class).size();
 
 		Response deleteNodeLinkResponse = target(
-				"/producer/" + treeid + "/links/delete/")
+				"/ktrees/" + treeid + "/links/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -586,7 +606,7 @@ public class TestTreeController extends JerseyTest {
 						MediaType.APPLICATION_JSON), Response.class);
 
 		int quantityOfNodeLinksAfterDelete = target(
-				"/producer/" + treeid + "/links").request().header(UID, userId)
+				"/ktrees/" + treeid + "/links").request().header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken).get(Set.class).size();
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
@@ -605,7 +625,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDeleteNotExistingNodeLink() {
 		Response deleteNodeLinkResponse = target(
-				"/producer/" + treeid + "/links/delete/")
+				"/ktrees/" + treeid + "/links/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -621,9 +641,8 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 
 		Response quantityOfNodeLinksBeforeAddResponse = target(
-				"/producer/" + treeid + "/links/").request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class);
+				"/ktrees/" + treeid + "/links/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
 		int quantityOfNodeLinksBeforeAdd = quantityOfNodeLinksBeforeAddResponse
 				.readEntity(Set.class).size();
 		NodeLink addedNodeLink1 = addNodeLink(treeid, addedNode1.getId(),
@@ -632,9 +651,8 @@ public class TestTreeController extends JerseyTest {
 				addedNode1.getId());
 
 		int quantityOfNodeLinksAfterAdd = target(
-				"/producer/" + treeid + "/links/").request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Set.class).size();
+				"/ktrees/" + treeid + "/links/").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Set.class).size();
 
 		deleteNodeLink(addedNodeLink1.getId());
 		deleteNodeLink(addedNodeLink2.getId());
@@ -658,7 +676,7 @@ public class TestTreeController extends JerseyTest {
 		Subnode addedSubnode = addSubnode(addedNode1.getId(), TREENAME);
 		addedNodeLink.setSubnodeId(addedSubnode.getId());
 		Response updatedNodeLinkResponse = target(
-				"/producer/" + treeid + "/links/update")
+				"/ktrees/" + treeid + "/links/update")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -683,15 +701,15 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfSubnodesBeforeAdd = target(
-				"/producer/" + treeid + "/subnodes/").request()
+				"/ktrees/" + treeid + "/subnodes/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Subnode addTestSubnode = new Subnode();
 		addTestSubnode.setNodeId(addedNode.getId());
 		addTestSubnode.setTitle(TREENAME);
 		Response addedSubnodeResponse = target(
-				"/producer/" + treeid + "/nodes/" + addedNode.getId()
-						+ "/subnodes/add")
+				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
+						+ "/subnodes")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -700,12 +718,12 @@ public class TestTreeController extends JerseyTest {
 		Subnode addedSubnode = addedSubnodeResponse.readEntity(Subnode.class);
 
 		int quantityOfSubnodesAfterAdd = target(
-				"/producer/" + treeid + "/subnodes/").request()
+				"/ktrees/" + treeid + "/subnodes/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
 		Response deletedSubnodeResponse = target(
-				"/producer/" + treeid + "/nodes/" + addedNode.getId()
+				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
 						+ "/subnodes/delete")
 				.request()
 				.header(UID, userId)
@@ -714,7 +732,7 @@ public class TestTreeController extends JerseyTest {
 						MediaType.APPLICATION_JSON), Response.class);
 
 		int quantityOfSubnodesAfterDelete = target(
-				"/producer/" + treeid + "/subnodes/").request()
+				"/ktrees/" + treeid + "/subnodes/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		System.out.println(quantityOfSubnodesAfterDelete);
@@ -734,7 +752,7 @@ public class TestTreeController extends JerseyTest {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 		Response deleteSubnodeResponse = target(
-				"/producer/" + treeid + "/nodes/" + addedNode.getId()
+				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
 						+ "/subnodes/delete")
 				.request()
 				.header(UID, userId)
@@ -753,14 +771,14 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfSubnodesBeforeAdd = target(
-				"/producer/" + treeid + "/subnodes").request()
+				"/ktrees/" + treeid + "/subnodes").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		Subnode addedSubnode1 = addSubnode(addedNode.getId(), PASSWORD);
 		Subnode addedSubnode2 = addSubnode(addedNode.getId(), USERNAME);
 
 		Response quantityOfSubnodesAfterAddResponse = target(
-				"/producer/" + treeid + "/subnodes").request()
+				"/ktrees/" + treeid + "/subnodes").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
 		int quantityOfSubnodesAfterAdd = quantityOfSubnodesAfterAddResponse
@@ -783,7 +801,7 @@ public class TestTreeController extends JerseyTest {
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 
 		int quantityOfSubnodesBeforeAdd = target(
-				"/producer/" + treeid + "/nodes/" + addedNode.getId()
+				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
 						+ "/subnodes").request().header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken).get(Response.class)
 				.readEntity(Set.class).size();
@@ -791,7 +809,7 @@ public class TestTreeController extends JerseyTest {
 		Subnode addedSubnode2 = addSubnode(addedNode.getId(), USERNAME);
 
 		Response quantityOfSubnodesAfterAddResponse = target(
-				"/producer/" + treeid + "/nodes/" + addedNode.getId()
+				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
 						+ "/subnodes").request().header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken).get(Response.class);
 		int quantityOfSubnodesAfterAdd = quantityOfSubnodesAfterAddResponse
@@ -817,7 +835,7 @@ public class TestTreeController extends JerseyTest {
 	 * 
 	 * Subnode addedSubnode1 = addSubnode(addedNode.getId(), PASSWORD);
 	 * 
-	 * Response queryAddedSubnodeResponse = target( "/producer/" + treeid
+	 * Response queryAddedSubnodeResponse = target( "/ktrees/" + treeid
 	 * +"/nodes/"+addedNode.getId()+
 	 * "/subnodes/"+addedSubnode1.getId()).request().header(UID, userId)
 	 * .header(ACCESSTOKEN, accesstoken).get(Response.class); Subnode
@@ -833,20 +851,24 @@ public class TestTreeController extends JerseyTest {
 	 */
 
 	private Tree addTree(String treename) {
-		return target("/producer/add")
+		Tree addTree = new Tree();
+		addTree.setTitle(treename);
+		return target("/ktrees")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(treename, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(addTree, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(Tree.class);
 	}
 
 	private boolean deleteTree(int treeid) {
-		return target("/producer/delete")
+		Tree deleteTree = new Tree();
+		deleteTree.setId(treeid);
+		return target("/ktrees/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(treeid, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTree, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
 
@@ -855,7 +877,7 @@ public class TestTreeController extends JerseyTest {
 		addTestTemplate.setTreeId(treeid);
 		addTestTemplate.setTitle(title);
 		addTestTemplate.setTemplatetext(templatetext);
-		return target("/producer/" + treeid + "/templates/add")
+		return target("/ktrees/" + treeid + "/templates")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -865,7 +887,7 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteTemplate(int templateid) {
-		return target("/producer/" + treeid + "/templates/delete")
+		return target("/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -877,7 +899,7 @@ public class TestTreeController extends JerseyTest {
 		Directory addTestDirectory = new Directory();
 		addTestDirectory.setTreeId(treeid);
 		addTestDirectory.setParentId(parentid);
-		return target("/producer/" + treeid + "/directories/add")
+		return target("/ktrees/" + treeid + "/directories")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -887,7 +909,7 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteDirectory(int directoryid) {
-		return target("/producer/" + treeid + "/directories/delete")
+		return target("/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -899,7 +921,7 @@ public class TestTreeController extends JerseyTest {
 		Node addTestNode = new Node();
 		addTestNode.setTreeId(treeid);
 		addTestNode.setDirectoryId(did);
-		return target("/producer/" + treeid + "/nodes/add")
+		return target("/ktrees/" + treeid + "/nodes")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -908,7 +930,7 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteNode(int nodeid) {
-		return target("/producer/" + treeid + "/nodes/delete/")
+		return target("/ktrees/" + treeid + "/nodes/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -921,7 +943,7 @@ public class TestTreeController extends JerseyTest {
 		addTestNodeLink.setTreeId(treeid);
 		addTestNodeLink.setSourceId(sourceid);
 		addTestNodeLink.setTargetId(targetid);
-		return target("/producer/" + treeid + "/links/add")
+		return target("/ktrees/" + treeid + "/links")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -931,7 +953,7 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteNodeLink(int nodeLinkId) {
-		return target("/producer/" + treeid + "/links/delete/")
+		return target("/ktrees/" + treeid + "/links/delete/")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -943,8 +965,7 @@ public class TestTreeController extends JerseyTest {
 		Subnode addTestSubnode = new Subnode();
 		addTestSubnode.setNodeId(knid);
 		addTestSubnode.setTitle(title);
-		return target(
-				"/producer/" + treeid + "/nodes/" + knid + "/subnodes/add")
+		return target("/ktrees/" + treeid + "/nodes/" + knid + "/subnodes")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -954,7 +975,7 @@ public class TestTreeController extends JerseyTest {
 
 	private ChangesWrapper<?> deleteSubnode(int subnodeId, int knid) {
 		return target(
-				"/producer/" + treeid + "/nodes/" + knid + "/subnodes/delete")
+				"/ktrees/" + treeid + "/nodes/" + knid + "/subnodes/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
