@@ -116,7 +116,7 @@ public class KnowledgeNodeController {
 	@Path("{nodeid}/wiki")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postKnowledgeNodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
+	public Response updateKnowledgeNodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return StatusHelper.getStatusOk(mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry));
