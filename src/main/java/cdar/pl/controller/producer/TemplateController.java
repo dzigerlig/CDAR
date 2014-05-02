@@ -21,8 +21,7 @@ public class TemplateController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getTemplates(@PathParam("ktreeid") int ktreeid) {
 			try {
-				return Response.ok(tm.getKnowledgeTemplates(ktreeid),
-						MediaType.APPLICATION_JSON).build();
+				return Response.ok(tm.getKnowledgeTemplates(ktreeid), MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -44,8 +43,7 @@ public class TemplateController {
 		public Response getTemplate(@PathParam("ktreeid") int ktreeid,
 				@PathParam("templateid") int templateid) {
 			try {
-				return Response.ok(tm.getKnowledgeTemplate(templateid),
-						MediaType.APPLICATION_JSON).build();
+				return Response.ok(tm.getKnowledgeTemplate(templateid), MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -56,8 +54,7 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response updateTemplate(Template template) {
 			try {
-				return Response.ok(tm.updateTemplate(template),
-						MediaType.APPLICATION_JSON).build();
+				return Response.ok(tm.updateTemplate(template), MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -68,8 +65,7 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteTemplate(Template template) {
 			try {
-				return Response.ok(tm.deleteTemplate(template.getId()),
-						MediaType.APPLICATION_JSON).build();
+				return Response.ok(tm.deleteTemplate(template.getId()), MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

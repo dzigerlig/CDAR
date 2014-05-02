@@ -24,7 +24,7 @@ public class UserController {
 		try {
 			User loggedInUser = userManager.loginUser(username, password);
 			loggedInUser.setPassword(null);
-			return StatusHelper.getResponseOk(loggedInUser);
+			return StatusHelper.getStatusOk(loggedInUser);
 		} catch (Exception e) {
 			return StatusHelper.getStatusUnauthorized();
 		}
@@ -49,7 +49,7 @@ public class UserController {
 		try {
 			user = userManager.updateUser(user);
 			user.setPassword(null);
-			return StatusHelper.getResponseOk(user);
+			return StatusHelper.getStatusOk(user);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -60,7 +60,7 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(User user) {
 		try {
-			return StatusHelper.getResponseOk(userManager.deleteUser(user.getId()));
+			return StatusHelper.getStatusOk(userManager.deleteUser(user.getId()));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

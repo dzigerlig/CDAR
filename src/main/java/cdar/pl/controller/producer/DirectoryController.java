@@ -21,7 +21,7 @@ public class DirectoryController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getDirectories(@PathParam("ktreeid") int treeId) {
 			try {
-				return StatusHelper.getResponseOk(dm.getDirectories(treeId));
+				return StatusHelper.getStatusOk(dm.getDirectories(treeId));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -46,7 +46,7 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteDirectory(Directory directory) {
 			try {
-				return StatusHelper.getResponseOk(dm.deleteDirectory(directory.getId()));
+				return StatusHelper.getStatusOk(dm.deleteDirectory(directory.getId()));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -57,8 +57,7 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response updateDirectory(Directory directory) {
 			try {
-				return Response.ok(dm.updateDirectory(directory),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(dm.updateDirectory(directory));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -69,7 +68,7 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response getDirectory(@PathParam("directoryid") int directoryId) {
 			try {
-				return StatusHelper.getResponseOk(dm.getDirectory(directoryId));
+				return StatusHelper.getStatusOk(dm.getDirectory(directoryId));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

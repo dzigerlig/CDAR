@@ -4,7 +4,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class StatusHelper<T> {
-	public static <T> Response getResponseOk(T t) {
+	public static <T> Response getStatusOk(T t) {
 		return Response.ok(t, MediaType.APPLICATION_JSON).build();
 	}
 	

@@ -21,8 +21,7 @@ public class KnowledgeNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLinks(@PathParam("ktreeid") int ktreeid) {
 		try {
-			return Response.ok(lm.getNodeLinks(ktreeid),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(lm.getNodeLinks(ktreeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -33,9 +32,7 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nl) {
 		try {
-			return Response.status(Response.Status.CREATED).entity(
-					lm.addNodeLink(nl.getTreeId(), nl.getSourceId(),
-							nl.getTargetId(), nl.getSubnodeId())).build();
+			return StatusHelper.getStatusCreated(lm.addNodeLink(nl.getTreeId(), nl.getSourceId(), nl.getTargetId(), nl.getSubnodeId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -46,8 +43,7 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNodeLink(NodeLink nodeLink) {
 		try {
-			return Response.ok(lm.deleteNodeLink(nodeLink.getId()),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(lm.deleteNodeLink(nodeLink.getId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -58,8 +54,7 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateNodeLink(NodeLink nl) {
 		try {
-			return Response.ok(lm.updateNodeLink(nl),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(lm.updateNodeLink(nl));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -71,8 +66,7 @@ public class KnowledgeNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpLink(@PathParam("nodeid") int nodeid) {
 		try {
-			return Response.ok(lm.zoomUp(nodeid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(lm.zoomUp(nodeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -84,8 +78,7 @@ public class KnowledgeNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownLink(@PathParam("nodeid") int nodeid) {
 		try {
-			return Response.ok(lm.zoomDown(nodeid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(lm.zoomDown(nodeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

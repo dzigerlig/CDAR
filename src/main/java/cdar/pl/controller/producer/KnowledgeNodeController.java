@@ -25,9 +25,7 @@ public class KnowledgeNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNodes(@PathParam("ktreeid") int ktreeid) {
 		try {
-			return Response
-					.ok(nm.getNodes(ktreeid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(nm.getNodes(ktreeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -38,16 +36,9 @@ public class KnowledgeNodeController {
 	public Response addNode(@HeaderParam("uid") int uid, Node node) {
 		try {
 			if (node.getTitle() == null) {
-				return Response
-						.status(Response.Status.CREATED)
-						.entity(nm.addNode(uid, node.getTreeId(), "new Node",
-								node.getDirectoryId())).build();
+				return StatusHelper.getStatusCreated(nm.addNode(uid, node.getTreeId(), "new Node", node.getDirectoryId()));
 			} else {
-				return Response
-						.status(Response.Status.CREATED)
-						.entity(nm.addNode(uid, node.getTreeId(), node.getTitle(),
-								node.getDirectoryId()))
-						.build();
+				return StatusHelper.getStatusCreated(nm.addNode(uid, node.getTreeId(), node.getTitle(), node.getDirectoryId()));
 			}
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
@@ -59,8 +50,7 @@ public class KnowledgeNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNode(@PathParam("nodeid") int nodeid) {
 		try {
-			return Response.ok(nm.getNode(nodeid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(nm.getNode(nodeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -71,7 +61,7 @@ public class KnowledgeNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateNode(Node node) {
 		try {
-			return Response.ok(nm.updateNode(node), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(nm.updateNode(node));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -82,8 +72,7 @@ public class KnowledgeNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNode(Node node) {
 		try {
-			return Response.ok(nm.deleteNode(node.getId()), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(nm.deleteNode(node.getId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -94,8 +83,7 @@ public class KnowledgeNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpNode(@PathParam("nodeid") int nodeId) {
 		try {
-			return Response.ok(nm.zoomUp(nodeId), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(nm.zoomUp(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -106,8 +94,7 @@ public class KnowledgeNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownNode(@PathParam("nodeid") int nodeId) {
 		try {
-			return Response.ok(nm.zoomDown(nodeId), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(nm.zoomDown(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -119,7 +106,7 @@ public class KnowledgeNodeController {
 	public Response getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeId) {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
-			return Response.ok(mwm.getKnowledgeNodeWikiEntry(nodeId), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(mwm.getKnowledgeNodeWikiEntry(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -132,7 +119,7 @@ public class KnowledgeNodeController {
 	public Response postKnowledgeNodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
-			return Response.ok(mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

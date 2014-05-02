@@ -31,7 +31,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("nodeid") int nodeId) {
 		try {
-			return Response.ok(sm.getSubnodesFromNode(nodeId), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(sm.getSubnodesFromNode(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -41,8 +41,7 @@ public class KnowledgeSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(Subnode subnode) {
 		try {
-			return Response.status(Response.Status.CREATED)
-					.entity(sm.addSubnode(subnode.getNodeId(), subnode.getTitle())).build();
+			return StatusHelper.getStatusCreated(sm.addSubnode(subnode.getNodeId(), subnode.getTitle()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -53,7 +52,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response editSubnode(Subnode subnode) {
 		try {
-			return Response.ok(sm.updateSubnode(subnode), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(sm.updateSubnode(subnode));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -64,7 +63,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnode(@PathParam("subnodeid") int subnodeId) {
 		try {
-			return Response.ok(sm.getSubnode(subnodeId), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(sm.getSubnode(subnodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -76,10 +75,8 @@ public class KnowledgeSubnodeController {
 	public Response renameSubnode(Subnode subnode) {
 		try {
 			sm.renameSubnode(subnode);
-			return Response
-					.ok(new ChangesWrapper<NodeLink>(lm
-							.getNodeLinksBySubnode(subnode.getId()), "update"),
-							MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(new ChangesWrapper<NodeLink>(lm
+							.getNodeLinksBySubnode(subnode.getId()), "update"));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -93,9 +90,8 @@ public class KnowledgeSubnodeController {
 		try {
 			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(subnode.getId());
 			sm.deleteSubnode(subnode.getId());
-			return Response.ok(
-					new ChangesWrapper<NodeLink>(nodelinks, "delete"),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(
+					new ChangesWrapper<NodeLink>(nodelinks, "delete"));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -106,8 +102,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return Response.ok(sm.zoomUp(nodeId), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(sm.zoomUp(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -118,7 +113,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return Response.ok(sm.zoomDown(nodeId), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(sm.zoomDown(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -129,7 +124,7 @@ public class KnowledgeSubnodeController {
 	public Response getKnowledgeSubnodeWikiEntry(@PathParam("subnodeid") int subnodeId) {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
-			return Response.ok(mwm.getKnowledgeSubnodeWikiEntry(subnodeId), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(mwm.getKnowledgeSubnodeWikiEntry(subnodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -142,7 +137,7 @@ public class KnowledgeSubnodeController {
 	public Response postKnowledgeSubnodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
-			return Response.ok(mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry));
 		} catch (UnknownUserException uue) {
 			return StatusHelper.getStatusBadRequest();
 		}
