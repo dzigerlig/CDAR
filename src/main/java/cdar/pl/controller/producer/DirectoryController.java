@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Directory;
 import cdar.bll.manager.producer.DirectoryManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
 public class DirectoryController {
@@ -20,10 +21,9 @@ public class DirectoryController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getDirectories(@PathParam("ktreeid") int treeId) {
 			try {
-				return Response.ok(dm.getDirectories(treeId),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(dm.getDirectories(treeId));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -32,18 +32,12 @@ public class DirectoryController {
 		public Response addDirectory(Directory directory) {
 			try {
 				if (directory.getTitle() == null) {
-					return Response.status(Response.Status.CREATED).entity(
-							dm.addDirectory(directory.getTreeId(), directory.getParentId(),
-									"new Folder"))
-							.build();
+					return StatusHelper.getStatusCreated(dm.addDirectory(directory.getTreeId(), directory.getParentId(),"new Folder"));
 				} else {
-					return Response.ok(
-							dm.addDirectory(directory.getTreeId(), directory.getParentId(),
-									directory.getTitle()), MediaType.APPLICATION_JSON)
-							.build();
+					return StatusHelper.getStatusCreated(dm.addDirectory(directory.getTreeId(), directory.getParentId(), directory.getTitle()));
 				}
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -52,10 +46,9 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteDirectory(Directory directory) {
 			try {
-				return Response.ok(dm.deleteDirectory(directory.getId()),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(dm.deleteDirectory(directory.getId()));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -64,10 +57,9 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response updateDirectory(Directory directory) {
 			try {
-				return Response.ok(dm.updateDirectory(directory),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(dm.updateDirectory(directory));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 		
@@ -76,9 +68,9 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response getDirectory(@PathParam("directoryid") int directoryId) {
 			try {
-				return Response.ok(dm.getDirectory(directoryId), MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(dm.getDirectory(directoryId));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 }

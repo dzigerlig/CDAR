@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.Tree;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees")
 public class KnowledgeTreeController {
@@ -22,10 +23,9 @@ public class KnowledgeTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getKnowledgeTrees(@HeaderParam("uid") int uid) {
 		try {
-			return Response.ok(ktm.getTrees(uid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(ktm.getTrees(uid));
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -34,10 +34,9 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteTree(Tree tree) {
 		try {
-			return Response.ok(ktm.deleteTree(tree.getId()),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(ktm.deleteTree(tree.getId()));
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -45,10 +44,9 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(Tree tree, @HeaderParam("uid") int uid) {
 		try {
-			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, tree.getTitle())).build();
+			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree.getTitle()));
 		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -57,11 +55,9 @@ public class KnowledgeTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
 		try {
-			return Response
-					.ok(ktm.getTree(ktreeid), MediaType.APPLICATION_JSON)
-					.build();
+			return StatusHelper.getStatusOk(ktm.getTree(ktreeid));
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -70,9 +66,9 @@ public class KnowledgeTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateKnowledgeTree(Tree tree) {
 		try {
-			return Response.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(ktm.updateTree(tree));
 		} catch (Exception ex) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -82,10 +78,9 @@ public class KnowledgeTreeController {
 	public Response getSubnodesByTree(@PathParam("ktreeid") int treeId) {
 		try {
 			SubnodeManager sm = new SubnodeManager();
-			return Response.ok(sm.getSubnodesFromTree(treeId),
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getStatusOk(sm.getSubnodesFromTree(treeId));
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

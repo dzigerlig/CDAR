@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.manager.producer.XmlTreeManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/simpleexport")
 public class ExportController {
@@ -19,10 +20,9 @@ public class ExportController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
 			try {
-				return Response.ok(xtm.getXmlTrees(ktreeid),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(xtm.getXmlTrees(ktreeid));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -31,10 +31,9 @@ public class ExportController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteKnowledgeTreeSimpleXml(int id) {
 			try {
-				return Response.ok(xtm.deleteXmlTree(id),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(xtm.deleteXmlTree(id));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -44,10 +43,9 @@ public class ExportController {
 		public Response setKnowledgeTreeSimpleXml(int id) {
 			try {
 				xtm.cleanTree(id);
-				return Response.ok(xtm.setXmlTree(id),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(xtm.setXmlTree(id));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -57,10 +55,9 @@ public class ExportController {
 		public Response addKnowledgeTreeSimpleXml(@HeaderParam("uid") int uid,
 				@PathParam("ktreeid") int ktrid) {
 			try {
-				return Response.ok(xtm.addXmlTree(uid, ktrid),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(xtm.addXmlTree(uid, ktrid));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 }
