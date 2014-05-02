@@ -31,7 +31,7 @@ import cdar.pl.controller.producer.KnowledgeSubnodeController;
 import cdar.pl.controller.producer.KnowledgeTreeController;
 import cdar.pl.controller.producer.TemplateController;
 
-public class TestTreeController extends JerseyTest {
+public class TestKnowledgeTreeController extends JerseyTest {
 
 	private final String USERNAME = "testuser";
 	private final String PASSWORD = "testpassword";
