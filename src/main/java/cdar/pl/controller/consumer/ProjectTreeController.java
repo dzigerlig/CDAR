@@ -65,9 +65,9 @@ public class ProjectTreeController {
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteTreeById(int ptreeid) {
+	public Response deleteTree(Tree tree) {
 		try {
-			return StatusHelper.getStatusOk(ptm.deleteProjectTree(ptreeid));
+			return StatusHelper.getStatusOk(ptm.deleteProjectTree(tree.getId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

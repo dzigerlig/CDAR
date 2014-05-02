@@ -30,9 +30,9 @@ public class KnowledgeNodeLinkController {
 	@POST
 	// Changed
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNodeLink(NodeLink nl) {
+	public Response addNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusCreated(lm.addNodeLink(nl.getTreeId(), nl.getSourceId(), nl.getTargetId(), nl.getSubnodeId()));
+			return StatusHelper.getStatusCreated(lm.addNodeLink(nodeLink.getTreeId(), nodeLink.getSourceId(), nodeLink.getTargetId(), nodeLink.getSubnodeId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -52,9 +52,9 @@ public class KnowledgeNodeLinkController {
 	@POST
 	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNodeLink(NodeLink nl) {
+	public Response updateNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusOk(lm.updateNodeLink(nl));
+			return StatusHelper.getStatusOk(lm.updateNodeLink(nodeLink));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -64,9 +64,9 @@ public class KnowledgeNodeLinkController {
 	// Changed
 	@Path("nodeid/{nodeid}/zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomUpLink(@PathParam("nodeid") int nodeid) {
+	public Response zoomUpLink(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.zoomUp(nodeid));
+			return StatusHelper.getStatusOk(lm.zoomUp(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -76,9 +76,9 @@ public class KnowledgeNodeLinkController {
 	// Changed
 	@Path("nodeid/{nodeid}/zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomDownLink(@PathParam("nodeid") int nodeid) {
+	public Response zoomDownLink(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.zoomDown(nodeid));
+			return StatusHelper.getStatusOk(lm.zoomDown(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
