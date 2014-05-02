@@ -253,7 +253,21 @@ public class TestTreeController extends JerseyTest {
 						Response.class);
 		assertEquals(400, deletedTemplateResponse.getStatus());
 	}
-
+	
+	@Test
+	public void testGetTemplate() {
+		Template addedTemplate = addTemplate(treeid, "TestTemplate",
+				"TemplateText");
+		Response getTemplateResponse = target(
+				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		addedTemplate = getTemplateResponse.readEntity(Template.class);
+		deleteTemplate(addedTemplate.getId());
+		assertTrue(addedTemplate.getId() > 0);
+		assertEquals(200, getTemplateResponse.getStatus());
+	}
+	
 	@Test
 	public void testGetAllTemplates() {
 		int quantityOfTemplatesBeforeAdd = target(
@@ -275,22 +289,9 @@ public class TestTreeController extends JerseyTest {
 		assertEquals(200, quantityOfTemplatesAfterAddResponse.getStatus());
 		assertEquals(quantityOfTemplatesBeforeAdd + 2,
 				quantityOfTemplateAfterAdd);
-
 	}
 
-	@Test
-	public void testGetTemplate() {
-		Template addedTemplate = addTemplate(treeid, "TestTemplate",
-				"TemplateText");
-		Response getTemplateResponse = target(
-				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class);
-		addedTemplate = getTemplateResponse.readEntity(Template.class);
-		deleteTemplate(addedTemplate.getId());
-		assertTrue(addedTemplate.getId() > 0);
-		assertEquals(200, getTemplateResponse.getStatus());
-	}
+
 
 	@Test
 	public void testEditTemplate() {
@@ -887,11 +888,13 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteTemplate(int templateid) {
+		Template deleteTemplate = new Template();
+		deleteTemplate.setId(templateid);
 		return target("/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(templateid, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTemplate, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	};
 
