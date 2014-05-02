@@ -114,10 +114,9 @@ public class UserRepository {
 
 	public User updateUser(User user) throws Exception {
 		final String sql = "UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?";
-		ResultSet generatedKeys = null;
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+						.prepareStatement(sql)) {
 			preparedStatement.setDate(1,
 					new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(2, user.getUsername());
@@ -126,11 +125,6 @@ public class UserRepository {
 			preparedStatement.setInt(5, user.getId());
 
 			preparedStatement.executeUpdate();
-
-			generatedKeys = preparedStatement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				user.setId(generatedKeys.getInt(1));
-			}
 
 		} catch (Exception ex) {
 			throw ex;

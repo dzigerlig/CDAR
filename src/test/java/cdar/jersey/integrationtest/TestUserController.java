@@ -49,11 +49,9 @@ public class TestUserController extends JerseyTest {
 		User loginUser = target("users/login").queryParam("password", PASSWORD)
 				.queryParam("username", USERNAME).request().get(Response.class)
 				.readEntity(User.class);
-		System.out.println(loginUser.getId());
 		Response deleteStatus = target("users/delete").request().post(
 				Entity.entity(loginUser, MediaType.APPLICATION_JSON),
 				Response.class);
-
 		assertEquals(200, deleteStatus.getStatus());
 	}
 
@@ -95,20 +93,18 @@ public class TestUserController extends JerseyTest {
 				.queryParam("password", PASSWORD)
 				.queryParam("username", USERNAME).request().get(Response.class);
 		User beforUser = beforUserResponse.readEntity(User.class);
-		beforUser.setUsername("hans");
 		beforUser.setPassword("123456");
-
 		Response afterUserResponse = target("users/" + beforUser.getId())
 				.request().post(
 						Entity.entity(beforUser, MediaType.APPLICATION_JSON),
+						Response.class);		
+		User afterUser = afterUserResponse.readEntity(User.class);	
+		beforUser.setPassword(PASSWORD);
+		target("users/" + beforUser.getId())
+				.request().post(
+						Entity.entity(beforUser, MediaType.APPLICATION_JSON),
 						Response.class);
-		User afterUser = afterUserResponse.readEntity(User.class);
-System.out.println(afterUserResponse.getStatus());
-		target("users/delete").request().post(
-				Entity.entity(beforUser, MediaType.APPLICATION_JSON),
-				Response.class);
 		assertNotEquals(null, afterUser);
 		assertEquals(200, afterUserResponse.getStatus());
-
 	}
 }
