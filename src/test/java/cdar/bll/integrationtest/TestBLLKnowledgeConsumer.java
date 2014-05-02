@@ -283,7 +283,7 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, pnlm.getProjectNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
-		pnlm.removeProjectNodeLink(projectnodelink.getId());
+		pnlm.deleteProjectNodeLink(projectnodelink.getId());
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
 	}
 	
@@ -307,7 +307,7 @@ public class TestBLLKnowledgeConsumer {
 		pnlm.updateLink(projectnodelink);
 		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
-		pnlm.removeProjectNodeLink(projectnodelink.getId());
+		pnlm.deleteProjectNodeLink(projectnodelink.getId());
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
 	}
 	
@@ -334,7 +334,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test(expected = UnknownProjectNodeLinkException.class)
 	public void testDeleteUnknownProjectNodeLink() throws Exception {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-		pnlm.removeProjectNodeLink(unknownId);
+		pnlm.deleteProjectNodeLink(unknownId);
 	}
 	
 	@Test

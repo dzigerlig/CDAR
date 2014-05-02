@@ -44,7 +44,7 @@ public class ProjectNodeLinkManager {
 		return pnlr.getProjectNodeLink(projectNodeLinkId);
 	}
 	
-	public boolean removeProjectNodeLink(int projectNodeLinkId) throws Exception {
+	public boolean deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
 		return pnlr.deleteProjectNodeLink(projectNodeLinkId);
 	}
 
