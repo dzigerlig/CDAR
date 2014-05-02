@@ -15,6 +15,7 @@ import cdar.bll.entity.Node;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")
 public class KnowledgeNodeController {
@@ -28,7 +29,7 @@ public class KnowledgeNodeController {
 					.ok(nm.getNodes(ktreeid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -49,7 +50,7 @@ public class KnowledgeNodeController {
 						.build();
 			}
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -61,7 +62,7 @@ public class KnowledgeNodeController {
 			return Response.ok(nm.getNode(nodeid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -72,7 +73,7 @@ public class KnowledgeNodeController {
 		try {
 			return Response.ok(nm.updateNode(node), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -84,7 +85,7 @@ public class KnowledgeNodeController {
 			return Response.ok(nm.deleteNode(node.getId()), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -96,7 +97,7 @@ public class KnowledgeNodeController {
 			return Response.ok(nm.zoomUp(nodeId), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -108,7 +109,7 @@ public class KnowledgeNodeController {
 			return Response.ok(nm.zoomDown(nodeId), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -120,7 +121,7 @@ public class KnowledgeNodeController {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return Response.ok(mwm.getKnowledgeNodeWikiEntry(nodeId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -133,7 +134,7 @@ public class KnowledgeNodeController {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return Response.ok(mwm.saveKnowledgeNodeWikiEntry(uid, wikiEntry), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

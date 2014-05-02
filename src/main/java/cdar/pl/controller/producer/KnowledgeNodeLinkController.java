@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.NodeLink;
 import cdar.bll.manager.producer.NodeLinkManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")
 public class KnowledgeNodeLinkController {
@@ -23,7 +24,7 @@ public class KnowledgeNodeLinkController {
 			return Response.ok(lm.getNodeLinks(ktreeid),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -36,7 +37,7 @@ public class KnowledgeNodeLinkController {
 					lm.addNodeLink(nl.getTreeId(), nl.getSourceId(),
 							nl.getTargetId(), nl.getSubnodeId())).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -48,7 +49,7 @@ public class KnowledgeNodeLinkController {
 			return Response.ok(lm.deleteNodeLink(nodeLink.getId()),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -60,7 +61,7 @@ public class KnowledgeNodeLinkController {
 			return Response.ok(lm.updateNodeLink(nl),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -73,7 +74,7 @@ public class KnowledgeNodeLinkController {
 			return Response.ok(lm.zoomUp(nodeid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -86,7 +87,7 @@ public class KnowledgeNodeLinkController {
 			return Response.ok(lm.zoomDown(nodeid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

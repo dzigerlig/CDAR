@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.manager.producer.XmlTreeManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/simpleexport")
 public class ExportController {
@@ -19,10 +20,9 @@ public class ExportController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getKnowledgeTreeSimpleXml(@PathParam("ktreeid") int ktreeid) {
 			try {
-				return Response.ok(xtm.getXmlTrees(ktreeid),
-						MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getResponseOk(xtm.getXmlTrees(ktreeid));
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -34,7 +34,7 @@ public class ExportController {
 				return Response.ok(xtm.deleteXmlTree(id),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -47,7 +47,7 @@ public class ExportController {
 				return Response.ok(xtm.setXmlTree(id),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -60,7 +60,7 @@ public class ExportController {
 				return Response.ok(xtm.addXmlTree(uid, ktrid),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 }

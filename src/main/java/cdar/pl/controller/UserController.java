@@ -24,10 +24,9 @@ public class UserController {
 		try {
 			User loggedInUser = userManager.loginUser(username, password);
 			loggedInUser.setPassword(null);
-			return Response.ok(loggedInUser,
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getResponseOk(loggedInUser);
 		} catch (Exception e) {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+			return StatusHelper.getStatusUnauthorized();
 		}
 	}
 
@@ -37,9 +36,9 @@ public class UserController {
 		try {
 			user = userManager.createUser(user.getUsername(), user.getPassword());
 			user.setPassword(null);
-			return Response.status(Response.Status.CREATED).entity(user).build();
+			return StatusHelper.getStatusCreated(user);
 		} catch (Exception ex) {
-			return Response.status(Response.Status.CONFLICT).build();
+			return StatusHelper.getStatusConflict();
 		}
 	}
 
@@ -50,10 +49,9 @@ public class UserController {
 		try {
 			user = userManager.updateUser(user);
 			user.setPassword(null);
-			return Response.ok(user,
-					MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getResponseOk(user);
 		} catch (Exception ex) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -62,9 +60,9 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(User user) {
 		try {
-			return Response.ok(userManager.deleteUser(user.getId()), MediaType.APPLICATION_JSON).build();
+			return StatusHelper.getResponseOk(userManager.deleteUser(user.getId()));
 		} catch (Exception ex) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

@@ -15,4 +15,12 @@ public class StatusHelper<T> {
 	public static <T> Response getStatusCreated(T t) {
 		return Response.status(Response.Status.CREATED).entity(t).build();
 	}
+	
+	public static Response getStatusUnauthorized() {
+		return Response.status(Response.Status.UNAUTHORIZED).build();
+	}
+	
+	public static Response getStatusConflict() {
+		return Response.status(Response.Status.CONFLICT).build();
+	}
 }

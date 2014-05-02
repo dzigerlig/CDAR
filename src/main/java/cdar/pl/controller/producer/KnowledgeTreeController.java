@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.Tree;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees")
 public class KnowledgeTreeController {
@@ -25,7 +26,7 @@ public class KnowledgeTreeController {
 			return Response.ok(ktm.getTrees(uid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -37,7 +38,7 @@ public class KnowledgeTreeController {
 			return Response.ok(ktm.deleteTree(tree.getId()),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -47,8 +48,7 @@ public class KnowledgeTreeController {
 		try {
 			return Response.status(Response.Status.CREATED).entity(ktm.addTree(uid, tree.getTitle())).build();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -61,7 +61,7 @@ public class KnowledgeTreeController {
 					.ok(ktm.getTree(ktreeid), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class KnowledgeTreeController {
 		try {
 			return Response.ok(ktm.updateTree(tree), MediaType.APPLICATION_JSON).build();
 		} catch (Exception ex) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class KnowledgeTreeController {
 			return Response.ok(sm.getSubnodesFromTree(treeId),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

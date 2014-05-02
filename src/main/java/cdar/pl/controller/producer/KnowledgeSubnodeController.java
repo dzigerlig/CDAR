@@ -20,6 +20,7 @@ import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class KnowledgeSubnodeController {
@@ -32,7 +33,7 @@ public class KnowledgeSubnodeController {
 		try {
 			return Response.ok(sm.getSubnodesFromNode(nodeId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -43,7 +44,7 @@ public class KnowledgeSubnodeController {
 			return Response.status(Response.Status.CREATED)
 					.entity(sm.addSubnode(subnode.getNodeId(), subnode.getTitle())).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -54,7 +55,7 @@ public class KnowledgeSubnodeController {
 		try {
 			return Response.ok(sm.updateSubnode(subnode), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -65,7 +66,7 @@ public class KnowledgeSubnodeController {
 		try {
 			return Response.ok(sm.getSubnode(subnodeId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -80,7 +81,7 @@ public class KnowledgeSubnodeController {
 							.getNodeLinksBySubnode(subnode.getId()), "update"),
 							MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -96,7 +97,7 @@ public class KnowledgeSubnodeController {
 					new ChangesWrapper<NodeLink>(nodelinks, "delete"),
 					MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -108,7 +109,7 @@ public class KnowledgeSubnodeController {
 			return Response.ok(sm.zoomUp(nodeId), MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
@@ -119,7 +120,7 @@ public class KnowledgeSubnodeController {
 		try {
 			return Response.ok(sm.zoomDown(nodeId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -130,7 +131,7 @@ public class KnowledgeSubnodeController {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return Response.ok(mwm.getKnowledgeSubnodeWikiEntry(subnodeId), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
@@ -143,7 +144,7 @@ public class KnowledgeSubnodeController {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return Response.ok(mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry), MediaType.APPLICATION_JSON).build();
 		} catch (UnknownUserException uue) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

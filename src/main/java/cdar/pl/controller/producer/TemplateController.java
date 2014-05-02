@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.producer.Template;
 import cdar.bll.manager.producer.TemplateManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/templates")
 public class TemplateController {
@@ -23,7 +24,7 @@ public class TemplateController {
 				return Response.ok(tm.getKnowledgeTemplates(ktreeid),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -33,7 +34,7 @@ public class TemplateController {
 			try {
 				return Response.status(Response.Status.CREATED).entity(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade())).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 		
@@ -46,7 +47,7 @@ public class TemplateController {
 				return Response.ok(tm.getKnowledgeTemplate(templateid),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -58,7 +59,7 @@ public class TemplateController {
 				return Response.ok(tm.updateTemplate(template),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 
@@ -70,7 +71,7 @@ public class TemplateController {
 				return Response.ok(tm.deleteTemplate(template.getId()),
 						MediaType.APPLICATION_JSON).build();
 			} catch (Exception e) {
-				return Response.status(Response.Status.BAD_REQUEST).build();
+				return StatusHelper.getStatusBadRequest();
 			}
 		}
 }
