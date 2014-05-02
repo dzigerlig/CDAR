@@ -73,7 +73,7 @@ public class KnowledgeTreeController {
 	}
 	
 	@GET
-	@Path("subnodes")
+	@Path("{ktreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodesByTree(@PathParam("ktreeid") int treeId) {
 		try {
