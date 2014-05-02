@@ -8,17 +8,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.manager.consumer.ProjectSubnodeManager;
+
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
 public class ProjectSubnodeController {
+	ProjectSubnodeManager psm = new ProjectSubnodeManager();
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes() {
+		
 		return null;
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode() {
+		
 		return null;
 	}
 	
@@ -26,6 +32,7 @@ public class ProjectSubnodeController {
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnode() {
+		
 		return null;
 	}
 	
@@ -33,6 +40,7 @@ public class ProjectSubnodeController {
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateSubnode() {
+		
 		return null;
 	}
 	
@@ -40,6 +48,7 @@ public class ProjectSubnodeController {
 	@Path("{subnodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodeWikiEntry() {
+		
 		return null;
 	}
 	
@@ -47,6 +56,7 @@ public class ProjectSubnodeController {
 	@Path("{subnodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateSubnodeWikiEntry() {
+		
 		return null;
 	}
 	
@@ -54,6 +64,7 @@ public class ProjectSubnodeController {
 	@Path("zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpSubnode() {
+		
 		return null;
 	}
 	
@@ -61,6 +72,7 @@ public class ProjectSubnodeController {
 	@Path("zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownSubnode() {
+		
 		return null;
 	}
 	
@@ -68,6 +80,7 @@ public class ProjectSubnodeController {
 	@Path("rename")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response renameSubnode() {
+		
 		return null;
 	}
 	
@@ -75,6 +88,7 @@ public class ProjectSubnodeController {
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteSubnode() {
+		
 		return null;
 	}
 }
