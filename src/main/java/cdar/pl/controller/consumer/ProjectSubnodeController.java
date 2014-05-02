@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
-import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
@@ -40,7 +39,7 @@ public class ProjectSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(ProjectSubnode subnode) {
 		try {
-			return StatusHelper.getStatusOk(psm.addProjectSubnode(subnode.getNodeId(), subnode.getTitle()));
+			return StatusHelper.getStatusCreated(psm.addProjectSubnode(subnode.getNodeId(), subnode.getTitle()));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

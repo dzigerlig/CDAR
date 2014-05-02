@@ -31,7 +31,7 @@ public class ProjectNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.addProjectNodeLink(nodeLink.getTreeId(), nodeLink.getSourceId(), nodeLink.getTargetId(), nodeLink.getSubnodeId()));
+			return StatusHelper.getStatusCreated(pnlm.addProjectNodeLink(nodeLink.getTreeId(), nodeLink.getSourceId(), nodeLink.getTargetId(), nodeLink.getSubnodeId()));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

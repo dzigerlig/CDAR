@@ -31,7 +31,7 @@ public class CommentController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addComment(Comment comment) {
 		try {
-			return StatusHelper.getStatusOk(cm.addComment(comment));
+			return StatusHelper.getStatusCreated(cm.addComment(comment));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
