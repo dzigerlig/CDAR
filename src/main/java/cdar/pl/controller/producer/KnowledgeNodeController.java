@@ -69,6 +69,7 @@ public class KnowledgeNodeController {
 	@Path("{nodeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateNode(Node node) {
+		System.out.println("asdf");
 		try {
 			return Response.ok(nm.updateNode(node), MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {

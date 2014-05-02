@@ -556,7 +556,7 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedDirectory, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(addedNode, MediaType.APPLICATION_JSON),
 						Response.class);
 		Node updatedNode = updatedNodeResponse
 				.readEntity(Node.class);
