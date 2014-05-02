@@ -25,15 +25,11 @@ public class CommentManager {
 		return cr.getComment(commentId);
 	}
 	
-	public Comment addComment(int uid, int kpnid, String commentText) throws Exception {
-		Comment comment = new Comment();
-		comment.setUserId(uid);
-		comment.setNodeId(kpnid);
-		comment.setComment(commentText);
+	public Comment addComment(Comment comment) throws Exception {
 		return cr.createComment(comment);
 	}
 	
-	public boolean removeComment(int id) throws Exception {
+	public boolean deleteComment(int id) throws Exception {
 		return cr.deleteComment(id);
 	}
 	

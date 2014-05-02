@@ -352,7 +352,7 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
 		assertEquals(0, psm.getProjectSubnode(subnode.getId()).getStatus());
-		psm.removeProjectSubnode(subnode.getId());
+		psm.deleteProjectSubnode(subnode.getId());
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 	}
@@ -378,7 +378,7 @@ public class TestBLLKnowledgeConsumer {
 		psm.updateProjectSubnode(subnode);
 		assertEquals(newProjectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
 		assertEquals(3, psm.getProjectSubnode(subnode.getId()).getStatus());
-		psm.removeProjectSubnode(subnode.getId());
+		psm.deleteProjectSubnode(subnode.getId());
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 	}
@@ -412,7 +412,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test (expected = UnknownProjectSubnodeException.class)
 	public void testDeleteUnknownProjectSubnode() throws UnknownProjectSubnodeException {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		psm.removeProjectSubnode(unknownId);
+		psm.deleteProjectSubnode(unknownId);
 	}
 	
 	@Test
@@ -424,10 +424,14 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
 		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());
-		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
+		Comment comment = new Comment();
+		comment.setUserId(um.getUser(username).getId());
+		comment.setNodeId(pnode.getId());
+		comment.setComment(commentString);
+		comment = cm.addComment(comment);
 		assertEquals(1, cm.getComments(pnode.getId()).size());
 		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
-		cm.removeComment(comment.getId());
+		cm.deleteComment(comment.getId());
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 	}
 	
@@ -441,13 +445,17 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
 		CommentManager cm = new CommentManager();
 		assertEquals(0, cm.getComments(pnode.getId()).size());
-		Comment comment = cm.addComment(um.getUser(username).getId(), pnode.getId(), commentString);
+		Comment comment = new Comment();
+		comment.setUserId(um.getUser(username).getId());
+		comment.setNodeId(pnode.getId());
+		comment.setComment(commentString);
+		comment = cm.addComment(comment);
 		assertEquals(1, cm.getComments(pnode.getId()).size());
 		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
 		comment.setComment(newCommentString);
 		cm.updateComment(comment);
 		assertEquals(newCommentString, cm.getComment(comment.getId()).getComment());
-		cm.removeComment(comment.getId());
+		cm.deleteComment(comment.getId());
 		assertEquals(0, cm.getComments(pnode.getId()).size());
 	}
 	
@@ -475,7 +483,7 @@ public class TestBLLKnowledgeConsumer {
 	@Test(expected = UnknownCommentException.class)
 	public void testDeleteUnknownComment() throws Exception {
 		CommentManager cm = new CommentManager();
-		cm.removeComment(unknownId);
+		cm.deleteComment(unknownId);
 	}
 }
 

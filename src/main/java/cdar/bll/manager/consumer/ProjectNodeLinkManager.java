@@ -1,6 +1,7 @@
 package cdar.bll.manager.consumer;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
@@ -45,5 +46,20 @@ public class ProjectNodeLinkManager {
 	
 	public boolean removeProjectNodeLink(int projectNodeLinkId) throws Exception {
 		return pnlr.deleteProjectNodeLink(projectNodeLinkId);
+	}
+
+	public Set<NodeLink> zoomUp(int nodeId) {
+		//TODO
+		return null;
+	}
+
+	public Set<NodeLink> zoomDown(int nodeId) {
+		//TODO
+		return null;
+	}
+
+	public List<NodeLink> getProjectNodeLinksBySubnode(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

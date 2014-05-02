@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.entity.Tree;
+import cdar.bll.entity.XmlTree;
 import cdar.bll.manager.producer.XmlTreeManager;
 import cdar.pl.controller.StatusHelper;
 
@@ -29,9 +31,9 @@ public class ExportController {
 		@POST
 		@Path("delete")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response deleteKnowledgeTreeSimpleXml(int id) {
+		public Response deleteKnowledgeTreeSimpleXml(Tree tree) {
 			try {
-				return StatusHelper.getStatusOk(xtm.deleteXmlTree(id));
+				return StatusHelper.getStatusOk(xtm.deleteXmlTree(tree.getId()));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -40,10 +42,10 @@ public class ExportController {
 		@POST
 		@Path("set")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response setKnowledgeTreeSimpleXml(int id) {
+		public Response setKnowledgeTreeSimpleXml(XmlTree xmlTree) {
 			try {
-				xtm.cleanTree(id);
-				return StatusHelper.getStatusOk(xtm.setXmlTree(id));
+				xtm.cleanTree(xmlTree.getId());
+				return StatusHelper.getStatusOk(xtm.setXmlTree(xmlTree.getId()));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

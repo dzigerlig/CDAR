@@ -3,39 +3,55 @@ package cdar.bll.wiki;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
+import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
+import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiModel {
 	private UserManager um = new UserManager();
 
-	public WikiEntry getProjectNodeWikiEntry(int nodeid) throws UnknownProjectNodeException {
+	public WikiEntry getProjectNodeWikiEntry(int nodeId) throws UnknownProjectNodeException {
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		return new WikiEntry(pnm.getProjectNode(nodeid));
+		return new WikiEntry(pnm.getProjectNode(nodeId));
 	}
 
-	public WikiEntry getKnowledgeNodeWikiEntry(int nodeid) throws UnknownNodeException {
+	public WikiEntry getKnowledgeNodeWikiEntry(int nodeId) throws UnknownNodeException {
 		NodeManager nm = new NodeManager();
-		return new WikiEntry(nm.getNode(nodeid));
+		return new WikiEntry(nm.getNode(nodeId));
 	}
 
-	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeid) throws UnknownSubnodeException {
+	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeId) throws UnknownSubnodeException {
 		SubnodeManager sm = new SubnodeManager();
-		return new WikiEntry(sm.getSubnode(subnodeid));
+		return new WikiEntry(sm.getSubnode(subnodeId));
 	}
 
-	public WikiEntry saveKnowledgeNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
+	public WikiEntry saveKnowledgeNodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+		User user = um.getUser(userId);
+		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
+	}
+
+	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+		User user = um.getUser(userId);
+		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
+	}
+
+	public WikiEntry saveProjectNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
 		User user = um.getUser(userid);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
-		User user = um.getUser(userid);
-		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
+	public WikiEntry getKnowledgeProjectSubnodeWikiEntry(int subnodeId) throws UnknownProjectSubnodeException {
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		return new WikiEntry(psm.getProjectSubnode(subnodeId));
 	}
 
+	public WikiEntry saveKnowledgeProjectSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+		User user = um.getUser(userId);
+		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
+	}
 }
