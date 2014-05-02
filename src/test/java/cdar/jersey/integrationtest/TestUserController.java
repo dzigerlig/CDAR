@@ -1,8 +1,7 @@
 package cdar.jersey.integrationtest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-import java.util.Set;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -50,8 +49,9 @@ public class TestUserController extends JerseyTest {
 		User loginUser = target("users/login").queryParam("password", PASSWORD)
 				.queryParam("username", USERNAME).request().get(Response.class)
 				.readEntity(User.class);
+		System.out.println(loginUser.getId());
 		Response deleteStatus = target("users/delete").request().post(
-				Entity.entity(loginUser.getId(), MediaType.APPLICATION_JSON),
+				Entity.entity(loginUser, MediaType.APPLICATION_JSON),
 				Response.class);
 
 		assertEquals(200, deleteStatus.getStatus());
@@ -70,7 +70,8 @@ public class TestUserController extends JerseyTest {
 
 	@Test
 	public void testUserLogin() {
-		Response loginUserResponse = target("users/login").queryParam("password", PASSWORD)
+		Response loginUserResponse = target("users/login")
+				.queryParam("password", PASSWORD)
 				.queryParam("username", USERNAME).request().get(Response.class);
 		User loginUser = loginUserResponse.readEntity(User.class);
 		assertEquals(200, loginUserResponse.getStatus());
@@ -90,29 +91,24 @@ public class TestUserController extends JerseyTest {
 		User user = new User();
 		user.setUsername(USERNAME);
 		user.setPassword(PASSWORD);
-		Response beforUserResponse = target("users/login").queryParam("password", PASSWORD)
+		Response beforUserResponse = target("users/login")
+				.queryParam("password", PASSWORD)
 				.queryParam("username", USERNAME).request().get(Response.class);
-		User beforUser =beforUserResponse.readEntity(User.class);
+		User beforUser = beforUserResponse.readEntity(User.class);
 		beforUser.setUsername("hans");
 		beforUser.setPassword("123456");
 
-		Response afterUserResponse = target("users/"+beforUser.getId()).request().post(
-				Entity.entity(beforUser, MediaType.APPLICATION_JSON),
-				Response.class);
+		Response afterUserResponse = target("users/" + beforUser.getId())
+				.request().post(
+						Entity.entity(beforUser, MediaType.APPLICATION_JSON),
+						Response.class);
 		User afterUser = afterUserResponse.readEntity(User.class);
-
-		assertEquals(beforUser.getUsername(), afterUser.getUsername());
-		assertEquals(beforUser.getPassword(), afterUser.getPassword());
-
-		beforUser.setUsername(USERNAME);
-		beforUser.setPassword(PASSWORD);
-
-		target("users/edit").request().post(
+System.out.println(afterUserResponse.getStatus());
+		target("users/delete").request().post(
 				Entity.entity(beforUser, MediaType.APPLICATION_JSON),
 				Response.class);
-
+		assertNotEquals(null, afterUser);
 		assertEquals(200, afterUserResponse.getStatus());
 
 	}
-
 }
