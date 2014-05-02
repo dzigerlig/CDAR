@@ -14,6 +14,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.tukaani.xz.delta.DeltaDecoder;
 
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.Directory;
@@ -38,6 +39,7 @@ public class TestTreeController extends JerseyTest {
 	private final String TREENAME = "testtree";
 	private final String UID = "uid";
 	private final String ACCESSTOKEN = "accesstoken";
+	private final int NOTEXISTINGID = 999999999;
 	private int userId;
 	private int treeid;
 	private String accesstoken;
@@ -127,7 +129,7 @@ public class TestTreeController extends JerseyTest {
 	@Test
 	public void testDelteNotExistingTree() {
 		Tree deleteTree = new Tree();
-		deleteTree.setId(999999999);
+		deleteTree.setId(NOTEXISTINGID);
 		Response deletedTreeResponse = target("/ktrees/delete")
 				.request()
 				.header(UID, userId)
@@ -146,12 +148,12 @@ public class TestTreeController extends JerseyTest {
 		assertEquals(TREENAME, testTree.getTitle());
 		assertEquals(200, testTreeResponse.getStatus());
 	}
-	
+
 	@Test
 	public void testEditTree() {
 		Tree editTree = new Tree();
 		editTree.setTitle("editTree");
-		Response editedTreeResponse = target("ktrees/"+editTree.getId())
+		Response editedTreeResponse = target("ktrees/" + editTree.getId())
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -159,14 +161,15 @@ public class TestTreeController extends JerseyTest {
 						Response.class);
 		Tree resetEditTree = new Tree();
 		resetEditTree.setTitle("editTree");
-		target("ktrees/"+editTree.getId())
+		target("ktrees/" + editTree.getId())
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(resetEditTree, MediaType.APPLICATION_JSON),
 						Response.class);
 		Tree editedTree = editedTreeResponse.readEntity(Tree.class);
-		assertEquals(200, editedTreeResponse.getStatus());		assertEquals("editTree", editedTree.getTitle());
+		assertEquals(200, editedTreeResponse.getStatus());
+		assertEquals("editTree", editedTree.getTitle());
 	}
 
 	@Test
@@ -211,7 +214,9 @@ public class TestTreeController extends JerseyTest {
 				.readEntity(Template.class);
 
 		int quantityOfTemplatesAfterAdd = target(
-				"/ktrees/" + treeid + "/templates/").request()
+				"/ktrees/" + treeid + "/templates").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+
 				.get(Response.class).readEntity(Set.class).size();
 
 		Response deletedTemplateRequest = target(
@@ -219,39 +224,48 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedTemplate.getId(),
-						MediaType.APPLICATION_JSON), Response.class);
-
-		boolean isTemplateDeleted = deletedTemplateRequest
-				.readEntity(boolean.class);
+				.post(Entity.entity(addedTemplate, MediaType.APPLICATION_JSON),
+						Response.class);
 
 		int quantityOfTemplatesAfterDelete = target(
-				"/ktrees/" + treeid + "/templates/").request()
+				"/ktrees/" + treeid + "/templates").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 
 		assertEquals(201, addedTemplateResponse.getStatus());
 		assertEquals(200, deletedTemplateRequest.getStatus());
-		assertEquals(treeid, addedTemplate.getTreeId());
-		assertEquals("TestTemplate", addedTemplate.getTitle());
-		assertEquals("TemplateText", addedTemplate.getTemplatetext());
 		assertEquals(quantityOfTemplatesBeforeAdd + 1,
 				quantityOfTemplatesAfterAdd);
-		assertTrue(isTemplateDeleted);
 		assertEquals(quantityOfTemplatesBeforeAdd,
 				quantityOfTemplatesAfterDelete);
 	}
 
 	@Test
 	public void testDeleteNotExistingTemplate() {
+		Template deleteTemplate = new Template();
+		deleteTemplate.setId(NOTEXISTINGID);
 		Response deletedTemplateResponse = target(
 				"/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTemplate, MediaType.APPLICATION_JSON),
 						Response.class);
 		assertEquals(400, deletedTemplateResponse.getStatus());
+	}
+
+	@Test
+	public void testGetTemplate() {
+		Template addedTemplate = addTemplate(treeid, "TestTemplate",
+				"TemplateText");
+		Response getTemplateResponse = target(
+				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
+				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		addedTemplate = getTemplateResponse.readEntity(Template.class);
+		deleteTemplate(addedTemplate.getId());
+		assertTrue(addedTemplate.getId() > 0);
+		assertEquals(200, getTemplateResponse.getStatus());
 	}
 
 	@Test
@@ -275,21 +289,6 @@ public class TestTreeController extends JerseyTest {
 		assertEquals(200, quantityOfTemplatesAfterAddResponse.getStatus());
 		assertEquals(quantityOfTemplatesBeforeAdd + 2,
 				quantityOfTemplateAfterAdd);
-
-	}
-
-	@Test
-	public void testGetTemplate() {
-		Template addedTemplate = addTemplate(treeid, "TestTemplate",
-				"TemplateText");
-		Response getTemplateResponse = target(
-				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
-				.request().header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class);
-		addedTemplate = getTemplateResponse.readEntity(Template.class);
-		deleteTemplate(addedTemplate.getId());
-		assertTrue(addedTemplate.getId() > 0);
-		assertEquals(200, getTemplateResponse.getStatus());
 	}
 
 	@Test
@@ -299,7 +298,7 @@ public class TestTreeController extends JerseyTest {
 		addedTemplate.setTemplatetext(TREENAME);
 		addedTemplate.setTitle(USERNAME);
 		Response editTemplateResponse = target(
-				"/ktrees/" + treeid + "/templates/edit")
+				"/ktrees/" + treeid + "/templates")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -353,19 +352,15 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedSubDirectory.getId(),
+				.post(Entity.entity(addedSubDirectory,
 						MediaType.APPLICATION_JSON), Response.class);
-		boolean isSubDirectoryDeleted = deletedSubDirectoryResponse
-				.readEntity(boolean.class);
 		Response deletedDirectoryResponse = target(
 				"/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedDirectory.getId(),
+				.post(Entity.entity(addedDirectory,
 						MediaType.APPLICATION_JSON), Response.class);
-		boolean isDirectoryDeleted = deletedDirectoryResponse
-				.readEntity(boolean.class);
 		int quantityOfDirectoriesAfterDelete = target(
 				"/ktrees/" + treeid + "/directories/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
@@ -383,18 +378,18 @@ public class TestTreeController extends JerseyTest {
 				quantityOfDirectoriesAfterAdd);
 		assertEquals(quantityOfDirectoriesBeforeAdd,
 				quantityOfDirectoriesAfterDelete);
-		assertTrue(isSubDirectoryDeleted);
-		assertTrue(isDirectoryDeleted);
 	}
 
 	@Test
 	public void testDeleteNotExistingDirectory() {
+		Directory deleteDirectory = new Directory();
+		deleteDirectory.setId(NOTEXISTINGID);
 		Response deletedDirectoryResponse = target(
 				"/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteDirectory, MediaType.APPLICATION_JSON),
 						Response.class);
 		assertEquals(400, deletedDirectoryResponse.getStatus());
 	}
@@ -435,45 +430,29 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	@Test
-	public void testRenameDirectories() {
+	public void testEditDirectories() {
+		Directory addedParentDirectory = addDirectory(treeid, 0);
+
 		Directory addedDirectory = addDirectory(treeid, 0);
 		addedDirectory.setTitle(USERNAME);
+		addedDirectory.setParentId(addedParentDirectory.getId());
 
-		Response renamedDirectoryResponse = target(
+
+		Response updatedDirectoryResponse = target(
 				"/ktrees/" + treeid + "/directories/rename")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedDirectory, MediaType.APPLICATION_JSON),
 						Response.class);
-		Directory renamedDirectory = renamedDirectoryResponse
+		Directory updatedDirectory = updatedDirectoryResponse
 				.readEntity(Directory.class);
 		deleteDirectory(addedDirectory.getId());
-		assertEquals(200, renamedDirectoryResponse.getStatus());
-		assertEquals(USERNAME, renamedDirectory.getTitle());
-		assertEquals(treeid, renamedDirectory.getTreeId());
-	}
-
-	@Test
-	public void testMovedDirectories() {
-		Directory addedParentDirectory = addDirectory(treeid, 0);
-
-		Directory addedChildDirectory = addDirectory(treeid, 0);
-		addedChildDirectory.setParentId(addedParentDirectory.getId());
-
-		Response movedDirectoryResponse = target(
-				"/ktrees/" + treeid + "/directories/move")
-				.request()
-				.header(UID, userId)
-				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedChildDirectory,
-						MediaType.APPLICATION_JSON), Response.class);
-		Directory movedDirectory = movedDirectoryResponse
-				.readEntity(Directory.class);
-		deleteDirectory(addedChildDirectory.getId());
 		deleteDirectory(addedParentDirectory.getId());
-		assertEquals(200, movedDirectoryResponse.getStatus());
-		assertEquals(addedParentDirectory.getId(), movedDirectory.getParentId());
+		assertEquals(200, updatedDirectoryResponse.getStatus());
+		assertEquals(USERNAME, updatedDirectory.getTitle());
+		assertEquals(treeid, updatedDirectory.getTreeId());
+		assertEquals(addedParentDirectory.getId(), updatedDirectory.getParentId());
 	}
 
 	@Test
@@ -522,7 +501,7 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(NOTEXISTINGID, MediaType.APPLICATION_JSON),
 						Response.class);
 		assertEquals(400, deletedNodeResponse.getStatus());
 	}
@@ -581,8 +560,7 @@ public class TestTreeController extends JerseyTest {
 		addTestNodeLink.setTreeId(treeid);
 		addTestNodeLink.setSourceId(addedNode1.getId());
 		addTestNodeLink.setTargetId(addedNode2.getId());
-		Response addedNodeLinkResponse = target(
-				"/ktrees/" + treeid + "/links")
+		Response addedNodeLinkResponse = target("/ktrees/" + treeid + "/links")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
@@ -629,7 +607,7 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(NOTEXISTINGID, MediaType.APPLICATION_JSON),
 						Response.class);
 		assertEquals(400, deleteNodeLinkResponse.getStatus());
 	}
@@ -757,7 +735,7 @@ public class TestTreeController extends JerseyTest {
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(999999999, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(NOTEXISTINGID, MediaType.APPLICATION_JSON),
 						Response.class);
 
 		deleteNode(addedNode.getId());
@@ -887,11 +865,13 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteTemplate(int templateid) {
+		Template deleteTemplate = new Template();
+		deleteTemplate.setId(templateid);
 		return target("/ktrees/" + treeid + "/templates/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(templateid, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteTemplate, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	};
 
@@ -909,11 +889,13 @@ public class TestTreeController extends JerseyTest {
 	}
 
 	private boolean deleteDirectory(int directoryid) {
+		Directory deleteDirectory = new Directory();
+		deleteDirectory.setId(directoryid);
 		return target("/ktrees/" + treeid + "/directories/delete")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(directoryid, MediaType.APPLICATION_JSON),
+				.post(Entity.entity(deleteDirectory, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	}
 
