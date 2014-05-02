@@ -44,4 +44,14 @@ public class ProjectNodeManager {
 		projectNode.setStatus(node.getStatus());
 		return pnr.updateProjectNode(projectNode);
 	}
+
+	public Object zoomUp(int nodeId) {
+		//TODO
+		return null;
+	}
+
+	public Object zoomDown(int nodeId) {
+		//TODO
+		return null;
+	}
 }

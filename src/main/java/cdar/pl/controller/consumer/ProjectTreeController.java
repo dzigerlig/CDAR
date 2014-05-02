@@ -12,7 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees")
 public class ProjectTreeController {
@@ -88,6 +90,18 @@ public class ProjectTreeController {
 			return Response.ok(MediaType.APPLICATION_JSON).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+	
+	@GET
+	@Path("{ptreeid}/subnodes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubnodes(@PathParam("ptreeid") int treeId) {
+		try {
+			ProjectSubnodeManager psm = new ProjectSubnodeManager();
+			return StatusHelper.getStatusOk(psm.getProjectSubnodesFromProjectTree(treeId));
+		} catch (Exception ex) {
+			return StatusHelper.getStatusBadRequest();
 		}
 	}
 }

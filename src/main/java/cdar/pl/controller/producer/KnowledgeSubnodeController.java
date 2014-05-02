@@ -50,7 +50,7 @@ public class KnowledgeSubnodeController {
 	@POST
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editSubnode(Subnode subnode) {
+	public Response updateSubnode(Subnode subnode) {
 		try {
 			return StatusHelper.getStatusOk(sm.updateSubnode(subnode));
 		} catch (Exception e) {

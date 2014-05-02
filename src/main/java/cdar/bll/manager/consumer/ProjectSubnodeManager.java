@@ -85,7 +85,17 @@ public class ProjectSubnodeManager {
 		}
 	}
 	
-	public boolean removeProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+	public boolean deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
 		return psr.deleteProjectSubnode(projectSubnodeId);
+	}
+
+	public Set<ProjectNode> zoomUp(int nodeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<ProjectNode> zoomDown(int nodeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
