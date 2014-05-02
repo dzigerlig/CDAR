@@ -1,4 +1,4 @@
-package cdar.pl.controller;
+package cdar.pl.controller.consumer;
 
 import java.util.Set;
 

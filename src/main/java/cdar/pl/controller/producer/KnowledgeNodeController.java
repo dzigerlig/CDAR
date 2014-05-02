@@ -1,4 +1,4 @@
-package cdar.pl.controller;
+package cdar.pl.controller.producer;
 
 
 import javax.ws.rs.Consumes;

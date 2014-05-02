@@ -23,13 +23,13 @@ import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.producer.Template;
-import cdar.pl.controller.DirectoryController;
-import cdar.pl.controller.KnowledgeNodeController;
-import cdar.pl.controller.KnowledgeNodeLinkController;
-import cdar.pl.controller.KnowledgeSubnodeController;
-import cdar.pl.controller.KnowledgeTreeController;
-import cdar.pl.controller.TemplateController;
 import cdar.pl.controller.UserController;
+import cdar.pl.controller.producer.DirectoryController;
+import cdar.pl.controller.producer.KnowledgeNodeController;
+import cdar.pl.controller.producer.KnowledgeNodeLinkController;
+import cdar.pl.controller.producer.KnowledgeSubnodeController;
+import cdar.pl.controller.producer.KnowledgeTreeController;
+import cdar.pl.controller.producer.TemplateController;
 
 public class TestTreeController extends JerseyTest {
 
