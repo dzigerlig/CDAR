@@ -258,15 +258,13 @@ public class NodeRepository {
 		return node;
 	}
 
-	public boolean deleteNode(int nodeId) throws Exception {
+	public void deleteNode(int nodeId) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGENODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, nodeId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownNodeException();
 			}
 		} catch (Exception ex) {

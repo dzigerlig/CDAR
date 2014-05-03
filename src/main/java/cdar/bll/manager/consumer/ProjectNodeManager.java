@@ -33,8 +33,8 @@ public class ProjectNodeManager {
 		return pnr.createProjectNode(projectNode);
 	}
 
-	public boolean deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
-		return pnr.deleteProjectNode(projectNodeId);
+	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+		pnr.deleteProjectNode(projectNodeId);
 	}
 
 	public ProjectNode updateProjectNode(ProjectNode node) throws UnknownProjectNodeException {

@@ -46,7 +46,8 @@ public class DirectoryController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteDirectory(Directory directory) {
 			try {
-				return StatusHelper.getStatusOk(dm.deleteDirectory(directory.getId()));
+				dm.deleteDirectory(directory.getId());
+				return StatusHelper.getStatusOk(null);
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

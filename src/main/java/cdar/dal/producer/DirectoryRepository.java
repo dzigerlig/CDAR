@@ -120,15 +120,13 @@ public class DirectoryRepository {
 		return directory;
 	}
 
-	public boolean deleteDirectory(int directoryId) throws Exception {
+	public void deleteDirectory(int directoryId) throws Exception {
 		final String sql = "DELETE FROM DIRECTORY WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, directoryId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownDirectoryException();
 			}
 		} catch (Exception ex) {

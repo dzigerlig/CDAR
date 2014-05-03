@@ -116,15 +116,13 @@ public class TreeRepository {
 		return tree;
 	}
 	
-	public boolean deleteTree(int treeId) throws Exception {
+	public void deleteTree(int treeId) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, treeId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownTreeException();
 			}
 		} catch (Exception ex) {

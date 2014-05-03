@@ -239,15 +239,13 @@ public class NodeLinkRepository {
 		return nodeLink;
 	}
 	
-	public boolean deleteNodeLink(int nodeLinkId) throws Exception {
+	public void deleteNodeLink(int nodeLinkId) throws Exception {
 		final String sql = "DELETE FROM NODELINK WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, nodeLinkId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownNodeLinkException();
 			}
 		} catch (Exception ex) {

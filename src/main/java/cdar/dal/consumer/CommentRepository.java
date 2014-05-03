@@ -111,15 +111,13 @@ public class CommentRepository {
 		return comment;
 	}
 
-	public boolean deleteComment(int commentId) throws Exception {
+	public void deleteComment(int commentId) throws Exception {
 		final String sql = "DELETE FROM USERCOMMENT WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, commentId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownCommentException();
 			}
 		} catch (Exception ex) {

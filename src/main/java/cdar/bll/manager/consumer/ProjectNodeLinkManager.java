@@ -44,8 +44,8 @@ public class ProjectNodeLinkManager {
 		return pnlr.getProjectNodeLink(projectNodeLinkId);
 	}
 	
-	public boolean deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
-		return pnlr.deleteProjectNodeLink(projectNodeLinkId);
+	public void deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
+		pnlr.deleteProjectNodeLink(projectNodeLinkId);
 	}
 
 	public Set<NodeLink> zoomUp(int nodeId) {

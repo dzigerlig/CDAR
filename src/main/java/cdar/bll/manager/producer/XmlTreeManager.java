@@ -53,8 +53,8 @@ public class XmlTreeManager {
 		return xtr.createXmlTree(xmlTree);
 	}
 
-	public boolean deleteXmlTree(int xmlTreeId) throws UnknownXmlTreeException, Exception {
-		return xtr.deleteXmlTree(xtr.getXmlTree(xmlTreeId));
+	public void deleteXmlTree(int xmlTreeId) throws UnknownXmlTreeException, Exception {
+		xtr.deleteXmlTree(xtr.getXmlTree(xmlTreeId));
 	}
 
 	public XmlTree getXmlTree(int xmlTreeId) throws UnknownXmlTreeException {
@@ -67,29 +67,24 @@ public class XmlTreeManager {
 		return xtr.updateXmlTree(updatedXmlTree);
 	}
 
-	public boolean cleanTree(int xmlTreeId) throws Exception {
+	public void cleanTree(int xmlTreeId) throws Exception {
 		NodeRepository nr = new NodeRepository();
 		
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
 		int treeId = xmlTree.getTreeId();
 		for (Node node : nr.getNodes(treeId)) {
-			if (!nr.deleteNode(node.getId())) {
-				return false;
-			}
+			nr.deleteNode(node.getId());
 		}
 
 		for (Directory directory : dm.getDirectories(treeId)) {
-			if (directory.getParentId()!=0 && !dm.deleteDirectory(directory.getId())) {
-				return false;
+			if (directory.getParentId()!=0) {
+				dm.deleteDirectory(directory.getId());
 			}
 		}
 
 		for (Template template : tr.getTemplates(treeId)) {
-			if (!tr.deleteTemplate(template.getId())) {
-				return false;
-			}
+			tr.deleteTemplate(template.getId());
 		}
-		return true;
 	}
 
 	public boolean setXmlTree(int xmlTreeId) throws Exception {

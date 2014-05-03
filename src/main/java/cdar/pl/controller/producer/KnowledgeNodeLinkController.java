@@ -43,7 +43,8 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusOk(lm.deleteNodeLink(nodeLink.getId()));
+			lm.deleteNodeLink(nodeLink.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

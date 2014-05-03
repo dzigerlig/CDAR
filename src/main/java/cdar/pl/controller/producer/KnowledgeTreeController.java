@@ -34,7 +34,8 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteTree(Tree tree) {
 		try {
-			return StatusHelper.getStatusOk(ktm.deleteTree(tree.getId()));
+			ktm.deleteTree(tree.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

@@ -33,7 +33,8 @@ public class ExportController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteKnowledgeTreeSimpleXml(Tree tree) {
 			try {
-				return StatusHelper.getStatusOk(xtm.deleteXmlTree(tree.getId()));
+				xtm.deleteXmlTree(tree.getId());
+				return StatusHelper.getStatusOk(null);
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

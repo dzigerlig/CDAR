@@ -566,7 +566,7 @@ public class TestBLLKnowledgeProducer {
 		XmlTreeManager xtm = new XmlTreeManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
-		assertTrue(xtm.cleanTree(xmlTree.getId()));
+		xtm.cleanTree(xmlTree.getId());
 		xtm.setXmlTree(xmlTree.getId());
 	}
 	

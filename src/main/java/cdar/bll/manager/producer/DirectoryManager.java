@@ -23,8 +23,8 @@ public class DirectoryManager {
 		return dr.getDirectory(directoryId);
 	}
 
-	public boolean deleteDirectory(int directoryId) throws Exception {
-		return dr.deleteDirectory(directoryId);
+	public void deleteDirectory(int directoryId) throws Exception {
+		dr.deleteDirectory(directoryId);
 	}
 
 	public Directory addDirectory(int treeId, int parentId, String title) throws Exception	

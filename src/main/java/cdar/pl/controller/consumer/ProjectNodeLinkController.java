@@ -64,7 +64,8 @@ public class ProjectNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.deleteProjectNodeLink(nodeLink.getId()));
+			pnlm.deleteProjectNodeLink(nodeLink.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

@@ -127,15 +127,13 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 	
-	public boolean deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
 		final String sql = "DELETE FROM KNOWLEDGEPROJECTNODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectNodeId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownProjectNodeException();
 			}
 		} catch (Exception ex) {

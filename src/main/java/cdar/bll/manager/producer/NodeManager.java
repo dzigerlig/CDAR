@@ -28,8 +28,8 @@ public class NodeManager {
 		return nr.getNode(nodeId);
 	}
 
-	public boolean deleteNode(int nodeId) throws UnknownNodeException, Exception {
-		return nr.deleteNode(nodeId);
+	public void deleteNode(int nodeId) throws UnknownNodeException, Exception {
+		nr.deleteNode(nodeId);
 	}
 
 	public Node addNode(int uid, int treeId, String title, int did)

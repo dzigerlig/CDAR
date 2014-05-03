@@ -132,15 +132,13 @@ public class TemplateRepository {
 		return template;
 	}
 	
-	public boolean deleteTemplate(int templateId) throws UnknownTemplateException  {
+	public void deleteTemplate(int templateId) throws UnknownTemplateException  {
 		final String sql = "DELETE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, templateId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownTemplateException();
 			}
 		} catch (Exception ex) {

@@ -119,15 +119,13 @@ public class ProjectNodeLinkRepository {
 		return projectNodeLink;
 	}
 	
-	public boolean deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
+	public void deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectNodeLinkId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownProjectNodeLinkException();
 			}
 		} catch (Exception ex) {

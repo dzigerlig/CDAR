@@ -67,7 +67,8 @@ public class ProjectTreeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteTree(Tree tree) {
 		try {
-			return StatusHelper.getStatusOk(ptm.deleteProjectTree(tree.getId()));
+			ptm.deleteProjectTree(tree.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

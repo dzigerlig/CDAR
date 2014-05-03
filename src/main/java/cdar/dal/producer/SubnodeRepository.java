@@ -257,15 +257,13 @@ public class SubnodeRepository {
 		return subnode;
 	}
 	
-	public boolean deleteSubnode(int subnodeId) throws UnknownSubnodeException {
+	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
 		final String sql = "DELETE FROM KNOWLEDGESUBNODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, subnodeId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownSubnodeException();
 			}
 		} catch (Exception ex) {
