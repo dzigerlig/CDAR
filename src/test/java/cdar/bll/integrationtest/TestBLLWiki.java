@@ -9,6 +9,7 @@ import org.junit.Test;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeManager;
@@ -31,7 +32,7 @@ public class TestBLLWiki {
 	
 	@Before
 	public void createUser() throws Exception {
-		um.createUser(username, password);
+		um.createUser(new User(username, password));
 	}
 	
 	@After

@@ -31,11 +31,7 @@ public class UserManager {
 		}
 	}
 
-	public User createUser(String username, String password) throws Exception {
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-
+	public User createUser(User user) throws Exception {
 		return userRepository.createUser(user);
 	}
 

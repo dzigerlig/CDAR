@@ -12,6 +12,7 @@ import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
@@ -47,7 +48,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Before
 	public void createUser() throws Exception {
-		um.createUser(username, password);
+		um.createUser(new User(username, password));
 	}
 	
 	@After

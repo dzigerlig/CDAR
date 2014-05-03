@@ -19,7 +19,7 @@ public class TestBLLUser {
 	@Test
 	public void testCreateUser() throws Exception {
 		int usercount = um.getUsers().size();
-		User user = um.createUser(username, password);
+		User user = um.createUser(new User(username, password));
 		assertEquals(usercount + 1, um.getUsers().size());
 		assertEquals(user.getId(), um.getUser(user.getUsername()).getId());
 		um.deleteUser(user.getId());
@@ -28,9 +28,9 @@ public class TestBLLUser {
 
 	@Test
 	public void testCreateUserSameUsername() throws Exception {
-		User user = um.createUser(username, password);
+		User user = um.createUser(new User(username, password));
 		try {
-			um.createUser(username, password);
+			um.createUser(new User(username, password));
 		} catch (Exception ex) {
 			assert (true);
 		}
@@ -55,7 +55,7 @@ public class TestBLLUser {
 	@Test
 	public void updateUser() throws Exception {
 		final String newPassword = "newpassword";
-		User user = um.createUser(username, password);
+		User user = um.createUser(new User(username, password));
 		assertEquals(password, um.getUser(user.getUsername()).getPassword());
 		user.setPassword(newPassword);
 		um.updateUser(user);
@@ -65,7 +65,7 @@ public class TestBLLUser {
 
 	@Test
 	public void testLogin() throws Exception {
-		User user = um.createUser(username, password);
+		User user = um.createUser(new User(username, password));
 		assertNull(um.getUser(user.getUsername()).getAccesstoken());
 		um.loginUser(user.getUsername(), user.getPassword());
 		assert (um.getUser(user.getUsername()).getAccesstoken() != null);
@@ -74,7 +74,7 @@ public class TestBLLUser {
 
 	@Test
 	public void testLoginWrongPassword() throws Exception {
-		User user = um.createUser(username, password);
+		User user = um.createUser(new User(username, password));
 		try {
 			um.loginUser(user.getUsername(), "fakePassword");
 		} catch (WrongCredentialsException ex) {
