@@ -58,8 +58,7 @@ public class KnowledgeNodeController {
 	@POST
 	@Path("{nodeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNode(@PathParam("nodeid") int nodeid,Node node) {
-		node.setId(nodeid);
+	public Response updateNode(Node node) {
 		try {
 			return StatusHelper.getStatusOk(nm.updateNode(node));
 		} catch (Exception e) {

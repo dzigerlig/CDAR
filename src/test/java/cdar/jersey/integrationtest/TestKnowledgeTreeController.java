@@ -154,6 +154,7 @@ public class TestKnowledgeTreeController extends JerseyTest {
 	public void testEditTree() {
 		Tree editTree = new Tree();
 		editTree.setTitle("editTree");
+		editTree.setId(treeid);
 		Response editedTreeResponse = target("ktrees/" + treeid)
 				.request()
 				.header(UID, userId)
@@ -292,7 +293,6 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		int templateid = addedTemplate.getId();
 		addedTemplate.setTemplatetext(TREENAME);
 		addedTemplate.setTitle(USERNAME);
-		addedTemplate.setId(0);
 		Response editTemplateResponse = target(
 				"/ktrees/" + treeid + "/templates/" + templateid)
 				.request()
@@ -433,7 +433,6 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		addedDirectory.setTitle(USERNAME);
 		addedDirectory.setParentId(addedParentDirectory.getId());
 		int addedDirectoryId=addedDirectory.getId();
-		addedDirectory.setId(0);
 		Response updatedDirectoryResponse = target(
 				"/ktrees/" + treeid + "/directories/" + addedDirectoryId)
 				.request()
@@ -552,7 +551,6 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		addedNode.setTitle(TREENAME);
 		addedNode.setDynamicTreeFlag(1);
 		int nodeId = addedNode.getId();
-		addedNode.setId(0);
 		Response updatedNodeResponse = target(
 				"/ktrees/" + treeid + "/nodes/" + nodeId)
 				.request()
@@ -831,7 +829,6 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		addedSubnode.setNodeId(addedNode2.getId());
 		addedSubnode.setPosition(2);
 		int subnodeId = addedSubnode.getId();
-		addedSubnode.setId(0);
 		Response updatedSubnodeResponse = target(
 				"/ktrees/" + treeid + "/nodes/" + addedNode1.getId()
 						+ "/subnodes/" + subnodeId)

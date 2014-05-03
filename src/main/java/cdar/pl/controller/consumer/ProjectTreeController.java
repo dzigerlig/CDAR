@@ -55,8 +55,7 @@ public class ProjectTreeController {
 	@POST
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateProjectTree(@PathParam("ptreeid") int treeId,Tree tree) {
-		tree.setId(treeId);
+	public Response updateProjectTree(Tree tree) {
 		try {	
 			return StatusHelper.getStatusOk(ptm.updateProjectTree(tree));
 		} catch (Exception e) {

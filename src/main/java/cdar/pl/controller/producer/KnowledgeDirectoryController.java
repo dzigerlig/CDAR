@@ -55,8 +55,7 @@ public class KnowledgeDirectoryController {
 		@POST
 		@Path("{directoryid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response updateDirectory(@PathParam("directoryid") int directoryId, Directory directory) {
-			directory.setId(directoryId);
+		public Response updateDirectory(Directory directory) {
 			try {
 				return StatusHelper.getStatusOk(dm.updateDirectory(directory));
 			} catch (Exception e) {

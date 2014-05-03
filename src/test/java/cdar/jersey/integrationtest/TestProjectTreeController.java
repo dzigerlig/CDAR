@@ -132,6 +132,7 @@ public class TestProjectTreeController extends JerseyTest  {
 	public void testEditTree() {
 		Tree editTree = new Tree();
 		editTree.setTitle("editTree");
+		editTree.setId(treeid);
 		Response editedTreeResponse = target("ptrees/" + treeid)
 				.request()
 				.header(UID, userId)
