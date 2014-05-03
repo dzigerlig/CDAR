@@ -110,6 +110,7 @@ public class ProjectTreeRepository {
 		} catch (Exception ex) {
 			throw ex;
 		}
+		System.out.println(projectTree.getId());
 		return projectTree;
 	}
 	

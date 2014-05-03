@@ -14,7 +14,7 @@ import cdar.bll.manager.producer.DirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
-public class DirectoryController {
+public class KnowledgeDirectoryController {
 	private DirectoryManager dm = new DirectoryManager();
 
 		@GET
@@ -56,7 +56,8 @@ public class DirectoryController {
 		@POST
 		@Path("{directoryid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response updateDirectory(Directory directory) {
+		public Response updateDirectory(@PathParam("directoryid") int directoryId, Directory directory) {
+			directory.setId(directoryId);
 			try {
 				return StatusHelper.getStatusOk(dm.updateDirectory(directory));
 			} catch (Exception e) {
