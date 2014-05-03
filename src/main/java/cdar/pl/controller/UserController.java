@@ -34,7 +34,7 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
-			user = userManager.createUser(user.getUsername(), user.getPassword());
+			user = userManager.createUser(user);
 			user.setPassword(null);
 			return StatusHelper.getStatusCreated(user);
 		} catch (Exception ex) {
@@ -60,7 +60,8 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteUser(User user) {
 		try {
-			return StatusHelper.getStatusOk(userManager.deleteUser(user.getId()));
+			userManager.deleteUser(user.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

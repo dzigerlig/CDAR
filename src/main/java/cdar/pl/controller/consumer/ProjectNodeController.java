@@ -32,9 +32,9 @@ public class ProjectNodeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNode(ProjectNode node) {
+	public Response addNode(ProjectNode projectNode) {
 		try {
-			return StatusHelper.getStatusCreated(pnm.addProjectNode(node.getTreeId(), node.getTitle(), node.getDirectoryId()));
+			return StatusHelper.getStatusCreated(pnm.addProjectNode(projectNode));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -113,7 +113,8 @@ public class ProjectNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteNode(ProjectNode node) {
 		try {
-			return StatusHelper.getStatusOk(pnm.deleteProjectNode(node.getId()));
+			pnm.deleteProjectNode(node.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

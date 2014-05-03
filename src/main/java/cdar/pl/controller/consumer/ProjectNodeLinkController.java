@@ -29,9 +29,9 @@ public class ProjectNodeLinkController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNodeLink(NodeLink nodeLink) {
+	public Response addNodeLink(NodeLink projectNodeLink) {
 		try {
-			return StatusHelper.getStatusCreated(pnlm.addProjectNodeLink(nodeLink.getTreeId(), nodeLink.getSourceId(), nodeLink.getTargetId(), nodeLink.getSubnodeId()));
+			return StatusHelper.getStatusCreated(pnlm.addProjectNodeLink(projectNodeLink));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -64,7 +64,8 @@ public class ProjectNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.deleteProjectNodeLink(nodeLink.getId()));
+			pnlm.deleteProjectNodeLink(nodeLink.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

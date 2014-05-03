@@ -31,15 +31,11 @@ public class UserManager {
 		}
 	}
 
-	public User createUser(String username, String password) throws Exception {
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-
+	public User createUser(User user) throws Exception {
 		return userRepository.createUser(user);
 	}
 
-	public boolean deleteUser(int userId) throws Exception {
+	public void deleteUser(int userId) throws Exception {
 		TreeManager tm = new TreeManager();
 		ProjectTreeManager ptm = new ProjectTreeManager();
 		
@@ -51,7 +47,7 @@ public class UserManager {
 			ptm.deleteProjectTree(projectTree.getId());
 		}
 		
-		return userRepository.deleteUser(userId);
+		userRepository.deleteUser(userId);
 	}
 
 	public User updateUser(User user) throws Exception {

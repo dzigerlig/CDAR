@@ -25,16 +25,12 @@ public class ProjectNodeManager {
 		return pnr.getProjectNode(nodeId);
 	}
 
-	public ProjectNode addProjectNode(int projectTreeId, String projectNodeTitle, int pdid) throws Exception {
-		ProjectNode projectNode = new ProjectNode();
-		projectNode.setTreeId(projectTreeId);
-		projectNode.setTitle(projectNodeTitle);
-		projectNode.setDirectoryId(pdid);
+	public ProjectNode addProjectNode(ProjectNode projectNode) throws Exception {
 		return pnr.createProjectNode(projectNode);
 	}
 
-	public boolean deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
-		return pnr.deleteProjectNode(projectNodeId);
+	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+		pnr.deleteProjectNode(projectNodeId);
 	}
 
 	public ProjectNode updateProjectNode(ProjectNode node) throws UnknownProjectNodeException {

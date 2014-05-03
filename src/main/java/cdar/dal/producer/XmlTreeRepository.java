@@ -105,15 +105,13 @@ public class XmlTreeRepository {
 		return xmlTree;
 	}
 	
-	public boolean deleteXmlTree(XmlTree xmlTree) throws Exception {
+	public void deleteXmlTree(XmlTree xmlTree) throws Exception {
 		final String sql = "DELETE FROM KNOWLEDGETREEXML WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, xmlTree.getId());
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownXmlTreeException();
 			}
 		} catch (Exception ex) {

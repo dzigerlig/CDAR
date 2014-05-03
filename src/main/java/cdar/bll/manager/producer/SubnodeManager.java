@@ -95,8 +95,8 @@ public class SubnodeManager {
 		return sr.updateSubnode(updatedSubnode);
 	}
 
-	public boolean deleteSubnode(int subnodeId) throws UnknownSubnodeException {
-		return sr.deleteSubnode(subnodeId);
+	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
+		sr.deleteSubnode(subnodeId);
 	}
 
 	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException {

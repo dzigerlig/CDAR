@@ -72,7 +72,8 @@ public class KnowledgeNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteNode(Node node) {
 		try {
-			return StatusHelper.getStatusOk(nm.deleteNode(node.getId()));
+			nm.deleteNode(node.getId());
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

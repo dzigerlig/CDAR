@@ -112,8 +112,8 @@ public class ProjectTreeManager {
 		}
 	}
 
-	public boolean deleteProjectTree(int ptreeId) throws UnknownProjectTreeException {
-		return ptr.deleteProjectTree(ptreeId);
+	public void deleteProjectTree(int ptreeId) throws UnknownProjectTreeException {
+		ptr.deleteProjectTree(ptreeId);
 	}
 
 	public Tree updateProjectTree(Tree projectTree) throws Exception {

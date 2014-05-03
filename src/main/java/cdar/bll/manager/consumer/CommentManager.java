@@ -29,8 +29,8 @@ public class CommentManager {
 		return cr.createComment(comment);
 	}
 	
-	public boolean deleteComment(int id) throws Exception {
-		return cr.deleteComment(id);
+	public void deleteComment(int commentId) throws Exception {
+		cr.deleteComment(commentId);
 	}
 	
 	public Comment updateComment(Comment comment) throws Exception {

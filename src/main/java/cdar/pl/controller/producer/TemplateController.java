@@ -21,7 +21,7 @@ public class TemplateController {
 		@Produces(MediaType.APPLICATION_JSON)
 		public Response getTemplates(@PathParam("ktreeid") int ktreeid) {
 			try {
-				return Response.ok(tm.getKnowledgeTemplates(ktreeid), MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(tm.getKnowledgeTemplates(ktreeid));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -31,7 +31,7 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response addTemplate(Template template) {
 			try {
-				return Response.status(Response.Status.CREATED).entity(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade())).build();
+				return StatusHelper.getStatusCreated(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade()));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -43,7 +43,7 @@ public class TemplateController {
 		public Response getTemplate(@PathParam("ktreeid") int ktreeid,
 				@PathParam("templateid") int templateid) {
 			try {
-				return Response.ok(tm.getKnowledgeTemplate(templateid), MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(tm.getKnowledgeTemplate(templateid));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -55,7 +55,7 @@ public class TemplateController {
 		public Response updateTemplate(@PathParam("templateid") int templateid,Template template) {
 			template.setId(templateid);
 			try {
-				return Response.ok(tm.updateTemplate(template), MediaType.APPLICATION_JSON).build();
+				return StatusHelper.getStatusOk(tm.updateTemplate(template));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}
@@ -66,7 +66,8 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response deleteTemplate(Template template) {
 			try {
-				return Response.ok(tm.deleteTemplate(template.getId()), MediaType.APPLICATION_JSON).build();
+				tm.deleteTemplate(template.getId());
+				return StatusHelper.getStatusOk(null);
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

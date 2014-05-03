@@ -12,6 +12,7 @@ import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
@@ -47,7 +48,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Before
 	public void createUser() throws Exception {
-		um.createUser(username, password);
+		um.createUser(new User(username, password));
 	}
 	
 	@After
@@ -211,12 +212,16 @@ public class TestBLLKnowledgeConsumer {
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName, directoryId);
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle(projectNodeName);
+		projectNode.setDirectoryId(directoryId);
+		projectNode = pnm.addProjectNode(projectNode);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
-		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getTreeId());
-		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
-		pnm.deleteProjectNode(node.getId());
+		assertEquals(projectNodeName, pnm.getProjectNode(projectNode.getId()).getTitle());
+		assertEquals(tree.getId(), pnm.getProjectNode(projectNode.getId()).getTreeId());
+		assertEquals(0, pnm.getProjectNode(projectNode.getId()).getStatus());
+		pnm.deleteProjectNode(projectNode.getId());
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 	}
 	
@@ -228,17 +233,21 @@ public class TestBLLKnowledgeConsumer {
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode node = pnm.addProjectNode(tree.getId(), projectNodeName, directoryId);
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle(projectNodeName);
+		projectNode.setDirectoryId(directoryId);
+		projectNode = pnm.addProjectNode(projectNode);
 		assertEquals(1, pnm.getProjectNodes(tree.getId()).size());
-		assertEquals(projectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(tree.getId(), pnm.getProjectNode(node.getId()).getTreeId());
-		assertEquals(0, pnm.getProjectNode(node.getId()).getStatus());
-		node.setTitle(newProjectNodeName);
-		node.setStatus(2);
-		pnm.updateProjectNode(node);
-		assertEquals(newProjectNodeName, pnm.getProjectNode(node.getId()).getTitle());
-		assertEquals(2, pnm.getProjectNode(node.getId()).getStatus());
-		pnm.deleteProjectNode(node.getId());
+		assertEquals(projectNodeName, pnm.getProjectNode(projectNode.getId()).getTitle());
+		assertEquals(tree.getId(), pnm.getProjectNode(projectNode.getId()).getTreeId());
+		assertEquals(0, pnm.getProjectNode(projectNode.getId()).getStatus());
+		projectNode.setTitle(newProjectNodeName);
+		projectNode.setStatus(2);
+		pnm.updateProjectNode(projectNode);
+		assertEquals(newProjectNodeName, pnm.getProjectNode(projectNode.getId()).getTitle());
+		assertEquals(2, pnm.getProjectNode(projectNode.getId()).getStatus());
+		pnm.deleteProjectNode(projectNode.getId());
 		assertEquals(0, pnm.getProjectNodes(tree.getId()).size());
 	}
 	
@@ -276,14 +285,27 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1, directoryId);
-		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2, directoryId);
+		ProjectNode projectNode1 = new ProjectNode();
+		projectNode1.setTreeId(tree.getId());
+		projectNode1.setTitle(nameNode1);
+		projectNode1.setDirectoryId(directoryId);
+		ProjectNode projectNode2 = new ProjectNode();
+		projectNode2.setTreeId(tree.getId());
+		projectNode2.setTitle(nameNode2);
+		projectNode2.setDirectoryId(directoryId);
+		projectNode1 = pnm.addProjectNode(projectNode1);
+		projectNode2 = pnm.addProjectNode(projectNode2);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
-		NodeLink projectnodelink = pnlm.addProjectNodeLink(tree.getId(), projectNode1.getId(), projectNode2.getId(), 0);
+		NodeLink projectNodeLink = new NodeLink();
+		projectNodeLink.setTreeId(tree.getId());
+		projectNodeLink.setSourceId(projectNode1.getId());
+		projectNodeLink.setTargetId(projectNode2.getId());
+		projectNodeLink.setSubnodeId(0);
+		projectNodeLink = pnlm.addProjectNodeLink(projectNodeLink);
 		assertEquals(1, pnlm.getProjectNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
-		pnlm.deleteProjectNodeLink(projectnodelink.getId());
+		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectNodeLink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectNodeLink.getId()).getTargetId()).getTitle());
+		pnlm.deleteProjectNodeLink(projectNodeLink.getId());
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
 	}
 	
@@ -295,10 +317,23 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1, directoryId);
-		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2, directoryId);
+		ProjectNode projectNode1 = new ProjectNode();
+		projectNode1.setTreeId(tree.getId());
+		projectNode1.setTitle(nameNode1);
+		projectNode1.setDirectoryId(directoryId);
+		ProjectNode projectNode2 = new ProjectNode();
+		projectNode2.setTreeId(tree.getId());
+		projectNode2.setTitle(nameNode2);
+		projectNode2.setDirectoryId(directoryId);
+		projectNode1 = pnm.addProjectNode(projectNode1);
+		projectNode2 = pnm.addProjectNode(projectNode2);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
-		NodeLink projectnodelink = pnlm.addProjectNodeLink(tree.getId(), projectNode1.getId(), projectNode2.getId(), 0);
+		NodeLink projectNodeLink = new NodeLink();
+		projectNodeLink.setTreeId(tree.getId());
+		projectNodeLink.setSourceId(projectNode1.getId());
+		projectNodeLink.setTargetId(projectNode2.getId());
+		projectNodeLink.setSubnodeId(0);
+		NodeLink projectnodelink = pnlm.addProjectNodeLink(projectNodeLink);
 		assertEquals(1, pnlm.getProjectNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
@@ -344,16 +379,20 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
-		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle("node");
+		projectNode.setDirectoryId(directoryId);
+		projectNode = pnm.addProjectNode(projectNode);
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(projectNode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
-		ProjectSubnode subnode = psm.addProjectSubnode(pnode.getId(), projectSubnodeName);
-		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		ProjectSubnode subnode = psm.addProjectSubnode(projectNode.getId(), projectSubnodeName);
+		assertEquals(1, psm.getProjectSubnodesFromProjectNode(projectNode.getId()).size());
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(subnode.getId()).getTitle());
 		assertEquals(0, psm.getProjectSubnode(subnode.getId()).getStatus());
 		psm.deleteProjectSubnode(subnode.getId());
-		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
+		assertEquals(0, psm.getProjectSubnodesFromProjectNode(projectNode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 	}
 	
@@ -365,7 +404,11 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle("node");
+		projectNode.setDirectoryId(directoryId);
+		ProjectNode pnode = pnm.addProjectNode(projectNode);
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(0, psm.getProjectSubnodesFromProjectTree(tree.getId()).size());
 		ProjectSubnode subnode = psm.addProjectSubnode(pnode.getId(), projectSubnodeName);
@@ -421,18 +464,22 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle("node");
+		projectNode.setDirectoryId(directoryId);
+		projectNode = pnm.addProjectNode(projectNode);
 		CommentManager cm = new CommentManager();
-		assertEquals(0, cm.getComments(pnode.getId()).size());
+		assertEquals(0, cm.getComments(projectNode.getId()).size());
 		Comment comment = new Comment();
 		comment.setUserId(um.getUser(username).getId());
-		comment.setNodeId(pnode.getId());
+		comment.setNodeId(projectNode.getId());
 		comment.setComment(commentString);
 		comment = cm.addComment(comment);
-		assertEquals(1, cm.getComments(pnode.getId()).size());
+		assertEquals(1, cm.getComments(projectNode.getId()).size());
 		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
 		cm.deleteComment(comment.getId());
-		assertEquals(0, cm.getComments(pnode.getId()).size());
+		assertEquals(0, cm.getComments(projectNode.getId()).size());
 	}
 	
 	@Test
@@ -442,21 +489,25 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree tree = ptm.addProjectTree(um.getUser(username).getId(), "Project Tree");
 		int directoryId = ((Directory)pdr.getDirectories(tree.getId()).toArray()[0]).getId();
-		ProjectNode pnode = pnm.addProjectNode(tree.getId(), "node", directoryId);
+		ProjectNode projectNode = new ProjectNode();
+		projectNode.setTreeId(tree.getId());
+		projectNode.setTitle("node");
+		projectNode.setDirectoryId(directoryId);
+		projectNode = pnm.addProjectNode(projectNode);
 		CommentManager cm = new CommentManager();
-		assertEquals(0, cm.getComments(pnode.getId()).size());
+		assertEquals(0, cm.getComments(projectNode.getId()).size());
 		Comment comment = new Comment();
 		comment.setUserId(um.getUser(username).getId());
-		comment.setNodeId(pnode.getId());
+		comment.setNodeId(projectNode.getId());
 		comment.setComment(commentString);
 		comment = cm.addComment(comment);
-		assertEquals(1, cm.getComments(pnode.getId()).size());
+		assertEquals(1, cm.getComments(projectNode.getId()).size());
 		assertEquals(commentString, cm.getComment(comment.getId()).getComment());
 		comment.setComment(newCommentString);
 		cm.updateComment(comment);
 		assertEquals(newCommentString, cm.getComment(comment.getId()).getComment());
 		cm.deleteComment(comment.getId());
-		assertEquals(0, cm.getComments(pnode.getId()).size());
+		assertEquals(0, cm.getComments(projectNode.getId()).size());
 	}
 	
 	@Test

@@ -23,16 +23,12 @@ public class ProjectDirectoryManager {
 		return pdr.getDirectory(directoryId);
 	}
 
-	public boolean deleteDirectory(int directoryId) throws Exception {
-		return pdr.deleteDirectory(directoryId);
+	public void deleteDirectory(int directoryId) throws Exception {
+		pdr.deleteDirectory(directoryId);
 	}
 
-	public Directory addDirectory(int treeId, int parentId, String title) throws Exception	
+	public Directory addDirectory(Directory directory) throws Exception	
 	{ 
-		Directory directory = new Directory();
-		directory.setTreeId(treeId);
-		directory.setParentId(parentId);
-		directory.setTitle(title);
 		return pdr.createDirectory(directory);
 	}
 

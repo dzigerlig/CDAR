@@ -85,8 +85,8 @@ public class ProjectSubnodeManager {
 		}
 	}
 	
-	public boolean deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
-		return psr.deleteProjectSubnode(projectSubnodeId);
+	public void deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+		psr.deleteProjectSubnode(projectSubnodeId);
 	}
 
 	public Set<ProjectNode> zoomUp(int nodeId) {

@@ -116,15 +116,13 @@ public class ProjectSubnodeRepository {
 		return projectSubnode;
 	}
 	
-	public boolean deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+	public void deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
 		final String sql = "DELETE FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, projectSubnodeId);
-			if (preparedStatement.executeUpdate()==1) {
-				return true;
-			} else {
+			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownProjectSubnodeException();
 			}
 		} catch (Exception ex) {

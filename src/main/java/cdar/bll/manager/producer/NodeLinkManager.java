@@ -23,9 +23,9 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public boolean deleteNodeLink(int nodeLinkId) throws Exception
+	public void deleteNodeLink(int nodeLinkId) throws Exception
 	{
-		return nlr.deleteNodeLink(nodeLinkId);
+		nlr.deleteNodeLink(nodeLinkId);
 	}
 	
 	public NodeLink addNodeLink(int ktrid, int sourceId, int targetId, int ksnid) throws Exception
