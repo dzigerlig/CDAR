@@ -32,20 +32,16 @@ public class NodeManager {
 		nr.deleteNode(nodeId);
 	}
 
-	public Node addNode(int uid, int treeId, String title, int did)
+	public Node addNode(int uid, Node node)
 			throws Exception {
-		if (did == 0) {
+		if (node.getDirectoryId() == 0) {
 			DirectoryRepository dr = new DirectoryRepository();
-			int rootDirectoryId = dr.getDirectories(treeId).get(0).getId();
-			did = rootDirectoryId;
+			int rootDirectoryId = dr.getDirectories(node.getTreeId()).get(0).getId();
+			node.setDirectoryId(rootDirectoryId);
 		}
 
 		TemplateManager tm = new TemplateManager();
-		String templateContent = tm.getDefaultKnowledgeTemplateText(treeId);
-		Node node = new Node();
-		node.setTreeId(treeId);
-		node.setTitle(title);
-		node.setDirectoryId(did);
+		String templateContent = tm.getDefaultKnowledgeTemplateText(node.getTreeId());
 		node = nr.createNode(node);
 
 		if (templateContent == null) {
@@ -54,7 +50,7 @@ public class NodeManager {
 
 		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
 
-		MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, treeId,
+		MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, node.getTreeId(),
 				node.getWikititle(), templateContent, wikiHelper);
 		mwm.start();
 		return node;

@@ -36,10 +36,9 @@ public class KnowledgeNodeController {
 	public Response addNode(@HeaderParam("uid") int uid, Node node) {
 		try {
 			if (node.getTitle() == null) {
-				return StatusHelper.getStatusCreated(nm.addNode(uid, node.getTreeId(), "new Node", node.getDirectoryId()));
-			} else {
-				return StatusHelper.getStatusCreated(nm.addNode(uid, node.getTreeId(), node.getTitle(), node.getDirectoryId()));
+				node.setTitle("new Node");
 			}
+			return StatusHelper.getStatusCreated(nm.addNode(uid, node));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
