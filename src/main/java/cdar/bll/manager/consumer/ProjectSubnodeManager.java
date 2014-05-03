@@ -16,11 +16,7 @@ public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 	
-	public ProjectSubnode addProjectSubnode(int kpnid, String title) throws UnknownProjectNodeLinkException, UnknownProjectNodeException {
-		ProjectSubnode projectSubnode = new ProjectSubnode();
-		projectSubnode.setRefProjectNodeId(kpnid);
-		projectSubnode.setPosition(getNextProjectSubnodePosition(kpnid));
-		projectSubnode.setTitle(title);
+	public ProjectSubnode addProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectNodeException {
 		return psr.createProjectSubnode(projectSubnode);
 	}
 	
@@ -52,7 +48,7 @@ public class ProjectSubnodeManager {
 	
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
 		ProjectSubnode updatedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
-		updatedProjectSubnode.setRefProjectNodeId(projectSubnode.getRefProjectNodeId());
+		updatedProjectSubnode.setNodeId(projectSubnode.getNodeId());
 		updatedProjectSubnode.setTitle(projectSubnode.getTitle());
 		updatedProjectSubnode.setPosition(projectSubnode.getPosition());
 		updatedProjectSubnode.setStatus(projectSubnode.getStatus());

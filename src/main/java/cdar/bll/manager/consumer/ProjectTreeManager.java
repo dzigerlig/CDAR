@@ -96,7 +96,7 @@ public class ProjectTreeManager {
 			ProjectSubnode projectSubnode = new ProjectSubnode();
 			projectSubnode.setTitle(subnode.getTitle());
 			projectSubnode.setWikititle(subnode.getWikititle());
-			projectSubnode.setRefProjectNodeId(linkMapping.get(subnode.getNodeId()));
+			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
 			projectSubnode.setPosition(subnode.getPosition());
 			psr.createProjectSubnode(projectSubnode);
 		}

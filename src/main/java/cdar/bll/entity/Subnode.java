@@ -91,6 +91,4 @@ public class Subnode extends WikiEntity {
 			return false;
 		return true;
 	}
-	
-	
 }

@@ -34,7 +34,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setWikititle(result.getString(5));
 					projectSubnode.setPosition(result.getInt(6));
 					projectSubnode.setStatus(result.getInt(7));
-					projectSubnode.setRefProjectNodeId(kpnid);
+					projectSubnode.setNodeId(kpnid);
 					projectsubnodes.add(projectSubnode);
 				}
 			}
@@ -61,7 +61,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setLastModificationTime(result.getDate(3));
 					projectSubnode.setTitle(result.getString(5));
 					projectSubnode.setWikititle(result.getString(6));
-					projectSubnode.setRefProjectNodeId(result.getInt(4));
+					projectSubnode.setNodeId(result.getInt(4));
 					projectSubnode.setPosition(result.getInt(7));
 					projectSubnode.setStatus(result.getInt(8));
 					return projectSubnode;
@@ -79,7 +79,7 @@ public class ProjectSubnodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, projectSubnode.getRefProjectNodeId());
+			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setString(4, projectSubnode.getTitle());
 			preparedStatement.setInt(5, projectSubnode.getPosition());
@@ -103,7 +103,7 @@ public class ProjectSubnodeRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setInt(2, projectSubnode.getRefProjectNodeId());
+			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setInt(4, projectSubnode.getPosition());
 			preparedStatement.setInt(5, projectSubnode.getStatus());

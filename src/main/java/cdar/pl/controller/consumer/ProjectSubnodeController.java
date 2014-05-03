@@ -39,7 +39,7 @@ public class ProjectSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(ProjectSubnode subnode) {
 		try {
-			return StatusHelper.getStatusCreated(psm.addProjectSubnode(subnode.getNodeId(), subnode.getTitle()));
+			return StatusHelper.getStatusCreated(psm.addProjectSubnode(subnode));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

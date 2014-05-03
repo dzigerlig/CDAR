@@ -12,17 +12,17 @@ public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	
 	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException {
-		Set<ProjectNode> projectnodes = new HashSet<ProjectNode>();
+		Set<ProjectNode> projectNodes = new HashSet<ProjectNode>();
 		
 		for (ProjectNode projectNode : pnr.getProjectNodes(ptreeId)) {
-			projectnodes.add(projectNode);
+			projectNodes.add(projectNode);
 		} 
 		
-		return projectnodes;
+		return projectNodes;
 	}
 	
-	public ProjectNode getProjectNode(int nodeId) throws UnknownProjectNodeException {
-		return pnr.getProjectNode(nodeId);
+	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+		return pnr.getProjectNode(projectNodeId);
 	}
 
 	public ProjectNode addProjectNode(ProjectNode projectNode) throws Exception {
