@@ -27,12 +27,8 @@ public class DirectoryManager {
 		dr.deleteDirectory(directoryId);
 	}
 
-	public Directory addDirectory(int treeId, int parentId, String title) throws Exception	
+	public Directory addDirectory(Directory directory) throws Exception	
 	{ 
-		Directory directory = new Directory();
-		directory.setTreeId(treeId);
-		directory.setParentId(parentId);
-		directory.setTitle(title);
 		return dr.createDirectory(directory);
 	}
 

@@ -125,7 +125,8 @@ public class XmlTreeManager {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
 				newDirectory.setTreeId(directory.getTreeId());
-				newDirectory = dm.addDirectory(directory.getTreeId(), directoryMapping.get(directory.getParentId()), directory.getTitle());
+				newDirectory.setParentId(directoryMapping.get(directory.getParentId()));
+				newDirectory = dm.addDirectory(newDirectory);
 				directoryMapping.put(directory.getId(), newDirectory.getId());
 			}
 		}

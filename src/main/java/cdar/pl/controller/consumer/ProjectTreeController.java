@@ -34,7 +34,8 @@ public class ProjectTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addProjectTree(Tree tree, @HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusCreated(ptm.addProjectTree(uid, tree.getTitle()));
+			tree.setUserId(uid);
+			return StatusHelper.getStatusCreated(ptm.addProjectTree(tree));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

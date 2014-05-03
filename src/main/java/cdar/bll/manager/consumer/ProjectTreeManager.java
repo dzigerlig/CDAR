@@ -41,16 +41,13 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public Tree addProjectTree(int uid, String treeTitle)
+	public Tree addProjectTree(Tree projectTree)
 			throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
-		Tree projectTree = new Tree();
-		projectTree.setUserId(uid);
-		projectTree.setTitle(treeTitle);
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
 		directory.setTreeId(projectTree.getId());
-		directory.setTitle(treeTitle);
+		directory.setTitle(projectTree.getTitle());
 		pdr.createDirectory(directory);
 		return projectTree;
 	}

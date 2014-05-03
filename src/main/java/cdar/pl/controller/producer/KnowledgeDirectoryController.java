@@ -32,10 +32,9 @@ public class KnowledgeDirectoryController {
 		public Response addDirectory(Directory directory) {
 			try {
 				if (directory.getTitle() == null) {
-					return StatusHelper.getStatusCreated(dm.addDirectory(directory.getTreeId(), directory.getParentId(),"new Folder"));
-				} else {
-					return StatusHelper.getStatusCreated(dm.addDirectory(directory.getTreeId(), directory.getParentId(), directory.getTitle()));
+					directory.setTitle("new folder");
 				}
+				return StatusHelper.getStatusCreated(dm.addDirectory(directory));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

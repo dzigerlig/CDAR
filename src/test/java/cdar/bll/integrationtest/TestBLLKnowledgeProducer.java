@@ -460,7 +460,11 @@ public class TestBLLKnowledgeProducer {
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
-		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
+		Directory directory = new Directory();
+		directory.setTreeId(tree.getId());
+		directory.setParentId(directoryId);
+		directory.setTitle(directoryName);
+		Directory newDirectory = dm.addDirectory(directory);
 		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
 		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
 		dm.deleteDirectory(newDirectory.getId());
@@ -478,12 +482,16 @@ public class TestBLLKnowledgeProducer {
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		nm.addNode(um.getUser(username).getId(), tree.getId(), "Node", directoryId);
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
-		Directory newDirectory = dm.addDirectory(tree.getId(), directoryId, directoryName);
+		Directory directory = new Directory();
+		directory.setTreeId(tree.getId());
+		directory.setParentId(directoryId);
+		directory.setTitle(directoryName);
+		directory = dm.addDirectory(directory);
 		assertEquals(treeName, dm.getDirectory(directoryId).getTitle());
-		assertEquals(directoryName, dm.getDirectory(newDirectory.getId()).getTitle());
-		newDirectory.setTitle(newDirectoryName);
-		dm.updateDirectory(newDirectory);
-		assertEquals(newDirectoryName, dm.getDirectory(newDirectory.getId()).getTitle());
+		assertEquals(directoryName, dm.getDirectory(directory.getId()).getTitle());
+		directory.setTitle(newDirectoryName);
+		dm.updateDirectory(directory);
+		assertEquals(newDirectoryName, dm.getDirectory(directory.getId()).getTitle());
 	}
 	
 	public void testDirectoryUnknownTreeId() throws SQLException {
@@ -499,7 +507,11 @@ public class TestBLLKnowledgeProducer {
 	@Test(expected = Exception.class)
 	public void testUpdateUnknownDirectory() throws Exception {
 		DirectoryManager dm = new DirectoryManager();
-		Directory directory = dm.addDirectory(unknownId, 0, "My directory");
+		Directory directory = new Directory();
+		directory.setTreeId(unknownId);
+		directory.setParentId(0);
+		directory.setTitle("My directory");
+		directory = dm.addDirectory(directory);
 		directory.setTitle("My new directory");
 		Directory updatedDirectory = dm.updateDirectory(directory);
 		assertEquals(-1, updatedDirectory.getId());
