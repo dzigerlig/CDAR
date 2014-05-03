@@ -116,7 +116,9 @@ public class TestBLLKnowledgeConsumer {
 		NodeManager nm = new NodeManager();
 		TreeManager tm = new TreeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
+		Tree tree = new Tree();
+		tree.setTitle("My Knowledge Tree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Tree projectTree = new Tree();
 		projectTree.setUserId(um.getUser(username).getId());
 		projectTree.setTitle("My Project Tree");
@@ -138,7 +140,9 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		NodeLinkManager nlm = new NodeLinkManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
+		Tree tree = new Tree();
+		tree.setTitle("My Knowledge Tree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Tree projectTree = new Tree();
 		projectTree.setUserId(um.getUser(username).getId());
 		projectTree.setTitle("My Project Tree");
@@ -191,7 +195,9 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		NodeLinkManager nlm = new NodeLinkManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "My Knowledge Tree");
+		Tree tree = new Tree();
+		tree.setTitle("My Knowledge Tree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Tree projectTree = new Tree();
 		projectTree.setUserId(um.getUser(username).getId());
 		projectTree.setTitle("My Project Tree");

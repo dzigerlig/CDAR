@@ -42,7 +42,9 @@ public class TestBLLWiki {
 	
 	@Test
 	public void testAddNode() throws Exception {
-		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		Tree tree = new Tree();
+		tree.setTitle(treeName);
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int did = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());

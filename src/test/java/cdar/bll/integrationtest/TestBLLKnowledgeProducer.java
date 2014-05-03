@@ -56,7 +56,9 @@ public class TestBLLKnowledgeProducer {
 	public void testTree() throws Exception {
 		final String treeName = "MyTreeName";
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
-		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		Tree tree = new Tree();
+		tree.setTitle(treeName);
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
 		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
 		tm.deleteTree(tree.getId());
@@ -75,7 +77,9 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test(expected = UnknownUserException.class)
 	public void testUpdateUnknownTree() throws Exception {
-		Tree tree = tm.addTree(unknownId, "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(unknownId, tree);
 		tree.setTitle("My unknown tree");
 		Tree updatedTree = tm.updateTree(tree);
 		assertEquals(-1, updatedTree.getId());
@@ -91,7 +95,9 @@ public class TestBLLKnowledgeProducer {
 		final String treeName = "MyTreeName";
 		final String newTreeName = "My new tree";
 		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
-		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		Tree tree = new Tree();
+		tree.setTitle(treeName);
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
 		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
 		tree.setTitle(newTreeName);
@@ -106,7 +112,9 @@ public class TestBLLKnowledgeProducer {
 		final String templateName = "MyTemplate";
 		final String templateText = "MyTemplateText";
 		TemplateManager tplm = new TemplateManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = new Template();
 		template.setTreeId(tree.getId());
@@ -125,7 +133,9 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testTemplateIsDefault() throws Exception {
 		TemplateManager tplm = new TemplateManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Template template = new Template();
 		template.setTreeId(tree.getId());
 		template.setTitle("My Template Title");
@@ -138,7 +148,9 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testTemplateDefaultChangeMultipleTemplates() throws Exception {
 		TemplateManager tplm = new TemplateManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Template template1 = new Template();
 		template1.setTreeId(tree.getId());
 		template1.setTitle("My Template Title");
@@ -164,7 +176,9 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() throws Exception {
 		TemplateManager tplm = new TemplateManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		Template template1 = new Template();
 		template1.setTreeId(tree.getId());
 		template1.setTitle("My Template Title");
@@ -197,7 +211,9 @@ public class TestBLLKnowledgeProducer {
 		final String templateText = "MyTemplateText";
 		final String newTemplateText = "My new template text";
 		TemplateManager tplm = new TemplateManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = new Template();
 		template.setTreeId(tree.getId());
@@ -255,7 +271,9 @@ public class TestBLLKnowledgeProducer {
 		final String nodeTitle = "Node";
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		assertEquals(0, nm.getNodes(tree.getId()).size());
 		Node node = new Node();
@@ -278,7 +296,9 @@ public class TestBLLKnowledgeProducer {
 		final String newNodeTitle = "MyNewTitle";
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
@@ -328,7 +348,9 @@ public class TestBLLKnowledgeProducer {
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
 		NodeLinkManager nlm = new NodeLinkManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = new Node();
 		node1.setTreeId(tree.getId());
@@ -364,7 +386,9 @@ public class TestBLLKnowledgeProducer {
 		SubnodeManager snm = new SubnodeManager();
 		DirectoryManager dm = new DirectoryManager();
 		NodeLinkManager nlm = new NodeLinkManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = new Node();
 		node1.setTreeId(tree.getId());
@@ -439,7 +463,9 @@ public class TestBLLKnowledgeProducer {
 		SubnodeManager snm = new SubnodeManager();
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
@@ -467,7 +493,9 @@ public class TestBLLKnowledgeProducer {
 		SubnodeManager snm = new SubnodeManager();
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
@@ -493,7 +521,9 @@ public class TestBLLKnowledgeProducer {
 		final String subnodename = "My Subnode";
 		SubnodeManager snm = new SubnodeManager();
 		NodeManager nm = new NodeManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		DirectoryManager dm = new DirectoryManager();
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
@@ -578,7 +608,9 @@ public class TestBLLKnowledgeProducer {
 		final String directoryName = "TestDirectory";
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		Tree tree = new Tree();
+		tree.setTitle(treeName);
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
@@ -604,7 +636,9 @@ public class TestBLLKnowledgeProducer {
 		final String newDirectoryName = "MyNewDirectory";
 		NodeManager nm = new NodeManager();
 		DirectoryManager dm = new DirectoryManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), treeName);
+		Tree tree = new Tree();
+		tree.setTitle(treeName);
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
@@ -707,7 +741,9 @@ public class TestBLLKnowledgeProducer {
 	@Test
 	public void testSimpleImportExportEmptyTree() throws Exception {
 		XmlTreeManager xtm = new XmlTreeManager();
-		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(username).getId(), tree);
 		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
 		xtm.cleanTree(xmlTree.getId());
 		xtm.setXmlTree(xmlTree.getId());

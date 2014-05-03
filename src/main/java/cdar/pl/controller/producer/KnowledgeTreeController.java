@@ -45,7 +45,7 @@ public class KnowledgeTreeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(Tree tree, @HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree.getTitle()));
+			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -65,7 +65,7 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateKnowledgeTree(@PathParam("ktreeid") int treeId,Tree tree) {
+	public Response updateKnowledgeTree(@PathParam("ktreeid") int treeId, Tree tree) {
 		tree.setId(treeId);
 		try {
 			return StatusHelper.getStatusOk(ktm.updateTree(tree));

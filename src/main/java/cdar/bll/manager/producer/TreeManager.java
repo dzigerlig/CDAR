@@ -22,16 +22,14 @@ public class TreeManager {
 		return trees;
 	} 
 
-	public Tree addTree(int uid, String treeTitle) throws Exception {
+	public Tree addTree(int uid, Tree tree) throws Exception {
 		DirectoryRepository dr = new DirectoryRepository();		
 		User user = new UserRepository().getUser(uid);
-		Tree tree = new Tree();
 		tree.setUserId(user.getId());
-		tree.setTitle(treeTitle);
 		tree = tr.createTree(tree);
 		Directory directory = new Directory();
 		directory.setTreeId(tree.getId());
-		directory.setTitle(treeTitle);
+		directory.setTitle(tree.getTitle());
 		dr.createDirectory(directory);
 		return tree;
 	}
