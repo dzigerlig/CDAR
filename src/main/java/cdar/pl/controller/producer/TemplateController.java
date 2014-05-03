@@ -31,7 +31,7 @@ public class TemplateController {
 		@Consumes(MediaType.APPLICATION_JSON)
 		public Response addTemplate(Template template) {
 			try {
-				return StatusHelper.getStatusCreated(tm.addKnowledgeTemplate(template.getTreeId(),template.getTitle(), template.getTemplatetext(),template.getDecisionMade()));
+				return StatusHelper.getStatusCreated(tm.addKnowledgeTemplate(template));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
 			}

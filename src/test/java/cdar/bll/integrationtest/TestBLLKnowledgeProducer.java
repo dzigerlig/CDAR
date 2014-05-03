@@ -108,7 +108,12 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
+		Template template = new Template();
+		template.setTreeId(tree.getId());
+		template.setTitle(templateName);
+		template.setTemplatetext(templateText);
+		template.setDecisionMade(false);
+		template = tplm.addKnowledgeTemplate(template);
 		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
@@ -121,7 +126,12 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateIsDefault() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
+		Template template = new Template();
+		template.setTreeId(tree.getId());
+		template.setTitle("My Template Title");
+		template.setTemplatetext("My Template Text");
+		template.setDecisionMade(false);
+		template = tplm.addKnowledgeTemplate(template);
 		assertFalse(template.getIsDefault());
 	}
 	
@@ -129,8 +139,18 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateDefaultChangeMultipleTemplates() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
-		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
+		Template template1 = new Template();
+		template1.setTreeId(tree.getId());
+		template1.setTitle("My Template Title");
+		template1.setTemplatetext("My Template Text");
+		template1.setDecisionMade(false);
+		Template template2 = new Template();
+		template2.setTreeId(tree.getId());
+		template2.setTitle("My Template Title");
+		template2.setTemplatetext("My Template Text");
+		template2.setDecisionMade(false);
+		template1 = tplm.addKnowledgeTemplate(template1);
+		template2 = tplm.addKnowledgeTemplate(template2);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
 		tplm.setDefaultTemplate(template1.getTreeId(), template1.getId());
@@ -145,8 +165,18 @@ public class TestBLLKnowledgeProducer {
 	public void testTemplateDefaultChangeMultipleTemplatesNoDefault() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-		Template template1 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
-		Template template2 = tplm.addKnowledgeTemplate(tree.getId(), "My Template Title", "My Template Text", false);
+		Template template1 = new Template();
+		template1.setTreeId(tree.getId());
+		template1.setTitle("My Template Title");
+		template1.setTemplatetext("My Template Text");
+		template1.setDecisionMade(false);
+		Template template2 = new Template();
+		template2.setTreeId(tree.getId());
+		template2.setTitle("My Template Title");
+		template2.setTemplatetext("My Template Text");
+		template2.setDecisionMade(false);
+		template1 = tplm.addKnowledgeTemplate(template1);
+		template2 = tplm.addKnowledgeTemplate(template2);
 		assertFalse(template1.getIsDefault());
 		assertFalse(template2.getIsDefault());
 		tplm.setDefaultTemplate(template1.getTreeId(), template1.getId());
@@ -169,7 +199,12 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
-		Template template = tplm.addKnowledgeTemplate(tree.getId(), templateName, templateText, false);
+		Template template = new Template();
+		template.setTreeId(tree.getId());
+		template.setTitle(templateName);
+		template.setTemplatetext(templateText);
+		template.setDecisionMade(false);
+		template = tplm.addKnowledgeTemplate(template);
 		assertEquals(1, tplm.getKnowledgeTemplates(tree.getId()).size());
 		assertEquals(templateName, tplm.getKnowledgeTemplate(template.getId()).getTitle());
 		assertEquals(templateText, tplm.getKnowledgeTemplate(template.getId()).getTemplatetext());
@@ -199,7 +234,12 @@ public class TestBLLKnowledgeProducer {
 	@Test (expected = UnknownTemplateException.class)
 	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException {
 		TemplateManager tplm = new TemplateManager();
-		Template template = tplm.addKnowledgeTemplate(unknownId, "Template title", "Template text", false);
+		Template template = new Template();
+		template.setTreeId(unknownId);
+		template.setTitle("Template title");
+		template.setTemplatetext("Template text");
+		template.setDecisionMade(false);
+		template = tplm.addKnowledgeTemplate(template);
 		template.setTitle("New title");
 		tplm.updateTemplate(template);
 	}

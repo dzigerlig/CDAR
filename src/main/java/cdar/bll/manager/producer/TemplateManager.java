@@ -24,12 +24,7 @@ public class TemplateManager {
 		return tr.getTemplate(templateId);
 	}
 
-	public Template addKnowledgeTemplate(int treeId, String title, String text, boolean decisionMade) throws UnknownTemplateException  {
-		Template template = new Template();
-		template.setTreeId(treeId);
-		template.setTitle(title);
-		template.setTemplatetext(text);
-		template.setDecisionMade(decisionMade);
+	public Template addKnowledgeTemplate(Template template) throws UnknownTemplateException  {
 		return tr.createTemplate(template);
 	}
 
