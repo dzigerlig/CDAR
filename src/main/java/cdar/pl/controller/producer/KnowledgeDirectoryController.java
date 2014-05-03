@@ -14,7 +14,7 @@ import cdar.bll.manager.producer.DirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
-public class DirectoryController {
+public class KnowledgeDirectoryController {
 	private DirectoryManager dm = new DirectoryManager();
 
 		@GET

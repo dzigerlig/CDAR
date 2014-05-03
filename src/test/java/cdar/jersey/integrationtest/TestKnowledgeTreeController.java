@@ -24,7 +24,7 @@ import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.producer.Template;
 import cdar.pl.controller.UserController;
-import cdar.pl.controller.producer.DirectoryController;
+import cdar.pl.controller.producer.KnowledgeDirectoryController;
 import cdar.pl.controller.producer.KnowledgeNodeController;
 import cdar.pl.controller.producer.KnowledgeNodeLinkController;
 import cdar.pl.controller.producer.KnowledgeSubnodeController;
@@ -47,7 +47,7 @@ public class TestKnowledgeTreeController extends JerseyTest {
 	protected Application configure() {
 		return new ResourceConfig(KnowledgeTreeController.class,
 				UserController.class, KnowledgeNodeController.class,
-				TemplateController.class, DirectoryController.class,
+				TemplateController.class, KnowledgeDirectoryController.class,
 				KnowledgeNodeLinkController.class,
 				KnowledgeSubnodeController.class);
 	}
@@ -551,15 +551,17 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		Node addedNode = addNode(treeid, addedDirectory.getId());
 		addedNode.setTitle(TREENAME);
 		addedNode.setDynamicTreeFlag(1);
+		int nodeId = addedNode.getId();
+		addedNode.setId(0);
 		Response updatedNodeResponse = target(
-				"/ktrees/" + treeid + "/nodes/" + addedNode.getId())
+				"/ktrees/" + treeid + "/nodes/" + nodeId)
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedNode, MediaType.APPLICATION_JSON),
 						Response.class);
-		Node updatedNode = getNode(addedNode.getId());
-		deleteNode(addedNode.getId());
+		Node updatedNode = getNode(nodeId);
+		deleteNode(nodeId);
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(200, updatedNodeResponse.getStatus());
 		assertEquals(TREENAME, updatedNode.getTitle());
@@ -828,16 +830,18 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		Subnode addedSubnode = addSubnode(addedNode1.getId(), PASSWORD);
 		addedSubnode.setNodeId(addedNode2.getId());
 		addedSubnode.setPosition(2);
+		int subnodeId = addedSubnode.getId();
+		addedSubnode.setId(0);
 		Response updatedSubnodeResponse = target(
 				"/ktrees/" + treeid + "/nodes/" + addedNode1.getId()
-						+ "/subnodes/" + addedSubnode.getId())
+						+ "/subnodes/" + subnodeId)
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedSubnode, MediaType.APPLICATION_JSON),
 						Response.class);
-		Subnode updatedSubnode = getSubnode(addedNode1.getId(), addedSubnode.getId());
-		deleteSubnode(addedSubnode.getId(), addedNode1.getId());
+		Subnode updatedSubnode = getSubnode(addedNode1.getId(), subnodeId);
+		deleteSubnode(subnodeId, addedNode1.getId());
 
 		deleteNode(addedNode1.getId());
 		deleteNode(addedNode2.getId());
@@ -857,18 +861,13 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		addedSubnode.setTitle(USERNAME);
 		Response updatedSubnodeResponse = target(
 				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
-						+ "/subnodes/" + addedSubnode.getId())
+						+ "/subnodes/rename")
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedSubnode, MediaType.APPLICATION_JSON),
 						Response.class);
-		Response getSubnodeResponse = target(
-				"/ktrees/" + treeid + "/nodes/" + addedNode.getId()
-						+ "/subnodes/" + addedSubnode.getId()).request()
-				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
-				.get(Response.class);
-		Subnode getSubnode = getSubnodeResponse.readEntity(Subnode.class);
+		Subnode getSubnode = getSubnode(addedNode.getId(), addedSubnode.getId());
 		deleteSubnode(addedSubnode.getId(), addedNode.getId());
 
 		deleteNode(addedNode.getId());
