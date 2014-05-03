@@ -28,13 +28,8 @@ public class NodeLinkManager {
 		nlr.deleteNodeLink(nodeLinkId);
 	}
 	
-	public NodeLink addNodeLink(int ktrid, int sourceId, int targetId, int ksnid) throws Exception
+	public NodeLink addNodeLink(NodeLink nodeLink) throws Exception
 	{
-		NodeLink nodeLink = new NodeLink();
-		nodeLink.setTreeId(ktrid);
-		nodeLink.setSourceId(sourceId);
-		nodeLink.setTargetId(targetId);
-		nodeLink.setSubnodeId(ksnid);
 		return nlr.createNodeLink(nodeLink);
 	}
 

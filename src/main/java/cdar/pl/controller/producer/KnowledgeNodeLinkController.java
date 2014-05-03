@@ -32,7 +32,7 @@ public class KnowledgeNodeLinkController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusCreated(lm.addNodeLink(nodeLink.getTreeId(), nodeLink.getSourceId(), nodeLink.getTargetId(), nodeLink.getSubnodeId()));
+			return StatusHelper.getStatusCreated(lm.addNodeLink(nodeLink));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

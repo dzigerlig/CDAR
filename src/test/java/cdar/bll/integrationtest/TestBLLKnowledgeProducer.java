@@ -278,14 +278,19 @@ public class TestBLLKnowledgeProducer {
 		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
+		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
 		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode2, directoryId);
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
-		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), 0);
+		NodeLink nodeLink = new NodeLink();
+		nodeLink.setTreeId(tree.getId());
+		nodeLink.setSourceId(node1.getId());
+		nodeLink.setTargetId(node2.getId());
+		nodeLink.setSubnodeId(0);
+		nodeLink = nlm.addNodeLink(nodeLink);
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
-		nlm.deleteNodeLink(nodelink.getId());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getTargetId()).getTitle());
+		nlm.deleteNodeLink(nodeLink.getId());
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 	}
 	
@@ -301,21 +306,26 @@ public class TestBLLKnowledgeProducer {
 		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
+		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode1, directoryId);
 		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), nameNode2, directoryId);
-		Subnode subnode = snm.addSubnode(node.getId(), nameSubnode1);
-		Subnode subnode2 = snm.addSubnode(node.getId(), nameSubnode2);
+		Subnode subnode = snm.addSubnode(node1.getId(), nameSubnode1);
+		Subnode subnode2 = snm.addSubnode(node1.getId(), nameSubnode2);
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
-		NodeLink nodelink = nlm.addNodeLink(tree.getId(), node.getId(), node2.getId(), subnode.getId());
+		NodeLink nodeLink = new NodeLink();
+		nodeLink.setTreeId(tree.getId());
+		nodeLink.setSourceId(node1.getId());
+		nodeLink.setTargetId(node2.getId());
+		nodeLink.setSubnodeId(subnode.getId());
+		nodeLink = nlm.addNodeLink(nodeLink);
 		assertEquals(1, nlm.getNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
-		assertEquals(nameSubnode1, snm.getSubnode(nlm.getNodeLink(nodelink.getId()).getSubnodeId()).getTitle());
-		nodelink.setSubnodeId(subnode2.getId());
-		nlm.updateNodeLink(nodelink);
-		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodelink.getId()).getTargetId()).getTitle());
-		assertEquals(nameSubnode2, snm.getSubnode(nlm.getNodeLink(nodelink.getId()).getSubnodeId()).getTitle());
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getTargetId()).getTitle());
+		assertEquals(nameSubnode1, snm.getSubnode(nlm.getNodeLink(nodeLink.getId()).getSubnodeId()).getTitle());
+		nodeLink.setSubnodeId(subnode2.getId());
+		nlm.updateNodeLink(nodeLink);
+		assertEquals(nameNode1, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, nm.getNode(nlm.getNodeLink(nodeLink.getId()).getTargetId()).getTitle());
+		assertEquals(nameSubnode2, snm.getSubnode(nlm.getNodeLink(nodeLink.getId()).getSubnodeId()).getTitle());
 	}
 	
 	@Test
@@ -333,7 +343,12 @@ public class TestBLLKnowledgeProducer {
 	@Test(expected = UnknownTreeException.class)
 	public void testUpdateUnknownNodeLink() throws Exception {
 		NodeLinkManager nlm = new NodeLinkManager();
-		NodeLink nodeLink = nlm.addNodeLink(unknownId, unknownId, unknownId, unknownId);
+		NodeLink nodeLink = new NodeLink();
+		nodeLink.setTreeId(unknownId);
+		nodeLink.setSourceId(unknownId);
+		nodeLink.setTargetId(unknownId);
+		nodeLink.setSubnodeId(unknownId);
+		nodeLink = nlm.addNodeLink(nodeLink);
 		nodeLink.setSourceId(unknownId);
 		nlm.updateNodeLink(nodeLink);
 	}
