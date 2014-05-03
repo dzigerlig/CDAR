@@ -22,12 +22,7 @@ public class ProjectNodeLinkManager {
 		return projectNodeLinks;
 	}
 
-	public NodeLink addProjectNodeLink(int kptid, int sourceId, int targetId, int kpnsnid) throws UnknownProjectTreeException {
-		NodeLink projectNodeLink = new NodeLink();
-		projectNodeLink.setTreeId(kptid);
-		projectNodeLink.setSourceId(sourceId);
-		projectNodeLink.setTargetId(targetId);
-		projectNodeLink.setSubnodeId(kpnsnid);
+	public NodeLink addProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
 		return pnlr.createProjectNodeLink(projectNodeLink);
 	}
 	

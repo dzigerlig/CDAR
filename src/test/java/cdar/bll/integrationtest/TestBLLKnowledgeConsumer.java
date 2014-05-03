@@ -280,11 +280,16 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1, directoryId);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2, directoryId);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
-		NodeLink projectnodelink = pnlm.addProjectNodeLink(tree.getId(), projectNode1.getId(), projectNode2.getId(), 0);
+		NodeLink projectNodeLink = new NodeLink();
+		projectNodeLink.setTreeId(tree.getId());
+		projectNodeLink.setSourceId(projectNode1.getId());
+		projectNodeLink.setTargetId(projectNode2.getId());
+		projectNodeLink.setSubnodeId(0);
+		projectNodeLink = pnlm.addProjectNodeLink(projectNodeLink);
 		assertEquals(1, pnlm.getProjectNodeLinks(tree.getId()).size());
-		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
-		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
-		pnlm.deleteProjectNodeLink(projectnodelink.getId());
+		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectNodeLink.getId()).getSourceId()).getTitle());
+		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectNodeLink.getId()).getTargetId()).getTitle());
+		pnlm.deleteProjectNodeLink(projectNodeLink.getId());
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
 	}
 	
@@ -299,7 +304,12 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNode projectNode1 = pnm.addProjectNode(tree.getId(), nameNode1, directoryId);
 		ProjectNode projectNode2 = pnm.addProjectNode(tree.getId(), nameNode2, directoryId);
 		assertEquals(0, pnlm.getProjectNodeLinks(tree.getId()).size());
-		NodeLink projectnodelink = pnlm.addProjectNodeLink(tree.getId(), projectNode1.getId(), projectNode2.getId(), 0);
+		NodeLink projectNodeLink = new NodeLink();
+		projectNodeLink.setTreeId(tree.getId());
+		projectNodeLink.setSourceId(projectNode1.getId());
+		projectNodeLink.setTargetId(projectNode2.getId());
+		projectNodeLink.setSubnodeId(0);
+		NodeLink projectnodelink = pnlm.addProjectNodeLink(projectNodeLink);
 		assertEquals(1, pnlm.getProjectNodeLinks(tree.getId()).size());
 		assertEquals(nameNode1, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getSourceId()).getTitle());
 		assertEquals(nameNode2, pnm.getProjectNode(pnlm.getProjectNodeLink(projectnodelink.getId()).getTargetId()).getTitle());
