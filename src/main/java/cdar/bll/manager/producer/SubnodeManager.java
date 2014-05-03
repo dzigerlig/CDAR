@@ -13,11 +13,8 @@ import cdar.dal.producer.SubnodeRepository;
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(int knid, String title) throws Exception {
-		Subnode subnode = new Subnode();
-		subnode.setNodeId(knid);
-		subnode.setTitle(title);
-		subnode.setPosition(sr.getNextSubnodePosition(knid));
+	public Subnode addSubnode(Subnode subnode) throws Exception {
+		subnode.setPosition(sr.getNextSubnodePosition(subnode.getNodeId()));
 		return sr.createSubnode(subnode);
 	}
 

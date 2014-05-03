@@ -41,7 +41,7 @@ public class KnowledgeSubnodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(Subnode subnode) {
 		try {
-			return StatusHelper.getStatusCreated(sm.addSubnode(subnode.getNodeId(), subnode.getTitle()));
+			return StatusHelper.getStatusCreated(sm.addSubnode(subnode));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
