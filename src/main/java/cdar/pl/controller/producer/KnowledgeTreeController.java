@@ -64,7 +64,8 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateKnowledgeTree(Tree tree) {
+	public Response updateKnowledgeTree(@PathParam("ktreeid") int treeId,Tree tree) {
+		tree.setId(treeId);
 		try {
 			return StatusHelper.getStatusOk(ktm.updateTree(tree));
 		} catch (Exception ex) {

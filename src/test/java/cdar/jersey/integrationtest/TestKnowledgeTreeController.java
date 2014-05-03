@@ -84,13 +84,14 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addTree, MediaType.APPLICATION_JSON),
 						Response.class);
-		Tree tree = createdTreeResponse.readEntity(Tree.class);
-		treeid = tree.getId();
+		Tree createdTree = createdTreeResponse.readEntity(Tree.class);
+		treeid = createdTree.getId();
 		int quantityOfTreesAfterAdd = target("/ktrees").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
 		assertEquals(201, createdTreeResponse.getStatus());
 		assertEquals(quantityOfTreesBeforeAdd + 1, quantityOfTreesAfterAdd);
+		assertNotEquals(0, createdTree.getId());
 	}
 
 	@After
@@ -145,6 +146,7 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.get(Response.class);
 		Tree testTree = testTreeResponse.readEntity(Tree.class);
 		assertEquals(TREENAME, testTree.getTitle());
+		assertNotEquals(0, testTree.getId());
 		assertEquals(200, testTreeResponse.getStatus());
 	}
 
@@ -152,23 +154,16 @@ public class TestKnowledgeTreeController extends JerseyTest {
 	public void testEditTree() {
 		Tree editTree = new Tree();
 		editTree.setTitle("editTree");
-		Response editedTreeResponse = target("ktrees/" + editTree.getId())
+		Response editedTreeResponse = target("ktrees/" + treeid)
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(editTree, MediaType.APPLICATION_JSON),
 						Response.class);
-		Tree resetEditTree = new Tree();
-		resetEditTree.setTitle("editTree");
-		target("ktrees/" + editTree.getId())
-				.request()
-				.header(UID, userId)
-				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(resetEditTree, MediaType.APPLICATION_JSON),
-						Response.class);
-		Tree editedTree = editedTreeResponse.readEntity(Tree.class);
+		Tree editedTree = getTree(treeid);
 		assertEquals(200, editedTreeResponse.getStatus());
 		assertEquals("editTree", editedTree.getTitle());
+		assertNotEquals(0, editedTree.getId());
 	}
 
 	@Test
@@ -294,17 +289,19 @@ public class TestKnowledgeTreeController extends JerseyTest {
 	public void testEditTemplate() {
 		Template addedTemplate = addTemplate(treeid, "TestTemplate",
 				"TemplateText");
+		int templateid = addedTemplate.getId();
 		addedTemplate.setTemplatetext(TREENAME);
 		addedTemplate.setTitle(USERNAME);
+		addedTemplate.setId(0);
 		Response editTemplateResponse = target(
-				"/ktrees/" + treeid + "/templates/" + addedTemplate.getId())
+				"/ktrees/" + treeid + "/templates/" + templateid)
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedTemplate, MediaType.APPLICATION_JSON),
 						Response.class);
-		Template editTemplate = editTemplateResponse.readEntity(Template.class);
-		deleteTemplate(addedTemplate.getId());
+		Template editTemplate = getTemplate(templateid);
+		deleteTemplate(editTemplate.getId());
 		assertEquals(200, editTemplateResponse.getStatus());
 		assertEquals(TREENAME, editTemplate.getTemplatetext());
 		assertEquals(USERNAME, editTemplate.getTitle());
@@ -435,16 +432,17 @@ public class TestKnowledgeTreeController extends JerseyTest {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		addedDirectory.setTitle(USERNAME);
 		addedDirectory.setParentId(addedParentDirectory.getId());
+		int addedDirectoryId=addedDirectory.getId();
+		addedDirectory.setId(0);
 		Response updatedDirectoryResponse = target(
-				"/ktrees/" + treeid + "/directories/" + addedDirectory.getId())
+				"/ktrees/" + treeid + "/directories/" + addedDirectoryId)
 				.request()
 				.header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedDirectory, MediaType.APPLICATION_JSON),
 						Response.class);
-		Directory updatedDirectory = updatedDirectoryResponse
-				.readEntity(Directory.class);
-		deleteDirectory(addedDirectory.getId());
+		Directory updatedDirectory = getDirectory(addedDirectoryId);
+		deleteDirectory(addedDirectoryId);
 		deleteDirectory(addedParentDirectory.getId());
 		assertEquals(200, updatedDirectoryResponse.getStatus());
 		assertEquals(USERNAME, updatedDirectory.getTitle());
@@ -514,11 +512,12 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				"/ktrees/treeid/nodes/" + addedNode.getId()).request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class);
+		Node receivedNode = receivedNodeResponse.readEntity(Node.class);
 		deleteNode(addedNode.getId());
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(200, receivedNodeResponse.getStatus());
-		assertEquals(treeid, addedNode.getTreeId());
-		assertEquals(addedDirectory.getId(), addedNode.getDirectoryId());
+		assertEquals(treeid, receivedNode.getTreeId());
+		assertEquals(addedDirectory.getId(), receivedNode.getDirectoryId());
 	}
 
 	@Test
@@ -559,7 +558,7 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedNode, MediaType.APPLICATION_JSON),
 						Response.class);
-		Node updatedNode = updatedNodeResponse.readEntity(Node.class);
+		Node updatedNode = getNode(addedNode.getId());
 		deleteNode(addedNode.getId());
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(200, updatedNodeResponse.getStatus());
@@ -707,7 +706,6 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				"/ktrees/" + treeid + "/subnodes/").request()
 				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
 				.get(Response.class).readEntity(Set.class).size();
-		System.out.println(quantityOfSubnodesAfterDelete);
 		deleteNode(addedNode.getId());
 		deleteDirectory(addedDirectory.getId());
 		assertEquals(200, deletedSubnodeResponse.getStatus());
@@ -838,8 +836,7 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(addedSubnode, MediaType.APPLICATION_JSON),
 						Response.class);
-		Subnode updatedSubnode = updatedSubnodeResponse
-				.readEntity(Subnode.class);
+		Subnode updatedSubnode = getSubnode(addedNode1.getId(), addedSubnode.getId());
 		deleteSubnode(addedSubnode.getId(), addedNode1.getId());
 
 		deleteNode(addedNode1.getId());
@@ -902,6 +899,13 @@ public class TestKnowledgeTreeController extends JerseyTest {
 						Response.class).readEntity(boolean.class);
 	}
 
+	private Tree getTree(int id) {
+		Response testTreeResponse = target("/ktrees/" + id).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		return testTreeResponse.readEntity(Tree.class);
+	}
+
 	private Template addTemplate(int treeid, String title, String templatetext) {
 		Template addTestTemplate = new Template();
 		addTestTemplate.setTreeId(treeid);
@@ -926,6 +930,14 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.post(Entity.entity(deleteTemplate, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
 	};
+
+	private Template getTemplate(int templateid) {
+		Response getTemplateResponse = target(
+				"/ktrees/" + treeid + "/templates/" + templateid).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		return getTemplateResponse.readEntity(Template.class);
+	}
 
 	private Directory addDirectory(int treeid, int parentid) {
 		Directory addTestDirectory = new Directory();
@@ -952,6 +964,14 @@ public class TestKnowledgeTreeController extends JerseyTest {
 						Response.class).readEntity(boolean.class);
 	}
 
+	private Directory getDirectory(int directroyId) {
+		Response getDirectoryResponse = target(
+				"/ktrees/" + treeid + "/directories/" + directroyId).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		return getDirectoryResponse.readEntity(Directory.class);
+	}
+
 	private Node addNode(int treeid, int did) {
 		Node addTestNode = new Node();
 		addTestNode.setTreeId(treeid);
@@ -973,6 +993,12 @@ public class TestKnowledgeTreeController extends JerseyTest {
 				.header(ACCESSTOKEN, accesstoken)
 				.post(Entity.entity(deleteNode, MediaType.APPLICATION_JSON),
 						Response.class).readEntity(boolean.class);
+	}
+
+	private Node getNode(int nodeId) {
+		return target("/ktrees/treeid/nodes/" + nodeId).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Node.class);
 	}
 
 	private NodeLink addNodeLink(int treeid, int sourceid, int targetid) {
@@ -1024,4 +1050,11 @@ public class TestKnowledgeTreeController extends JerseyTest {
 						Response.class).readEntity(ChangesWrapper.class);
 	}
 
+	public Subnode getSubnode(int nodeId, int subnodeId) {
+		Response getSubnodeResponse = target(
+				"/ktrees/" + treeid + "/nodes/" + nodeId + "/subnodes/"
+						+ subnodeId).request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		return getSubnodeResponse.readEntity(Subnode.class);
+	}
 }

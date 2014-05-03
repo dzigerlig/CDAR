@@ -32,9 +32,9 @@ public class ProjectTreeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProjectTree(String treeTitle, @HeaderParam("uid") int uid) {
+	public Response addProjectTree(Tree tree, @HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusCreated(ptm.addProjectTree(uid, treeTitle));
+			return StatusHelper.getStatusCreated(ptm.addProjectTree(uid, tree.getTitle()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -54,8 +54,9 @@ public class ProjectTreeController {
 	@POST
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateProjectTree(Tree tree) {
-		try {
+	public Response updateProjectTree(@PathParam("ptreeid") int treeId,Tree tree) {
+		tree.setId(treeId);
+		try {	
 			return StatusHelper.getStatusOk(ptm.updateProjectTree(tree));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
