@@ -39,7 +39,19 @@ public class DirectoryManager {
 	}
 	
 	public Directory updateDirectory(Directory directory) throws Exception {
-		return dr.updateDirectory(directory);
+		Directory updatedDirectory = dr.getDirectory(directory.getId());
+		
+		if (directory.getParentId()!=0) {
+			updatedDirectory.setParentId(directory.getParentId());
+		}
+		if (directory.getTitle()!=null) {
+			updatedDirectory.setTitle(directory.getTitle());
+		}
+		if (directory.getTreeId()!=0) {
+			updatedDirectory.setTreeId(directory.getTreeId());
+		}
+		
+		return dr.updateDirectory(updatedDirectory);
 	}
 
 	public Directory moveDirectory(Directory directory) throws Exception {

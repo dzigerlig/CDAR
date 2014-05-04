@@ -34,8 +34,14 @@ public class TemplateManager {
 
 	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {
 		Template updatedTemplate = getKnowledgeTemplate(template.getId());
-		updatedTemplate.setTemplatetext(template.getTemplatetext());
-		updatedTemplate.setTitle(template.getTitle());
+		
+		if (template.getTemplatetext()!=null) {
+			updatedTemplate.setTemplatetext(template.getTemplatetext());
+		}
+		if (template.getTitle()!=null) {
+			updatedTemplate.setTitle(template.getTitle());
+		}
+		
 		updatedTemplate.setDecisionMade(template.getDecisionMade());
 		return tr.updateTemplate(updatedTemplate);
 	}

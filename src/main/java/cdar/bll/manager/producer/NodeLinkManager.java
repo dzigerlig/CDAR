@@ -35,7 +35,9 @@ public class NodeLinkManager {
 
 	public NodeLink updateNodeLink(NodeLink nodelink) throws Exception {
 		NodeLink updatedNodeLink = nlr.getNodeLink(nodelink.getId());
-		updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());
+		if (nodelink.getSubnodeId()!=0) {
+			updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());
+		}
 		return nlr.updateNodeLink(updatedNodeLink);
 	}
 

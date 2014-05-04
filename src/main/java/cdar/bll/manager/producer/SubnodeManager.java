@@ -86,9 +86,15 @@ public class SubnodeManager {
 
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
 		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
-		updatedSubnode.setNodeId(subnode.getNodeId());
-		updatedSubnode.setTitle(subnode.getTitle());
-		updatedSubnode.setPosition(subnode.getPosition());
+		if (subnode.getNodeId()!=0) {
+			updatedSubnode.setNodeId(subnode.getNodeId());
+		}
+		if (subnode.getTitle()!=null) {
+			updatedSubnode.setTitle(subnode.getTitle());
+		}
+		if (subnode.getPosition()!=0) {
+			updatedSubnode.setPosition(subnode.getPosition());
+		}
 		return sr.updateSubnode(updatedSubnode);
 	}
 

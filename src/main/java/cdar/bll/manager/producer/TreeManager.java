@@ -43,6 +43,12 @@ public class TreeManager {
 	}
 
 	public Tree updateTree(Tree tree) throws Exception {
-		return tr.updateTree(tree);
+		Tree updatedTree = tr.getTree(tree.getId());
+		
+		if (tree.getTitle()!=null) {
+			updatedTree.setTitle(tree.getTitle());
+		}
+		
+		return tr.updateTree(updatedTree);
 	}
 }

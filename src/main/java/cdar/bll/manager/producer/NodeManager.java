@@ -89,9 +89,20 @@ public class NodeManager {
 
 	public Node updateNode(Node node) throws Exception {
 		Node updatedNode = getNode(node.getId());
-		updatedNode.setDirectoryId(node.getDirectoryId());
+		
+		if (node.getDirectoryId()!=0) {
+			updatedNode.setDirectoryId(node.getDirectoryId());
+		}
+		
 		updatedNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
-		updatedNode.setTitle(node.getTitle());
+		
+		if (node.getTitle()!=null) {
+			updatedNode.setTitle(node.getTitle());
+		}
+		if (node.getTreeId()!=0) {
+			updatedNode.setTreeId(node.getTreeId());
+		}
+		
 		return nr.updateNode(updatedNode);
 	}
 
