@@ -450,20 +450,20 @@ app.factory('TreeService', [
 app.factory('AuthenticationService', [ '$log', '$resource', '$location', 'UserService',
 		function($log, $resource, $location, UserService) {
 			return {
-				addUser : $resource('../webapi/users/registration', {}, {
-					post : {
+				add : $resource('../webapi/users', {}, {
+					user : {
 						method : 'POST',
 						params : {},
 						isArray : false
 					}
 				}),
 				login : $resource('../webapi/users/login/:user/:pw', {}, {
-					loginuser : {
+					user : {
 						method : 'GET',
 						isArray : false
 					}
 				}),
-				edit : $resource('../webapi/users/edit', {}, {
+				edit : $resource('../webapi/users/:userid', {}, {
 					changepw : {
 						method : 'POST',
 						params : {},

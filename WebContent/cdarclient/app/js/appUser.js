@@ -10,7 +10,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	};
 	
 	$scope.login = function() {
-		AuthenticationService.login.loginuser({username:$scope.credentials.username,password: $scope.credentials.password}, function(response) {
+		AuthenticationService.login.user({username:$scope.credentials.username,password: $scope.credentials.password}, function(response) {
 				UserService.setUsername(response.username);
 				UserService.setAccesstoken(response.accesstoken);
 				UserService.setUserId(response.id);
@@ -41,13 +41,11 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 	};
 	
 	$scope.register = function() {
-		AuthenticationService.addUser.post({username: $scope.credentials.username, password: $scope.credentials.password}, function(response) {
-			if (response.id != -1) {
+		AuthenticationService.add.user({username: $scope.credentials.username, password: $scope.credentials.password}, function(response) {
 				noty({type: 'success', text : 'user created', timeout: 4000});
 				$location.path('/login');
-			} else {
-				noty({type: 'alert', text : 'user already exists', timeout: 4000});
-			}
+		}, function(error) {
+			noty({type: 'alert', text : 'user already exists', timeout: 4000});
 		});
 	};
 }]);
@@ -58,13 +56,11 @@ app.controller("AccountController", ['$scope', '$location', 'AuthenticationServi
 	$scope.newPw = '';
 	
 	$scope.changePw = function() {
-		AuthenticationService.edit.changepw({id : UserService.getUserId(), username : UserService.getUsername(), password : $scope.newPw}, function(response) {
-			if (response.id != -1) {
+		AuthenticationService.edit.changepw({ "userid" : UserService.getUserId() }, {id : UserService.getUserId(), username : UserService.getUsername(), password : $scope.newPw}, function(response) {
 				alert("pw changed!");
 				$scope.newPw = '';
-			} else {
+			} , function(error) {
 				alert("pw change failed!");
-			}
-		});
+			});
 	};
 }]);
