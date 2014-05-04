@@ -1,3 +1,120 @@
+app.factory('TreeService',['$resource', function($resource) {
+	return $resource('../webapi/:entity1/:id1/:entity2/:id2/:entity3/:id3/:action',
+			{}, {
+				//TREES
+				'getTrees' : {
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity1 : 'ptrees'
+					}
+				},
+				'addTree' : {
+					
+				}, 'getTree' : {
+					
+				}, 'updateTree' : {
+					
+				}, 'deleteTree' : {
+					
+				},
+				// SIMPLEEXPORT
+				// noch leer
+				
+				//DIRECTORIES
+				'getDirectories' : {
+					
+				}, 'addDirecotry' : {
+					
+				}, 'getDirectory' : {
+					
+				}, 'updateDirectory' : {
+					
+				}, 'deleteDirectory' : {
+					
+				},
+				//NODES
+				'getNodes' : {
+					
+				}, 'addNode' : {
+					
+				}, 'getNode' : {
+					
+				}, 'updateNode' : {
+					
+				}, 'deleteNode' : {
+					
+				}, 'getNodeWiki' : {
+					
+				}, 'updateNodeWiki' : {
+					
+				}, 'nodeZoomUp' : {
+					
+				}, 'nodeZoomDown' : {
+					
+				},
+				//SUBNODES
+				'getSubnodes' : {
+					
+				}, 'addSubnode' : {
+					
+				}, 'getSubnode' : {
+					
+				}, 'updateSubnode' : {
+					
+				}, 'deleteSubnode' : {
+					
+				}, 'getSubnodeWiki' : {
+					
+				}, 'updateSubnodeWiki' : {
+					
+				}, 'subnodeZoomUp' : {
+					
+				}, 'subnodeZoomDown' : {
+					
+				}, 'renameSubnode' : {
+					
+				}, 
+				//LINKS
+				'getLinks' : {
+					
+				}, 'addLink' : {
+					
+				}, 'deleteLink' : {
+					
+				}, 'linkZoomDown' : {
+					
+				}, 'linkZoomUp' : {
+					
+				}, 
+				//Templates
+				'getTemplates' : {
+					
+				}, 'addTemplate' : {
+					
+				}, 'getTemplate' : {
+					
+				}, 'updateTemplate' : {
+					
+				}, 'deleteTemplate' : {
+					
+				}, 
+				//Comments
+				'getComments' : {
+					
+				}, 'addComment' : {
+					
+				}, 'getComment' : {
+					
+				}, 'updateComment' : {
+					
+				}, 'deleteComment' : {
+					
+				}
+			});
+}]);
+
 app.factory('ProjectTreeService', [
 		'$resource',
 		'UserService',
