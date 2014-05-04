@@ -48,10 +48,18 @@ public class ProjectSubnodeManager {
 	
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
 		ProjectSubnode updatedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
-		updatedProjectSubnode.setNodeId(projectSubnode.getNodeId());
-		updatedProjectSubnode.setTitle(projectSubnode.getTitle());
-		updatedProjectSubnode.setPosition(projectSubnode.getPosition());
-		updatedProjectSubnode.setStatus(projectSubnode.getStatus());
+		if (projectSubnode.getNodeId()!=0) {
+			updatedProjectSubnode.setNodeId(projectSubnode.getNodeId());
+		}
+		if (projectSubnode.getTitle()!=null) {
+			updatedProjectSubnode.setTitle(projectSubnode.getTitle());
+		}
+		if (projectSubnode.getPosition()!=0) {
+			updatedProjectSubnode.setPosition(projectSubnode.getPosition());
+		}
+		if (projectSubnode.getStatus()!=0) {
+			updatedProjectSubnode.setStatus(projectSubnode.getStatus());
+		}
 		return psr.updateProjectSubnode(updatedProjectSubnode);
 	}
 	

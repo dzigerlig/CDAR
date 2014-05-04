@@ -28,10 +28,18 @@ public class ProjectNodeLinkManager {
 	
 	public NodeLink updateLink(NodeLink nodeLink) throws UnknownProjectNodeLinkException {
 		NodeLink updatedProjectNodeLink = pnlr.getProjectNodeLink(nodeLink.getId());
-		updatedProjectNodeLink.setTreeId(nodeLink.getTreeId());
-		updatedProjectNodeLink.setSubnodeId(nodeLink.getSubnodeId());
-		updatedProjectNodeLink.setSourceId(nodeLink.getSourceId());
-		updatedProjectNodeLink.setTargetId(nodeLink.getTargetId());
+		if (nodeLink.getTreeId()!=0) {
+			updatedProjectNodeLink.setTreeId(nodeLink.getTreeId());
+		}
+		if (nodeLink.getSubnodeId()!=0) {
+			updatedProjectNodeLink.setSubnodeId(nodeLink.getSubnodeId());
+		}
+		if (nodeLink.getSourceId()!=0) {
+			updatedProjectNodeLink.setSourceId(nodeLink.getSourceId());
+		}
+		if (nodeLink.getTargetId()!=0) {
+			updatedProjectNodeLink.setTargetId(nodeLink.getTargetId());
+		}
 		return pnlr.updateProjectNodeLink(updatedProjectNodeLink);
 	}
 	

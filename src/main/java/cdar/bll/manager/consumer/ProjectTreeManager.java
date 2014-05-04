@@ -115,7 +115,9 @@ public class ProjectTreeManager {
 
 	public Tree updateProjectTree(Tree projectTree) throws Exception {
 		Tree updatedProjectTree = ptr.getProjectTree(projectTree.getId());
-		updatedProjectTree.setTitle(projectTree.getTitle());
+		if (projectTree.getTitle()!=null) {
+			updatedProjectTree.setTitle(projectTree.getTitle());
+		}
 		return ptr.updateProjectTree(updatedProjectTree);
 	}
 }

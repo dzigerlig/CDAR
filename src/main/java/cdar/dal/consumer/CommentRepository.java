@@ -58,7 +58,7 @@ public class CommentRepository {
 					usercomment.setId(result.getInt(1));
 					usercomment.setCreationTime(result.getDate(2));
 					usercomment.setLastModificationTime(result.getDate(3));
-					usercomment.setNodeId(4);
+					usercomment.setNodeId(result.getInt(4));
 					usercomment.setUserId(result.getInt(5));
 					usercomment.setComment(result.getString(6));
 					return usercomment;
@@ -106,6 +106,7 @@ public class CommentRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw ex;
 		}
 		return comment;

@@ -34,6 +34,10 @@ public class CommentManager {
 	}
 	
 	public Comment updateComment(Comment comment) throws Exception {
-		return cr.updateComment(comment);
+		Comment updatedComment = cr.getComment(comment.getId());
+		if (comment.getComment()!=null) {
+			updatedComment.setComment(comment.getComment());
+		}
+		return cr.updateComment(updatedComment);
 	}
 }

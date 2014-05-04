@@ -39,7 +39,14 @@ public class ProjectDirectoryManager {
 	}
 	
 	public Directory updateDirectory(Directory directory) throws Exception {
-		return pdr.updateDirectory(directory);
+		Directory updatedDirectory = pdr.getDirectory(directory.getId());
+		if (directory.getParentId()!=0) {
+			updatedDirectory.setParentId(directory.getParentId());
+		}
+		if (directory.getTitle()!=null) {
+			updatedDirectory.setTitle(directory.getTitle());
+		}
+		return pdr.updateDirectory(updatedDirectory);
 	}
 
 	public Directory moveDirectory(Directory directory) throws Exception {

@@ -33,12 +33,22 @@ public class ProjectNodeManager {
 		pnr.deleteProjectNode(projectNodeId);
 	}
 
-	public ProjectNode updateProjectNode(ProjectNode node) throws UnknownProjectNodeException {
-		ProjectNode projectNode = pnr.getProjectNode(node.getId());
-		projectNode.setTreeId(node.getTreeId());
-		projectNode.setTitle(node.getTitle());
-		projectNode.setStatus(node.getStatus());
-		return pnr.updateProjectNode(projectNode);
+	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException {
+		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
+		
+		if (projectNode.getTreeId()!=0) {
+			updatedProjectNode.setTreeId(projectNode.getTreeId());
+		}
+		
+		if (projectNode.getTitle()!=null) {
+			updatedProjectNode.setTitle(projectNode.getTitle());
+		}
+		
+		if (projectNode.getStatus()!=0) {
+			updatedProjectNode.setStatus(projectNode.getStatus());
+		}
+		
+		return pnr.updateProjectNode(updatedProjectNode);
 	}
 
 	public Object zoomUp(int nodeId) {

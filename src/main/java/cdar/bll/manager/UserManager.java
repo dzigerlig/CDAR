@@ -52,13 +52,16 @@ public class UserManager {
 
 	public User updateUser(User user) throws Exception {
 		User updatedUser = userRepository.getUser(user.getId());
+		
 		if (user.getAccesstoken()!=null) {
 			updatedUser.setAccesstoken(user.getAccesstoken());
 		}
+		
 		if (user.getPassword()!=null) {
 			updatedUser.setPassword(user.getPassword());
 		}
-		return userRepository.updateUser(user);
+		
+		return userRepository.updateUser(updatedUser);
 	}
 
 	public User getUser(String username) throws UnknownUserException {
