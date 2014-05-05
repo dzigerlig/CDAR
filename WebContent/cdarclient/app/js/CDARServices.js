@@ -5,7 +5,7 @@ app.factory('TreeService',['$resource', function($resource) {
 				'getTrees' : {
 					headers : customHeaders,
 					method : 'GET',
-					isArray : true
+					isArray : true,
 				},
 				'addTree' : {
 					headers : customHeaders,
@@ -22,6 +22,12 @@ app.factory('TreeService',['$resource', function($resource) {
 					method : 'POST',
 					params : {
 						action : 'delete'
+					}
+				}, 'copyTree' : {
+					headers : customHeaders,
+					method : 'GET',
+					params : {
+						action : 'copy'
 					}
 				},
 				// SIMPLEEXPORT
@@ -326,75 +332,75 @@ app.factory('TreeService',['$resource', function($resource) {
 			});
 }]);
 
-app.factory('ProjectTreeService', [
-		'$resource',
-		'UserService',
-		function($resource, UserService) {
-			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
-					{}, {
-						'getTrees' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : true
-						},
-						'addTree' : {
-							headers: customHeaders,
-							method : 'POST',
-							params : {
-								action : 'add'
-							}
-						},
-						'removeTree' : {
-							headers: customHeaders,
-							method : 'POST',
-							params : {
-								action : 'delete'
-							}
-						},
-						'getTree' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : false
-						},
+//app.factory('ProjectTreeService', [
+//		'$resource',
+//		'UserService',
+//		function($resource, UserService) {
+//			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
+//					{}, {
+//						'getTrees' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : true
+//						},
+//						'addTree' : {
+//							headers: customHeaders,
+//							method : 'POST',
+//							params : {
+//								action : 'add'
+//							}
+//						},
+//						'removeTree' : {
+//							headers: customHeaders,
+//							method : 'POST',
+//							params : {
+//								action : 'delete'
+//							}
+//						},
+//						'getTree' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : false
+//						},
+//
+//						// action: nodes?
+//						'getNodes' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							params : {
+//								action : "nodes"
+//							},
+//							isArray : true
+//						},
+//						'copyTree' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : false,
+//							params : {
+//								action : 'copy'
+//							}
+//						}
+//					});
+//		} ]);
 
-						// action: nodes?
-						'getNodes' : {
-							headers: customHeaders,
-							method : 'GET',
-							params : {
-								action : "nodes"
-							},
-							isArray : true
-						},
-						'copyTree' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : false,
-							params : {
-								action : 'copy'
-							}
-						}
-					});
-		} ]);
+//app.factory('WikiService', [
+//		'$resource',
+//		'UserService',
+//		function($resource, UserService) {
+//			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
+//					{
+//						'getWikiEntry' : {
+//							headers: customHeaders,
+//							method : 'GET'
+//						},
+//						'postEntry' : {
+//							headers: customHeaders,
+//							method : 'POST'
+//						}
+//					});
+//		} ]);
 
-app.factory('WikiService', [
-		'$resource',
-		'UserService',
-		function($resource, UserService) {
-			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
-					{
-						'getWikiEntry' : {
-							headers: customHeaders,
-							method : 'GET'
-						},
-						'postEntry' : {
-							headers: customHeaders,
-							method : 'POST'
-						}
-					});
-		} ]);
-
-app.factory('TreeService', [
+app.factory('ProducerTreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {
