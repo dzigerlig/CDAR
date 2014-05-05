@@ -6,184 +6,401 @@ app.factory('TreeService',['$resource', function($resource) {
 					headers : customHeaders,
 					method : 'GET',
 					isArray : true,
-					params : {
-						entity1 : 'ptrees'
-					}
 				},
 				'addTree' : {
-					
+					headers : customHeaders,
+					method : 'POST'
 				}, 'getTree' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : false
 				}, 'updateTree' : {
-					
+					headers : customHeaders,
+					method : 'POST'
 				}, 'deleteTree' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						action : 'delete'
+					}
+				}, 'copyTree' : {
+					headers : customHeaders,
+					method : 'GET',
+					params : {
+						action : 'copy'
+					}
 				},
 				// SIMPLEEXPORT
 				// noch leer
 				
 				//DIRECTORIES
 				'getDirectories' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'directories'
+					}
 				}, 'addDirecotry' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'directories'
+					}
 				}, 'getDirectory' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : false,
+					params : {
+						entity2 : 'directories'
+					}
 				}, 'updateDirectory' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'directories'
+					}
 				}, 'deleteDirectory' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'directories',
+						action : 'delete'
+					}
 				},
 				//NODES
 				'getNodes' : {
-					
+					headers : customHeaders,
+					method  : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes'
+					}
 				}, 'addNode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes'
+					}
 				}, 'getNode' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : false,
+					params : {
+						entity2 : 'nodes'
+					}
 				}, 'updateNode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes'
+					}
 				}, 'deleteNode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						action : 'delete'
+					}
 				}, 'getNodeWiki' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					params : {
+						entity2 : 'nodes',
+						action : 'wiki'
+					}
 				}, 'updateNodeWiki' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						action : 'wiki'
+					}
 				}, 'nodeZoomUp' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes',
+						action : 'zoomup'
+					}
 				}, 'nodeZoomDown' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes',
+						action : 'zoomdown'
+					}
 				},
 				//SUBNODES
 				'getSubnodes' : {
-					
+					headers : customHeaders,
+					method  : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes'
+					}
 				}, 'addSubnode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes'
+					}
 				}, 'getSubnode' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : false,
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes'
+					}
 				}, 'updateSubnode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes'
+					}
 				}, 'deleteSubnode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'delete'
+					}
 				}, 'getSubnodeWiki' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'wiki'
+					}
 				}, 'updateSubnodeWiki' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'wiki'
+					}
 				}, 'subnodeZoomUp' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'zoomup'
+					}
 				}, 'subnodeZoomDown' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'zoomdown'
+					}
 				}, 'renameSubnode' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						entity3 : 'subnodes',
+						action : 'wiki'
+					}
 				}, 
 				//LINKS
 				'getLinks' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'links'
+					}
 				}, 'addLink' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'links'
+					}
 				}, 'deleteLink' : {
+					headers : customHeaders,
+					params : {
+						entity2 : 'links',
+						action : 'delete'
+					}
 					
 				}, 'linkZoomDown' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'links',
+						entity3 : 'nodes',
+						action : 'zoomdown'
+					}
 				}, 'linkZoomUp' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'links',
+						entity3 : 'nodes',
+						action : 'zoomup'
+					}
 				}, 
 				//Templates
 				'getTemplates' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'templates'
+					}
 				}, 'addTemplate' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'templates'
+					}
 				}, 'getTemplate' : {
-					
+					headers : customHeaders,
+					method : 'GET',
+					isArray : false,
+					params : {
+						entity2 : 'templates'
+					}
 				}, 'updateTemplate' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'templates'
+					}
 					
 				}, 'deleteTemplate' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'templates',
+						action : 'delete'
+					}
 				}, 
 				//Comments
 				'getComments' : {
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'comments'
+					}
 					
 				}, 'addComment' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'comments'
+					}
 					
 				}, 'getComment' : {
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'comments'
+					}
 					
 				}, 'updateComment' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'comments'
+					}
 					
 				}, 'deleteComment' : {
-					
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'comments',
+						action: 'delete'
+					}
 				}
 			});
 }]);
 
-app.factory('ProjectTreeService', [
-		'$resource',
-		'UserService',
-		function($resource, UserService) {
-			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
-					{}, {
-						'getTrees' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : true
-						},
-						'addTree' : {
-							headers: customHeaders,
-							method : 'POST',
-							params : {
-								action : 'add'
-							}
-						},
-						'removeTree' : {
-							headers: customHeaders,
-							method : 'POST',
-							params : {
-								action : 'delete'
-							}
-						},
-						'getTree' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : false
-						},
+//app.factory('ProjectTreeService', [
+//		'$resource',
+//		'UserService',
+//		function($resource, UserService) {
+//			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
+//					{}, {
+//						'getTrees' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : true
+//						},
+//						'addTree' : {
+//							headers: customHeaders,
+//							method : 'POST',
+//							params : {
+//								action : 'add'
+//							}
+//						},
+//						'removeTree' : {
+//							headers: customHeaders,
+//							method : 'POST',
+//							params : {
+//								action : 'delete'
+//							}
+//						},
+//						'getTree' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : false
+//						},
+//
+//						// action: nodes?
+//						'getNodes' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							params : {
+//								action : "nodes"
+//							},
+//							isArray : true
+//						},
+//						'copyTree' : {
+//							headers: customHeaders,
+//							method : 'GET',
+//							isArray : false,
+//							params : {
+//								action : 'copy'
+//							}
+//						}
+//					});
+//		} ]);
 
-						// action: nodes?
-						'getNodes' : {
-							headers: customHeaders,
-							method : 'GET',
-							params : {
-								action : "nodes"
-							},
-							isArray : true
-						},
-						'copyTree' : {
-							headers: customHeaders,
-							method : 'GET',
-							isArray : false,
-							params : {
-								action : 'copy'
-							}
-						}
-					});
-		} ]);
+//app.factory('WikiService', [
+//		'$resource',
+//		'UserService',
+//		function($resource, UserService) {
+//			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
+//					{
+//						'getWikiEntry' : {
+//							headers: customHeaders,
+//							method : 'GET'
+//						},
+//						'postEntry' : {
+//							headers: customHeaders,
+//							method : 'POST'
+//						}
+//					});
+//		} ]);
 
-app.factory('WikiService', [
-		'$resource',
-		'UserService',
-		function($resource, UserService) {
-			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
-					{
-						'getWikiEntry' : {
-							headers: customHeaders,
-							method : 'GET'
-						},
-						'postEntry' : {
-							headers: customHeaders,
-							method : 'POST'
-						}
-					});
-		} ]);
-
-app.factory('TreeService', [
+app.factory('ProducerTreeService', [
 		'$resource',
 		'UserService',
 		function($resource, UserService) {

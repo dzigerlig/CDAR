@@ -1,34 +1,32 @@
-app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'ProjectTreeService', 'UserService', function ($scope, AuthenticationService, ProjectTreeService, UserService) {
+app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, AuthenticationService, TreeService, UserService) {
 	$scope.projectTrees = "";
 	$scope.newTreeName = "";
 	$scope.UserService = UserService;
 	
 	var reloadTrees = function() {
-		ProjectTreeService.getTrees(function(response) {
+		TreeService.getTrees({entity1 : 'ptrees'}, function(response) {
 			$scope.projectTrees = response;
+		}, function(error) {
+			//error handling
 		});
 	};
 	
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
-		ProjectTreeService.addTree($scope.newTreeName, function(response) {
-			if (response.id != -1) {
+		TreeService.addTree({ entity1 : 'ptrees' }, {title : $scope.newTreeName}, function(response) {
 				$scope.newTreeName = '';
 				reloadTrees();
-			} else {
+			}, function(error) {
 				alert("Error: ProjectTree NOT added!");
-			}
-		});
+			});
 	};
 	
-	$scope.deleteTree = function(id) {
-		ProjectTreeService.removeTree(id, function(response) {
-			if (response.bool) {
+	$scope.deleteTree = function(treeid) {
+		TreeService.deleteTree({ entity1 : 'ptrees' }, { id : treeid }, function(response) {
 				reloadTrees();
-			} else {
-				// error
-			}
+		}, function(error) {
+			//error handling
 		});
 	};
 
@@ -37,7 +35,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Pr
     };
 }]);
 
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'ProjectTreeService', 'TreeService', 'UserService', 'WikiService', function ($scope, $routeParams, AuthenticationService, ProjectTreeService, TreeService, UserService, WikiService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
 	$scope.UserService = UserService;
 	$scope.projecttree = "";
 	$scope.nodes = "";
@@ -47,18 +45,18 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.wikiText = "no wiki entry selected";
 	
 	var reloadTree = function() {
-		ProjectTreeService.getTree({treeid:$routeParams.treeId}, function(response) {
+		TreeService.getTree({entity1 : 'ptrees', id1 : $routeParams.treeId}, function(response) {
 			$scope.projecttree = response;
 		});
 		
-		ProjectTreeService.getNodes({treeid:$routeParams.treeId}, function(response) {
+		TreeService.getNodes({entity1 : 'ptrees', id1 : $routeParams.treeId}, function(response) {
 			$scope.nodes = response;
 		});
 	};
 	
-	$scope.changeNode = function(id) {
+	$scope.changeNode = function(nodeid) {
 		$scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
-		WikiService.getWikiEntry({role:'consumer', entity:'node', nodeid: id}, function(response) {
+		TreeService.getNodeWiki({entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : nodeid}, function(response) {
 			$scope.wikiText = response.wikiContentHtml;
 		});
 	};
@@ -100,13 +98,14 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 //        });
 //    };
 	
-	TreeService.getTrees(function(response) {
+	TreeService.getTrees({entity1 : 'ptrees' }, function(response) {
 		$scope.knowledgetrees = response;
 	});
 	
 	$scope.addKnowledgeTree = function() {
 		if (typeof($scope.selectedktreeId) != "undefined") {
-			ProjectTreeService.copyTree({treeid : $routeParams.treeId, ktreeid : $scope.selectedktreeId}, function(response) {
+			
+			TreeService.copyTree({entity1 : 'ptrees', id1 : $routeParams.treeId, entity2 : 'ktrees', id2 : $scope.selectedktreeId}, function(response) {
 				reloadTree();
 			});
 		}
