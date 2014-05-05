@@ -592,7 +592,6 @@ app
 									treeId : $routeParams.treeId,
 									parentId : parentid
 								}, function(response) {
-									alert(JSON.stringify(response));
 									myJsTree.drawNewDirectory(response);
 									// noty({type: 'success', text : 'directory
 									// added successfully', timeout: 1500});
@@ -664,7 +663,7 @@ app
 									id2 : directoryId
 								}, {
 									id : directoryId,
-									parentid : newParentId
+									parentId : newParentId
 								}, function(response) {
 									// noty({type: 'success', text : 'directory
 									// moved successfully', timeout: 1500});
