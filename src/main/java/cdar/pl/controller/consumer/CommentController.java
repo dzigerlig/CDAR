@@ -51,8 +51,9 @@ public class CommentController {
 	@POST
 	@Path("{commentid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateComment(Comment comment) {
+	public Response updateComment(@PathParam ("commentid") int commentId,Comment comment) {
 		try {
+			comment.setId(commentId);
 			return StatusHelper.getStatusOk(cm.updateComment(comment));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

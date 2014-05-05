@@ -73,7 +73,6 @@ public class ProjectNodeRepository {
 	public ProjectNode createProjectNode(ProjectNode projectNode) throws Exception {
 		final String sqlProjectNode = "INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
 		final String sqlMapping = "INSERT INTO KNOWLEDGEPROJECTNODEMAPPING (kpnid, pdid) VALUES (?, ?)";
-		
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlProjectNode, Statement.RETURN_GENERATED_KEYS)) {
@@ -85,7 +84,6 @@ public class ProjectNodeRepository {
 			preparedStatement.setInt(6, 0);
 			
 			preparedStatement.executeUpdate();
-
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					projectNode.setId(generatedKeys.getInt(1));
