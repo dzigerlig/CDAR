@@ -34,7 +34,7 @@ public class ProjectDirectoryController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addDirectory(Directory directory) {
 		try {
-			return StatusHelper.getStatusCreated(directory);
+			return StatusHelper.getStatusCreated(pdm.addDirectory(directory));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		} 
