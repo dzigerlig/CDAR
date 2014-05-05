@@ -675,7 +675,7 @@ app
 
 							$scope.zoomUpNode = function(nodeid) {
 								TreeService.nodeZoomUp({
-									entity : 'ktrees',
+									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resNodes) {

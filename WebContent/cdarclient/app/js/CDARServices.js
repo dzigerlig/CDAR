@@ -262,7 +262,8 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				}, 'linkZoomUp' : {
 					headers : customHeaders,
-					method : 'POST',
+					method : 'GET',
+					isArray : true,
 					params : {
 						entity2 : 'links',
 						entity3 : 'nodes',

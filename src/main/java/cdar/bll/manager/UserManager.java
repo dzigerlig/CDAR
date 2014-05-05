@@ -39,7 +39,6 @@ public class UserManager {
 			wrm.createUser(user.getUsername(), user.getPassword());
 			return userRepository.createUser(user);
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			throw new UsernameInvalidException();
 		}
 	}
