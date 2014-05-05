@@ -99,7 +99,7 @@ public class KnowledgeSubnodeController {
 	}
 
 	@GET
-	@Path("{subnodeid}/zoomup")
+	@Path("zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpSubnode(@PathParam("nodeid") int nodeId) {
 		try {
@@ -110,7 +110,7 @@ public class KnowledgeSubnodeController {
 	}
 
 	@GET
-	@Path("{subnodeid}/zoomdown")
+	@Path("zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownSubnode(@PathParam("nodeid") int nodeId) {
 		try {

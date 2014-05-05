@@ -38,7 +38,7 @@ public class ProjectNodeLinkController {
 	}
 	
 	@GET
-	@Path("{linkid}/nodes/{nodeid}/zoomup")
+	@Path("nodes/{nodeid}/zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpNodeLink(@PathParam ("nodeid") int nodeId) {
 		try {
@@ -49,7 +49,7 @@ public class ProjectNodeLinkController {
 	}
 	
 	@GET
-	@Path("{linkid}/nodes/{nodeid}/zoomdown")
+	@Path("nodes/{nodeid}/zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownNodeLink(@PathParam ("nodeid") int nodeId) {
 		try {

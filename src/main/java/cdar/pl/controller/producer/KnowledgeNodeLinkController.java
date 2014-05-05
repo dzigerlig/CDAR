@@ -63,7 +63,7 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	// Changed
-	@Path("nodeid/{nodeid}/zoomup")
+	@Path("nodes/{nodeid}/zoomup")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomUpLink(@PathParam("nodeid") int nodeId) {
 		try {
@@ -75,7 +75,7 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	// Changed
-	@Path("nodeid/{nodeid}/zoomdown")
+	@Path("nodes/{nodeid}/zoomdown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response zoomDownLink(@PathParam("nodeid") int nodeId) {
 		try {
