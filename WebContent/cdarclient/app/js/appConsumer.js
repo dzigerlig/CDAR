@@ -14,7 +14,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	reloadTrees();
 	
 	$scope.addNewTree = function() {
-		TreeService.addTree({entity1 : 'ptrees'}, {title : $scope.newTreeName}, function(response) {
+		TreeService.addTree({ entity1 : 'ptrees' }, {title : $scope.newTreeName}, function(response) {
 				$scope.newTreeName = '';
 				reloadTrees();
 			}, function(error) {
@@ -23,7 +23,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	};
 	
 	$scope.deleteTree = function(treeid) {
-		TreeService.deleteTree({entity1 : 'ptrees'}, {id : treeid}, function(response) {
+		TreeService.deleteTree({ entity1 : 'ptrees' }, { id : treeid }, function(response) {
 				reloadTrees();
 		}, function(error) {
 			//error handling

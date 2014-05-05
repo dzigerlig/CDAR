@@ -19,37 +19,36 @@ app.controller("HomeProducerController", [
 			$scope.UserService = UserService;
 			
 			var reloadTrees = function() {
-				TreeService.getTrees(function(response) {
+				TreeService.getTrees({entity1 : 'ktrees' }, function(response) {
 					$scope.knowledgeTrees = response;
+				}, function(error) {
+					//error handling
 				});
 			};
 
 			reloadTrees();
 
 			$scope.addNewTree = function() {
-				TreeService.addTree($scope.newTreeName, function(response) {
-					if (response.id !== 0) {
+				TreeService.addTree({ entity1 : 'ktrees' }, { title : $scope.newTreeName }, function(response) {
 						$scope.newTreeName = '';
 						reloadTrees();
-						// noty({type: 'success', text : 'knowledge tree added
-						// successfully', timeout: 1500});
-					} else {
-						// noty({type: 'alert', text : 'knowledge not added
-						// successfully', timeout: 1500});
-					}
+				}, function (error) {
+					//todo error handling
+					// noty({type: 'alert', text : 'knowledge not added
+					// successfully', timeout: 1500});
 				});
 			};
 
-			$scope.deleteTree = function(id) {
-				TreeService.removeTree(id, function(response) {
-					if (response.bool) {
+			$scope.deleteTree = function(treeid) {
+				TreeService.deleteTree({ entity1 : 'ktrees' }, { id : treeid }, function(response) {
 						reloadTrees();
 						noty({
 							type : 'success',
 							text : 'knowledge tree deleted successfully',
 							timeout : 1500
 						});
-					}
+				}, function (error) {
+					//todo error handling
 				});
 			};
 
@@ -59,7 +58,7 @@ app.controller("HomeProducerController", [
 				})[0];
 				tree.title = data;
 
-				TreeService.renameTree(tree, function(response) {
+				TreeService.updateTree({ entity1 : 'ktrees', id1 : tree.id }, tree, function(response) {
 					// noty({type: 'success', text : 'knowledge tree renamed
 					// successfully', timeout: 1500});
 				});
