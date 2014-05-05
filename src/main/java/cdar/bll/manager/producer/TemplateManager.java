@@ -32,7 +32,7 @@ public class TemplateManager {
 		tr.deleteTemplate(templateId);
 	}
 
-	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {
+	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException, SQLException {
 		Template updatedTemplate = getKnowledgeTemplate(template.getId());
 		
 		if (template.getTemplatetext()!=null) {
@@ -42,7 +42,10 @@ public class TemplateManager {
 			updatedTemplate.setTitle(template.getTitle());
 		}
 		
-		updatedTemplate.setDecisionMade(template.getDecisionMade());
+		setDefaultTemplate(template.getTreeId(), template.getId());
+		
+		updatedTemplate.setIsDefault(template.getIsDefault());
+		
 		return tr.updateTemplate(updatedTemplate);
 	}
 

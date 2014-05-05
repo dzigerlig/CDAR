@@ -3,11 +3,9 @@ app.controller("TemplatesController", [
 		'$routeParams',
 		'TreeService',
 		'AuthenticationService',
-		'WikiService',
 		'UserService',
 		'$route',
-		function($scope, $routeParams, TreeService, AuthenticationService,
-				WikiService, UserService, $route) {
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
 			$scope.knowledgetree = "";
 			$scope.templates = "";
 			$scope.selectedTemplate = "";
@@ -22,33 +20,46 @@ app.controller("TemplatesController", [
 			$scope.UserService = UserService;
 
 			TreeService.getTree({
-				ktreeid : $routeParams.treeId
+				entity1 : 'ktrees',
+				id1 : $routeParams.treeId
 			}, function(response) {
 				$scope.knowledgetree = response;
+			}, function(error) {
+				//todo error handling
 			});
 
 			var reloadTemplates = function() {
 				TreeService.getTemplates({
-					ktreeid : $routeParams.treeId
+					entity1 : 'ktrees',
+					id1 : $routeParams.treeId
 				}, function(response) {
 					$scope.templates = response;
+				}, function(error) {
+					//todo error handling
 				});
 			};
 			
 			$scope.setDefaultTemplate = function(id) {
-				TreeService.setDefaultTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
-					$scope.templates = response;
-					noty({type: 'success', text : 'default template updated successfully', timeout: 1500});
+				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
+				
+				template.isDefault = !template.isDefault;
+				
+				alert(JSON.stringify(template));
+				
+				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
+					reloadTemplates();
 				});
 			};
 			
-			$scope.deleteTemplate = function(id) {
-				TreeService.deleteTemplate({ktreeid : $routeParams.treeId}, id, function(response) {
+			$scope.deleteTemplate = function(templateId) {
+				TreeService.deleteTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId}, { id : templateId }, function(response) {
 					reloadTemplates();
-					if ($scope.selectedTemplateId==id) {
+					if ($scope.selectedTemplateId==templateId) {
 						$scope.selectedTemplateId = 0;
 					}
 					noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
+				}, function(error) {
+					//todo error handling
 				});
 			};
 			
@@ -56,9 +67,11 @@ app.controller("TemplatesController", [
 				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
 				template.title = data;
 				
-				TreeService.renameTemplate({ktreeid : $routeParams.treeId}, template, function(response) {
+				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
 					reloadTemplates();
 					noty({type: 'success', text : 'template renamed successfully', timeout: 1500});
+				}, function(error) {
+					//todo error handling
 				});
 			};
 			
@@ -73,23 +86,22 @@ app.controller("TemplatesController", [
 				}
 				
 				TreeService.addTemplate({
-					ktreeid : $routeParams.treeId
+					entity1 : 'ktrees',
+					id1 : $routeParams.treeId
 				}, {
-					treeid : $routeParams.treeId,
+					treeId : $routeParams.treeId,
 					title : templateName,
 					decisionMade : decisionMade
 				}, function(response) {
-					if (response.id != -1) {
-						reloadTemplates();
-						if(decisionMade) {
-							$scope.newConsumerTemplateName = '';
-						} else {
-							$scope.newProducerTemplateName = '';
-						}
-						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
+					reloadTemplates();
+					if(decisionMade) {
+						$scope.newConsumerTemplateName = '';
 					} else {
-						alert("exception");
+						$scope.newProducerTemplateName = '';
 					}
+					noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
+				}, function(error) {
+					//todo error handling
 				});
 			};
 			
@@ -97,10 +109,13 @@ app.controller("TemplatesController", [
 				$scope.selectedTemplateId = id;
 				setLoading();
 				TreeService.getTemplate({
-					ktreeid : $routeParams.treeId,
-					entityid : id
+					entity1 : 'ktrees',
+					id1 : $routeParams.treeId,
+					id2 : id
 				}, function(response) {
 					changeTemplateFields(response);
+				}, function(error) {
+					//todo error handling
 				});
 			};
 			
@@ -120,8 +135,10 @@ app.controller("TemplatesController", [
 					$scope.selectedTemplate.templatetext = $scope.templatePlain;
 					switchToRead();
 					setLoading();
-					TreeService.editTemplate({
-						entityid : $scope.selectedTemplate.id
+					TreeService.updateTemplate({
+						entity1 : 'ktrees',
+						id1 : $routeParams.treeId,
+						id2 : $scope.selectedTemplate.id
 					}, $scope.selectedTemplate, function(response) {
 						changeTemplateFields(response);
 						noty({type: 'success', text : 'template text edited successfully', timeout: 1500});
