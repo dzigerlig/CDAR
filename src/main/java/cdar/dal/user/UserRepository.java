@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.User;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class UserRepository {
@@ -25,8 +27,8 @@ public class UserRepository {
 			while (result.next()) {
 				User user = new User();
 				user.setId(result.getInt(1));
-				user.setCreationTime(result.getDate(2));
-				user.setLastModificationTime(result.getDate(3));
+				user.setCreationTime(DateHelper.getDate(result.getString(2)));
+				user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
@@ -49,13 +51,15 @@ public class UserRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					user.setId(result.getInt(1));
-					user.setCreationTime(result.getDate(2));
-					user.setLastModificationTime(result.getDate(3));
+					user.setCreationTime(DateHelper.getDate(result.getString(2)));
+					user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
 					return user;
 				}
+			} catch (ParseException e) {
+				throw new UnknownUserException();
 			}
 		} catch (SQLException e) {
 			throw new UnknownUserException();
@@ -74,13 +78,15 @@ public class UserRepository {
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					user.setId(result.getInt(1));
-					user.setCreationTime(result.getDate(2));
-					user.setLastModificationTime(result.getDate(3));
+					user.setCreationTime(DateHelper.getDate(result.getString(2)));
+					user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
 					return user;
 				}
+			} catch (ParseException e) {
+				throw new UnknownUserException();
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -95,8 +101,7 @@ public class UserRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1,  DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 
@@ -107,6 +112,7 @@ public class UserRepository {
 				user.setId(generatedKeys.getInt(1));
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw ex;
 		}
 		return user;
@@ -117,8 +123,7 @@ public class UserRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 			preparedStatement.setString(4, user.getAccesstoken());
