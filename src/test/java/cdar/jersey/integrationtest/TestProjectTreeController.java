@@ -23,7 +23,9 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.entity.consumer.Comment;
 import cdar.pl.controller.UserController;
+import cdar.pl.controller.consumer.CommentController;
 import cdar.pl.controller.consumer.ProjectDirectoryController;
 import cdar.pl.controller.consumer.ProjectNodeController;
 import cdar.pl.controller.consumer.ProjectNodeLinkController;
@@ -46,7 +48,7 @@ public class TestProjectTreeController extends JerseyTest {
 	protected Application configure() {
 		return new ResourceConfig(UserController.class,
 				ProjectTreeController.class, ProjectDirectoryController.class,
-				ProjectNodeController.class, ProjectNodeLinkController.class, ProjectSubnodeController.class);
+				ProjectNodeController.class, ProjectNodeLinkController.class, ProjectSubnodeController.class, CommentController.class);
 	}
 
 	@Before
@@ -742,8 +744,161 @@ public class TestProjectTreeController extends JerseyTest {
 		assertEquals(USERNAME, getSubnode.getTitle());
 		assertEquals(200, updatedSubnodeResponse.getStatus());
 	}
-
-
+	
+	@Test
+	public void testAddAndDeleteComment() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		
+		int quantityOfCommentsBeforeAdd = target(
+				"ptrees/" + treeid + "/nodes/"+addedNode.getId()+"/comments").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+		Comment addTestComment = new Comment();
+		addTestComment.setNodeId(addedNode.getId());
+		addTestComment.setComment(TREENAME);
+		addTestComment.setUserId(userId);
+		Response addedCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addTestComment, MediaType.APPLICATION_JSON),
+						Response.class);
+		Comment addedComment = addedCommentResponse.readEntity(Comment.class);
+		
+		int quantityOfCommentsAfterAdd = target(
+				"ptrees/" + treeid + "/nodes/"+addedNode.getId()+"/comments").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+		
+		Response deletedCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedComment, MediaType.APPLICATION_JSON),
+						Response.class);
+		
+		int quantityOfCommentsAfterDelete = target(
+				"ptrees/" + treeid + "/nodes/"+addedNode.getId()+"/comments").request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class).readEntity(Set.class).size();
+		deleteNode(addedNode.getId());
+		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, deletedCommentResponse.getStatus());
+		assertEquals(201, addedCommentResponse.getStatus());
+		assertEquals(addedNode.getId(), addedComment.getNodeId());
+		assertEquals(TREENAME, addedComment.getComment());
+		assertEquals(quantityOfCommentsBeforeAdd + 1,
+				quantityOfCommentsAfterAdd);
+		assertEquals(quantityOfCommentsBeforeAdd, quantityOfCommentsAfterDelete);
+	}
+	
+	@Test
+	public void testDeleteNonExistingComment() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		Comment deleteComment = new Comment();
+		deleteComment.setId(NOTEXISTINGID);
+		Response deleteCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(deleteComment, MediaType.APPLICATION_JSON),
+						Response.class);
+		
+		deleteNode(addedNode.getId());
+		deleteDirectory(addedDirectory.getId());
+		assertEquals(400, deleteCommentResponse.getStatus());
+	}
+	
+	@Test
+	public void testGetComment() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		
+		Comment addedComment = addComment(addedNode.getId(), PASSWORD);
+		
+		Response getCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments/" + addedComment.getId()).request()
+				.header(UID, userId).header(ACCESSTOKEN, accesstoken)
+				.get(Response.class);
+		Comment getComment = getCommentResponse.readEntity(Comment.class);
+		deleteComment(addedComment.getId(), addedNode.getId());
+		
+		deleteNode(addedNode.getId());
+		
+		deleteDirectory(addedDirectory.getId());
+		assertNotEquals(null, getComment);
+		assertEquals(200, getCommentResponse.getStatus());
+	}
+	
+	@Test
+	public void testGetCommentsOfNode() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode = addNode(treeid, addedDirectory.getId());
+		
+		int quantityOfCommentsBeforeAdd = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class)
+				.readEntity(Set.class).size();
+		Comment addedComment1 = addComment(addedNode.getId(), PASSWORD);
+		Comment addedComment2 = addComment(addedNode.getId(), USERNAME);
+		
+		Response quantityOfCommentsAfterAddResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
+				+ "/comments").request().header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		int quantityOfCommentsAfterAdd = quantityOfCommentsAfterAddResponse
+				.readEntity(Set.class).size();
+		
+		deleteComment(addedComment1.getId(), addedNode.getId());
+		deleteComment(addedComment2.getId(), addedNode.getId());
+		
+		deleteNode(addedNode.getId());
+		
+		deleteDirectory(addedDirectory.getId());
+		assertEquals(200, quantityOfCommentsAfterAddResponse.getStatus());
+		assertEquals(quantityOfCommentsBeforeAdd + 2,
+				quantityOfCommentsAfterAdd);
+	}
+	
+	@Test
+	public void testEditComment() {
+		Directory addedDirectory = addDirectory(treeid, 0);
+		Node addedNode1 = addNode(treeid, addedDirectory.getId());
+		Node addedNode2 = addNode(treeid, addedDirectory.getId());
+		Comment addedComment = addComment(addedNode1.getId(), PASSWORD);
+		addedComment.setComment(USERNAME);
+		int commentId = addedComment.getId();
+		addedComment.setId(0);
+		Response updatedCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + addedNode1.getId()
+				+ "/comments/" + commentId)
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addedComment, MediaType.APPLICATION_JSON),
+						Response.class);
+		Comment updatedComment = getComment(addedNode1.getId(), commentId);
+		deleteComment(commentId, addedNode1.getId());
+		
+		deleteNode(addedNode1.getId());
+		deleteNode(addedNode2.getId());
+		
+		deleteDirectory(addedDirectory.getId());
+		assertNotEquals(null, updatedComment);
+		assertEquals(USERNAME, updatedComment.getComment());
+		assertEquals(200, updatedCommentResponse.getStatus());
+	}
+	
 
 	private Tree addTree(String treename) {
 		Tree addTree = new Tree();
@@ -890,5 +1045,38 @@ public class TestProjectTreeController extends JerseyTest {
 						+ subnodeId).request().header(UID, userId)
 				.header(ACCESSTOKEN, accesstoken).get(Response.class);
 		return getSubnodeResponse.readEntity(Subnode.class);
+	}
+	
+	private Comment addComment(int knid, String text) {
+		Comment addTestComment = new Comment();
+		addTestComment.setNodeId(knid);
+		addTestComment.setComment(text);
+		addTestComment.setUserId(userId);
+		return target("ptrees/" + treeid + "/nodes/" + knid + "/comments")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(addTestComment, MediaType.APPLICATION_JSON),
+						Response.class).readEntity(Comment.class);
+	}
+	
+	private boolean deleteComment(int commentid, int knid) {
+		Comment deleteComment = new Comment();
+		deleteComment.setId(commentid);
+		return target(
+				"ptrees/" + treeid + "/nodes/" + knid + "/comments/delete")
+				.request()
+				.header(UID, userId)
+				.header(ACCESSTOKEN, accesstoken)
+				.post(Entity.entity(deleteComment, MediaType.APPLICATION_JSON),
+						Response.class).readEntity(boolean.class);
+	}
+	
+	public Comment getComment(int nodeId, int commentId) {
+		Response getCommentResponse = target(
+				"ptrees/" + treeid + "/nodes/" + nodeId + "/comments/"
+						+ commentId).request().header(UID, userId)
+						.header(ACCESSTOKEN, accesstoken).get(Response.class);
+		return getCommentResponse.readEntity(Comment.class);
 	}
 }
