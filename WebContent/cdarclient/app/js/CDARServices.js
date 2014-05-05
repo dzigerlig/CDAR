@@ -142,6 +142,13 @@ app.factory('TreeService',['$resource', function($resource) {
 						entity2 : 'nodes',
 						entity3 : 'subnodes'
 					}
+				},'getSubnodesFromTree' : {
+					headers : customHeaders,
+					method  : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'subnodes'
+					}
 				}, 'addSubnode' : {
 					headers : customHeaders,
 					method : 'POST',
@@ -223,7 +230,8 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'links'
 					}
-				}, 'addLink' : {
+				},
+				'addLink' : {
 					headers : customHeaders,
 					method : 'POST',
 					params : {

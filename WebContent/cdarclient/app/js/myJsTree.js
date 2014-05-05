@@ -245,12 +245,12 @@ var myJsTree = (function () {
             var rootid = null;
 
             resDirectory.forEach(function (entry) {
-                if (entry.parentid === 0) {
+                if (entry.parentId === 0) {
                     parentId = "#";
                     type = "root";
                     rootid = DIRECTORY + entry.id;
                 } else {
-                    parentId = DIRECTORY + entry.parentid;
+                    parentId = DIRECTORY + entry.parentId;
                     type = "default";
                 }
                 treeArray.push({
@@ -264,7 +264,7 @@ var myJsTree = (function () {
             resNodes.forEach(function (node) {
                 treeArray.push({
                     "id": DIRECTORY + NODE + node.id,
-                    "parent": DIRECTORY + node.did,
+                    "parent": DIRECTORY + node.directoryId,
                     "text": node.title,
                     "type": "file"
                 });
