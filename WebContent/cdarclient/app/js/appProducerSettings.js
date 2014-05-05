@@ -9,7 +9,6 @@ app.controller("TreeSettingsController", [
 			$scope.knowledgetree = "";
 			$scope.treesXml = "";
 			
-			
 			$scope.UserService = UserService;
 
 			TreeService.getTree({
