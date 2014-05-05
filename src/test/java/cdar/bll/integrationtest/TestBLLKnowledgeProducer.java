@@ -248,7 +248,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test (expected = UnknownTemplateException.class)
-	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException {
+	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException, SQLException {
 		TemplateManager tplm = new TemplateManager();
 		Template template = new Template();
 		template.setTreeId(unknownId);
