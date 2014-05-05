@@ -1,4 +1,4 @@
-package cdar.pl.controller;
+package cdar.bll.wiki;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,40 +19,47 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class WikiRegistrationController {
-	private final String URL ="http://152.96.56.36/mediawiki/api.php/?";
+import cdar.dal.exceptions.UsernameInvalidException;
 
-	public boolean userRequest(String username, String password)
-			throws IOException, SAXException, ParserConfigurationException {
-		String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
-				+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
-				+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
-				+ "password=" + URLEncoder.encode(password, "UTF-8");
+public class WikiRegistrationManager {
+	private final String URL = "http://152.96.56.36/mediawiki/api.php/?";
 
-		HttpURLConnection connection = establishConnection(body);
-
-		OutputStreamWriter writer = flushWriter(body, connection);
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		InputStream stream = connection.getInputStream();
-		String cookie = connection.getHeaderField("Set-Cookie");
-
-		Document doc = db.parse(stream);
-		doc.getDocumentElement().normalize();
-		NodeList layerConfigList = doc.getElementsByTagName("createaccount");
-		Node node = layerConfigList.item(0);
-
-		Element e = (Element) node;
-		String token = e.getAttribute("token");
-		stream.close();
-		writer.close();
-		connection.disconnect();
-		return createUser(username, password, token, cookie);
+	public boolean createUser(String username, String password)
+			throws UsernameInvalidException {
+		try {
+			String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
+					+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
+					+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
+					+ "password=" + URLEncoder.encode(password, "UTF-8");
+	
+			HttpURLConnection connection = establishConnection(body);
+	
+			OutputStreamWriter writer = flushWriter(body, connection);
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			InputStream stream = connection.getInputStream();
+			String cookie = connection.getHeaderField("Set-Cookie");
+	
+			Document doc = db.parse(stream);
+			doc.getDocumentElement().normalize();
+			NodeList layerConfigList = doc.getElementsByTagName("createaccount");
+			Node node = layerConfigList.item(0);
+	
+			Element e = (Element) node;
+			String token = e.getAttribute("token");
+			stream.close();
+			writer.close();
+			connection.disconnect();
+			
+			return userRequest(username, password, token, cookie);
+		} catch (Exception ex) {
+			throw new UsernameInvalidException();
+		}
 	}
 
-	private boolean createUser(String username, String password,
-			String token, String cookie) throws IOException,
-			ParserConfigurationException, SAXException {
+	private boolean userRequest(String username, String password, String token,
+			String cookie) throws IOException, ParserConfigurationException,
+			SAXException, UsernameInvalidException {
 		String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
 				+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
 				+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
@@ -88,10 +95,9 @@ public class WikiRegistrationController {
 		stream.close();
 		writer.close();
 		connection.disconnect();
-		if(result.equals("success"))
+		if (result.equals("success"))
 			return true;
-		System.out.println(result);
-		return false;
+		throw new UsernameInvalidException();
 	}
 
 	private OutputStreamWriter flushWriter(String body,

@@ -2,7 +2,6 @@ package cdar.jersey.integrationtest;
 
 import static org.junit.Assert.*;
 
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;

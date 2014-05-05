@@ -110,11 +110,22 @@ public class ProjectNodeController {
 	}
 	
 	@POST
+	@Path("{nodeid}/rename")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response renameNode(ProjectNode projectNode) {
+		try {
+			return StatusHelper.getStatusOk(pnm.renameNode(projectNode));
+		} catch (Exception ex) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteNode(ProjectNode node) {
+	public Response deleteNode(ProjectNode projectNode) {
 		try {
-			pnm.deleteProjectNode(node.getId());
+			pnm.deleteProjectNode(projectNode.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

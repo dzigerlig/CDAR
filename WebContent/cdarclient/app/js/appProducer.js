@@ -147,8 +147,7 @@ app
 							$scope.getSubnodesOfNode = function(idObject) {
 								var identity;
 								var changes = null;
-								if (typeof idObject === 'object'
-										|| idObject === undefined) {
+								if (typeof idObject === 'object' || idObject === undefined) {
 									if (typeof idObject === 'object') {
 										changes = idObject;
 									}
@@ -190,6 +189,7 @@ app
 								TreeService.addSubnode({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
+									id2 : $scope.selectedNodeId
 								}, {
 									nodeId : $scope.selectedNodeId,
 									title : $scope.newSubnodeName
@@ -279,8 +279,7 @@ app
 
 							var showNodeTitle = function() {
 								if ($scope.selectedNodeId !== 0) {
-									$scope.nodeTitle = "Selected node: "
-											+ $scope.selectedNodeName;
+									$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
 								} else {
 									$scope.nodeTitle = "Selected node: no node selected";
 								}
@@ -389,7 +388,6 @@ app
 								// todo error handling
 							});
 
-							// ????
 							$scope.getSubnodes = function(resNodes) {
 								TreeService.getSubnodesFromTree({
 									entity1 : 'ktrees',
@@ -401,7 +399,6 @@ app
 								});
 							};
 
-							// ????
 							$scope.getLinks = function(resSubnodes) {
 								TreeService.getLinks({
 									entity1 : 'ktrees',
@@ -496,8 +493,9 @@ app
 
 							$scope.dropNode = function(e, nodeId) {
 								TreeService.updateNode({
-									entity : 'ktrees',
-									id1 : $routeParams.treeId
+									entity1 : 'ktrees',
+									id1 : $routeParams.treeId,
+									id2 : nodeId
 								}, {
 									id : nodeId,
 									dynamicTreeFlag : 1
@@ -508,8 +506,9 @@ app
 
 							$scope.undropNode = function(nodeId) {
 								TreeService.updateNode({
-									entity : 'ktrees',
-									id1 : $routeParams.treeId
+									entity1 : 'ktrees',
+									id1 : $routeParams.treeId,
+									id2 : nodeId
 								}, {
 									id : nodeId,
 									dynamicTreeFlag : 0
@@ -575,7 +574,6 @@ app
 								TreeService.deleteLink({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
-									id2 : linkId
 								}, {
 									id : linkId
 								}, function(response) {
@@ -594,6 +592,7 @@ app
 									treeId : $routeParams.treeId,
 									parentId : parentid
 								}, function(response) {
+									alert(JSON.stringify(response));
 									myJsTree.drawNewDirectory(response);
 									// noty({type: 'success', text : 'directory
 									// added successfully', timeout: 1500});
@@ -673,8 +672,6 @@ app
 									// todo error handling
 								});
 							};
-
-							// /////////////////////////////////////////////////////////
 
 							$scope.zoomUpNode = function(nodeid) {
 								TreeService.nodeZoomUp({
@@ -763,7 +760,7 @@ app
 								})[0];
 								subnode.title = data;
 
-								TreeService.renameSubnode(subnode, function(
+								TreeService.renameSubnode( { entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : $scope.selectedNodeId, id3 : id },subnode, function(
 										response) {
 									if (response.bool) {
 										$scope.getSubnodesOfNode(response);

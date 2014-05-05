@@ -66,6 +66,17 @@ public class KnowledgeNodeController {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
+	
+	@POST
+	@Path("{nodeid}/rename")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response renameNode (Node node) {
+		try {
+			return StatusHelper.getStatusOk(nm.renameNode(node));
+		} catch (Exception e) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
 
 	@POST
 	@Path("delete")

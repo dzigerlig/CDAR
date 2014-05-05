@@ -9,7 +9,9 @@ import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.bll.manager.producer.TreeManager;
+import cdar.bll.wiki.WikiRegistrationManager;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.UsernameInvalidException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
 
@@ -32,7 +34,14 @@ public class UserManager {
 	}
 
 	public User createUser(User user) throws Exception {
-		return userRepository.createUser(user);
+		try {
+			WikiRegistrationManager wrm = new WikiRegistrationManager();
+			wrm.createUser(user.getUsername(), user.getPassword());
+			return userRepository.createUser(user);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new UsernameInvalidException();
+		}
 	}
 
 	public void deleteUser(int userId) throws Exception {

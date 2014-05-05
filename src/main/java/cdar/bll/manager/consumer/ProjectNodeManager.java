@@ -60,4 +60,10 @@ public class ProjectNodeManager {
 		//TODO
 		return null;
 	}
+
+	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException {
+		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
+		updatedProjectNode.setTitle(projectNode.getTitle());
+		return pnr.updateProjectNode(updatedProjectNode);
+	}
 }

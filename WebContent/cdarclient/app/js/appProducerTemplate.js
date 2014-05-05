@@ -41,11 +41,7 @@ app.controller("TemplatesController", [
 			
 			$scope.setDefaultTemplate = function(id) {
 				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
-				
 				template.isDefault = !template.isDefault;
-				
-				alert(JSON.stringify(template));
-				
 				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
 					reloadTemplates();
 				});

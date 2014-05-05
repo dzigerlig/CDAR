@@ -6,8 +6,7 @@ app.factory('TreeService',['$resource', function($resource) {
 					headers : customHeaders,
 					method : 'GET',
 					isArray : true,
-				},
-				'addTree' : {
+				}, 'addTree' : {
 					headers : customHeaders,
 					method : 'POST'
 				}, 'getTree' : {
@@ -41,7 +40,7 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'directories'
 					}
-				}, 'addDirecotry' : {
+				}, 'addDirectory' : {
 					headers : customHeaders,
 					method : 'POST',
 					params : {
@@ -108,6 +107,13 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'nodes',
 						action : 'wiki'
+					}
+				}, 'renameNode' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'nodes',
+						action : 'rename'
 					}
 				}, 'updateNodeWiki' : {
 					headers : customHeaders,
@@ -219,7 +225,7 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'nodes',
 						entity3 : 'subnodes',
-						action : 'wiki'
+						action : 'rename'
 					}
 				}, 
 				//LINKS
@@ -239,6 +245,7 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				}, 'deleteLink' : {
 					headers : customHeaders,
+					method : 'POST',
 					params : {
 						entity2 : 'links',
 						action : 'delete'

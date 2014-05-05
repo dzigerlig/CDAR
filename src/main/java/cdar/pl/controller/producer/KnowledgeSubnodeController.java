@@ -71,7 +71,7 @@ public class KnowledgeSubnodeController {
 	}
 
 	@POST
-	@Path("rename")
+	@Path("{subnodeid}/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response renameSubnode(Subnode subnode) {
 		try {

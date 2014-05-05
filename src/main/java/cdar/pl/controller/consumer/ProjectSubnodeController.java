@@ -115,7 +115,7 @@ public class ProjectSubnodeController {
 	}
 	
 	@POST
-	@Path("rename")
+	@Path("{subnodeid}/rename")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response renameSubnode(ProjectSubnode projectSubnode) {
 		try {
