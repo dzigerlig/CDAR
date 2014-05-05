@@ -54,8 +54,9 @@ public class ProjectNodeController {
 	@POST
 	@Path("{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateNode(ProjectNode node) {
+	public Response updateNode(@PathParam("nodeid") int nodeId, ProjectNode node) {
 		try {
+			node.setId(nodeId);
 			return StatusHelper.getStatusOk(pnm.updateProjectNode(node));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

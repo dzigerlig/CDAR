@@ -59,8 +59,9 @@ public class ProjectSubnodeController {
 	@POST
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateSubnode(ProjectSubnode subnode) {
+	public Response updateSubnode(@PathParam("subnodeid") int subnodeId,ProjectSubnode subnode) {
 		try {
+			subnode.setId(subnodeId);
 			return StatusHelper.getStatusOk(psm.updateProjectSubnode(subnode));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

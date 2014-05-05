@@ -54,8 +54,9 @@ public class ProjectDirectoryController {
 	@POST
 	@Path("{directoryid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateDirectory(Directory directory) {
+	public Response updateDirectory(@PathParam ("directoryid") int directoryId,Directory directory) {
 		try {
+			directory.setId(directoryId);
 			return StatusHelper.getStatusOk(pdm.updateDirectory(directory));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

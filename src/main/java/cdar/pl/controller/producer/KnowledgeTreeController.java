@@ -61,18 +61,20 @@ public class KnowledgeTreeController {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
-	
+
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateKnowledgeTree(Tree tree) {
+	public Response updateKnowledgeTree(@PathParam("ktreeid") int treeId,
+			Tree tree) {
 		try {
+			tree.setId(treeId);
 			return StatusHelper.getStatusOk(ktm.updateTree(tree));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
-	
+
 	@GET
 	@Path("{ktreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)

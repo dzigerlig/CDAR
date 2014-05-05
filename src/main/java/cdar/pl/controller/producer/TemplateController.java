@@ -52,8 +52,9 @@ public class TemplateController {
 		@POST
 		@Path("{templateid}")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response updateTemplate(Template template) {
+		public Response updateTemplate(@PathParam("templateid") int templateid,Template template) {
 			try {
+				template.setId(templateid);
 				return StatusHelper.getStatusOk(tm.updateTemplate(template));
 			} catch (Exception e) {
 				return StatusHelper.getStatusBadRequest();
