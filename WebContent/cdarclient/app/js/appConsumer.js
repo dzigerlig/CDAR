@@ -2,6 +2,13 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     $scope.projectTrees = "";
     $scope.newTreeName = "";
     $scope.UserService = UserService;
+    $scope.knowledgetrees = "";
+    $scope.selectedktreeId = "";
+    
+    
+    TreeService.getTrees({entity1: 'ktrees' }, function (response) {
+        $scope.knowledgetrees = response;
+    });
     
     var reloadTrees = function () {
         TreeService.getTrees({entity1: 'ptrees'}, function (response) {
@@ -17,17 +24,21 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 
     reloadTrees();
 
-    $scope.addNewTree = function () {
-        TreeService.addTree({ entity1: 'ptrees' }, {title: $scope.newTreeName}, function (response) {
-            $scope.newTreeName = '';
-            reloadTrees();
-        }, function (error) {
-        	noty({
-				type : 'alert',
-				text : 'error while adding tree',
-				timeout : 1500
-			});
-        });
+    $scope.addNewTree = function() {
+    	if ($scope.selectedktreeId.length!==0) {
+	        TreeService.addTree({ entity1: 'ptrees' }, { id : $scope.selectedktreeId, title: $scope.newTreeName }, function (response) {
+	            $scope.newTreeName = '';
+	            reloadTrees();
+	        }, function (error) {
+	        	noty({
+					type : 'alert',
+					text : 'error while adding tree',
+					timeout : 1500
+				});
+	        });
+	        
+	        alert(JSON.stringify({id : $scope.selectedktreeId, title: $scope.newTreeName}));
+    	}
     };
 
     $scope.deleteTree = function (treeid) {
