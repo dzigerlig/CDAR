@@ -76,7 +76,7 @@ public class ProjectTreeRepository {
 		throw new UnknownProjectTreeException();
 	}
 	
-	public CreationTree createProjectTree(CreationTree projectTree) throws CreationException, EntityException  {
+	public Tree createProjectTree(Tree projectTree) throws CreationException, EntityException  {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (uid, kptid) VALUES (?, ?)";
 

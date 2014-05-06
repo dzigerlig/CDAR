@@ -61,8 +61,7 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectTree() throws Exception {
 		final String treeName = "Project Tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
-		Tree knowledgeTree = new Tree();
-		CreationTree projectTree = new CreationTree();
+		Tree projectTree = new Tree();
 		projectTree.setUserId(um.getUser(username).getId());
 		projectTree.setTitle(treeName);
 		projectTree = ptm.addProjectTree(projectTree);
