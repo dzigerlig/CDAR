@@ -38,6 +38,7 @@ public class UserController {
 			user.setPassword(null);
 			return StatusHelper.getStatusCreated(user);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return StatusHelper.getStatusConflict();
 		}
 	}

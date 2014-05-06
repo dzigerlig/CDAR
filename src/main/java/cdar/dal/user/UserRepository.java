@@ -114,6 +114,8 @@ public class UserRepository {
 				user.setId(generatedKeys.getInt(1));
 			}
 		} catch (Exception ex) {
+			System.out.println("create user exception repo");
+			ex.printStackTrace();
 			throw new UsernameInvalidException();
 		}
 		return user;

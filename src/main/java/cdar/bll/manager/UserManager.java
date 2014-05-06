@@ -15,8 +15,10 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UsernameInvalidException;
+import cdar.dal.exceptions.WikiLoginException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
+import cdar.dal.wiki.WikiRepository;
 
 public class UserManager {
 	private UserRepository userRepository = new UserRepository();
@@ -28,6 +30,12 @@ public class UserManager {
 		User user = getUser(username);
 
 		if (user.getPassword().equals(password)) {
+			try {
+				WikiRepository wr = new WikiRepository();
+				wr.tryLogin(username, password);
+			} catch (WikiLoginException ex) {
+				throw new WrongCredentialsException();
+			}
 			user.setAccesstoken(DigestUtils.shaHex(String.format("%s%s", user.getPassword(), new Date().toString())));
 			updateUser(user);
 			return user;
@@ -39,11 +47,17 @@ public class UserManager {
 	public User createUser(User user, boolean createWikiUser) throws UsernameInvalidException {
 		try {
 			if (createWikiUser) {
-				WikiRegistrationManager wrm = new WikiRegistrationManager();
-				wrm.createUser(user.getUsername(), user.getPassword());
+				try {
+					WikiRepository wr = new WikiRepository();
+					wr.tryLogin(user.getUsername(), user.getPassword());
+				} catch (WikiLoginException ex) {
+					WikiRegistrationManager wrm = new WikiRegistrationManager();
+					wrm.createUser(user.getUsername(), user.getPassword());
+				}
 			}
 			return userRepository.createUser(user);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new UsernameInvalidException();
 		}
 	}

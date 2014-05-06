@@ -3,6 +3,7 @@ package cdar.bll.wiki;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -20,12 +21,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import cdar.dal.exceptions.UsernameInvalidException;
+import cdar.dal.exceptions.WikiCreateUserException;
 
 public class WikiRegistrationManager {
 	private final String URL = "http://152.96.56.36/mediawiki/api.php/?";
 
 	public boolean createUser(String username, String password)
-			throws UsernameInvalidException {
+			throws WikiCreateUserException {
 		try {
 			String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
 					+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
@@ -53,13 +55,12 @@ public class WikiRegistrationManager {
 			
 			return userRequest(username, password, token, cookie);
 		} catch (Exception ex) {
-			throw new UsernameInvalidException();
+			throw new WikiCreateUserException();
 		}
 	}
 
 	private boolean userRequest(String username, String password, String token,
-			String cookie) throws IOException, ParserConfigurationException,
-			SAXException, UsernameInvalidException {
+			String cookie) throws WikiCreateUserException, MalformedURLException, ProtocolException, IOException, ParserConfigurationException, SAXException {
 		String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
 				+ "action=" + URLEncoder.encode("createaccount", "UTF-8") + "&"
 				+ "name=" + URLEncoder.encode(username, "UTF-8") + "&"
@@ -95,9 +96,12 @@ public class WikiRegistrationManager {
 		stream.close();
 		writer.close();
 		connection.disconnect();
-		if (result.equals("success"))
-			return true;
-		throw new UsernameInvalidException();
+		if (result.equals("success")) {
+			return true; 
+		} else {
+			System.out.println("exception");
+			throw new WikiCreateUserException();
+		}
 	}
 
 	private OutputStreamWriter flushWriter(String body,
@@ -123,5 +127,4 @@ public class WikiRegistrationManager {
 				String.valueOf(body.length()));
 		return connection;
 	}
-
 }
