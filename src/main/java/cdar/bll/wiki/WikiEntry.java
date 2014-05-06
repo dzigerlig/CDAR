@@ -8,6 +8,7 @@ import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.WikiEntity;
 import cdar.bll.entity.consumer.ProjectNode;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {
 	private String wikicontentplain;
@@ -79,7 +80,7 @@ public class WikiEntry extends WikiEntity {
 		this.wikicontenthtml = wikicontenthtml;
 	}
 
-	public WikiEntry saveEntry(String username, String password) {
+	public WikiEntry saveEntry(String username, String password) throws UnknownUserException {
 		try {
 			Wiki c = new Wiki();
 			c.login(username, password);
@@ -88,8 +89,7 @@ public class WikiEntry extends WikiEntity {
 			WikiModel.toHtml(getWikiContentPlain(), sb, "http://152.96.56.36/mediawiki/images/${image}", "http://152.96.56.36/mediawiki/index.php/${title}");
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
-			//TODO: create new wiki entry
-			e.printStackTrace();
+			throw new UnknownUserException();
 		}
 		return this;
 	}

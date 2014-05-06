@@ -253,7 +253,11 @@ app
 															timeout : 1500
 														});
 													}, function(error) {
-														// todo error handling
+														noty({
+															type : 'alert',
+															text : 'cannot edit wiki text',
+															timeout : 1500
+														});
 													});
 								}
 							};
@@ -351,8 +355,14 @@ app
 															text : 'node text edited successfully',
 															timeout : 1500
 														});
+														alert(JSON.stringify(response));
 													}, function(error) {
-														// todo errorhandling
+														changeWikiFields($scope.selectedNode);
+														noty({
+															type : 'alert',
+															text : 'cannot edit wiki text',
+															timeout : 1500
+														});
 													});
 								}
 							};
