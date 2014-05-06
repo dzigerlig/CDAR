@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectTreeRepository {
@@ -30,12 +32,15 @@ public class ProjectTreeRepository {
 				while (result.next()) {
 					Tree projectTree = new Tree();
 					projectTree.setId(result.getInt(1));
-					projectTree.setCreationTime(result.getDate(2));
-					projectTree.setLastModificationTime(result.getDate(3));
+					projectTree.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					projectTree.setTitle(result.getString(4));
 					projectTree.setUserId(uid);
 					projectTrees.add(projectTree);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -54,13 +59,17 @@ public class ProjectTreeRepository {
 					Tree projectTree = new Tree();
 					projectTree.setUserId(result.getInt(1));
 					projectTree.setId(result.getInt(2));
-					projectTree.setCreationTime(result.getDate(3));
-					projectTree.setLastModificationTime(result.getDate(4));
+					projectTree.setCreationTime(DateHelper.getDate(result.getString(3)));
+					projectTree.setLastModificationTime(DateHelper.getDate(result.getString(4)));
 					projectTree.setTitle(result.getString(5));
 					return projectTree;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new UnknownProjectTreeException();
 		}
 		throw new UnknownProjectTreeException();
@@ -73,7 +82,7 @@ public class ProjectTreeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectTree.getTitle());
 
 			preparedStatement.executeUpdate();
@@ -102,7 +111,7 @@ public class ProjectTreeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectTree.getTitle());
 			preparedStatement.setInt(3, projectTree.getId());
 
@@ -110,7 +119,6 @@ public class ProjectTreeRepository {
 		} catch (Exception ex) {
 			throw ex;
 		}
-		System.out.println(projectTree.getId());
 		return projectTree;
 	}
 	

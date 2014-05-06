@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 
@@ -19,7 +20,7 @@ public class TestBLLUser {
 	@Test
 	public void testCreateUser() throws Exception {
 		int usercount = um.getUsers().size();
-		User user = um.createUser(new User(username, password));
+		User user = um.createUser(new User(username, password), false);
 		assertEquals(usercount + 1, um.getUsers().size());
 		assertEquals(user.getId(), um.getUser(user.getUsername()).getId());
 		um.deleteUser(user.getId());
@@ -28,9 +29,9 @@ public class TestBLLUser {
 
 	@Test
 	public void testCreateUserSameUsername() throws Exception {
-		User user = um.createUser(new User(username, password));
+		User user = um.createUser(new User(username, password), false);
 		try {
-			um.createUser(new User(username, password));
+			um.createUser(new User(username, password), false);
 		} catch (Exception ex) {
 			assert (true);
 		}
@@ -43,7 +44,7 @@ public class TestBLLUser {
 	}
 
 	@Test(expected = UnknownUserException.class)
-	public void testGetUnknownUserById() throws UnknownUserException {
+	public void testGetUnknownUserById() throws UnknownUserException, EntityException {
 		um.getUser(-13);
 	}
 
@@ -55,7 +56,7 @@ public class TestBLLUser {
 	@Test
 	public void updateUser() throws Exception {
 		final String newPassword = "newpassword";
-		User user = um.createUser(new User(username, password));
+		User user = um.createUser(new User(username, password), false);
 		assertEquals(password, um.getUser(user.getUsername()).getPassword());
 		user.setPassword(newPassword);
 		um.updateUser(user);
@@ -65,7 +66,7 @@ public class TestBLLUser {
 
 	@Test
 	public void testLogin() throws Exception {
-		User user = um.createUser(new User(username, password));
+		User user = um.createUser(new User(username, password), false);
 		assertNull(um.getUser(user.getUsername()).getAccesstoken());
 		um.loginUser(user.getUsername(), user.getPassword());
 		assert (um.getUser(user.getUsername()).getAccesstoken() != null);
@@ -74,7 +75,7 @@ public class TestBLLUser {
 
 	@Test
 	public void testLoginWrongPassword() throws Exception {
-		User user = um.createUser(new User(username, password));
+		User user = um.createUser(new User(username, password), false);
 		try {
 			um.loginUser(user.getUsername(), "fakePassword");
 		} catch (WrongCredentialsException ex) {

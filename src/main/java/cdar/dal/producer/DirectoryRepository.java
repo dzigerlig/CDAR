@@ -6,12 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.Directory;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownDirectoryException;
 
 public class DirectoryRepository {
@@ -29,12 +31,15 @@ public class DirectoryRepository {
 					Directory directory = new Directory();
 					directory.setTreeId(treeid);
 					directory.setId(result.getInt(1));
-					directory.setCreationTime(result.getDate(2));
-					directory.setLastModificationTime(result.getDate(3));
+					directory.setCreationTime(DateHelper.getDate(result.getString(2)));
+					directory.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					directory.setParentId(result.getInt(4));
 					directory.setTitle(result.getString(5));
 					directories.add(directory);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -54,13 +59,16 @@ public class DirectoryRepository {
 				while (result.next()) {
 					Directory directory = new Directory();
 					directory.setId(result.getInt(1));
-					directory.setCreationTime(result.getDate(2));
-					directory.setLastModificationTime(result.getDate(3));
+					directory.setCreationTime(DateHelper.getDate(result.getString(2)));
+					directory.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					directory.setParentId(result.getInt(4));
 					directory.setTreeId(result.getInt(5));
 					directory.setTitle(result.getString(6));
 					return directory;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownDirectoryException();
@@ -74,8 +82,7 @@ public class DirectoryRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			if (directory.getParentId() != 0) {
 				preparedStatement.setInt(2, directory.getParentId());
 			} else {
@@ -102,8 +109,7 @@ public class DirectoryRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setDate(1,
-					new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			if (directory.getParentId() != 0) {
 				preparedStatement.setInt(2, directory.getParentId());
 			} else {

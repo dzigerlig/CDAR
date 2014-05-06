@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
@@ -25,8 +27,8 @@ public class ProjectNodeRepository {
 				while (result.next()) {
 					ProjectNode projectNode = new ProjectNode();
 					projectNode.setId(result.getInt(1));
-					projectNode.setCreationTime(result.getDate(2));
-					projectNode.setLastModificationTime(result.getDate(3));
+					projectNode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectNode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikititle(result.getString(5));
 					projectNode.setDynamicTreeFlag(result.getInt(6));
@@ -35,6 +37,9 @@ public class ProjectNodeRepository {
 					projectNode.setTreeId(projectTreeId);
 					projectNodes.add(projectNode);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -53,8 +58,8 @@ public class ProjectNodeRepository {
 				while (result.next()) {
 					ProjectNode projectNode = new ProjectNode();
 					projectNode.setId(result.getInt(1));
-					projectNode.setCreationTime(result.getDate(2));
-					projectNode.setLastModificationTime(result.getDate(3));
+					projectNode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectNode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					projectNode.setTitle(result.getString(4));
 					projectNode.setWikititle(result.getString(5));
 					projectNode.setDynamicTreeFlag(result.getInt(6));
@@ -63,6 +68,9 @@ public class ProjectNodeRepository {
 					projectNode.setDirectoryId(result.getInt(9));
 					return projectNode;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException e) {
 			throw new UnknownProjectNodeException();
@@ -76,7 +84,7 @@ public class ProjectNodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlProjectNode, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectNode.getTitle());
 			preparedStatement.setInt(3, projectNode.getTreeId());
 			preparedStatement.setString(4, projectNode.getWikititle());
@@ -114,7 +122,7 @@ public class ProjectNodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectNode.getTitle());
 			preparedStatement.setInt(3, projectNode.getStatus());
 			preparedStatement.setInt(4, projectNode.getId());

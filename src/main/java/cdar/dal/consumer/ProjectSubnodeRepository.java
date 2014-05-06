@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
@@ -28,8 +30,8 @@ public class ProjectSubnodeRepository {
 				while (result.next()) {
 					ProjectSubnode projectSubnode = new ProjectSubnode();
 					projectSubnode.setId(result.getInt(1));
-					projectSubnode.setCreationTime(result.getDate(2));
-					projectSubnode.setLastModificationTime(result.getDate(3));
+					projectSubnode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectSubnode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					projectSubnode.setTitle(result.getString(4));
 					projectSubnode.setWikititle(result.getString(5));
 					projectSubnode.setPosition(result.getInt(6));
@@ -37,6 +39,9 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setNodeId(kpnid);
 					projectsubnodes.add(projectSubnode);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -57,8 +62,8 @@ public class ProjectSubnodeRepository {
 				while (result.next()) {
 					ProjectSubnode projectSubnode = new ProjectSubnode();
 					projectSubnode.setId(result.getInt(1));
-					projectSubnode.setCreationTime(result.getDate(2));
-					projectSubnode.setLastModificationTime(result.getDate(3));
+					projectSubnode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectSubnode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					projectSubnode.setTitle(result.getString(5));
 					projectSubnode.setWikititle(result.getString(6));
 					projectSubnode.setNodeId(result.getInt(4));
@@ -66,6 +71,9 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setStatus(result.getInt(8));
 					return projectSubnode;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownProjectSubnodeException();
@@ -78,7 +86,7 @@ public class ProjectSubnodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setString(4, projectSubnode.getTitle());
@@ -102,7 +110,7 @@ public class ProjectSubnodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setInt(4, projectSubnode.getPosition());

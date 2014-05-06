@@ -13,11 +13,13 @@ import java.util.List;
 import cdar.bll.entity.User;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.exceptions.UsernameInvalidException;
 
 public class UserRepository {
 
-	public List<User> getUsers() throws Exception {
+	public List<User> getUsers() throws EntityException {
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
 		ResultSet result = null;
 		List<User> users = new ArrayList<User>();
@@ -35,12 +37,12 @@ public class UserRepository {
 				users.add(user);
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new EntityException();
 		}
 		return users;
 	}
 
-	public User getUser(int id) throws UnknownUserException {
+	public User getUser(int id) throws UnknownUserException, EntityException {
 		User user = new User();
 		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = ?";
 
@@ -59,7 +61,7 @@ public class UserRepository {
 					return user;
 				}
 			} catch (ParseException e) {
-				throw new UnknownUserException();
+				throw new EntityException();
 			}
 		} catch (SQLException e) {
 			throw new UnknownUserException();
@@ -95,13 +97,13 @@ public class UserRepository {
 		throw new UnknownUserException();
 	}
 
-	public User createUser(User user) throws Exception {
+	public User createUser(User user) throws UsernameInvalidException  {
 		final String sql = "INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)";
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1,  DateHelper.getDate(new Date()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 
@@ -112,13 +114,12 @@ public class UserRepository {
 				user.setId(generatedKeys.getInt(1));
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
+			throw new UsernameInvalidException();
 		}
 		return user;
 	}
 
-	public User updateUser(User user) throws Exception {
+	public User updateUser(User user) throws UnknownUserException {
 		final String sql = "UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -132,12 +133,12 @@ public class UserRepository {
 			preparedStatement.executeUpdate();
 
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownUserException();
 		}
 		return user;
 	}
 
-	public void deleteUser(int userId) throws Exception {
+	public void deleteUser(int userId) throws UnknownUserException {
 		final String sql = "DELETE FROM USER WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -147,7 +148,7 @@ public class UserRepository {
 				throw new UnknownUserException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownUserException();
 		}
 	}
 }

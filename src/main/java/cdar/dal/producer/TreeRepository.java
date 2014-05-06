@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownTreeException;
 
 public class TreeRepository {
@@ -31,12 +33,15 @@ public class TreeRepository {
 				while (result.next()) {
 					Tree tree = new Tree();
 					tree.setId(result.getInt(1));
-					tree.setCreationTime(result.getDate(2));
-					tree.setLastModificationTime(result.getDate(3));
+					tree.setCreationTime(DateHelper.getDate(result.getString(2)));
+					tree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					tree.setTitle(result.getString(4));
 					tree.setUserId(uid);
 					trees.add(tree);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -55,14 +60,13 @@ public class TreeRepository {
 					Tree tree = new Tree();
 					tree.setUserId(result.getInt(1));
 					tree.setId(result.getInt(2));
-					tree.setCreationTime(result.getDate(3));
-					tree.setLastModificationTime(result.getDate(4));
+					tree.setCreationTime(DateHelper.getDate(result.getString(3)));
+					tree.setLastModificationTime(DateHelper.getDate(result.getString(4)));
 					tree.setTitle(result.getString(5));
 					return tree;
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new UnknownTreeException();
 		}
 		throw new UnknownTreeException();
@@ -75,7 +79,7 @@ public class TreeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, tree.getTitle());
 
 			preparedStatement.executeUpdate();
@@ -105,7 +109,7 @@ public class TreeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, tree.getTitle());
 			preparedStatement.setInt(3, tree.getId());
 

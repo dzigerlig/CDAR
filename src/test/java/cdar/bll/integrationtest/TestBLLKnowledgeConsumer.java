@@ -49,7 +49,7 @@ public class TestBLLKnowledgeConsumer {
 	
 	@Before
 	public void createUser() throws Exception {
-		um.createUser(new User(username, password));
+		um.createUser(new User(username, password), false);
 	}
 	
 	@After
