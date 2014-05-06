@@ -1,6 +1,5 @@
 package cdar.bll.manager.consumer;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 

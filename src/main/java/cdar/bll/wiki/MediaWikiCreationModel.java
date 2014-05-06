@@ -9,8 +9,6 @@ import org.wikipedia.Wiki;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
-import cdar.dal.exceptions.EntityException;
-import cdar.dal.exceptions.UnknownUserException;
 
 public class MediaWikiCreationModel extends Thread {
 	private int ktrid;

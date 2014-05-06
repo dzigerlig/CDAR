@@ -1,6 +1,5 @@
 package cdar.bll.manager;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
