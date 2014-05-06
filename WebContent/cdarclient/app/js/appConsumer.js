@@ -45,7 +45,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.wikiText = "no wiki entry selected";
 	
 	var reloadTree = function() {
-		TreeService.getTree({entity1 : 'ptrees', id1 : $routeParams.treeId}, function(response) {
+		TreeService.getTree({entity1 : 'ktrees', id1 : $routeParams.treeId}, function(response) {
 			$scope.projecttree = response;
 		});
 		
@@ -98,7 +98,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 //        });
 //    };
 	
-	TreeService.getTrees({entity1 : 'ptrees' }, function(response) {
+	TreeService.getTrees({entity1 : 'ktrees' }, function(response) {
 		$scope.knowledgetrees = response;
 	});
 	
