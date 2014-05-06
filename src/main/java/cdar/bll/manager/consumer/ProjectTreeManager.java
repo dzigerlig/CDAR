@@ -1,8 +1,11 @@
 package cdar.bll.manager.consumer;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,8 +44,7 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public Tree addProjectTree(Tree projectTree)
-			throws Exception {
+	public Tree addProjectTree(Tree projectTree) throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
@@ -64,16 +66,20 @@ public class ProjectTreeManager {
 		NodeLinkManager nlm = new NodeLinkManager();
 		DirectoryManager dm = new DirectoryManager();
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
-		
+
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
-		for (Directory directory : dm.getDirectories(ktreeId)) {
+		List<Directory> directoryList = new ArrayList<>();
+		directoryList.addAll(dm.getDirectories(ktreeId));
+		Collections.sort(directoryList);
+		for (Directory directory : directoryList) {
 			Directory projectDirectory = new Directory();
 			projectDirectory.setTreeId(ptreeId);
 			projectDirectory.setTitle(directory.getTitle());
-			if (directory.getParentId()==0) {
+			if (directory.getParentId() == 0) {
 				projectDirectory.setParentId(0);
 			} else {
-				projectDirectory.setParentId(directoryMapping.get(directory.getId()));
+				projectDirectory.setParentId(directoryMapping.get(directory
+						.getParentId()));
 			}
 			projectDirectory = pdr.createDirectory(projectDirectory);
 			directoryMapping.put(directory.getId(), projectDirectory.getId());
@@ -84,11 +90,12 @@ public class ProjectTreeManager {
 			projectNode.setTreeId(ptreeId);
 			projectNode.setTitle(node.getTitle());
 			projectNode.setWikititle(node.getWikititle());
-			projectNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
+			projectNode.setDirectoryId(directoryMapping.get(node
+					.getDirectoryId()));
 			projectNode = pnr.createProjectNode(projectNode);
 			linkMapping.put(node.getId(), projectNode.getId());
 		}
-		
+
 		for (Subnode subnode : snm.getSubnodesFromTree(ktreeId)) {
 			ProjectSubnode projectSubnode = new ProjectSubnode();
 			projectSubnode.setTitle(subnode.getTitle());
@@ -99,23 +106,26 @@ public class ProjectTreeManager {
 		}
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
-			
+
 			NodeLink projectNodeLink = new NodeLink();
-			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
-			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
+			projectNodeLink
+					.setSourceId(linkMapping.get(nodelink.getSourceId()));
+			projectNodeLink
+					.setTargetId(linkMapping.get(nodelink.getTargetId()));
 			projectNodeLink.setSubnodeId(nodelink.getSubnodeId());
 			projectNodeLink.setTreeId(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);
 		}
 	}
 
-	public void deleteProjectTree(int ptreeId) throws UnknownProjectTreeException {
+	public void deleteProjectTree(int ptreeId)
+			throws UnknownProjectTreeException {
 		ptr.deleteProjectTree(ptreeId);
 	}
 
 	public Tree updateProjectTree(Tree projectTree) throws Exception {
 		Tree updatedProjectTree = ptr.getProjectTree(projectTree.getId());
-		if (projectTree.getTitle()!=null) {
+		if (projectTree.getTitle() != null) {
 			updatedProjectTree.setTitle(projectTree.getTitle());
 		}
 		return ptr.updateProjectTree(updatedProjectTree);
