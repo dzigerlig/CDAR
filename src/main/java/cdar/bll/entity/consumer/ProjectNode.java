@@ -3,7 +3,6 @@ package cdar.bll.entity.consumer;
 import java.util.Date;
 
 import cdar.bll.entity.Node;
-import cdar.bll.entity.WikiEntity;
 
 public class ProjectNode extends Node {
 	private int status;

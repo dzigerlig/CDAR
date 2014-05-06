@@ -2,8 +2,6 @@ package cdar.bll.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.SQLException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,17 +27,12 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
 import cdar.dal.consumer.ProjectDirectoryRepository;
-import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownCommentException;
-import cdar.dal.exceptions.UnknownDirectoryException;
-import cdar.dal.exceptions.UnknownNodeException;
-import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
-import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeConsumer {

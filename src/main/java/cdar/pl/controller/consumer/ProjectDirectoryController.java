@@ -11,9 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Directory;
-import cdar.bll.entity.Tree;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
-import cdar.bll.manager.producer.DirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/directories")

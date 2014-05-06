@@ -2,8 +2,6 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
-import com.owlike.genson.annotation.JsonIgnore;
-
 public class User extends BasicEntity {
 	private String username;
 	private String password;
