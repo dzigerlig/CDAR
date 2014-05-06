@@ -38,7 +38,7 @@ public class ProjectTreeManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
-	public Set<Tree> getProjectTrees(int uid) throws SQLException {
+	public Set<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
 		Set<Tree> projectTrees = new HashSet<Tree>();
 		for (Tree projectTree : ptr.getProjectTrees(uid)) {
 			projectTrees.add(projectTree);
@@ -56,7 +56,7 @@ public class ProjectTreeManager {
 		return projectTree;
 	}
 
-	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException {
+	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		return ptr.getProjectTree(ptreeId);
 	}
 	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId) throws EntityException, UnknownUserException, CreationException, UnknownTreeException, UnknownProjectTreeException, UnknownNodeException, UnknownProjectNodeException {
