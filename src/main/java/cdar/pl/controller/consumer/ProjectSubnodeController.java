@@ -113,20 +113,7 @@ public class ProjectSubnodeController {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
-	
-	@POST
-	@Path("{subnodeid}/rename")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response renameSubnode(ProjectSubnode projectSubnode) {
-		try {
-			ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-			psm.updateProjectSubnode(projectSubnode);
-			return StatusHelper.getStatusOk(new ChangesWrapper<NodeLink>(pnlm.getProjectNodeLinksBySubnode(projectSubnode.getId()), "update"));
-		} catch (Exception ex) {
-			return StatusHelper.getStatusBadRequest();
-		}
-	}
-	
+
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -26,7 +26,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 
     $scope.addNewTree = function() {
     	if ($scope.selectedktreeId.length!==0) {
-	        TreeService.addTree({ entity1: 'ptrees' }, { id : $scope.selectedktreeId, title: $scope.newTreeName }, function (response) {
+	        TreeService.addTree({ entity1: 'ptrees' }, { copyTreeId : $scope.selectedktreeId, title: $scope.newTreeName }, function (response) {
 	            $scope.newTreeName = '';
 	            reloadTrees();
 	        }, function (error) {
@@ -36,8 +36,6 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 					timeout : 1500
 				});
 	        });
-	        
-	        alert(JSON.stringify({id : $scope.selectedktreeId, title: $scope.newTreeName}));
     	}
     };
 

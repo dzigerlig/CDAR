@@ -721,29 +721,6 @@ public class TestProjectTreeController extends JerseyTest {
 		assertNotEquals(null, updatedSubnode);
 		assertEquals(200, updatedSubnodeResponse.getStatus());
 	}
-
-	@Test
-	public void testRenameSubnode() {
-		Directory addedDirectory = addDirectory(treeid, 0);
-		Node addedNode = addNode(treeid, addedDirectory.getId());
-		Subnode addedSubnode = addSubnode(addedNode.getId(), PASSWORD);
-		addedSubnode.setTitle(USERNAME);
-		Response updatedSubnodeResponse = target(
-				"ptrees/" + treeid + "/nodes/" + addedNode.getId()
-						+ "/subnodes/rename")
-				.request()
-				.header(UID, userId)
-				.header(ACCESSTOKEN, accesstoken)
-				.post(Entity.entity(addedSubnode, MediaType.APPLICATION_JSON),
-						Response.class);
-		Subnode getSubnode = getSubnode(addedNode.getId(), addedSubnode.getId());
-		deleteSubnode(addedSubnode.getId(), addedNode.getId());
-
-		deleteNode(addedNode.getId());
-		deleteDirectory(addedDirectory.getId());
-		assertEquals(USERNAME, getSubnode.getTitle());
-		assertEquals(200, updatedSubnodeResponse.getStatus());
-	}
 	
 	@Test
 	public void testAddAndDeleteComment() {

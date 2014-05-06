@@ -36,8 +36,9 @@ public class ProjectTreeController {
 	public Response addProjectTree(CreationTree tree, @HeaderParam("uid") int uid) {
 		try {
 			tree.setUserId(uid);
-			ptm.addKnowledgeTreeToProjectTree(tree.getCopyTreeid(), tree.getId());
-			return StatusHelper.getStatusCreated(ptm.addProjectTree(tree));
+			CreationTree newTree = ptm.addProjectTree(tree);
+			ptm.addKnowledgeTreeToProjectTree(newTree.getCopyTreeId(), newTree.getId());
+			return StatusHelper.getStatusCreated(newTree);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

@@ -5,23 +5,23 @@ import java.util.Date;
 import cdar.bll.entity.Tree;
 
 public class CreationTree extends Tree {
-	private int copyTreeid;
+	private int copyTreeId;
 
-	public CreationTree(int copyTreeid, int id, Date creationDate,
+	public CreationTree(int copyTreeId, int id, Date creationDate,
 			Date lastModification, String title) {
 		super(id, creationDate, lastModification, title);
-		setCopyTreeid(copyTreeid);
+		setCopyTreeId(copyTreeId);
 	}
 
 	public CreationTree() {
 		super();
 	}
 
-	public int getCopyTreeid() {
-		return copyTreeid;
+	public int getCopyTreeId() {
+		return copyTreeId;
 	}
 
-	public void setCopyTreeid(int copyTreeid) {
-		this.copyTreeid = copyTreeid;
+	public void setCopyTreeId(int copyTreeid) {
+		this.copyTreeId = copyTreeid;
 	}
 }
