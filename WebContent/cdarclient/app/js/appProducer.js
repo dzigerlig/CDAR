@@ -24,7 +24,11 @@ app.controller("HomeProducerController", [
 				}, function(response) {
 					$scope.knowledgeTrees = response;
 				}, function(error) {
-					// error handling
+					noty({
+						type : 'alert',
+						text : 'cannot get trees',
+						timeout : 1500
+					});
 				});
 			};
 
@@ -39,9 +43,11 @@ app.controller("HomeProducerController", [
 					$scope.newTreeName = '';
 					reloadTrees();
 				}, function(error) {
-					// todo error handling
-					// noty({type: 'alert', text : 'knowledge not added
-					// successfully', timeout: 1500});
+					noty({
+						type : 'alert',
+						text : 'cannot add tree',
+						timeout : 1500
+					});
 				});
 			};
 
@@ -58,7 +64,11 @@ app.controller("HomeProducerController", [
 						timeout : 1500
 					});
 				}, function(error) {
-					// todo error handling
+					noty({
+						type : 'alert',
+						text : 'delete tree failed',
+						timeout : 1500
+					});
 				});
 			};
 
@@ -66,14 +76,20 @@ app.controller("HomeProducerController", [
 				var tree = $.grep($scope.knowledgeTrees, function(t) {
 					return t.id === id;
 				})[0];
+				
+				var oldTitle = tree.title;
 				tree.title = data;
-
+				
 				TreeService.updateTree({
 					entity1 : 'ktrees',
 					id1 : tree.id
 				}, tree, function(response) {
-					// noty({type: 'success', text : 'knowledge tree renamed
-					// successfully', timeout: 1500});
+					tree.title = oldTitle;
+					noty({
+						type : 'alert',
+						text : 'error while saving tree title',
+						timeout : 1500
+					});
 				});
 			};
 
@@ -127,7 +143,11 @@ app.controller(
 									// 'knowledge tree renamed
 									// successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error while saving tree title',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -139,7 +159,11 @@ app.controller(
 								}, function(response) {
 									$scope.subnodes = response;
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting subnodes',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -163,7 +187,11 @@ app.controller(
 									myJsPlumb.updateSubnodesOfNode(response,
 											identity, changes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting subnodes',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -199,7 +227,11 @@ app.controller(
 									// noty({type: 'success', text : 'subnode
 									// added successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot add subnode',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -217,7 +249,11 @@ app.controller(
 									changeWikiFieldsSubnode();
 									// load wiki fields
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting wiki entry',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -276,7 +312,11 @@ app.controller(
 										timeout : 1500
 									});
 								}, function(error) {
-									// todo errorhandling
+									noty({
+										type : 'alert',
+										text : 'error deleting subnode',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -328,7 +368,11 @@ app.controller(
 									$scope.selectedNode = response;
 									changeWikiFields();
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting wiki entry',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -372,7 +416,11 @@ app.controller(
 							}, function(response) {
 								$scope.knowledgetree = response;
 							}, function(error) {
-								// todo error handling
+								noty({
+									type : 'alert',
+									text : 'error getting tree',
+									timeout : 1500
+								});
 							});
 
 							$scope.logout = function() {
@@ -391,10 +439,18 @@ app.controller(
 											resNodes);
 									$scope.getSubnodes(resNodes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting nodes',
+										timeout : 1500
+									});
 								});
 							}, function(error) {
-								// todo error handling
+								noty({
+									type : 'alert',
+									text : 'error getting directories',
+									timeout : 1500
+								});
 							});
 
 							$scope.getSubnodes = function(resNodes) {
@@ -405,6 +461,12 @@ app.controller(
 									myJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
 									$scope.getLinks(resSubnodes);
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error getting subnodes',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -416,6 +478,12 @@ app.controller(
 									myJsPlumb.makeNodeHierarchy(response,
 											resSubnodes);
 									w_launch();
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error getting links',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -432,7 +500,11 @@ app.controller(
 									// noty({type: 'success', text : 'link added
 									// successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+									type : 'alert',
+									text : 'cannot update link',
+									timeout : 1500
+								});
 								});
 							};
 
@@ -448,7 +520,11 @@ app.controller(
 									// noty({type: 'success', text : 'node added
 									// successfully', timeout: 1500});
 								}, function(error) {
-									// todo error
+									noty({
+										type : 'alert',
+										text : 'error adding node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -461,12 +537,16 @@ app.controller(
 									title : node.text,
 									directoryId : 0
 								},
-										function(response) {
-											myJsTree.prepareForSetId(node,
-													response.id);
-										}, function(error) {
-											// todo error handling
-										});
+								function(response) {
+									myJsTree.prepareForSetId(node,
+											response.id);
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error adding node',
+										timeout : 1500
+									});
+								});
 							};
 
 							$scope.deleteNode = function(nodeId) {
@@ -484,7 +564,11 @@ app.controller(
 										timeout : 1500
 									});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot delete node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -496,7 +580,11 @@ app.controller(
 								}, function(node) {
 									myDragDrop.setMovedNode(node);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error getting node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -510,6 +598,12 @@ app.controller(
 									dynamicTreeFlag : 1
 								}, function(response) {
 									myJsPlumb.addHTMLNode(response, e);
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error dropping node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -524,7 +618,11 @@ app.controller(
 								}, function(response) {
 									// todo
 								}, function(error) {
-									// todo
+									noty({
+										type : 'alert',
+										text : 'error undropping node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -542,7 +640,11 @@ app.controller(
 									// noty({type: 'success', text : 'node
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
-									// todo: error handling
+									noty({
+										type : 'alert',
+										text : 'cannot rename node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -557,7 +659,11 @@ app.controller(
 								}, function(response) {
 									// todo
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error moving node',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -571,12 +677,16 @@ app.controller(
 									sourceId : sourceId,
 									targetId : targetId
 								},
-										function(response) {
-											myJsPlumb.setLinkId(connection,
-													response.id);
-										}, function(error) {
-											// todo error handling
-										});
+								function(response) {
+									myJsPlumb.setLinkId(connection,
+											response.id);
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error adding link',
+										timeout : 1500
+									});
+								});
 							};
 
 							$scope.deleteLink = function(linkId) {
@@ -589,7 +699,11 @@ app.controller(
 									// noty({type: 'success', text : 'link
 									// deleted successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot delete link',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -605,7 +719,11 @@ app.controller(
 									// noty({type: 'success', text : 'directory
 									// added successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error adding directory',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -618,12 +736,16 @@ app.controller(
 									title : node.text,
 									parentid : 0
 								},
-										function(response) {
-											myJsTree.prepareForSetId(node,
-													response.id);
-										}, function(error) {
-											// todo error handling
-										});
+								function(response) {
+									myJsTree.prepareForSetId(node,
+											response.id);
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'error adding directory copy',
+										timeout : 1500
+									});
+								});
 							};
 
 							$scope.renameDirectory = function(directoryId,
@@ -639,13 +761,16 @@ app.controller(
 									// noty({type: 'success', text : 'directory
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
-									// error handling
+									noty({
+										type : 'alert',
+										text : 'error renaming directory',
+										timeout : 1500
+									});
 								});
 							};
 
 							$scope.deleteDirectory = function(directoryId) {
-								TreeService
-										.deleteDirectory(
+								TreeService.deleteDirectory(
 												{
 													entity1 : 'ktrees',
 													id1 : $routeParams.treeId
@@ -660,7 +785,11 @@ app.controller(
 														timeout : 1500
 													});
 												}, function(error) {
-													// todo error handling
+													noty({
+														type : 'alert',
+														text : 'error deleting directory',
+														timeout : 1500
+													});
 												});
 							};
 
@@ -677,7 +806,11 @@ app.controller(
 									// noty({type: 'success', text : 'directory
 									// moved successfully', timeout: 1500});
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'error moving directory',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -689,7 +822,11 @@ app.controller(
 								}, function(resNodes) {
 									$scope.zoomUpSubnode(nodeid, resNodes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom up',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -701,7 +838,11 @@ app.controller(
 								}, function(resNodes) {
 									$scope.zoomDownSubnode(nodeid, resNodes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom down',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -715,7 +856,11 @@ app.controller(
 											resSubnodes);
 									$scope.zoomUpLink(nodeid, resSubnodes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom up',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -729,7 +874,11 @@ app.controller(
 											resSubnodes);
 									$scope.zoomDownLink(nodeid, resSubnodes);
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom down',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -743,7 +892,11 @@ app.controller(
 											resSubnodes);
 									w_launch();
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom up',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -757,7 +910,11 @@ app.controller(
 											resSubnodes);
 									w_launch();
 								}, function(error) {
-									// todo error handling
+									noty({
+										type : 'alert',
+										text : 'cannot zoom down',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -770,13 +927,17 @@ app.controller(
 
 								TreeService.renameSubnode( { entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : $scope.selectedNodeId, id3 : id },subnode, function(
 										response) {
-									if (response.bool) {
 										$scope.getSubnodesOfNode(response);
 										// noty({type: 'success', text :
 										// 'subnode renamed successfully',
 										// timeout: 1500});
-									}
-								});
+									}, function (error) {
+										noty({
+											type : 'alert',
+											text : 'error renaming subnode',
+											timeout : 1500
+										});
+									});
 							};
 
 							// todo change logic
@@ -784,13 +945,17 @@ app.controller(
 								TreeService.moveSubnodeUp({
 									id : id
 								}, function(response) {
-									if (response.bool) {
 										$scope.getSubnodesOfNode();
 										// noty({type: 'success', text :
 										// 'subnode position changed
 										// successfully', timeout: 1500});
 										// getSubnodes();
-									}
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'cannot zoom up',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -798,13 +963,17 @@ app.controller(
 								TreeService.moveSubnodeDown({
 									id : id
 								}, function(response) {
-									if (response.bool) {
 										$scope.getSubnodesOfNode();
 										// noty({type: 'success', text :
 										// 'subnode position changed
 										// successfully', timeout: 1500});
 										// getSubnodes();
-									}
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'cannot zoom down',
+										timeout : 1500
+									});
 								});
 							};
 						} ]);
