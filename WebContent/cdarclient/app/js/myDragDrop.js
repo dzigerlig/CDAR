@@ -28,7 +28,6 @@ var myDragDrop = (function () {
         if (type !== 'default' && type !== 'root') {
             id = id.replace(NODE, "");
             id = id.replace(DIRECTORY, "");
-            console.log(scope);
             scope.getNode(id);
         }
     });
