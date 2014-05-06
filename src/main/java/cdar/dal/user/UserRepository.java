@@ -59,7 +59,8 @@ public class UserRepository {
 					return user;
 				}
 			} catch (ParseException e) {
-				throw new UnknownUserException();
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException e) {
 			throw new UnknownUserException();
@@ -101,7 +102,7 @@ public class UserRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1,  DateHelper.getDate(new Date()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 
@@ -112,7 +113,6 @@ public class UserRepository {
 				user.setId(generatedKeys.getInt(1));
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
 			throw ex;
 		}
 		return user;

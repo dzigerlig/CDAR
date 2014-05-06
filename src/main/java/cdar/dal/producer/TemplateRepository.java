@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.producer.Template;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownTemplateException;
 
 public class TemplateRepository {
@@ -29,14 +31,17 @@ public class TemplateRepository {
 					Template template = new Template();
 					template.setTreeId(treeId);
 					template.setId(result.getInt(1));
-					template.setCreationTime(result.getDate(2));
-					template.setLastModificationTime(result.getDate(3));
+					template.setCreationTime(DateHelper.getDate(result.getString(2)));
+					template.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					template.setTitle(result.getString(4));
 					template.setTemplatetext(result.getString(5));
 					template.setIsDefault(result.getInt(6) == 1);
 					template.setDecisionMade(result.getInt(7) == 1);
 					templates.add(template);
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -58,14 +63,17 @@ public class TemplateRepository {
 					Template template = new Template();
 					template.setTreeId(result.getInt(6));
 					template.setId(result.getInt(1));
-					template.setCreationTime(result.getDate(2));
-					template.setLastModificationTime(result.getDate(3));
+					template.setCreationTime(DateHelper.getDate(result.getString(2)));
+					template.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					template.setTitle(result.getString(4));
 					template.setTemplatetext(result.getString(5));
 					template.setIsDefault(result.getInt(7) == 1);
 					template.setDecisionMade(result.getInt(8) == 1);
 					return template;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownTemplateException();
@@ -79,7 +87,7 @@ public class TemplateRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, template.getTitle());
 			preparedStatement.setString(3, template.getTemplatetext());
 			preparedStatement.setInt(4, template.getTreeId());
@@ -111,7 +119,7 @@ public class TemplateRepository {
 	public Template updateTemplate(Template template) throws UnknownTemplateException {
 		final String sql = "UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, template.getTitle());
 			preparedStatement.setString(3, template.getTemplatetext());
 			if (template.getIsDefault()) {

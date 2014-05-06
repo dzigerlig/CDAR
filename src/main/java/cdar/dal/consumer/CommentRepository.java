@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.consumer.Comment;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownCommentException;
 
 public class CommentRepository {
@@ -29,13 +31,15 @@ public class CommentRepository {
 				while (result.next()) {
 					Comment usercomment = new Comment();
 					usercomment.setId(result.getInt(1));
-					usercomment.setCreationTime(result.getDate(2));
-					usercomment.setLastModificationTime(result.getDate(3));
+					usercomment.setCreationTime(DateHelper.getDate(result.getString(2)));
+					usercomment.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					usercomment.setNodeId(kpnid);
 					usercomment.setUserId(result.getInt(4));
 					usercomment.setComment(result.getString(5));
 					usercomments.add(usercomment);
 				}
+			} catch (ParseException e) {
+				
 			}
 		} catch (SQLException ex) {
 			throw ex;
@@ -56,13 +60,16 @@ public class CommentRepository {
 				while (result.next()) {
 					Comment usercomment = new Comment();
 					usercomment.setId(result.getInt(1));
-					usercomment.setCreationTime(result.getDate(2));
-					usercomment.setLastModificationTime(result.getDate(3));
+					usercomment.setCreationTime(DateHelper.getDate(result.getString(2)));
+					usercomment.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					usercomment.setNodeId(result.getInt(4));
 					usercomment.setUserId(result.getInt(5));
 					usercomment.setComment(result.getString(6));
 					return usercomment;
 				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownCommentException();
@@ -75,7 +82,7 @@ public class CommentRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, comment.getUserId());
 			preparedStatement.setInt(3, comment.getNodeId());
 			preparedStatement.setString(4, comment.getComment());
@@ -98,7 +105,7 @@ public class CommentRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, comment.getUserId());
 			preparedStatement.setInt(3, comment.getNodeId());
 			preparedStatement.setString(4, comment.getComment());

@@ -11,6 +11,7 @@ import java.util.List;
 
 import cdar.bll.entity.XmlTree;
 import cdar.dal.DBConnection;
+import cdar.dal.DateHelper;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class XmlTreeRepository {
@@ -71,7 +72,7 @@ public class XmlTreeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, xmlTree.getUserId());
 			preparedStatement.setInt(3, xmlTree.getTreeId());
 			preparedStatement.setString(4, xmlTree.getXmlString());
@@ -92,7 +93,7 @@ public class XmlTreeRepository {
 	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
 		final String sql = "UPDATE KNOWLEDGETREEXML SET LAST_MODIFICATION_TIME = ?, UID = ?, KTRID = ?, XMLSTRING = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-			preparedStatement.setDate(1, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, xmlTree.getUserId());
 			preparedStatement.setInt(3, xmlTree.getTreeId());
 			preparedStatement.setString(4, xmlTree.getXmlString());

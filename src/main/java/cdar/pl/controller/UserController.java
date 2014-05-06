@@ -34,7 +34,7 @@ public class UserController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
 		try {
-			user = userManager.createUser(user);
+			user = userManager.createUser(user, true);
 			user.setPassword(null);
 			return StatusHelper.getStatusCreated(user);
 		} catch (Exception ex) {

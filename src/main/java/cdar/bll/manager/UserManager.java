@@ -33,10 +33,12 @@ public class UserManager {
 		}
 	}
 
-	public User createUser(User user) throws Exception {
+	public User createUser(User user, boolean createWikiUser) throws Exception {
 		try {
-			WikiRegistrationManager wrm = new WikiRegistrationManager();
-			wrm.createUser(user.getUsername(), user.getPassword());
+			if (createWikiUser) {
+				WikiRegistrationManager wrm = new WikiRegistrationManager();
+				wrm.createUser(user.getUsername(), user.getPassword());
+			}
 			return userRepository.createUser(user);
 		} catch (Exception ex) {
 			throw new UsernameInvalidException();
