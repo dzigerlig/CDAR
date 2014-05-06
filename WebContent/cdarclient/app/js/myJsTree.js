@@ -243,7 +243,7 @@ var myJsTree = (function () {
             var parentId;
             var type;
             var rootid = null;
-
+console.log("directoryDataToArray");
             resDirectory.forEach(function (entry) {
                 if (entry.parentId === 0) {
                     parentId = "#";
