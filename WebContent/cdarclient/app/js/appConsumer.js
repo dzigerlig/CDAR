@@ -47,6 +47,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     var reloadTree = function () {
         TreeService.getTree({entity1: 'ptrees', id1: $routeParams.treeId}, function (response) {
             $scope.projecttree = response;
+        }, function(error) {
+        	noty({
+				type : 'alert',
+				text : 'error getting tree',
+				timeout : 1500
+			});
         });
 
         /*	TreeService.getNodes({entity1 : 'ptrees', id1 : $routeParams.treeId}, function(response) {
@@ -62,12 +68,22 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     entity1: 'ptrees', id1: $routeParams.treeId
                 },
                 function (resNodes) {
-
                     myJsTree.directoryDataToArray(resDirectory,
                         resNodes);
                     $scope.getSubnodes(resNodes);
-
+                }, function(error) {
+                	noty({
+        				type : 'alert',
+        				text : 'error getting nodes',
+        				timeout : 1500
+        			});
                 });
+        }, function(error) {
+        	noty({
+				type : 'alert',
+				text : 'error getting directories',
+				timeout : 1500
+			});
         });
     };
     $scope.getSubnodes = function (resNodes) {
@@ -77,6 +93,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, resNodes, function (resSubnodes) {
             myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
             $scope.getLinks(resSubnodes);
+        }, function(error) {
+        	noty({
+				type : 'alert',
+				text : 'error getting subnodes',
+				timeout : 1500
+			});
         });
     };
 
@@ -87,6 +109,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, resSubnodes, function (response) {
             myJsPlumb.makeNodeHierarchy(response, resSubnodes);
             w_launch();
+        }, function(error) {
+        	noty({
+				type : 'alert',
+				text : 'error getting links',
+				timeout : 1500
+			});
         });
     };
 
@@ -95,6 +123,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         $scope.wikiText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
         TreeService.getNodeWiki({entity1: 'ptrees', id1: $routeParams.treeId, id2: nodeid}, function (response) {
             $scope.wikiText = response.wikiContentHtml;
+        }, function(error) {
+        	noty({
+				type : 'alert',
+				text : 'cannot get node wiki entry',
+				timeout : 1500
+			});
         });
     };
 
@@ -144,6 +178,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
             TreeService.copyTree({entity1: 'ptrees', id1: $routeParams.treeId, entity2: 'ktrees', id2: $scope.selectedktreeId}, function (response) {
                 reloadTree();
+            }, function(error) {
+            	noty({
+					type : 'alert',
+					text : 'cannot copy tree',
+					timeout : 1500
+				});
             });
         }
     };

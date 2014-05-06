@@ -25,7 +25,11 @@ app.controller("TemplatesController", [
 			}, function(response) {
 				$scope.knowledgetree = response;
 			}, function(error) {
-				//todo error handling
+				noty({
+					type : 'alert',
+					text : 'cannot get tree',
+					timeout : 1500
+				});
 			});
 
 			var reloadTemplates = function() {
@@ -35,7 +39,11 @@ app.controller("TemplatesController", [
 				}, function(response) {
 					$scope.templates = response;
 				}, function(error) {
-					//todo error handling
+					noty({
+						type : 'alert',
+						text : 'cannot reload templates',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -44,6 +52,12 @@ app.controller("TemplatesController", [
 				template.isDefault = !template.isDefault;
 				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
 					reloadTemplates();
+				}, function(error) {
+					noty({
+						type : 'alert',
+						text : 'cannot set default template',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -55,7 +69,11 @@ app.controller("TemplatesController", [
 					}
 					noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
 				}, function(error) {
-					//todo error handling
+					noty({
+						type : 'alert',
+						text : 'cannot delete template',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -67,7 +85,11 @@ app.controller("TemplatesController", [
 					reloadTemplates();
 					noty({type: 'success', text : 'template renamed successfully', timeout: 1500});
 				}, function(error) {
-					//todo error handling
+					noty({
+						type : 'alert',
+						text : 'cannot edit template title',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -97,7 +119,11 @@ app.controller("TemplatesController", [
 					}
 					noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
 				}, function(error) {
-					//todo error handling
+					noty({
+						type : 'alert',
+						text : 'cannot add new template',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -111,7 +137,11 @@ app.controller("TemplatesController", [
 				}, function(response) {
 					changeTemplateFields(response);
 				}, function(error) {
-					//todo error handling
+					noty({
+						type : 'alert',
+						text : 'cannot change template',
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -138,6 +168,12 @@ app.controller("TemplatesController", [
 					}, $scope.selectedTemplate, function(response) {
 						changeTemplateFields(response);
 						noty({type: 'success', text : 'template text edited successfully', timeout: 1500});
+					}, function(response) {
+						noty({
+							type : 'alert',
+							text : 'cannot save template',
+							timeout : 1500
+						});
 					});
 				}
 			};
