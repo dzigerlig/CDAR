@@ -79,8 +79,7 @@ app.controller("HomeProducerController", [
 
 		} ]);
 
-app
-		.controller(
+app.controller(
 				"KnowledgeTreeController",
 				[
 						'$scope',
@@ -99,7 +98,7 @@ app
 							}
 							setReload(true);
 							//
-
+							
 							myJsPlumb.initialize();
 
 							$scope.treeId = $routeParams.treeId;

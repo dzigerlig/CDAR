@@ -2,7 +2,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     $scope.projectTrees = "";
     $scope.newTreeName = "";
     $scope.UserService = UserService;
-
+    
     var reloadTrees = function () {
         TreeService.getTrees({entity1: 'ptrees'}, function (response) {
             $scope.projectTrees = response;
@@ -35,13 +35,13 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     };
 }]);
 
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
     $scope.UserService = UserService;
     $scope.projecttree = "";
     $scope.nodes = "";
     $scope.trees = "";
     $scope.selectedktreeId = "";
-
+    
     $scope.wikiText = "no wiki entry selected";
 
     var reloadTree = function () {
