@@ -7,7 +7,11 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
         TreeService.getTrees({entity1: 'ptrees'}, function (response) {
             $scope.projectTrees = response;
         }, function (error) {
-            //error handling
+        	noty({
+				type : 'alert',
+				text : 'error getting trees',
+				timeout : 1500
+			});
         });
     };
 
@@ -18,7 +22,11 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
             $scope.newTreeName = '';
             reloadTrees();
         }, function (error) {
-            alert("Error: ProjectTree NOT added!");
+        	noty({
+				type : 'alert',
+				text : 'error while adding tree',
+				timeout : 1500
+			});
         });
     };
 
@@ -26,7 +34,11 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
         TreeService.deleteTree({ entity1: 'ptrees' }, { id: treeid }, function (response) {
             reloadTrees();
         }, function (error) {
-            //error handling
+        	noty({
+				type : 'alert',
+				text : 'cannot delete tree',
+				timeout : 1500
+			});
         });
     };
 
