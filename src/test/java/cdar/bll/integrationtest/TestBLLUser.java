@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.WrongCredentialsException;
 
@@ -43,7 +44,7 @@ public class TestBLLUser {
 	}
 
 	@Test(expected = UnknownUserException.class)
-	public void testGetUnknownUserById() throws UnknownUserException {
+	public void testGetUnknownUserById() throws UnknownUserException, EntityException {
 		um.getUser(-13);
 	}
 

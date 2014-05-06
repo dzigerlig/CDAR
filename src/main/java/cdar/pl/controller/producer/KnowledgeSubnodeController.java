@@ -19,6 +19,7 @@ import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.pl.controller.StatusHelper;
 
@@ -139,7 +140,7 @@ public class KnowledgeSubnodeController {
 		try {
 			MediaWikiModel mwm = new MediaWikiModel();
 			return StatusHelper.getStatusOk(mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry));
-		} catch (UnknownUserException uue) {
+		} catch (UnknownUserException | EntityException ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

@@ -1,5 +1,6 @@
 package cdar.bll.manager;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import cdar.bll.entity.User;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.wiki.WikiRegistrationManager;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UsernameInvalidException;
 import cdar.dal.exceptions.WrongCredentialsException;
@@ -60,7 +63,7 @@ public class UserManager {
 		userRepository.deleteUser(userId);
 	}
 
-	public User updateUser(User user) throws Exception {
+	public User updateUser(User user) throws UnknownUserException, EntityException {
 		User updatedUser = userRepository.getUser(user.getId());
 		
 		if (user.getAccesstoken()!=null) {
@@ -78,11 +81,11 @@ public class UserManager {
 		return userRepository.getUser(username);
 	}
 
-	public User getUser(int userId) throws UnknownUserException {
+	public User getUser(int userId) throws UnknownUserException, EntityException {
 		return userRepository.getUser(userId);
 	}
 
-	public List<User> getUsers() throws Exception {
+	public List<User> getUsers() throws EntityException {
 		return userRepository.getUsers();
 	}
 }

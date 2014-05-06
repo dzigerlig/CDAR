@@ -6,6 +6,7 @@ import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
@@ -30,17 +31,17 @@ public class MediaWikiModel {
 		return new WikiEntry(sm.getSubnode(subnodeId));
 	}
 
-	public WikiEntry saveKnowledgeNodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+	public WikiEntry saveKnowledgeNodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
 		User user = um.getUser(userId);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+	public WikiEntry saveKnowledgeSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
 		User user = um.getUser(userId);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry saveProjectNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException {
+	public WikiEntry saveProjectNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
 		User user = um.getUser(userid);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
@@ -50,7 +51,7 @@ public class MediaWikiModel {
 		return new WikiEntry(psm.getProjectSubnode(subnodeId));
 	}
 
-	public WikiEntry saveKnowledgeProjectSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException {
+	public WikiEntry saveKnowledgeProjectSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
 		User user = um.getUser(userId);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
