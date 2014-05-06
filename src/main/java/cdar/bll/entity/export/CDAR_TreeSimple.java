@@ -17,6 +17,10 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.manager.producer.TreeManager;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.TreeRepository;
 
 @XmlRootElement
@@ -40,7 +44,7 @@ public class CDAR_TreeSimple {
 	
 	public CDAR_TreeSimple() {}
 	
-	public CDAR_TreeSimple(int treeid) throws Exception {
+	public CDAR_TreeSimple(int treeid) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException {
 		setTree(tr.getTree(treeid));
 		setTemplates(tem.getKnowledgeTemplates(treeid));
 		setNodes(nm.getNodes(treeid));

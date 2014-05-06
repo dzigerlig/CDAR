@@ -14,11 +14,12 @@ import java.util.List;
 import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeLinkRepository {
-	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException {
+	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE KPTID = ?";
 
 		List<NodeLink> projectNodeLinks = new ArrayList<NodeLink>();
@@ -38,8 +39,7 @@ public class ProjectNodeLinkRepository {
 					projectNodeLinks.add(projectNodeLink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownProjectTreeException();
@@ -47,7 +47,7 @@ public class ProjectNodeLinkRepository {
 		return projectNodeLinks;
 	}
 	
-	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
+	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -67,8 +67,7 @@ public class ProjectNodeLinkRepository {
 					return projectNodeLink;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownProjectNodeLinkException();
@@ -127,7 +126,7 @@ public class ProjectNodeLinkRepository {
 		return projectNodeLink;
 	}
 	
-	public void deleteProjectNodeLink(int projectNodeLinkId) throws Exception {
+	public void deleteProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
 		final String sql = "DELETE FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -137,7 +136,7 @@ public class ProjectNodeLinkRepository {
 				throw new UnknownProjectNodeLinkException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownProjectNodeLinkException();
 		}
 	}
 }

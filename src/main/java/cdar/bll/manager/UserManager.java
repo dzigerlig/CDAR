@@ -13,6 +13,7 @@ import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.wiki.WikiRegistrationManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UsernameInvalidException;
 import cdar.dal.exceptions.WrongCredentialsException;
@@ -24,7 +25,7 @@ public class UserManager {
 	public UserManager() {
 	}
 
-	public User loginUser(String username, String password) throws Exception {
+	public User loginUser(String username, String password) throws UnknownUserException, EntityException, WrongCredentialsException {
 		User user = getUser(username);
 
 		if (user.getPassword().equals(password)) {
@@ -36,7 +37,7 @@ public class UserManager {
 		}
 	}
 
-	public User createUser(User user, boolean createWikiUser) throws Exception {
+	public User createUser(User user, boolean createWikiUser) throws UsernameInvalidException {
 		try {
 			if (createWikiUser) {
 				WikiRegistrationManager wrm = new WikiRegistrationManager();
@@ -48,7 +49,7 @@ public class UserManager {
 		}
 	}
 
-	public void deleteUser(int userId) throws Exception {
+	public void deleteUser(int userId) throws UnknownUserException, EntityException, UnknownTreeException, UnknownProjectTreeException {
 		TreeManager tm = new TreeManager();
 		ProjectTreeManager ptm = new ProjectTreeManager();
 		

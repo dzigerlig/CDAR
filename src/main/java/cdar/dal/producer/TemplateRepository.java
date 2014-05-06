@@ -13,10 +13,12 @@ import java.util.List;
 import cdar.bll.entity.producer.Template;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownTemplateException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 public class TemplateRepository {
-	public List<Template> getTemplates(int treeId) throws SQLException {
+	public List<Template> getTemplates(int treeId) throws EntityException, UnknownTreeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE FROM KNOWLEDGETEMPLATE WHERE KTRID = ?";
 
 		List<Template> templates = new ArrayList<Template>();
@@ -40,16 +42,15 @@ public class TemplateRepository {
 					templates.add(template);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 		return templates;
 	}
 
-	public Template getTemplate(int templateId) throws UnknownTemplateException {
+	public Template getTemplate(int templateId) throws UnknownTemplateException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -72,8 +73,7 @@ public class TemplateRepository {
 					return template;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownTemplateException();

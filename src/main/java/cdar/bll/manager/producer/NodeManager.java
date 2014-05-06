@@ -1,13 +1,14 @@
 package cdar.bll.manager.producer;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.NodeRepository;
 
@@ -16,7 +17,7 @@ public class NodeManager {
 
 	private NodeRepository nr = new NodeRepository();
 
-	public Set<Node> getNodes(int treeid) throws SQLException {
+	public Set<Node> getNodes(int treeid) throws EntityException, UnknownTreeException   {
 		Set<Node> nodes = new HashSet<Node>();
 		for (Node node : nr.getNodes(treeid)) {
 			nodes.add(node);
@@ -24,11 +25,11 @@ public class NodeManager {
 		return nodes;
 	}
 
-	public Node getNode(int nodeId) throws UnknownNodeException {
+	public Node getNode(int nodeId) throws UnknownNodeException, EntityException {
 		return nr.getNode(nodeId);
 	}
 
-	public void deleteNode(int nodeId) throws UnknownNodeException, Exception {
+	public void deleteNode(int nodeId) throws UnknownNodeException {
 		nr.deleteNode(nodeId);
 	}
 
@@ -56,26 +57,26 @@ public class NodeManager {
 		return node;
 	}
 
-	public Node dropNode(int id) throws Exception {
+	public Node dropNode(int id) throws UnknownNodeException, EntityException   {
 		Node node = getNode(id);
 		node.setDynamicTreeFlag(1);
 		return nr.updateNode(node);
 	}
 
-	public Node renameNode(Node node) throws Exception {
+	public Node renameNode(Node node) throws UnknownNodeException, EntityException   {
 		Node renamedNode = nr.getNode(node.getId());
 		renamedNode.setTitle(node.getTitle());
 		renamedNode.setDirectoryId(node.getDirectoryId());
 		return nr.updateNode(renamedNode);
 	}
 
-	public Node undropNode(int id) throws Exception {
+	public Node undropNode(int id) throws UnknownNodeException, EntityException   {
 		Node node = getNode(id);
 		node.setDynamicTreeFlag(0);
 		return nr.updateNode(node);
 	}
 
-	public Node moveNode(Node node) throws Exception {
+	public Node moveNode(Node node) throws UnknownNodeException, EntityException   {
 		Node movedNode = getNode(node.getId());
 		movedNode.setDirectoryId(node.getDirectoryId());
 		return nr.updateNode(movedNode);
@@ -87,7 +88,7 @@ public class NodeManager {
 		// return new Node(node);
 	}
 
-	public Node updateNode(Node node) throws Exception {
+	public Node updateNode(Node node) throws UnknownNodeException, EntityException   {
 		Node updatedNode = getNode(node.getId());
 		
 		if (node.getDirectoryId()!=0) {
@@ -106,13 +107,13 @@ public class NodeManager {
 		return nr.updateNode(updatedNode);
 	}
 
-	public Set<Node> zoomUp(int nodeId) throws UnknownNodeException {
+	public Set<Node> zoomUp(int nodeId) throws UnknownNodeException, EntityException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
 		return recursiveZoomUp(nodeId, 2, nodes);
 	}
 
-	private Set<Node> recursiveZoomUp(int nodeId, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomUp(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (Node node : nr.getSiblingNode(nodeId)) {
 				nodes.add(node);
@@ -125,13 +126,13 @@ public class NodeManager {
 		return nodes;
 	}
 
-	public Set<Node> zoomDown(int nodeId) throws UnknownNodeException {
+	public Set<Node> zoomDown(int nodeId) throws UnknownNodeException, EntityException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
 		return recursiveZoomDown(nodeId, 2, nodes);
 	}
 
-	private Set<Node> recursiveZoomDown(int nodeId, int quantity, Set<Node> nodes) {
+	private Set<Node> recursiveZoomDown(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (Node node : nr.getFollowerNode(nodeId)) {
 				nodes.add(node);

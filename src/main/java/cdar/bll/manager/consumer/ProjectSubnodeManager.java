@@ -7,6 +7,7 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
@@ -20,7 +21,7 @@ public class ProjectSubnodeManager {
 		return psr.createProjectSubnode(projectSubnode);
 	}
 	
-	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) throws UnknownProjectTreeException, UnknownProjectNodeLinkException {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) throws UnknownProjectTreeException, UnknownProjectNodeLinkException, EntityException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
 		for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
@@ -32,7 +33,7 @@ public class ProjectSubnodeManager {
 		return projectSubnodes;
 	}
 	
-	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(int projectNodeId) throws UnknownProjectNodeLinkException {
+	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(int projectNodeId) throws UnknownProjectNodeLinkException, EntityException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 		
 		for (ProjectSubnode projectSubnode : psr.getProjectSubnodes(projectNodeId)) {
@@ -42,11 +43,11 @@ public class ProjectSubnodeManager {
 		return projectSubnodes;
 	}
 	
-	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
 		return psr.getProjectSubnode(projectSubnodeId);
 	}
 	
-	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException {
+	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException, EntityException {
 		ProjectSubnode updatedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
 		if (projectSubnode.getNodeId()!=0) {
 			updatedProjectSubnode.setNodeId(projectSubnode.getNodeId());
@@ -63,7 +64,7 @@ public class ProjectSubnodeManager {
 		return psr.updateProjectSubnode(updatedProjectSubnode);
 	}
 	
-	public int getNextProjectSubnodePosition(int projectNodeId) throws UnknownProjectNodeLinkException {
+	public int getNextProjectSubnodePosition(int projectNodeId) throws UnknownProjectNodeLinkException, EntityException {
 		int position = 0;
 		
 		for (ProjectSubnode projectSubnode : getProjectSubnodesFromProjectNode(projectNodeId)) {
@@ -75,7 +76,7 @@ public class ProjectSubnodeManager {
 		return ++position;
 	}
 	
-	public void changeProjectSubnodePosition(int projectNodeId, int id, int position) throws UnknownProjectNodeLinkException {
+	public void changeProjectSubnodePosition(int projectNodeId, int id, int position) throws UnknownProjectNodeLinkException, EntityException {
 		for (ProjectSubnode projectSubnode : psr.getProjectSubnodes(projectNodeId)) {
 			if (projectSubnode.getId()==id) {
 				projectSubnode.setPosition(position);

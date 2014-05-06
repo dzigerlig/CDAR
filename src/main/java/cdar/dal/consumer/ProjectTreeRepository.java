@@ -13,10 +13,13 @@ import java.util.List;
 import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class ProjectTreeRepository {
-	public List<Tree> getProjectTrees(int uid) throws SQLException {
+	public List<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;
 		if (uid==0) {
 			sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE";
@@ -39,16 +42,15 @@ public class ProjectTreeRepository {
 					projectTrees.add(projectTree);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownUserException();
 		}
 		return projectTrees;
 	}
 	
-	public Tree getProjectTree(int projectTreeId) throws UnknownProjectTreeException {
+	public Tree getProjectTree(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = "SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGEPROJECTTREE JOIN KNOWLEDGEPROJECTTREEMAPPING ON KNOWLEDGEPROJECTTREEMAPPING.kptid = KNOWLEDGEPROJECTTREE.id WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -65,17 +67,15 @@ public class ProjectTreeRepository {
 					return projectTree;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new UnknownProjectTreeException();
 		}
 		throw new UnknownProjectTreeException();
 	}
 	
-	public Tree createProjectTree(Tree projectTree) throws Exception {
+	public Tree createProjectTree(Tree projectTree) throws CreationException, EntityException  {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (uid, kptid) VALUES (?, ?)";
 
@@ -93,7 +93,7 @@ public class ProjectTreeRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new CreationException();
 		}
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
@@ -101,12 +101,12 @@ public class ProjectTreeRepository {
 			preparedStatement.setInt(2, projectTree.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new EntityException();
 		}
 		return projectTree;
 	}
 	
-	public Tree updateProjectTree(Tree projectTree) throws Exception {
+	public Tree updateProjectTree(Tree projectTree) throws UnknownProjectTreeException {
 		final String sql = "UPDATE KNOWLEDGEPROJECTTREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -117,7 +117,7 @@ public class ProjectTreeRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownProjectTreeException();
 		}
 		return projectTree;
 	}

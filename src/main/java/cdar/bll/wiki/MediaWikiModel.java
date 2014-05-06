@@ -16,17 +16,17 @@ import cdar.dal.exceptions.UnknownUserException;
 public class MediaWikiModel {
 	private UserManager um = new UserManager();
 
-	public WikiEntry getProjectNodeWikiEntry(int nodeId) throws UnknownProjectNodeException {
+	public WikiEntry getProjectNodeWikiEntry(int nodeId) throws UnknownProjectNodeException, EntityException {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		return new WikiEntry(pnm.getProjectNode(nodeId));
 	}
 
-	public WikiEntry getKnowledgeNodeWikiEntry(int nodeId) throws UnknownNodeException {
+	public WikiEntry getKnowledgeNodeWikiEntry(int nodeId) throws UnknownNodeException, EntityException {
 		NodeManager nm = new NodeManager();
 		return new WikiEntry(nm.getNode(nodeId));
 	}
 
-	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeId) throws UnknownSubnodeException {
+	public WikiEntry getKnowledgeSubnodeWikiEntry(int subnodeId) throws UnknownSubnodeException, EntityException {
 		SubnodeManager sm = new SubnodeManager();
 		return new WikiEntry(sm.getSubnode(subnodeId));
 	}
@@ -46,7 +46,7 @@ public class MediaWikiModel {
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry getKnowledgeProjectSubnodeWikiEntry(int subnodeId) throws UnknownProjectSubnodeException {
+	public WikiEntry getKnowledgeProjectSubnodeWikiEntry(int subnodeId) throws UnknownProjectSubnodeException, EntityException {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		return new WikiEntry(psm.getProjectSubnode(subnodeId));
 	}

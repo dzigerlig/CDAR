@@ -18,6 +18,14 @@ import cdar.bll.entity.XmlTree;
 import cdar.bll.entity.export.CDAR_TreeExportModel;
 import cdar.bll.entity.export.CDAR_TreeSimple;
 import cdar.bll.entity.producer.Template;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownDirectoryException;
+import cdar.dal.exceptions.UnknownEntityException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownTemplateException;
+import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.producer.NodeLinkRepository;
 import cdar.dal.producer.NodeRepository;
@@ -33,7 +41,7 @@ public class XmlTreeManager {
 	private TemplateRepository tr = new TemplateRepository();
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Set<XmlTree> getXmlTrees(int treeId) throws SQLException {
+	public Set<XmlTree> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException  {
 		Set<XmlTree> xmlTrees = new HashSet<XmlTree>();
 
 		for (XmlTree xmlTree : xtr.getXmlTrees(treeId)) {
@@ -43,7 +51,7 @@ public class XmlTreeManager {
 		return xmlTrees;
 	}
 
-	public XmlTree addXmlTree(int uid, int ktrid) throws Exception {
+	public XmlTree addXmlTree(int uid, int ktrid) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException, UnknownXmlTreeException    {
 		CDAR_TreeExportModel tem = new CDAR_TreeExportModel();
 		final String xmlString = tem.getTreeSimpleXmlString(ktrid);
 		XmlTree xmlTree = new XmlTree();
@@ -57,17 +65,17 @@ public class XmlTreeManager {
 		xtr.deleteXmlTree(xtr.getXmlTree(xmlTreeId));
 	}
 
-	public XmlTree getXmlTree(int xmlTreeId) throws UnknownXmlTreeException {
+	public XmlTree getXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException {
 		return xtr.getXmlTree(xmlTreeId);
 	}
 
-	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException {
+	public XmlTree updateXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException, EntityException {
 		XmlTree updatedXmlTree = getXmlTree(xmlTree.getId());
 		updatedXmlTree.setXmlString(xmlTree.getXmlString());
 		return xtr.updateXmlTree(updatedXmlTree);
 	}
 
-	public void cleanTree(int xmlTreeId) throws Exception {
+	public void cleanTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException {
 		NodeRepository nr = new NodeRepository();
 		
 		XmlTree xmlTree = getXmlTree(xmlTreeId);
@@ -87,7 +95,7 @@ public class XmlTreeManager {
 		}
 	}
 
-	public boolean setXmlTree(int xmlTreeId) throws Exception {
+	public boolean setXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException, UnknownTemplateException, UnknownDirectoryException, UnknownTreeException, CreationException, UnknownNodeException   {
 		
 		CDAR_TreeExportModel ctem = new CDAR_TreeExportModel();
 		XmlTree xmlTree = getXmlTree(xmlTreeId);

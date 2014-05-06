@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,13 @@ import java.util.List;
 import cdar.bll.entity.XmlTree;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownEntityException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class XmlTreeRepository {
-	public List<XmlTree> getXmlTrees(int treeId) throws SQLException {
+	public List<XmlTree> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE KTRID = ?";
 
 		List<XmlTree> xmlTrees = new ArrayList<XmlTree>();
@@ -27,21 +31,23 @@ public class XmlTreeRepository {
 				while (result.next()) {
 					XmlTree xmlTree = new XmlTree();
 					xmlTree.setId(result.getInt(1));
-					xmlTree.setCreationTime(result.getDate(2));
-					xmlTree.setLastModificationTime(result.getDate(3));
+					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
+					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					xmlTree.setXmlString(result.getString(4));
 					xmlTree.setUserId(result.getInt(5));
 					xmlTree.setTreeId(result.getInt(6));
 					xmlTrees.add(xmlTree);
 				}
+			} catch (ParseException e) {
+				throw new UnknownEntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 		return xmlTrees;
 	}
 
-	public XmlTree getXmlTree(int id) throws UnknownXmlTreeException {
+	public XmlTree getXmlTree(int id) throws UnknownXmlTreeException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID FROM KNOWLEDGETREEXML WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -51,13 +57,15 @@ public class XmlTreeRepository {
 				while (result.next()) {
 					XmlTree xmlTree = new XmlTree();
 					xmlTree.setId(result.getInt(1));
-					xmlTree.setCreationTime(result.getDate(2));
-					xmlTree.setLastModificationTime(result.getDate(3));
+					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
+					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
 					xmlTree.setXmlString(result.getString(4));
 					xmlTree.setUserId(result.getInt(5));
 					xmlTree.setTreeId(result.getInt(6));
 					return xmlTree;
 				}
+			} catch (ParseException e) {
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownXmlTreeException();
@@ -106,7 +114,7 @@ public class XmlTreeRepository {
 		return xmlTree;
 	}
 	
-	public void deleteXmlTree(XmlTree xmlTree) throws Exception {
+	public void deleteXmlTree(XmlTree xmlTree) throws UnknownXmlTreeException   {
 		final String sql = "DELETE FROM KNOWLEDGETREEXML WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -116,7 +124,7 @@ public class XmlTreeRepository {
 				throw new UnknownXmlTreeException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownXmlTreeException();
 		}
 	}
 }

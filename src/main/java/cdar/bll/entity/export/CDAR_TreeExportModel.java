@@ -9,10 +9,14 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import cdar.bll.entity.User;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class CDAR_TreeExportModel {
 
-	public String getTreeSimpleXmlString(int treeid) throws Exception {
+	public String getTreeSimpleXmlString(int treeid) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException   {
 		CDAR_TreeSimple tse = new CDAR_TreeSimple(treeid);
 		try {
 			final Marshaller m = JAXBContext.newInstance(CDAR_TreeSimple.class)

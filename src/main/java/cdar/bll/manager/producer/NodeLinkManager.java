@@ -1,19 +1,22 @@
 package cdar.bll.manager.producer;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
+import cdar.dal.exceptions.UnknownSubnodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.producer.NodeLinkRepository;
 
 public class NodeLinkManager {
 	private NodeLinkRepository nlr = new NodeLinkRepository();
 
-	public Set<NodeLink> getNodeLinks(int treeId) throws SQLException {
+	public Set<NodeLink> getNodeLinks(int treeId) throws EntityException, UnknownTreeException  {
 		Set<NodeLink> nodeLinks = new HashSet<NodeLink>();
 
 		for (NodeLink nodeLink : nlr.getNodeLinks(treeId)) {
@@ -23,17 +26,17 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public void deleteNodeLink(int nodeLinkId) throws Exception
+	public void deleteNodeLink(int nodeLinkId) throws UnknownNodeLinkException  
 	{
 		nlr.deleteNodeLink(nodeLinkId);
 	}
 	
-	public NodeLink addNodeLink(NodeLink nodeLink) throws Exception
+	public NodeLink addNodeLink(NodeLink nodeLink) throws UnknownTreeException  
 	{
 		return nlr.createNodeLink(nodeLink);
 	}
 
-	public NodeLink updateNodeLink(NodeLink nodelink) throws Exception {
+	public NodeLink updateNodeLink(NodeLink nodelink) throws UnknownNodeLinkException, EntityException {
 		NodeLink updatedNodeLink = nlr.getNodeLink(nodelink.getId());
 		if (nodelink.getSubnodeId()!=0) {
 			updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());
@@ -41,11 +44,11 @@ public class NodeLinkManager {
 		return nlr.updateNodeLink(updatedNodeLink);
 	}
 
-	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
+	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
 		return nlr.getNodeLink(nodeLinkId);
 	}
 
-	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws SQLException {
+	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException  {
 		List<NodeLink> nodeLinks = new ArrayList<NodeLink>();
 
 		for (NodeLink nodeLink : nlr.getNodeLinksBySubnode(subnodeId)) {
@@ -55,17 +58,17 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public Set<NodeLink> zoomUp(int nodeId) throws SQLException {
+	public Set<NodeLink> zoomUp(int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveZoomUp(nodeId, 2, links);
 	}
 	
-	public Set<NodeLink> zoomDown(int nodeId) throws SQLException {
+	public Set<NodeLink> zoomDown(int nodeId) throws UnknownNodeException, EntityException  {
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveZoomDown(nodeId, 2, links);
 	}
 
-	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws SQLException {
+	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : nlr.getSiblingNodeLinks(nodeId)) {
 				links.add(nodeLink);
@@ -78,7 +81,7 @@ public class NodeLinkManager {
 		return links;
 	}
 	
-	private Set<NodeLink> recursiveZoomDown(int nodeId, int quantity, Set<NodeLink> links) throws SQLException {
+	private Set<NodeLink> recursiveZoomDown(int nodeId, int quantity, Set<NodeLink> links) throws UnknownNodeException, EntityException  {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : nlr.getFollowerNodeLinks(nodeId)) {
 				links.add(nodeLink);

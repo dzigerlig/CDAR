@@ -13,11 +13,14 @@ import java.util.List;
 import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class TreeRepository {
 
-	public List<Tree> getTrees(int uid) throws SQLException {
+	public List<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;
 		if (uid == 0) {
 			sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE";
@@ -40,16 +43,15 @@ public class TreeRepository {
 					trees.add(tree);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownUserException();
 		}
 		return trees;
 	}
 
-	public Tree getTree(int treeId) throws Exception {
+	public Tree getTree(int treeId) throws UnknownTreeException   {
 		final String sql = "SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -72,7 +74,7 @@ public class TreeRepository {
 		throw new UnknownTreeException();
 	}
 	
-	public Tree createTree(Tree tree) throws Exception {
+	public Tree createTree(Tree tree) throws CreationException   {
 		final String sql = "INSERT INTO KNOWLEDGETREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)";
 
@@ -90,7 +92,7 @@ public class TreeRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new CreationException();
 		}
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
@@ -98,13 +100,12 @@ public class TreeRepository {
 			preparedStatement.setInt(2, tree.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
+			throw new CreationException();
 		}
 		return tree;
 	}
 	
-	public Tree updateTree(Tree tree) throws Exception {
+	public Tree updateTree(Tree tree) throws UnknownTreeException   {
 		final String sql = "UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -115,12 +116,12 @@ public class TreeRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 		return tree;
 	}
 	
-	public void deleteTree(int treeId) throws Exception {
+	public void deleteTree(int treeId) throws UnknownTreeException   {
 		final String sql = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -130,7 +131,7 @@ public class TreeRepository {
 				throw new UnknownTreeException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 	}
 }

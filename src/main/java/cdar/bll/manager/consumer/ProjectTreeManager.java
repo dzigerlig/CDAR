@@ -1,6 +1,5 @@
 package cdar.bll.manager.consumer;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,9 +21,13 @@ import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeRepository;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
-import cdar.dal.producer.DirectoryRepository;
+import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class ProjectTreeManager {
 
@@ -33,7 +36,7 @@ public class ProjectTreeManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
-	public Set<Tree> getProjectTrees(int uid) throws SQLException {
+	public Set<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
 		Set<Tree> projectTrees = new HashSet<Tree>();
 		for (Tree projectTree : ptr.getProjectTrees(uid)) {
 			projectTrees.add(projectTree);
@@ -41,8 +44,7 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public Tree addProjectTree(Tree projectTree)
-			throws Exception {
+	public Tree addProjectTree(Tree projectTree) throws CreationException, EntityException  {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
@@ -52,12 +54,11 @@ public class ProjectTreeManager {
 		return projectTree;
 	}
 
-	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException {
+	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		return ptr.getProjectTree(ptreeId);
 	}
 
-	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId)
-			throws Exception {
+	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId) throws EntityException, UnknownUserException, CreationException, UnknownTreeException, UnknownProjectTreeException, UnknownNodeException, UnknownProjectNodeException {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		NodeManager nm = new NodeManager();
 		SubnodeManager snm = new SubnodeManager();
@@ -113,7 +114,7 @@ public class ProjectTreeManager {
 		ptr.deleteProjectTree(ptreeId);
 	}
 
-	public Tree updateProjectTree(Tree projectTree) throws Exception {
+	public Tree updateProjectTree(Tree projectTree) throws UnknownProjectTreeException, EntityException   {
 		Tree updatedProjectTree = ptr.getProjectTree(projectTree.getId());
 		if (projectTree.getTitle()!=null) {
 			updatedProjectTree.setTitle(projectTree.getTitle());

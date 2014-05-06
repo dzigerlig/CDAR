@@ -14,10 +14,12 @@ import java.util.List;
 import cdar.bll.entity.Directory;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class DirectoryRepository {
-	public List<Directory> getDirectories(int treeid) throws SQLException {
+	public List<Directory> getDirectories(int treeid) throws EntityException, UnknownUserException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM DIRECTORY WHERE KTRID = ?";
 
 		List<Directory> directories = new ArrayList<Directory>();
@@ -38,16 +40,15 @@ public class DirectoryRepository {
 					directories.add(directory);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownUserException();
 		}
 		return directories;
 	}
 
-	public Directory getDirectory(int id) throws UnknownDirectoryException {
+	public Directory getDirectory(int id) throws UnknownDirectoryException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -67,8 +68,7 @@ public class DirectoryRepository {
 					return directory;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownDirectoryException();
@@ -76,7 +76,7 @@ public class DirectoryRepository {
 		throw new UnknownDirectoryException();
 	}
 
-	public Directory createDirectory(Directory directory) throws Exception {
+	public Directory createDirectory(Directory directory) throws UnknownDirectoryException {
 		final String sql = "INSERT INTO DIRECTORY (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -98,13 +98,13 @@ public class DirectoryRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownDirectoryException();
 		}
 
 		return directory;
 	}
 
-	public Directory updateDirectory(Directory directory) throws Exception {
+	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException {
 		final String sql = "UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -121,12 +121,12 @@ public class DirectoryRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownDirectoryException();
 		}
 		return directory;
 	}
 
-	public void deleteDirectory(int directoryId) throws Exception {
+	public void deleteDirectory(int directoryId) throws UnknownDirectoryException {
 		final String sql = "DELETE FROM DIRECTORY WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -136,7 +136,7 @@ public class DirectoryRepository {
 				throw new UnknownDirectoryException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownDirectoryException();
 		}
 	}
 }

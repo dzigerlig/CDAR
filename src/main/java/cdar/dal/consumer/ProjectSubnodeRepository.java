@@ -13,12 +13,13 @@ import java.util.List;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 
 public class ProjectSubnodeRepository {
-	public List<ProjectSubnode> getProjectSubnodes(int kpnid) throws UnknownProjectNodeLinkException {
+	public List<ProjectSubnode> getProjectSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM KNOWLEDGEPROJECTSUBNODE WHERE KPNID = ?";
 
 		List<ProjectSubnode> projectsubnodes = new ArrayList<ProjectSubnode>();
@@ -39,18 +40,16 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setNodeId(kpnid);
 					projectsubnodes.add(projectSubnode);
 				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (ParseException ex) {
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
 			throw new UnknownProjectNodeLinkException();
 		}
 		return projectsubnodes;
 	}
 	
-	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM KNOWLEDGEPROJECTSUBNODE WHERE ID = ?";
 
 
@@ -72,8 +71,7 @@ public class ProjectSubnodeRepository {
 					return projectSubnode;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownProjectSubnodeException();

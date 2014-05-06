@@ -14,10 +14,12 @@ import java.util.List;
 import cdar.bll.entity.Directory;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 
 public class ProjectDirectoryRepository {
-	public List<Directory> getDirectories(int treeid) throws SQLException {
+	public List<Directory> getDirectories(int treeid) throws EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM KNOWLEDGEPROJECTDIRECTORY WHERE PTREEID = ?";
 
 		List<Directory> directories = new ArrayList<Directory>();
@@ -38,11 +40,10 @@ public class ProjectDirectoryRepository {
 					directories.add(directory);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new EntityException();
 		}
 		return directories;
 	}
@@ -67,8 +68,7 @@ public class ProjectDirectoryRepository {
 					return directory;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new UnknownDirectoryException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownDirectoryException();
@@ -76,7 +76,7 @@ public class ProjectDirectoryRepository {
 		throw new UnknownDirectoryException();
 	}
 
-	public Directory createDirectory(Directory directory) throws Exception {
+	public Directory createDirectory(Directory directory) throws CreationException {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTDIRECTORY (CREATION_TIME, PARENTID, PTREEID, TITLE) VALUES (?, ?, ?, ?)";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -98,13 +98,13 @@ public class ProjectDirectoryRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new CreationException();
 		}
 
 		return directory;
 	}
 
-	public Directory updateDirectory(Directory directory) throws Exception {
+	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException  {
 		final String sql = "UPDATE KNOWLEDGEPROJECTDIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, PTREEID = ?, TITLE = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -121,12 +121,12 @@ public class ProjectDirectoryRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownDirectoryException();
 		}
 		return directory;
 	}
 
-	public void deleteDirectory(int directoryId) throws Exception {
+	public void deleteDirectory(int directoryId) throws UnknownDirectoryException {
 		final String sql = "DELETE FROM KNOWLEDGEPROJECTDIRECTORY WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -136,7 +136,7 @@ public class ProjectDirectoryRepository {
 				throw new UnknownDirectoryException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownDirectoryException();
 		}
 	}
 }

@@ -14,11 +14,14 @@ import java.util.List;
 import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
+import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 
 public class NodeLinkRepository {
-	public List<NodeLink> getNodeLinks(int treeId) throws SQLException {
+	public List<NodeLink> getNodeLinks(int treeId) throws EntityException, UnknownTreeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = ?";
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -41,23 +44,22 @@ public class NodeLinkRepository {
 					nodelinks.add(nodelink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		} 
 		return nodelinks;
 	}
 
-	public List<NodeLink> getParentNodeLinks(int nodeid) throws SQLException {
+	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = TARGETID";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, nodeid);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -72,16 +74,15 @@ public class NodeLinkRepository {
 					nodelinks.add(nodelink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownNodeLinkException();
 		}
 		return nodelinks;
 	}
 
-	public List<NodeLink> getSiblingNodeLinks(int nodeid) throws SQLException {
+	public List<NodeLink> getSiblingNodeLinks(int nodeid) throws UnknownTreeException, EntityException {
 		final String sql = "SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
@@ -104,16 +105,15 @@ public class NodeLinkRepository {
 					nodelinks.add(nodelink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownTreeException();
 		}
 		return nodelinks;
 	}
 
-	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws SQLException {
+	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = SOURCEID";
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
@@ -135,16 +135,15 @@ public class NodeLinkRepository {
 					nodelinks.add(nodelink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownNodeException();
 		}
 		return nodelinks;
 	}
 
-	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws SQLException {
+	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE KSNID = ?";
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -167,23 +166,22 @@ public class NodeLinkRepository {
 					nodelinks.add(nodelink);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new UnknownSubnodeException();
 		}
 		return nodelinks;
 	}
 
-	public NodeLink getNodeLink(int id) throws UnknownNodeLinkException {
+	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = ?";
 
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, nodeLinkId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -198,8 +196,7 @@ public class NodeLinkRepository {
 					return nodelink;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownNodeLinkException();
@@ -236,7 +233,7 @@ public class NodeLinkRepository {
 		return nodeLink;
 	}
 	
-	public NodeLink updateNodeLink(NodeLink nodeLink) throws Exception {
+	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException {
 		final String sql = "UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -254,12 +251,12 @@ public class NodeLinkRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownNodeLinkException();
 		}
 		return nodeLink;
 	}
 	
-	public void deleteNodeLink(int nodeLinkId) throws Exception {
+	public void deleteNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
 		final String sql = "DELETE FROM NODELINK WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -269,7 +266,7 @@ public class NodeLinkRepository {
 				throw new UnknownNodeLinkException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownNodeLinkException();
 		}
 	}
 }

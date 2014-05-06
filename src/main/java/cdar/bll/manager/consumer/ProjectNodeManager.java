@@ -5,13 +5,14 @@ import java.util.Set;
 
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.consumer.ProjectNodeRepository;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	
-	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException {
+	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		Set<ProjectNode> projectNodes = new HashSet<ProjectNode>();
 		
 		for (ProjectNode projectNode : pnr.getProjectNodes(ptreeId)) {
@@ -21,11 +22,11 @@ public class ProjectNodeManager {
 		return projectNodes;
 	}
 	
-	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException, EntityException {
 		return pnr.getProjectNode(projectNodeId);
 	}
 
-	public ProjectNode addProjectNode(ProjectNode projectNode) throws Exception {
+	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException {
 		return pnr.createProjectNode(projectNode);
 	}
 
@@ -33,7 +34,7 @@ public class ProjectNodeManager {
 		pnr.deleteProjectNode(projectNodeId);
 	}
 
-	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException {
+	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		
 		if (projectNode.getTreeId()!=0) {
@@ -61,7 +62,7 @@ public class ProjectNodeManager {
 		return null;
 	}
 
-	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException {
+	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
 		return pnr.updateProjectNode(updatedProjectNode);

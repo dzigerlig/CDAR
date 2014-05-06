@@ -6,20 +6,24 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.producer.SubnodeRepository;
 
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(Subnode subnode) throws Exception {
+	public Subnode addSubnode(Subnode subnode) throws EntityException, UnknownNodeException, CreationException   {
 		subnode.setPosition(sr.getNextSubnodePosition(subnode.getNodeId()));
 		return sr.createSubnode(subnode);
 	}
 
 	// whole tree
-	public Set<Subnode> getSubnodesFromTree(int treeId) throws SQLException {
+	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {
 		NodeRepository nr = new NodeRepository();
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
@@ -32,7 +36,7 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Set<Subnode> getSubnodesFromNode(int nodeId) throws SQLException {
+	public Set<Subnode> getSubnodesFromNode(int nodeId) throws EntityException, UnknownNodeException   {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
@@ -42,11 +46,11 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException {
+	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException, EntityException {
 		return sr.getSubnode(subnodeId);
 	}
 
-	public boolean changeSubnodePosition(int id, boolean up) throws SQLException, UnknownSubnodeException {
+	public boolean changeSubnodePosition(int id, boolean up) throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		int oldPosition = getSubnode(id).getPosition();
 		int newPosition = up ? oldPosition - 1 : oldPosition + 1;
 
@@ -84,7 +88,7 @@ public class SubnodeManager {
 		}
 	}
 
-	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
+	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException {
 		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
 		if (subnode.getNodeId()!=0) {
 			updatedSubnode.setNodeId(subnode.getNodeId());
@@ -102,25 +106,25 @@ public class SubnodeManager {
 		sr.deleteSubnode(subnodeId);
 	}
 
-	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException {
+	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException {
 		Subnode renamedSubnode = sr.getSubnode(subnode.getId());
 		renamedSubnode.setTitle(subnode.getTitle());
 		return sr.updateSubnode(renamedSubnode);
 	}
 
-	public int getNextSubnodePosition(int nodeId) throws SQLException {
+	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException   {
 		return sr.getNextSubnodePosition(nodeId);
 	}
 
-	public boolean moveSubnodeUp(Subnode subnode) throws SQLException, UnknownSubnodeException {
+	public boolean moveSubnodeUp(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException   {
 		return changeSubnodePosition(subnode.getId(), true);
 	}
 
-	public boolean moveSubnodeDown(Subnode subnode) throws SQLException, UnknownSubnodeException {
+	public boolean moveSubnodeDown(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		return changeSubnodePosition(subnode.getId(), false);
 	}
 
-	public Set<Subnode> zoomUp(int nodeId) throws SQLException {
+	public Set<Subnode> zoomUp(int nodeId) throws EntityException, UnknownNodeException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
@@ -129,7 +133,7 @@ public class SubnodeManager {
 	}
 
 	private Set<Subnode> recursiveZoomUp(int nodeId, int quantity,
-			Set<Subnode> subnodes) {
+			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {
 			for (Subnode subnode : sr.getSiblingSubnode(nodeId)) {
 				subnodes.add(subnode);
@@ -142,7 +146,7 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Set<Subnode> zoomDown(int nodeId) throws SQLException {
+	public Set<Subnode> zoomDown(int nodeId) throws EntityException, UnknownNodeException  {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
@@ -151,7 +155,7 @@ public class SubnodeManager {
 	}
 
 	private Set<Subnode> recursiveZoomDown(int nodeId, int quantity,
-			Set<Subnode> subnodes) {
+			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {
 			for (Subnode subnode : sr.getFollowerSubnode(nodeId)) {
 				subnodes.add(subnode);

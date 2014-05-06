@@ -13,11 +13,12 @@ import java.util.List;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeRepository {
-	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException {
+	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = "SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, MAPPING.PDID FROM KNOWLEDGEPROJECTNODE AS PNODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID";
 		List<ProjectNode> projectNodes = new ArrayList<ProjectNode>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -38,17 +39,15 @@ public class ProjectNodeRepository {
 					projectNodes.add(projectNode);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw new UnknownProjectTreeException();
 		}
 		return projectNodes;
 	}
 	
-	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException {
+	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException, EntityException {
 		final String sql = "SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, MAPPING.PDID FROM KNOWLEDGEPROJECTNODE AS PNODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE PNODE.ID = ? AND PNODE.ID = MAPPING.KPNID";
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -69,8 +68,7 @@ public class ProjectNodeRepository {
 					return projectNode;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException e) {
 			throw new UnknownProjectNodeException();
@@ -78,7 +76,7 @@ public class ProjectNodeRepository {
 		throw new UnknownProjectNodeException();
 	}
 	
-	public ProjectNode createProjectNode(ProjectNode projectNode) throws Exception {
+	public ProjectNode createProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException {
 		final String sqlProjectNode = "INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
 		final String sqlMapping = "INSERT INTO KNOWLEDGEPROJECTNODEMAPPING (kpnid, pdid) VALUES (?, ?)";
 		try (Connection connection = DBConnection.getConnection();
@@ -102,17 +100,15 @@ public class ProjectNodeRepository {
 		}
 		
 		// projectNodeMapping
-				try (Connection connection = DBConnection.getConnection();
-						PreparedStatement preparedStatement = connection
-								.prepareStatement(sqlMapping)) {
-					preparedStatement.setInt(1, projectNode.getId());
-					preparedStatement.setInt(2, projectNode.getDirectoryId());
-					preparedStatement.executeUpdate();
-				} catch (Exception ex) {
-					System.out.println(1);
-					ex.printStackTrace();
-					throw ex;
-				}
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sqlMapping)) {
+			preparedStatement.setInt(1, projectNode.getId());
+			preparedStatement.setInt(2, projectNode.getDirectoryId());
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			throw new UnknownProjectTreeException();
+		}
 		
 		return projectNode;
 	}

@@ -13,11 +13,13 @@ import java.util.List;
 import cdar.bll.entity.consumer.Comment;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownCommentException;
 
 public class CommentRepository {
 
-	public List<Comment> getComments(int kpnid) throws SQLException {
+	public List<Comment> getComments(int kpnid) throws EntityException {
 		String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM USERCOMMENT WHERE KPNID = ?";
 
 		List<Comment> usercomments = new ArrayList<Comment>();
@@ -39,15 +41,15 @@ public class CommentRepository {
 					usercomments.add(usercomment);
 				}
 			} catch (ParseException e) {
-				
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw ex;
+			throw new EntityException();
 		}
 		return usercomments;
 	}
 	
-	public Comment getComment(int id) throws UnknownCommentException {
+	public Comment getComment(int id) throws UnknownCommentException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM USERCOMMENT WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -68,8 +70,7 @@ public class CommentRepository {
 					return usercomment;
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new EntityException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownCommentException();
@@ -77,7 +78,7 @@ public class CommentRepository {
 		throw new UnknownCommentException();
 	}
 	
-	public Comment createComment(Comment comment) throws Exception {
+	public Comment createComment(Comment comment) throws CreationException {
 		final String sql = "INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -95,12 +96,12 @@ public class CommentRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new CreationException();
 		}
 		return comment;
 	}
 	
-	public Comment updateComment(Comment comment) throws Exception {
+	public Comment updateComment(Comment comment) throws UnknownCommentException  {
 		final String sql = "UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -113,13 +114,12 @@ public class CommentRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
+			throw new UnknownCommentException();
 		}
 		return comment;
 	}
 
-	public void deleteComment(int commentId) throws Exception {
+	public void deleteComment(int commentId) throws UnknownCommentException {
 		final String sql = "DELETE FROM USERCOMMENT WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -129,7 +129,7 @@ public class CommentRepository {
 				throw new UnknownCommentException();
 			}
 		} catch (Exception ex) {
-			throw ex;
+			throw new UnknownCommentException();
 		}
 	}
 }

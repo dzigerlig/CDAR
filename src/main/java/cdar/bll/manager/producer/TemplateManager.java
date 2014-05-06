@@ -1,18 +1,19 @@
 package cdar.bll.manager.producer;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.entity.producer.Template;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownTemplateException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.producer.TemplateRepository;
 
 public class TemplateManager {
 	private TemplateRepository tr = new TemplateRepository();
 
-	public Set<Template> getKnowledgeTemplates(int ktreeId) throws SQLException {
+	public Set<Template> getKnowledgeTemplates(int ktreeId) throws EntityException, UnknownTreeException {
 		Set<Template> templates = new HashSet<Template>();
 		for (Template template : tr.getTemplates(ktreeId)) {
 			templates.add(template);
@@ -20,7 +21,7 @@ public class TemplateManager {
 		return templates;
 	}
 
-	public Template getKnowledgeTemplate(int templateId) throws UnknownTemplateException {
+	public Template getKnowledgeTemplate(int templateId) throws UnknownTemplateException, EntityException {
 		return tr.getTemplate(templateId);
 	}
 
@@ -32,7 +33,7 @@ public class TemplateManager {
 		tr.deleteTemplate(templateId);
 	}
 
-	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException, SQLException {
+	public Template updateTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException, EntityException, UnknownTreeException {
 		Template updatedTemplate = getKnowledgeTemplate(template.getId());
 		
 		if (template.getTemplatetext()!=null) {
@@ -49,7 +50,7 @@ public class TemplateManager {
 		return tr.updateTemplate(updatedTemplate);
 	}
 
-	public Set<Template> setDefaultTemplate(int treeId, int templateId) throws UnknownTemplateException, UnknownXmlTreeException, SQLException {
+	public Set<Template> setDefaultTemplate(int treeId, int templateId) throws UnknownTemplateException, UnknownXmlTreeException, EntityException, UnknownTreeException {
 		Template srcTemplate = getKnowledgeTemplate(templateId);
 		
 		if (srcTemplate.getIsDefault()) {
@@ -66,7 +67,7 @@ public class TemplateManager {
 		return getKnowledgeTemplates(treeId);
 	}
 
-	public String getDefaultKnowledgeTemplateText(int ktrid) throws SQLException {
+	public String getDefaultKnowledgeTemplateText(int ktrid) throws EntityException, UnknownTreeException   {
 		for (Template template : tr.getTemplates(ktrid)) {
 			if (template.getIsDefault() && !template.getDecisionMade()) {
 				return template.getTemplatetext();
@@ -75,7 +76,7 @@ public class TemplateManager {
 		return null;
 	}
 
-	public Template renameTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException {
+	public Template renameTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException, EntityException {
 		Template renamedTemplate = tr.getTemplate(template.getId());
 		renamedTemplate.setTitle(template.getTitle());
 		return tr.updateTemplate(renamedTemplate);
