@@ -68,7 +68,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     $scope.getSubnodes(resNodes);
 
                 });
-
         });
     };
     $scope.getSubnodes = function (resNodes) {
