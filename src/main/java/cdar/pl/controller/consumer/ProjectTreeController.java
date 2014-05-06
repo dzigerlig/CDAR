@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.pl.controller.StatusHelper;
@@ -32,9 +33,10 @@ public class ProjectTreeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProjectTree(Tree tree, @HeaderParam("uid") int uid) {
+	public Response addProjectTree(CreationTree tree, @HeaderParam("uid") int uid) {
 		try {
 			tree.setUserId(uid);
+			ptm.addKnowledgeTreeToProjectTree(tree.getCopyTreeid(), tree.getId());
 			return StatusHelper.getStatusCreated(ptm.addProjectTree(tree));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();

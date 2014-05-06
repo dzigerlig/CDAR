@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.consumer.CreationTree;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
@@ -75,7 +76,7 @@ public class ProjectTreeRepository {
 		throw new UnknownProjectTreeException();
 	}
 	
-	public Tree createProjectTree(Tree projectTree) throws CreationException, EntityException  {
+	public CreationTree createProjectTree(CreationTree projectTree) throws CreationException, EntityException  {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTTREE (CREATION_TIME, TITLE) VALUES (?, ?)";
 		final String sql2 = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (uid, kptid) VALUES (?, ?)";
 

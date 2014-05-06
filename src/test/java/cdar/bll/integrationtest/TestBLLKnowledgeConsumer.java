@@ -13,6 +13,7 @@ import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.Comment;
+import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.UserManager;
@@ -60,7 +61,8 @@ public class TestBLLKnowledgeConsumer {
 	public void testProjectTree() throws Exception {
 		final String treeName = "Project Tree";
 		int projectTreeCount = ptm.getProjectTrees(um.getUser(username).getId()).size();
-		Tree projectTree = new Tree();
+		Tree knowledgeTree = new Tree();
+		CreationTree projectTree = new CreationTree();
 		projectTree.setUserId(um.getUser(username).getId());
 		projectTree.setTitle(treeName);
 		projectTree = ptm.addProjectTree(projectTree);

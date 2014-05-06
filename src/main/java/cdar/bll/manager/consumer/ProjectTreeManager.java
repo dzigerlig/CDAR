@@ -13,6 +13,7 @@ import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.producer.DirectoryManager;
@@ -48,7 +49,7 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public Tree addProjectTree(Tree projectTree) throws Exception {
+	public CreationTree addProjectTree(CreationTree projectTree) throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
