@@ -1,5 +1,7 @@
 package cdar.bll.manager.consumer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class ProjectTreeManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
-	public Set<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
+	public Set<Tree> getProjectTrees(int uid) throws SQLException {
 		Set<Tree> projectTrees = new HashSet<Tree>();
 		for (Tree projectTree : ptr.getProjectTrees(uid)) {
 			projectTrees.add(projectTree);
@@ -44,7 +46,7 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public Tree addProjectTree(Tree projectTree) throws CreationException, EntityException  {
+	public Tree addProjectTree(Tree projectTree) throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
@@ -54,10 +56,9 @@ public class ProjectTreeManager {
 		return projectTree;
 	}
 
-	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException, EntityException {
+	public Tree getProjectTree(int ptreeId) throws UnknownProjectTreeException {
 		return ptr.getProjectTree(ptreeId);
 	}
-
 	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId) throws EntityException, UnknownUserException, CreationException, UnknownTreeException, UnknownProjectTreeException, UnknownNodeException, UnknownProjectNodeException {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
 		NodeManager nm = new NodeManager();

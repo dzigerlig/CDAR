@@ -2,7 +2,7 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
-public class Directory extends BasicEntity {
+public class Directory extends BasicEntity implements Comparable<Directory> {
 	private int parentId;
 	private int treeId;
 	private String title;
@@ -42,5 +42,10 @@ public class Directory extends BasicEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Override
+	public int compareTo(Directory o) {
+		return Integer.compare(this.parentId, o.parentId);
 	}
 }

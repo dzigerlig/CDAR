@@ -2,8 +2,6 @@ package cdar.bll.integrationtest;
 
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +22,7 @@ import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.manager.producer.XmlTreeManager;
+import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
@@ -66,7 +65,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetTreesUnknownUserId() throws SQLException {
+	public void testGetTreesUnknownUserId() throws Exception {
 		assertEquals(0, tm.getTrees(unknownId).size());
 	}
 	
@@ -236,19 +235,19 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetTemplatesUnknownTreeId() throws SQLException {
+	public void testGetTemplatesUnknownTreeId() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		assertEquals(0, tplm.getKnowledgeTemplates(unknownId).size());
 	}
 	
 	@Test (expected = UnknownTemplateException.class)
-	public void testGetUnknownTemplate() throws UnknownTemplateException {
+	public void testGetUnknownTemplate() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		tplm.getKnowledgeTemplate(unknownId).getId();
 	}
 	
 	@Test (expected = UnknownTemplateException.class)
-	public void testUpdateUnknownTemplate() throws UnknownXmlTreeException, UnknownTemplateException, SQLException {
+	public void testUpdateUnknownTemplate() throws Exception {
 		TemplateManager tplm = new TemplateManager();
 		Template template = new Template();
 		template.setTreeId(unknownId);
@@ -312,13 +311,13 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetNodesUnknownTreeId() throws SQLException {
+	public void testGetNodesUnknownTreeId() throws Exception {
 		NodeManager nm = new NodeManager();
 		assertEquals(0, nm.getNodes(unknownId).size());
 	}
 	
 	@Test(expected = UnknownNodeException.class)
-	public void testGetUnknownNode() throws UnknownNodeException {
+	public void testGetUnknownNode() throws UnknownNodeException, EntityException {
 		NodeManager nm = new NodeManager();
 		nm.getNode(unknownId).getId();
 	}
@@ -427,13 +426,13 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetNodeLinksUnknownTreeId() throws SQLException {
+	public void testGetNodeLinksUnknownTreeId() throws Exception {
 		NodeLinkManager nlm = new NodeLinkManager();
 		nlm.getNodeLinks(unknownId).size();
 	}
 	
 	@Test(expected = UnknownNodeLinkException.class)
-	public void testGetUnknownNodeLink() throws UnknownNodeLinkException {
+	public void testGetUnknownNodeLink() throws UnknownNodeLinkException, EntityException {
 		NodeLinkManager nlm = new NodeLinkManager();
 		nlm.getNodeLink(unknownId).getId();
 	}
@@ -567,19 +566,19 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void testGetSubnodesUnknownTree() throws SQLException {
+	public void testGetSubnodesUnknownTree() throws Exception {
 		SubnodeManager snm = new SubnodeManager();
 		assertEquals(0, snm.getSubnodesFromTree(unknownId).size());
 	}
 	
 	@Test
-	public void testGetSubnodesUnknownNode() throws SQLException {
+	public void testGetSubnodesUnknownNode() throws Exception {
 		SubnodeManager snm = new SubnodeManager();
 		assertEquals(0, snm.getSubnodesFromNode(unknownId).size());
 	}
 	
 	@Test (expected = UnknownSubnodeException.class)
-	public void testGetUnknownSubnode() throws UnknownSubnodeException {
+	public void testGetUnknownSubnode() throws UnknownSubnodeException, EntityException {
 		SubnodeManager snm = new SubnodeManager();
 		snm.getSubnode(unknownId).getId();
 	}
@@ -658,12 +657,12 @@ public class TestBLLKnowledgeProducer {
 		assertEquals(newDirectoryName, dm.getDirectory(directory.getId()).getTitle());
 	}
 	
-	public void testDirectoryUnknownTreeId() throws SQLException {
+	public void testDirectoryUnknownTreeId() throws Exception {
 		DirectoryManager dm = new DirectoryManager();
 		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
 	@Test(expected = UnknownDirectoryException.class)
-	public void testGetUnknownDirectory() throws UnknownDirectoryException {
+	public void testGetUnknownDirectory() throws UnknownDirectoryException, EntityException {
 		DirectoryManager dm = new DirectoryManager();
 		dm.getDirectory(unknownId).getId();
 	}

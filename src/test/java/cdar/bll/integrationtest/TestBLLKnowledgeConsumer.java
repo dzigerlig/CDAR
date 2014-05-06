@@ -32,10 +32,14 @@ import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownCommentException;
+import cdar.dal.exceptions.UnknownDirectoryException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeConsumer {
@@ -97,24 +101,24 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetUnknownProjectTree() {
+	public void testGetUnknownProjectTree() throws Exception {
 		ptm.getProjectTrees(unknownId).size();
 	}
 	
 	@Test (expected = UnknownProjectTreeException.class)
-	public void testUpdateUnknownProjectTree() {
+	public void testUpdateUnknownProjectTree() throws Exception {
 		Tree tree = ptm.getProjectTree(unknownId);
 		tree.setTitle("Unknown Tree");
 		ptm.updateProjectTree(tree);
 	}
 	
 	@Test (expected = UnknownProjectTreeException.class)
-	public void testDeleteUnknownProjectTree() throws UnknownProjectTreeException {
+	public void testDeleteUnknownProjectTree() throws Exception {
 		ptm.deleteProjectTree(unknownId);
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeZeroEntries() {
+	public void testKnowledgeTreeToProjectTreeZeroEntries() throws Exception {
 		NodeManager nm = new NodeManager();
 		TreeManager tm = new TreeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -133,7 +137,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() {
+	public void testKnowledgeTreeToProjectTreeWithoutSubnodes() throws Exception {
 		final String nodeTitle1 = "MyNode 1";
 		final String nodeTitle2 = "MyNode 2";
 		NodeManager nm = new NodeManager();
@@ -183,7 +187,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testKnowledgeTreeToProjectTreeComplete() {
+	public void testKnowledgeTreeToProjectTreeComplete() throws Exception {
 		final String nodeTitle1 = "My Node 1";
 		final String nodeTitle2 = "My Node 2";
 		final String subnodeTitle1 = "My Subnode 1";
@@ -256,7 +260,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testUnknownKnowledgeTreeToProjectTree() {
+	public void testUnknownKnowledgeTreeToProjectTree() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree projectTree = new Tree();
 		projectTree.setUserId(um.getUser(username).getId());
@@ -268,7 +272,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNode() {
+	public void testProjectNode() throws Exception {
 		final String projectNodeName = "My project node";
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree projectTree = new Tree();
@@ -291,7 +295,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNodeUpdate() {
+	public void testProjectNodeUpdate() throws Exception {
 		final String projectNodeName = "My project node";
 		final String newProjectNodeName = "My new project node name";
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -320,19 +324,19 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetProjectNodesUnknownProjectTree() throws UnknownProjectTreeException {
+	public void testGetProjectNodesUnknownProjectTree() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.getProjectNodes(unknownId).size();
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)
-	public void testGetUnknownProjectNode() throws UnknownProjectNodeException {
+	public void testGetUnknownProjectNode() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.getProjectNode(unknownId).getId();
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)
-	public void testUpdateUnknownProjectNode() throws UnknownProjectNodeException {
+	public void testUpdateUnknownProjectNode() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectNode projectNode = pnm.getProjectNode(unknownId);
 		projectNode.setTitle("Unknown project node");
@@ -340,13 +344,13 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)
-	public void testDeleteUnknownProjectNode() throws UnknownProjectNodeException {
+	public void testDeleteUnknownProjectNode() throws Exception {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		pnm.deleteProjectNode(unknownId);
 	}
 	
 	@Test
-	public void testProjectNodeLink() {
+	public void testProjectNodeLink() throws Exception {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -381,7 +385,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectNodeLinkUpdate() {
+	public void testProjectNodeLinkUpdate() throws Exception {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -421,19 +425,19 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetProjectNodeLinksUnknownProjectTree() throws UnknownProjectTreeException {
+	public void testGetProjectNodeLinksUnknownProjectTree() throws Exception {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.getProjectNodeLinks(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectNodeLinkException.class)
-	public void testGetUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
+	public void testGetUnknownProjectNodeLink() throws Exception {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.getProjectNodeLink(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectNodeLinkException.class)
-	public void testUpdateUnknownProjectNodeLink() throws UnknownProjectNodeLinkException, EntityException {
+	public void testUpdateUnknownProjectNodeLink() throws Exception {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		NodeLink projectNodeLink = pnlm.getProjectNodeLink(unknownId);
 		projectNodeLink.setSourceId(12);
@@ -441,13 +445,13 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test(expected = UnknownProjectNodeLinkException.class)
-	public void testDeleteUnknownProjectNodeLink() throws UnknownProjectNodeLinkException {
+	public void testDeleteUnknownProjectNodeLink() throws Exception {
 		ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		pnlm.deleteProjectNodeLink(unknownId);
 	}
 	
 	@Test
-	public void testProjectSubnode() throws UnknownUserException, CreationException, EntityException, UnknownProjectTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+	public void testProjectSubnode() throws Exception {
 		final String projectSubnodeName = "My project subnode";
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -477,7 +481,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testProjectSubnodeUpdate() throws UnknownUserException, CreationException, EntityException, UnknownProjectTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+	public void testProjectSubnodeUpdate() throws Exception {
 		final String projectSubnodeName = "My project subnode";
 		final String newProjectSubnodeName = "Another project subnode name";
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
@@ -513,25 +517,25 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testGetProjectSubnodesUnknownProjectNode() throws UnknownProjectNodeLinkException, EntityException {
+	public void testGetProjectSubnodesUnknownProjectNode() throws Exception {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		assertEquals(0, psm.getProjectSubnodesFromProjectNode(unknownId).size());
 	}
 	
 	@Test
-	public void testGetProjectSubnodesUnknownProjectTree() throws UnknownProjectTreeException, UnknownProjectNodeLinkException, EntityException {
+	public void testGetProjectSubnodesUnknownProjectTree() throws Exception {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.getProjectSubnodesFromProjectTree(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectSubnodeException.class)
-	public void testGetUnknownProjectSubnode() throws UnknownProjectSubnodeException, EntityException {
+	public void testGetUnknownProjectSubnode() throws Exception {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.getProjectSubnode(unknownId);
 	}
 	
 	@Test(expected = UnknownProjectSubnodeException.class)
-	public void testUpdateUnknownProjectSubnode() throws UnknownProjectSubnodeException, UnknownProjectNodeLinkException, EntityException {
+	public void testUpdateUnknownProjectSubnode() throws Exception {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		ProjectSubnode projectSubnode = psm.getProjectSubnode(unknownId);
 		projectSubnode.setTitle("My unknown project subnode");
@@ -539,13 +543,13 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test (expected = UnknownProjectSubnodeException.class)
-	public void testDeleteUnknownProjectSubnode() throws UnknownProjectSubnodeException {
+	public void testDeleteUnknownProjectSubnode() throws Exception {
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		psm.deleteProjectSubnode(unknownId);
 	}
 	
 	@Test
-	public void testComment() throws UnknownUserException, CreationException, EntityException, UnknownProjectTreeException, UnknownCommentException {
+	public void testComment() throws Exception {
 		final String commentString = "This is a comment";
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		Tree projectTree = new Tree();
@@ -572,7 +576,7 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test
-	public void testCommentUpdate() throws UnknownUserException, CreationException, EntityException, UnknownProjectTreeException, UnknownCommentException {
+	public void testCommentUpdate() throws Exception {
 		final String commentString = "This is a comment";
 		final String newCommentString = "This is another comment";
 		ProjectNodeManager pnm = new ProjectNodeManager();
@@ -609,13 +613,13 @@ public class TestBLLKnowledgeConsumer {
 	}
 	
 	@Test(expected = UnknownCommentException.class)
-	public void testGetUnknownComment() throws UnknownCommentException, EntityException {
+	public void testGetUnknownComment() throws Exception {
 		CommentManager cm = new CommentManager();
 		cm.getComment(unknownId).getId();
 	}
 	
 	@Test(expected = UnknownCommentException.class)
-	public void testUpdateUnknownComment() throws UnknownCommentException, EntityException {
+	public void testUpdateUnknownComment() throws Exception {
 		CommentManager cm = new CommentManager();
 		Comment comment = cm.getComment(unknownId);
 		comment.setComment("Unknown comment");

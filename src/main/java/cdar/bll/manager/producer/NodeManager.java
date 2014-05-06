@@ -6,9 +6,11 @@ import java.util.Set;
 import cdar.bll.entity.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
+import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.NodeRepository;
 
@@ -33,8 +35,7 @@ public class NodeManager {
 		nr.deleteNode(nodeId);
 	}
 
-	public Node addNode(int uid, Node node)
-			throws Exception {
+	public Node addNode(int uid, Node node) throws EntityException, UnknownUserException, UnknownTreeException, CreationException  {
 		if (node.getDirectoryId() == 0) {
 			DirectoryRepository dr = new DirectoryRepository();
 			int rootDirectoryId = dr.getDirectories(node.getTreeId()).get(0).getId();
