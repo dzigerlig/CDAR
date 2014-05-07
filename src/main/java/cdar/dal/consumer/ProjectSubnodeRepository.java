@@ -87,7 +87,7 @@ public class ProjectSubnodeRepository {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
-			preparedStatement.setString(4, projectSubnode.getTitle());
+			preparedStatement.setString(4, projectSubnode.getWikititle());
 			preparedStatement.setInt(5, projectSubnode.getPosition());
 			preparedStatement.setInt(6, 0);
 			preparedStatement.executeUpdate();
@@ -104,16 +104,17 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException {
-		final String sql = "UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, POSITION = ?, SUBNODESTATUS = ? WHERE id = ?";
+		final String sql = "UPDATE KNOWLEDGEPROJECTSUBNODE SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, WIKITITLE = ?, POSITION = ?, SUBNODESTATUS = ? WHERE id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
-			preparedStatement.setInt(4, projectSubnode.getPosition());
-			preparedStatement.setInt(5, projectSubnode.getStatus());
-			preparedStatement.setInt(6, projectSubnode.getId());
+			preparedStatement.setString(4, projectSubnode.getWikititle());
+			preparedStatement.setInt(5, projectSubnode.getPosition());
+			preparedStatement.setInt(6, projectSubnode.getStatus());
+			preparedStatement.setInt(7, projectSubnode.getId());
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
