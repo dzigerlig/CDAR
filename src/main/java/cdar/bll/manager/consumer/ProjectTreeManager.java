@@ -128,13 +128,12 @@ public class ProjectTreeManager {
 		}
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
-
 			NodeLink projectNodeLink = new NodeLink();
-			projectNodeLink
-					.setSourceId(linkMapping.get(nodelink.getSourceId()));
-			projectNodeLink
-					.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink.getSubnodeId()));
+			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
+			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
+			if (nodelink.getSubnodeId()!=0) {
+				projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink.getSubnodeId()));
+			}
 			projectNodeLink.setTreeId(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);
 		}

@@ -41,6 +41,7 @@ public class ProjectTreeController {
 			ptm.addKnowledgeTreeToProjectTree(knowledgeTreeId, newTree.getId());
 			return StatusHelper.getStatusCreated(newTree);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

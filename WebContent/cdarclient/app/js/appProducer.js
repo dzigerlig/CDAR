@@ -84,6 +84,7 @@ app.controller("HomeProducerController", [
 					entity1 : 'ktrees',
 					id1 : tree.id
 				}, tree, function(response) {
+				}, function(error) {
 					tree.title = oldTitle;
 					noty({
 						type : 'alert',
