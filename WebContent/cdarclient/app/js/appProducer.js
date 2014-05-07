@@ -361,7 +361,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 															text : 'node text edited successfully',
 															timeout : 1500
 														});
-														alert(JSON.stringify(response));
 													}, function(error) {
 														changeWikiFields($scope.selectedNode);
 														noty({
