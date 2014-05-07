@@ -413,12 +413,12 @@ var myJsPlumb = (function () {
                     var connect = $('<div>').addClass('ep draglink');
                     var downtree = $('<div>').addClass('downtree');
                     var uptree = $('<div>').addClass('uptree');
-                    console.log(scope);
-                    console.log(scope.isProducer);
-                    if(!scope.isProducer){
+                    //console.log(scope);
+                    //console.log(scope.isProducer);
+                    //if(!scope.isProducer){
                     var status = $('<div>').addClass('status');                    
                     newState.append(status);
-                    }
+                    //}
                     newState.append(downtree);
                     newState.append(uptree);
                     newState.css({

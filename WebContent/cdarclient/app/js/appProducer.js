@@ -92,7 +92,6 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 
 app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route',
 						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
-
 							// Workaround draw links not correct
 							if (getReload()) {
 								setReload(false);
@@ -118,6 +117,12 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.selectedSubnodeName = '';
 							$scope.newSubnodeName = 'Subnode';
 							$scope.subnodeHtmlText = "";
+							
+							$scope.nodeTitle = "";
+							$scope.wikiHtmlText = "";
+
+							$scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
+							$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 
 							// TREE TITLE
 							$scope.saveKnowledgeTreeTitle = function(title) {
@@ -179,21 +184,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							// END SUBNODES //
 
-							$scope.nodeTitle = "";
-							$scope.wikiHtmlText = "";
-
-							$scope.nodetabs = [ {
-								title : "READ"
-							}, {
-								title : "WRITE"
-							} ];
-
-							$scope.subnodetabs = [ {
-								title : "READ"
-							}, {
-								title : "WRITE"
-							} ];
-
 							$scope.addNewSubnode = function() {
 								TreeService.addSubnode({
 									entity1 : 'ktrees',
@@ -241,9 +231,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							var changeWikiFieldsSubnode = function() {
 								$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
-								$("#wikiSubnodeArea")
-										.val(
-												$scope.selectedSubnode.wikiContentPlain);
+								$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
 							};
 
 							$scope.saveWikiSubnodeEntry = function() {
@@ -921,7 +909,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 							};
 
-							// todo change logic
 							$scope.moveSubnodeUp = function(id) {
 								TreeService.moveSubnodeUp({
 									id : id

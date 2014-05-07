@@ -82,7 +82,19 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.UserService = UserService;
     $scope.projecttree = "";
     
-    $scope.wikiText = "no wiki entry selected";
+    $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
+	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
+    
+	$scope.nodeTitle = "";
+	$scope.wikiHtmlText = "";
+	
+	$scope.selectedNodeId = 0;
+	$scope.selectedSubnodeId = 0;
+	
+	$scope.subnodes = "";
+	$scope.newSubnodeName = 'Subnode';
+	
+	$scope.subnodeHtmlText = "";
 
     var reloadTree = function () {
         TreeService.getTree({entity1: 'ptrees', id1: $routeParams.treeId}, function (response) {
@@ -187,4 +199,78 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			});
 		});
     };
+    
+    
+    //SELECTED NODE / SUBNODE
+    var showNodeTitle = function() {
+		if ($scope.selectedNodeId !== 0) {
+			$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
+		} else {
+			$scope.nodeTitle = "Selected node: no node selected";
+		}
+	};
+
+	showNodeTitle();
+
+	var switchNodeToRead = function() {
+		$scope.nodetabs[0].active = true;
+		$scope.nodetabs[1].active = false;
+	};
+
+	var switchSubnodeToRead = function() {
+		$scope.subnodetabs[0].active = true;
+		$scope.subnodetabs[1].active = false;
+	};
+	
+	var setLoadingNode = function() {
+		$scope.wikiHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+	};
+
+	var setLoadingSubnode = function() {
+		$scope.subnodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
+	};
+	
+	var getSubnodes = function() {
+		TreeService.getSubnodes({
+			entity1 : 'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : $scope.selectedNodeId,
+		}, function(response) {
+			$scope.subnodes = response;
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error getting subnodes',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.changeNode = function(id, name) {
+		setLoadingNode();
+		$scope.selectedNodeId = id;
+		$scope.selectedNodeName = name;
+		showNodeTitle();
+		getSubnodes();
+		TreeService.getNodeWiki({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : id
+		}, function(response) {
+			$scope.selectedNode = response;
+			changeWikiFields();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error getting wiki entry',
+				timeout : 1500
+			});
+		});
+	};
+	
+	var changeWikiFields = function() {
+		$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
+		$("#wikiArea").val(
+				$scope.selectedNode.wikiContentPlain);
+	};
 }]);
