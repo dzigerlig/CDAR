@@ -33,6 +33,8 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 
 app.controller("RegistrationController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
 		AuthenticationService, UserService) {
+	$scope.loading = false;
+	
 	UserService.removeCookies();
 
 	$scope.credentials = {
@@ -41,11 +43,13 @@ app.controller("RegistrationController", ['$scope', '$location', 'Authentication
 	};
 	
 	$scope.register = function() {
+		$scope.loading = true;
 		AuthenticationService.add.user({username: $scope.credentials.username, password: $scope.credentials.password}, function(response) {
 				noty({type: 'success', text : 'user created', timeout: 4000});
 				$location.path('/login');
 		}, function(error) {
-			noty({type: 'alert', text : 'user already exists', timeout: 4000});
+			noty({type: 'alert', text : 'user creation failed', timeout: 4000});
+			$scope.loading = false;
 		});
 	};
 }]);
