@@ -8,9 +8,9 @@ var myJsPlumb = (function () {
     var SUBNODE = 'subnode';
     var selectedElement = null;
 
-    //private Methods
+    // private Methods
     function buildContent() {
-        //jsPlumb.detachEveryConnection();
+        // jsPlumb.detachEveryConnection();
         jsPlumb.deleteEveryEndpoint();
 
         $("#jsplumb-container").empty();
@@ -114,8 +114,8 @@ var myJsPlumb = (function () {
             anchor: 'Continuous',
             endpoint: "Blank"
             /*
-             * dropOptions : { hoverClass : "dragHover" }
-             */
+			 * dropOptions : { hoverClass : "dragHover" }
+			 */
         });
     }
 
@@ -200,7 +200,7 @@ var myJsPlumb = (function () {
                     });
                 }
             } else {
-            	//JSHINT: Connections is already defined?
+            	// JSHINT: Connections is already defined?
                 var connections = jsPlumb.getConnections();
                 jQuery.each(connections, function (object) {
                     if (selectedElement === this.id) {
@@ -330,7 +330,7 @@ var myJsPlumb = (function () {
         return allTargetConnection.concat(allSourceConnection);
     }
 
-    //public Methods
+    // public Methods
     return{
         initialize: function () {
             scope = angular.element(document.getElementById("wrapper")).scope();
@@ -355,6 +355,12 @@ var myJsPlumb = (function () {
             var list = $('<ul>').addClass('optionList');
             var downtree = $('<div>').addClass('downtree');
             var uptree = $('<div>').addClass('uptree');
+            console.log(scope);
+            console.log(scope.isProducer);
+            if(!scope.isProducer){
+                var status = $('<div>').addClass('status');                    
+                newState.append(status);
+                }
             newState.append(downtree);
             newState.append(uptree);
             option.append(list);
@@ -407,6 +413,12 @@ var myJsPlumb = (function () {
                     var connect = $('<div>').addClass('ep draglink');
                     var downtree = $('<div>').addClass('downtree');
                     var uptree = $('<div>').addClass('uptree');
+                    console.log(scope);
+                    console.log(scope.isProducer);
+                    if(!scope.isProducer){
+                    var status = $('<div>').addClass('status');                    
+                    newState.append(status);
+                    }
                     newState.append(downtree);
                     newState.append(uptree);
                     newState.css({

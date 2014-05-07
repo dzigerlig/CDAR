@@ -84,6 +84,7 @@ app.controller("HomeProducerController", [
 					entity1 : 'ktrees',
 					id1 : tree.id
 				}, tree, function(response) {
+				}, function(error) {
 					tree.title = oldTitle;
 					noty({
 						type : 'alert',
@@ -114,9 +115,9 @@ app.controller(
 							}
 							setReload(true);
 							//
-							
-							myJsPlumb.initialize();
+							$scope.isProducer = true;
 
+							myJsPlumb.initialize();
 							$scope.treeId = $routeParams.treeId;
 							$scope.UserService = UserService;
 							$scope.knowledgetree = "";

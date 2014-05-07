@@ -50,6 +50,27 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 			});
         });
     };
+    
+    $scope.saveProjectTreeTitle = function(data, id) {
+    	var tree = $.grep($scope.projectTrees, function(t) {
+    		return t.id === id;
+    	})[0];
+    	
+    	var oldTitle = tree.title;
+    	tree.title = data;
+    	
+    	TreeService.updateTree({
+    		entity1 : 'ptrees',
+    		id1 : tree.id
+    	}, tree, function(response) {}, function(error) {
+    		tree.title = oldTitle;
+			noty({
+				type : 'alert',
+				text : 'error while saving tree title',
+				timeout : 1500
+			});
+    	});
+    }
 
     $scope.logout = function () {
         AuthenticationService.logout();
@@ -57,6 +78,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 }]);
 
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
+	$scope.isProducer = false;
     $scope.UserService = UserService;
     $scope.projecttree = "";
     $scope.nodes = "";
