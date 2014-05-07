@@ -53,8 +53,7 @@
 					</div>
 					<div class="col-md-9">
 						<h3>DYNAMIC TREE</h3>
-						<button type="button" class="btn btn-danger btn-sm"
-							onclick="myJsPlumb.remove();">
+						<button type="button" class="btn btn-danger btn-sm" onclick="myJsPlumb.remove();">
 							<i class="glyphicon glyphicon-remove"></i> Remove
 						</button>
 						<div id="jsplumb-container"></div>
@@ -62,83 +61,8 @@
 						<textarea id="dot-src" style="display: none;"> </textarea>
 					</div>
 				</div>
-				<div class="col-lg-12" class="well">
-					<h2>Node:</h2>
-					<div class="col-md-12">
-						<h3>{{nodeTitle}}</h3>
-						<tabset justified="true" class="well" data-ng-show="selectedNodeId">
-							<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active" id="nodewikiread">
-							<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
-							</tab>
-							<tab heading="{{nodetabs[1].title}}" id="wikiwrite" active="nodetabs[1].active">
-								<div class="col-md-12">
-									<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
-										<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
-										<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-									</form>
-								</div>
-							</tab>
-						</tabset>
-					</div>
-					<div id="subnodes" data-ng-show="selectedNodeId">
-						<h3>Subnodes:</h3>
-						<div class="col-md-12" class="well">
-							<div id="tableSubnodes">
-									<table
-										class="table table-striped table-bordered table-condensed table-hover">
-										<thead>
-											<tr>
-												<th class="col-md-1">#</th>
-												<th class="col-md-1">Position</th>
-												<th class="col-md-6">Subnode Name</th>
-												<th class="col-md-2">Edit subnode title</th>
-												<th class="col-md-2">Delete subnode</th>
-											</tr>
-										</thead>
-										<tr data-ng-repeat="subnode in subnodes | orderBy:'position':false">
-											<td>{{$index+1}}</td>
-											<td style="text-align: center;">
-												<a data-ng-click="moveSubnodeUp(subnode.id)" href=""><img src="app/img/arrow_up.png" alt="move option up"/></a>
-												<a data-ng-click="moveSubnodeDown(subnode.id)" href=""><img src="app/img/arrow_down.png" alt="move option down"/></a>
-											</td>
-											<td><a
-												data-ng-click="changeSubnode(subnode.id, subnode.title)"
-												href="">{{subnode.title}}</a></td>
-											<td>
-											<a href="#" editable-text="subnode.title" onbeforesave="editSubnodeTitle($data, subnode.id)">edit title</a>
-											</td>
-											<td><a data-ng-click="deleteSubnode(subnode.id)" href="">Delete
-													Subnode</a></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td colspan="4">
-												<form id="formAddTree" data-role="form" data-ng-submit="addNewSubnode()">
-													<div class="input-append">
-														<input class="form-horizontal" placeholder="subnode title"
-															required data-ng-model="newSubnodeName" />
-														<button class="btn btn-success" type="submit">Add
-															subnode</button>
-													</div>
-												</form>
-											</td>
-										</tr>
-									</table>
-							</div>
-							<tabset justified="true" class="well" data-ng-show="selectedSubnodeId">
-								<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
-									<p data-ng-bind-html="subnodeHtmlText" />
-								</tab>
-								<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
-									<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
-										<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80" rows="30"></textarea>
-										<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-									</form>
-								</tab>
-							</tabset>
-						</div>
-					</div>
-				</div>
+				
+				<div ng-include src="'templates/selectedEntry.html'"></div>
 			</div>
 		</div>
 	</div>

@@ -6,14 +6,8 @@ function setReload(value) {
 	reload = value;
 }
 
-app.controller("HomeProducerController", [
-		'$scope',
-		'$location',
-		'TreeService',
-		'AuthenticationService',
-		'UserService',
-		function($scope, $location, TreeService, AuthenticationService,
-				UserService) {
+app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService',
+		function($scope, $location, TreeService, AuthenticationService, UserService) {
 			$scope.knowledgeTrees = "";
 			$scope.newTreeName = "";
 			$scope.UserService = UserService;
@@ -96,17 +90,8 @@ app.controller("HomeProducerController", [
 
 		} ]);
 
-app.controller(
-				"KnowledgeTreeController",
-				[
-						'$scope',
-						'$routeParams',
-						'TreeService',
-						'AuthenticationService',
-						'UserService',
-						'$route',
-						function($scope, $routeParams, TreeService,
-								AuthenticationService, UserService, $route) {
+app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route',
+						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
 
 							// Workaround draw links not correct
 							if (getReload()) {

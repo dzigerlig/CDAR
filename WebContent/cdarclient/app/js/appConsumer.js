@@ -81,9 +81,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.isProducer = false;
     $scope.UserService = UserService;
     $scope.projecttree = "";
-    $scope.nodes = "";
-    $scope.trees = "";
-    $scope.selectedktreeId = "";
     
     $scope.wikiText = "no wiki entry selected";
 
@@ -97,10 +94,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				timeout : 1500
 			});
         });
-
-        /*	TreeService.getNodes({entity1 : 'ptrees', id1 : $routeParams.treeId}, function(response) {
-         $scope.nodes = response;
-         });*/
 
 
         TreeService.getDirectories({
@@ -178,60 +171,10 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
     reloadTree();
 
-    //wieso knowledge tree in project tree?
-//    TreeService.getDirectories({
-//        ktreeid : $routeParams.treeId
-//    }, function(resDirectory) {
-//        TreeService.getNodes({
-//                ktreeid : $routeParams.treeId
-//            },
-//            function(resNodes) {
-//
-//                myJsTree.directoryDataToArray(resDirectory,
-//                    resNodes);
-//                $scope.getSubnodes(resNodes);
-//
-//            });
-//
-//    });
-
-//    $scope.getSubnodes = function(resNodes) {
-//        TreeService.getSubnodes({
-//            ktreeid : $routeParams.treeId
-//        }, resNodes, function(resSubnodes) {
-//            myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
-//            $scope.getLinks(resSubnodes);
-//        });
-//    };
-
-//    $scope.getLinks = function(resSubnodes) {
-//        TreeService.getLinks({
-//            ktreeid : $routeParams.treeId
-//        }, resSubnodes, function(response) {
-//            myJsPlumb.makeNodeHierarchy(response, resSubnodes);
-//            w_launch();
-//        });
-//    };
-
     TreeService.getTrees({entity1: 'ktrees' }, function (response) {
         $scope.knowledgetrees = response;
     });
 
-    $scope.addKnowledgeTree = function () {
-        if (typeof($scope.selectedktreeId) != "undefined") {
-
-            TreeService.copyTree({entity1: 'ptrees', id1: $routeParams.treeId, entity2: 'ktrees', id2: $scope.selectedktreeId}, function (response) {
-                reloadTree();
-            }, function(error) {
-            	noty({
-					type : 'alert',
-					text : 'cannot copy tree',
-					timeout : 1500
-				});
-            });
-        }
-    };
-    
     $scope.saveProjectTreeTitle = function(title) {
     	TreeService.updateTree({
 			entity1 : 'ptrees',

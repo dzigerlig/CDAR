@@ -19,29 +19,9 @@
 			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-4">
-						<h3>STATIC TREE</h3>
 						<div id="jstree"></div>
-						<h4>Knowledge Tree Add:</h4>
-						<div id="addKnowledgeTree" class="row">
-							<form data-role="form">
-								<div class="col-xs-6">
-									<select class="form-control input-sm" id="knowledgeTreeList"
-										data-ng-model="selectedktreeId">
-										<option style="display:none" value="">select a tree</option>
-										<option
-											data-ng-repeat="tree in knowledgetrees | orderBy:'id':false"
-											value="{{tree.id}}">{{tree.title}}</option>
-									</select>
-								</div>
-								<div class="col-xs-6">
-									<button class="btn btn-primary btn-xs" type="submit"
-										data-ng-click="addKnowledgeTree()">add tree</button>
-								</div>
-							</form>
-						</div>
 					</div>
 					<div class="col-md-8">
-						<h3>DYNAMIC TREE</h3>
                         <div id="jsplumb-container"></div>
 
                         <textarea id="dot-src" style="display: none;"> </textarea>
@@ -49,11 +29,11 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<h3>MADE DECISIONS</h3>
-					</div>
-					<div class="col-md-12">
 						<h3>WikiEntry of Current node</h3>
 						<p class="well" data-ng-bind-html="wikiText" />
+					</div>
+					<div class="col-md-12">
+						<h3>MADE DECISIONS</h3>
 					</div>
 				</div>
 			</div>
