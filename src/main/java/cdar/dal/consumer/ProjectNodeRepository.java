@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
@@ -142,4 +143,106 @@ public class ProjectNodeRepository {
 			throw new UnknownProjectNodeException();
 		}
 	}
+	
+	public List<ProjectNode> getSiblingNode(int nodeId) throws EntityException {
+		final String sql = "SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM (SELECT * FROM KNOWLEDGEPROJECTNODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?";
+
+		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+			preparedStatement.setInt(2, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectNode node = new ProjectNode();
+					node.setId(result.getInt(1));
+					node.setCreationTime(DateHelper.getDate(result.getString(2)));
+					node.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					node.setTitle(result.getString(4));
+					node.setWikititle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setTreeId(result.getInt(7));
+					node.setStatus(result.getInt(8));
+					node.setDirectoryId(result.getInt(9));
+					nodes.add(node);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return nodes;
+	}
+
+	public List<ProjectNode> getParentNode(int nodeId) throws EntityException {
+		final String sql = "SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM (SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KPNID";
+
+		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectNode node = new ProjectNode();
+					node.setId(result.getInt(1));
+					node.setCreationTime(DateHelper.getDate(result.getString(2)));
+					node.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					node.setTitle(result.getString(4));
+					node.setWikititle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(9));
+					node.setStatus(result.getInt(8));
+					nodes.add(node);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return nodes;
+	}
+
+	public List<ProjectNode> getFollowerNode(int nodeId) throws EntityException {
+		final String sql = "SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM(SELECT LINKTO.TARGETID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID";
+
+		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectNode node = new ProjectNode();
+					node.setId(result.getInt(1));
+					node.setCreationTime(DateHelper.getDate(result.getString(2)));
+					node.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					node.setTitle(result.getString(4));
+					node.setWikititle(result.getString(5));
+					node.setDynamicTreeFlag(result.getInt(6));
+					node.setTreeId(result.getInt(7));
+					node.setDirectoryId(result.getInt(9));
+					node.setStatus(result.getInt(8));
+					nodes.add(node);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return nodes;
+	}
+
 }

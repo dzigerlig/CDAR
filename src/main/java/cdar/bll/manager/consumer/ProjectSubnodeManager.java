@@ -3,12 +3,14 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
@@ -95,13 +97,44 @@ public class ProjectSubnodeManager {
 		psr.deleteProjectSubnode(projectSubnodeId);
 	}
 
-	public Set<ProjectNode> zoomUp(int nodeId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<ProjectSubnode> zoomUp(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
+		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
+		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
+			subnodes.add(subnode);
+		}
+		return recursiveZoomUp(nodeId, 2, subnodes);
 	}
 
-	public Set<ProjectNode> zoomDown(int nodeId) {
-		// TODO Auto-generated method stub
-		return null;
+	private Set<ProjectSubnode> recursiveZoomUp(int nodeId, int quantity,
+			Set<ProjectSubnode> subnodes) throws EntityException {
+		if (quantity > 0) {
+			for (ProjectSubnode subnode : psr.getSiblingSubnode(nodeId)) {
+				subnodes.add(subnode);
+			}
+			for (ProjectSubnode subnode : psr.getParentSubnode(nodeId)) {
+				subnodes.add(subnode);
+				subnodes = recursiveZoomUp(subnode.getNodeId(), quantity - 1, subnodes);
+			}
+		}
+		return subnodes;
+	}
+
+	public Set<ProjectSubnode> zoomDown(int nodeId) throws UnknownProjectNodeLinkException, EntityException  {
+		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
+		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
+			subnodes.add(subnode);
+		}
+		return recursiveZoomDown(nodeId, 2, subnodes);
+	}
+
+	private Set<ProjectSubnode> recursiveZoomDown(int nodeId, int quantity,
+			Set<ProjectSubnode> subnodes) throws EntityException {
+		if (quantity > 0) {
+			for (ProjectSubnode subnode : psr.getFollowerSubnode(nodeId)) {
+				subnodes.add(subnode);
+				subnodes = recursiveZoomDown(subnode.getNodeId(), quantity - 1, subnodes);
+			}
+		}
+		return subnodes;
 	}
 }

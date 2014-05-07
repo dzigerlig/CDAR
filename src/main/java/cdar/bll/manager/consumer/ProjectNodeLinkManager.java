@@ -7,8 +7,11 @@ import java.util.Set;
 import cdar.bll.entity.NodeLink;
 import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 public class ProjectNodeLinkManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
@@ -52,14 +55,37 @@ public class ProjectNodeLinkManager {
 		pnlr.deleteProjectNodeLink(projectNodeLinkId);
 	}
 
-	public Set<NodeLink> zoomUp(int nodeId) {
-		//TODO
-		return null;
+	public Set<NodeLink> zoomUp(int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
+		Set<NodeLink> links = new HashSet<NodeLink>();
+		return recursiveZoomUp(nodeId, 2, links);
+	}
+	
+	public Set<NodeLink> zoomDown(int nodeId) throws UnknownNodeException, EntityException  {
+		Set<NodeLink> links = new HashSet<NodeLink>();
+		return recursiveZoomDown(nodeId, 2, links);
 	}
 
-	public Set<NodeLink> zoomDown(int nodeId) {
-		//TODO
-		return null;
+	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
+		if (quantity > 0) {
+			for (NodeLink nodeLink : pnlr.getSiblingNodeLinks(nodeId)) {
+				links.add(nodeLink);
+			}
+			for (NodeLink nodeLink : pnlr.getParentNodeLinks(nodeId)) {
+				links.add(nodeLink);
+				links=recursiveZoomUp(nodeLink.getSourceId(), quantity-1, links);
+			}
+		}
+		return links;
+	}
+	
+	private Set<NodeLink> recursiveZoomDown(int nodeId, int quantity, Set<NodeLink> links) throws UnknownNodeException, EntityException  {
+		if (quantity > 0) {
+			for (NodeLink nodeLink : pnlr.getFollowerNodeLinks(nodeId)) {
+				links.add(nodeLink);
+				links = recursiveZoomDown(nodeLink.getTargetId(), quantity-1, links);
+			}
+		}
+		return links;
 	}
 
 	public List<NodeLink> getProjectNodeLinksBySubnode(int subnodeId) {
