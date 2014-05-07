@@ -1,4 +1,4 @@
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
     $scope.UserService = UserService;
@@ -457,10 +457,30 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.statuses = [
-	                   {value: 1, text: 'undecided'},
-	                   {value: 2, text: 'accepted'},
-	                   {value: 3, text: 'declined'},
-	                   {value: 4, text: 'revoked'}
+	                   {value: 1, text: 'undecided', show: false},
+	                   {value: 2, text: 'accepted', show: true},
+	                   {value: 3, text: 'declined', show: true},
+	                   {value: 4, text: 'revoked', show: true}
 	                 ]; 
+	
+	$scope.showStatus = function() {
+	    var selected = $filter('filter')($scope.statuses, {value: $scope.selectedNode.status});
+	    return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'undecided';
+	  };
+	  
+	$scope.updateNodeStatus = function(status) {
+		var oldStatus = $scope.selectedNode.status;
+		$scope.selectedNode.status = status;
+		
+		TreeService.updateNode({entity1:'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) { }, function(error) {
+				noty({
+					type : 'alert',
+					text : 'cannot update node status',
+					timeout : 1500
+				});
+			});
+	};
 	
 }]);
