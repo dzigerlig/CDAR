@@ -437,8 +437,7 @@ public class Wiki implements Serializable
      */
     public Wiki()
     {
-    	this("152.96.56.36/mediawiki","");
-       // this("en.wikipedia.org", "/w");
+       this("en.wikipedia.org", "/w");
     }
 
     /**
