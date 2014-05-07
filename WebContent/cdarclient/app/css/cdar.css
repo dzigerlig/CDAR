@@ -120,6 +120,8 @@ background-color: orange;
 	-webkit-transition:-webkit-box-shadow 0.25s ease-in;
 	-moz-transition:-moz-box-shadow 0.25s ease-in;
 	transition:box-shadow 0.25s ease-in;
+		background-size: 1em;
+	
 }
 
 .draglink{
