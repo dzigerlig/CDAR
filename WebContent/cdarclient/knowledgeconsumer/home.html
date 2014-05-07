@@ -19,39 +19,43 @@
 						<p class="lead">Project overview</p>
 					</div>
 					<div class="col-md-12">
-						<form id="formAddTree" data-role="form"
-							data-ng-submit="addNewTree()">
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>Title</th>
-										<th>Delete</th>
+										<th class="col-md-1">#</th>
+										<th class="col-md-5">Title</th>
+										<th class="col-md-3">Edit title</th>
+										<th class="col-md-3">Delete</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr data-ng-repeat="tree in projectTrees | orderBy:'id':false">
 										<td>{{$index+1}}</td>
 										<td><a href="#/projecttree/{{tree.id}}">{{tree.title}}</a></td>
+										<td>
+											<a href="#" editable-text="tree.title" onbeforesave="saveProjectTreeTitle($data, tree.id)">edit title</a>
+										</td>
 										<td><a data-ng-click="deleteTree(tree.id)" href="">Delete
 												Tree</a></td>
 									</tr>
 									<tr>
 										<td></td>
 											<td>
-												<input class="form-horizontal" placeholder="Tree title"
-													required autofocus data-ng-model="newTreeName" />
-												<select class="form-horizontal" id="knowledgeTreeList" data-ng-model="selectedktreeId">
-													<option style="display:none" value="">select a tree</option>
-													<option
-														data-ng-repeat="tree in knowledgetrees | orderBy:'id':false"
-														value="{{tree.id}}">{{tree.title}}</option>
-												</select>
-												<button class="btn btn-success" type="submit">Add tree</button></td>
+												<form id="formAddTree" data-role="form" data-ng-submit="addNewTree()">
+													<input class="form-horizontal" placeholder="Tree title"
+														required autofocus data-ng-model="newTreeName" />
+													<select class="form-horizontal" id="knowledgeTreeList" data-ng-model="selectedktreeId">
+														<option style="display:none" value="">select a tree</option>
+														<option
+															data-ng-repeat="tree in knowledgetrees | orderBy:'id':false"
+															value="{{tree.id}}">{{tree.title}}</option>
+													</select>
+													<button class="btn btn-success" type="submit">Add tree</button>
+												</form>
+											</td>
 									</tr>
 								</tbody>
 							</table>
-						</form>
 					</div>
 				</div>
 			</div>
