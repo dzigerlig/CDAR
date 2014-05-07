@@ -413,7 +413,7 @@ var myJsPlumb = (function() {
 					var connect = $('<div>').addClass('ep draglink');
 					var downtree = $('<div>').addClass('downtree');
 					var uptree = $('<div>').addClass('uptree');
-					if (!scope.isProducer) /*{
+					if (!scope.isProducer) {
 						switch (this.status) {
 						case 1:
 						    state = "undecided.png";
@@ -430,7 +430,7 @@ var myJsPlumb = (function() {
 						default:
 							state = "undecided.png";
 						    break;
-						}*/
+						}
 						state = "undecided.png";
 						var status = $('<div>').attr('id', STATUS + this.id)
 								.addClass('status').css('background-image', 'url(app/img/' + state + ')');
@@ -463,7 +463,7 @@ var myJsPlumb = (function() {
 					appendElements(title, connect, newState, option);
 				}
 
-			});
+			}});
 		},
 		remove : function() {
 			if (selectedElement !== null) {

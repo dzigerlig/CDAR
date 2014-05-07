@@ -1,4 +1,4 @@
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
     $scope.UserService = UserService;
@@ -7,12 +7,11 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
     
-	$scope.nodeTitle = "";
 	$scope.wikiHtmlText = "";
 	
-	$scope.selectedNodeId = 0;
 	$scope.selectedSubnodeId = 0;
 	
+	$scope.selectedNode = "";
 	$scope.selectedNodeWiki = "";
 	
 	$scope.subnodes = "";
@@ -214,8 +213,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     
     //SELECTED NODE / SUBNODE
     var showNodeTitle = function() {
-		if ($scope.selectedNodeId !== 0) {
-			$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
+		if ($scope.selectedNode.id !== 0) {
+			$scope.nodeTitle = "Selected node: " + $scope.selectedNode.title;
 		} else {
 			$scope.nodeTitle = "Selected node: no node selected";
 		}
@@ -245,7 +244,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.getSubnodes({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNodeId,
+			id2 : $scope.selectedNode.id,
 		}, function(response) {
 			$scope.subnodes = response;
 		}, function(error) {
@@ -260,35 +259,32 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.changeNode = function(id, name) {
 		setLoadingNode();
 		
-//		TreeService.getNode({
-//			entity1 : 'ptrees',
-//			id1 : $routeParams.treeId,
-//			id2 : id
-//		}, function(response) {
-//			alert(JSON.stringify(response));
-//		}, function(error) {
-//			noty({
-//				type : 'alert',
-//				text : 'error getting node',
-//				timeout : 1500
-//			});
-//		});
-		
-		$scope.selectedNodeId = id;
-		$scope.selectedNodeName = name;
-		showNodeTitle();
-		getSubnodes();
-		TreeService.getNodeWiki({
+		TreeService.getNode({
 			entity1 : 'ptrees',
 			id1 : $routeParams.treeId,
 			id2 : id
 		}, function(response) {
-			$scope.selectedNodeWiki = response;
-			changeWikiFields();
+			$scope.selectedNode = response;
+			showNodeTitle();
+			getSubnodes();
+			TreeService.getNodeWiki({
+				entity1 : 'ptrees',
+				id1 : $routeParams.treeId,
+				id2 : id
+			}, function(response) {
+				$scope.selectedNodeWiki = response;
+				changeWikiFields();
+			}, function(error) {
+				noty({
+					type : 'alert',
+					text : 'error getting wiki entry',
+					timeout : 1500
+				});
+			});
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'error getting wiki entry',
+				text : 'error getting node',
 				timeout : 1500
 			});
 		});
@@ -336,9 +332,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.addSubnode({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNodeId
+			id2 : $scope.selectedNode.id
 		}, {
-			nodeId : $scope.selectedNodeId,
+			nodeId : $scope.selectedNode.id,
 			title : this.newSubnodeName
 		}, function(response) {
 			$scope.getSubnodesOfNode();
@@ -358,7 +354,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			if (typeof idObject === 'object') {
 				changes = idObject;
 			}
-			identity = $scope.selectedNodeId;
+			identity = $scope.selectedNode.id;
 		} else {
 			identity = idObject;
 		}
@@ -383,7 +379,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.deleteSubnode({
 			entity1 : 'ptrees',
 			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNodeId,
+			id2 : $scope.selectedNode.id,
 		}, {
 			id : subnodeId
 		}, function(response) {
@@ -409,7 +405,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.getSubnodeWiki({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNodeId,
+			id2 : $scope.selectedNode.id,
 			id3 : subnodeid
 		}, function(response) {
 			$scope.selectedSubnode = response;
@@ -438,7 +434,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 							{
 								entity1 : 'ptrees',
 								id1 : $scope.projecttree.id,
-								id2 : $scope.selectedNodeId,
+								id2 : $scope.selectedNode.id,
 								id3 : $scope.selectedSubnode.id
 							},
 							$scope.selectedSubnode,
@@ -461,10 +457,30 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.statuses = [
-	                   {value: 1, text: 'undecided'},
-	                   {value: 2, text: 'accepted'},
-	                   {value: 3, text: 'declined'},
-	                   {value: 4, text: 'revoked'}
+	                   {value: 1, text: 'undecided', show: false},
+	                   {value: 2, text: 'accepted', show: true},
+	                   {value: 3, text: 'declined', show: true},
+	                   {value: 4, text: 'revoked', show: true}
 	                 ]; 
+	
+	$scope.showStatus = function() {
+	    var selected = $filter('filter')($scope.statuses, {value: $scope.selectedNode.status});
+	    return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'undecided';
+	  };
+	  
+	$scope.updateNodeStatus = function(status) {
+		var oldStatus = $scope.selectedNode.status;
+		$scope.selectedNode.status = status;
+		
+		TreeService.updateNode({entity1:'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) { }, function(error) {
+				noty({
+					type : 'alert',
+					text : 'cannot update node status',
+					timeout : 1500
+				});
+			});
+	};
 	
 }]);

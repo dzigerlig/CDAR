@@ -1,12 +1,13 @@
 <div class="col-lg-12" class="well">
 	<h2>Node:</h2>
 	<div class="col-md-12">
-		<div class="col-md-6"><h3>{{nodeTitle}}</h3></div>
-		<div class="col-md-6" data-ng-show="UserService.getIsProducer()=='false' && selectedNodeId">
-			<h3>Status: ok</h3>
-			<a href="#" editable-text="tree.title" onbeforesave="saveProjectTreeTitle($data, tree.id)">edit title</a>
+		<div class="row">
+			<div class="col-md-6"><h3>{{nodeTitle}}</h3></div>
+			<div class="col-md-6" data-ng-show="UserService.getIsProducer()=='false' && selectedNode.id">
+				<h3><a href="#" ng-init="'Choose Status'" editable-select="selectedNode.status" e-ng-options="s.value as s.text for s in statuses | filter:{show:true}" onbeforesave="updateNodeStatus($data)">Status: {{ showStatus() }}</a></h3>
+			</div>
 		</div>
-		<tabset justified="true" class="well" data-ng-show="selectedNodeId">
+		<tabset justified="true" class="well" data-ng-show="selectedNode.id">
 		<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active"
 			id="nodewikiread">
 		<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
@@ -20,7 +21,7 @@
 		</div>
 		</tab> </tabset>
 	</div>
-	<div data-ng-show="selectedNodeId">
+	<div data-ng-show="selectedNode.id">
 		<h3>Subnodes:</h3>
 		<div class="col-md-12" class="well">
 			<div>
@@ -66,19 +67,17 @@
 					</tr>
 				</table>
 			</div>
-			<tabset justified="true" class="well"
-				data-ng-show="selectedSubnodeId"> <tab
-				heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active"
-				id="wikiread">
-			<p data-ng-bind-html="subnodeHtmlText" />
-			</tab> <tab heading="{{subnodetabs[1].title}}" id="wikiwrite"
-				active="subnodetabs[1].active">
-			<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
-				<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80"
-					rows="30"></textarea>
-				<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-			</form>
-			</tab> </tabset>
+			<tabset justified="true" class="well" data-ng-show="selectedSubnodeId">
+				<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
+				<p data-ng-bind-html="subnodeHtmlText" />
+				</tab>
+				<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
+					<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
+						<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80" rows="30"></textarea>
+						<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+					</form>
+				</tab>
+			</tabset>
 		</div>
 	</div>
 </div>
