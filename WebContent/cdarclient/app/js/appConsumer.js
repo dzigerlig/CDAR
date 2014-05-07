@@ -231,4 +231,17 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             });
         }
     };
+    
+    $scope.saveProjectTreeTitle = function(title) {
+    	TreeService.updateTree({
+			entity1 : 'ptrees',
+			id1 : $scope.projecttree.id
+		}, $scope.projecttree, function(response) { }, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error while saving tree title',
+				timeout : 1500
+			});
+		});
+    };
 }]);
