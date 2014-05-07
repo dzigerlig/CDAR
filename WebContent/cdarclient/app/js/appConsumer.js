@@ -291,7 +291,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 									text : 'node text edited successfully',
 									timeout : 1500
 								});
-								alert(JSON.stringify(response));
 							}, function(error) {
 								changeWikiFields($scope.selectedNode);
 								noty({
@@ -313,6 +312,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			title : this.newSubnodeName
 		}, function(response) {
 			$scope.getSubnodesOfNode();
+			this.newSubnodeName = 'Subnode';
 			$scope.newSubnodeName = 'Subnode';
 		}, function(error) {
 			noty({
@@ -399,5 +399,36 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	var changeWikiFieldsSubnode = function() {
 		$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
 		$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
+	};
+	
+	$scope.saveWikiSubnodeEntry = function() {
+		if ($scope.selectedSubnode !== 0) {
+			$scope.selectedSubnode.wikiContentPlain = $("#wikiSubnodeArea").val();
+			switchSubnodeToRead();
+			setLoadingSubnode();
+			TreeService.updateSubnodeWiki(
+							{
+								entity1 : 'ptrees',
+								id1 : $scope.projecttree.id,
+								id2 : $scope.selectedNodeId,
+								id3 : $scope.selectedSubnode.id
+							},
+							$scope.selectedSubnode,
+							function(response) {
+								$scope.selectedSubnode = response;
+								changeWikiFieldsSubnode();
+								noty({
+									type : 'success',
+									text : 'subnode text edited successfully',
+									timeout : 1500
+								});
+							}, function(error) {
+								noty({
+									type : 'alert',
+									text : 'cannot edit wiki text',
+									timeout : 1500
+								});
+							});
+		}
 	};
 }]);
