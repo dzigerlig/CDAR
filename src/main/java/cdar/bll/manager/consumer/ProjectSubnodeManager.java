@@ -7,6 +7,7 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
+import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
@@ -17,7 +18,7 @@ public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 	
-	public ProjectSubnode addProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectNodeException {
+	public ProjectSubnode addProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectNodeException, CreationException {
 		return psr.createProjectSubnode(projectSubnode);
 	}
 	

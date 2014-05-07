@@ -13,6 +13,7 @@ import java.util.List;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
@@ -79,27 +80,44 @@ public class ProjectSubnodeRepository {
 		throw new UnknownProjectSubnodeException();
 	}
 	
-	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException {
-		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
+	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
+		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?)";
+		final String sqlUpdate = "UPDATE KNOWLEDGESUBNODE SET WIKITITLE = ? where id = ?";
+		
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, projectSubnode.getNodeId());
 			preparedStatement.setString(3, projectSubnode.getTitle());
-			preparedStatement.setString(4, projectSubnode.getWikititle());
-			preparedStatement.setInt(5, projectSubnode.getPosition());
-			preparedStatement.setInt(6, 0);
+			preparedStatement.setInt(4, projectSubnode.getPosition());
+			preparedStatement.setInt(5, 0);
 			preparedStatement.executeUpdate();
 
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					projectSubnode.setId(generatedKeys.getInt(1));
+					if (projectSubnode.getWikititle().isEmpty()) {
+						projectSubnode.setWikititle(String.format("PROJECTSUBNODE_%d", projectSubnode.getId()));
+					}
 				}
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new UnknownProjectNodeException();
 		}
+		
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sqlUpdate)) {
+			preparedStatement.setString(1, projectSubnode.getWikititle());
+			preparedStatement.setInt(2, projectSubnode.getId());
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new CreationException();
+		}
+		
 		return projectSubnode;
 	}
 	
