@@ -207,7 +207,6 @@ var myJsTree = (function () {
                 noty({type: 'success', text: 'Please select a folder', timeout: 5000});
                 return false;
             } else {
-                console.log('new di');
                 scope.addDirectory(sel[0].replace(DIRECTORY, ""));
             }
         },
@@ -243,7 +242,6 @@ var myJsTree = (function () {
             var parentId;
             var type;
             var rootid = null;
-console.log("directoryDataToArray");
             resDirectory.forEach(function (entry) {
                 if (entry.parentId === 0) {
                     parentId = "#";

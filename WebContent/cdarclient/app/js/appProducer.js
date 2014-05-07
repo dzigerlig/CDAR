@@ -488,7 +488,6 @@ app.controller(
 							};
 
 							$scope.updateLink = function(linkId, subnodeid) {
-								console.log($routeParams.treeId);
 								TreeService.updateLink({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,

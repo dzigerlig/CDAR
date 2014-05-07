@@ -120,7 +120,6 @@ var myJsPlumb = (function () {
     }
 
     function connectNodes(stateSource, stateTarget, id, subnode) {
-    	console.log(subnode);
         var label = "";
         if (subnode !== undefined) {
             label = subnode.title;
@@ -484,7 +483,6 @@ var myJsPlumb = (function () {
             var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
             jQuery.each(data,
                 function (object) {
-            	console.log(this);
                     connectNodes(NODE + this.sourceId, NODE + this.targetId,
                         this.id, map[this.subnodeId]);
                     direction += NODE + this.sourceId + " -> " + NODE  + this.targetId + ";";

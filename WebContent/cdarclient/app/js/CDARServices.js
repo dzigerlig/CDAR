@@ -251,6 +251,12 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'delete'
 					}
 					
+				},'updateLink' : {
+					headers: customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'links'
+					}
 				}, 'linkZoomDown' : {
 					headers : customHeaders,
 					method : 'GET',
