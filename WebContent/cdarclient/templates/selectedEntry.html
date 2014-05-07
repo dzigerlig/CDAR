@@ -2,11 +2,11 @@
 	<h2>Node:</h2>
 	<div class="col-md-12">
 		<div class="col-md-6"><h3>{{nodeTitle}}</h3></div>
-		<div class="col-md-6" data-ng-show="UserService.getIsProducer()=='false' && selectedNodeId">
+		<div class="col-md-6" data-ng-show="UserService.getIsProducer()=='false' && selectedNode.id">
 			<h3>Status: ok</h3>
 			<a href="#" editable-text="tree.title" onbeforesave="saveProjectTreeTitle($data, tree.id)">edit title</a>
 		</div>
-		<tabset justified="true" class="well" data-ng-show="selectedNodeId">
+		<tabset justified="true" class="well" data-ng-show="selectedNode.id">
 		<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active"
 			id="nodewikiread">
 		<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
@@ -20,7 +20,7 @@
 		</div>
 		</tab> </tabset>
 	</div>
-	<div data-ng-show="selectedNodeId">
+	<div data-ng-show="selectedNode.id">
 		<h3>Subnodes:</h3>
 		<div class="col-md-12" class="well">
 			<div>
