@@ -183,10 +183,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
     reloadTree();
 
-    TreeService.getTrees({entity1: 'ktrees' }, function (response) {
-        $scope.knowledgetrees = response;
-    });
-
     $scope.saveProjectTreeTitle = function(title) {
     	TreeService.updateTree({
 			entity1 : 'ptrees',
@@ -272,5 +268,136 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
 		$("#wikiArea").val(
 				$scope.selectedNode.wikiContentPlain);
+	};
+	
+	$scope.saveWikiNodeEntry = function() {
+		if ($scope.selectedNode !== 0) {
+			$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
+			switchNodeToRead();
+			setLoadingNode();
+			TreeService
+					.updateNodeWiki(
+							{
+								entity1 : 'ptrees',
+								id1 : $routeParams.treeId,
+								id2 : $scope.selectedNode.id
+							},
+							$scope.selectedNode,
+							function(response) {
+								$scope.selectedNode = response;
+								changeWikiFields(response);
+								noty({
+									type : 'success',
+									text : 'node text edited successfully',
+									timeout : 1500
+								});
+								alert(JSON.stringify(response));
+							}, function(error) {
+								changeWikiFields($scope.selectedNode);
+								noty({
+									type : 'alert',
+									text : 'cannot edit wiki text',
+									timeout : 1500
+								});
+							});
+		}
+	};
+	
+	$scope.addNewSubnode = function() {
+		TreeService.addSubnode({
+			entity1 : 'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : $scope.selectedNodeId
+		}, {
+			nodeId : $scope.selectedNodeId,
+			title : this.newSubnodeName
+		}, function(response) {
+			$scope.getSubnodesOfNode();
+			$scope.newSubnodeName = 'Subnode';
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot add subnode',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.getSubnodesOfNode = function(idObject) {
+		var identity;
+		var changes = null;
+		if (typeof idObject === 'object' || idObject === undefined) {
+			if (typeof idObject === 'object') {
+				changes = idObject;
+			}
+			identity = $scope.selectedNodeId;
+		} else {
+			identity = idObject;
+		}
+		TreeService.getSubnodes({
+			entity1 : 'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : identity,
+		}, function(response) {
+			$scope.subnodes = response;
+			myJsPlumb.updateSubnodesOfNode(response,
+					identity, changes);
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error getting subnodes',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.deleteSubnode = function(subnodeId) {
+		TreeService.deleteSubnode({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : $scope.selectedNodeId,
+		}, {
+			id : subnodeId
+		}, function(response) {
+			$scope.getSubnodesOfNode(response);
+			noty({
+				type : 'success',
+				text : 'subnode deleted successfully',
+				timeout : 1500
+			});
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error deleting subnode',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.changeSubnode = function(subnodeid, name) {
+		setLoadingSubnode();
+		$scope.selectedSubnodeId = subnodeid;
+		$scope.selectedSubnodeName = name;
+		TreeService.getSubnodeWiki({
+			entity1 : 'ptrees',
+			id1 : $scope.projecttree.id,
+			id2 : $scope.selectedNodeId,
+			id3 : subnodeid
+		}, function(response) {
+			$scope.selectedSubnode = response;
+			changeWikiFieldsSubnode();
+			// load wiki fields
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'error getting wiki entry',
+				timeout : 1500
+			});
+		});
+	};
+	
+	var changeWikiFieldsSubnode = function() {
+		$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
+		$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
 	};
 }]);

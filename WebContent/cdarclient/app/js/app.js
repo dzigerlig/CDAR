@@ -40,12 +40,6 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
-    $routeProvider.when('/account', {
-    	templateUrl: 'user/account.html',
-    	controller: 'AccountController',
-    	needsLogin: true
-    });
-    
     $routeProvider.when('/knowledgetree/:treeId', {
     	templateUrl: 'knowledgeproducer/knowledgetree.html',
     	controller: 'KnowledgeTreeController',
@@ -61,6 +55,12 @@ app.config(function ($routeProvider,$httpProvider) {
     $routeProvider.when('/knowledgetree/:treeId/settings', {
     	templateUrl: 'knowledgeproducer/settings.html',
     	controller: 'TreeSettingsController',
+    	needsLogin: true
+    });
+    
+    $routeProvider.when('/account', {
+    	templateUrl: 'user/account.html',
+    	controller: 'AccountController',
     	needsLogin: true
     });
     

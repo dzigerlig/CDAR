@@ -191,7 +191,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									id2 : $scope.selectedNodeId
 								}, {
 									nodeId : $scope.selectedNodeId,
-									title : $scope.newSubnodeName
+									title : this.newSubnodeName
 								}, function(response) {
 									$scope.getSubnodesOfNode();
 									// getSubnodes();
