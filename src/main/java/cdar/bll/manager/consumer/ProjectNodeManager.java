@@ -3,9 +3,11 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
@@ -52,14 +54,37 @@ public class ProjectNodeManager {
 		return pnr.updateProjectNode(updatedProjectNode);
 	}
 
-	public Object zoomUp(int nodeId) {
-		//TODO
-		return null;
+	public Set<ProjectNode> zoomUp(int nodeId) throws UnknownProjectNodeException, EntityException {
+		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
+		nodes.add(pnr.getProjectNode(nodeId));
+		return recursiveZoomUp(nodeId, 2, nodes);
+	}
+	private Set<ProjectNode> recursiveZoomUp(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
+		if (quantity > 0) {
+			for (ProjectNode node : pnr.getSiblingNode(nodeId)) {
+				nodes.add(node);
+			}
+			for (ProjectNode node : pnr.getParentNode(nodeId)) {
+				nodes.add(node);
+				nodes = recursiveZoomUp(node.getId(), quantity - 1, nodes);
+			}
+		}
+		return nodes;
+	}
+	public Set<ProjectNode> zoomDown(int nodeId) throws EntityException, UnknownProjectNodeException {
+		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
+		nodes.add(pnr.getProjectNode(nodeId));
+		return recursiveZoomDown(nodeId, 2, nodes);
 	}
 
-	public Object zoomDown(int nodeId) {
-		//TODO
-		return null;
+	private Set<ProjectNode> recursiveZoomDown(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
+		if (quantity > 0) {
+			for (ProjectNode node : pnr.getFollowerNode(nodeId)) {
+				nodes.add(node);
+				nodes = recursiveZoomDown(node.getId(), quantity - 1, nodes);
+			}
+		}
+		return nodes;
 	}
 
 	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {

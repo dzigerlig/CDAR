@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
@@ -135,5 +136,101 @@ public class ProjectSubnodeRepository {
 		} catch (Exception ex) {
 			throw new UnknownProjectSubnodeException();
 		}
+	}
+	
+	public List<ProjectSubnode> getParentSubnode(int nodeId) throws EntityException {
+		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KPNID) AS NODES, KNOWLEDGEPROJECTSUBNODE AS SUBN WHERE SUBN.KPNID=NODES.ID;";
+
+		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectSubnode subnode = new ProjectSubnode();
+					subnode.setId(result.getInt(1));
+					subnode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					subnode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					subnode.setNodeId(result.getInt(4));
+					subnode.setTitle(result.getString(5));
+					subnode.setWikititle(result.getString(6));
+					subnode.setPosition(result.getInt(7));
+					subnode.setStatus(result.getInt(8));
+					subnodes.add(subnode);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return subnodes;
+	}
+
+	public List<ProjectSubnode> getSiblingSubnode(int nodeId) throws EntityException {
+		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM KNOWLEDGEPROJECTNODELINK AS LINK WHERE ( SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>%d) AS NODES, KNOWLEDGEPROJECTSUBNODE AS SUBN WHERE SUBN.KPNID=NODES.ID";
+		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+			preparedStatement.setInt(2, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectSubnode subnode = new ProjectSubnode();
+					subnode.setId(result.getInt(1));
+					subnode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					subnode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					subnode.setNodeId(result.getInt(4));
+					subnode.setTitle(result.getString(5));
+					subnode.setWikititle(result.getString(6));
+					subnode.setPosition(result.getInt(7));
+					subnode.setStatus(result.getInt(8));
+					subnodes.add(subnode);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return subnodes;
+	}
+	
+	public List<ProjectSubnode> getFollowerSubnode(int nodeId) throws EntityException {
+		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGEPROJECTNODE AS NODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID) AS NODES, KNOWLEDGEPROJECTSUBNODE AS SUBN WHERE SUBN.KPNID=NODES.ID";
+
+		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					ProjectSubnode subnode = new ProjectSubnode();
+					subnode.setId(result.getInt(1));
+					subnode.setCreationTime(DateHelper.getDate(result.getString(2)));
+					subnode.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					subnode.setNodeId(result.getInt(4));
+					subnode.setTitle(result.getString(5));
+					subnode.setWikititle(result.getString(6));
+					subnode.setPosition(result.getInt(7));
+					subnode.setStatus(result.getInt(8));
+					subnodes.add(subnode);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return subnodes;
 	}
 }

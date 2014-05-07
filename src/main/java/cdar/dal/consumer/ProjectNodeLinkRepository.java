@@ -15,8 +15,12 @@ import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownSubnodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 public class ProjectNodeLinkRepository {
 	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
@@ -138,5 +142,133 @@ public class ProjectNodeLinkRepository {
 		} catch (Exception ex) {
 			throw new UnknownProjectNodeLinkException();
 		}
+	}
+
+	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE ? = TARGETID";
+		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+
+			throw new UnknownNodeLinkException();
+		}
+		return nodelinks;
+	}
+	
+		public List<NodeLink> getSiblingNodeLinks(int nodeid) throws UnknownTreeException, EntityException {
+		final String sql = "SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM KNOWLEDGEPROJECTNODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?";
+		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeid);
+			preparedStatement.setInt(2, nodeid);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+
+			throw new UnknownTreeException();
+		}
+		return nodelinks;
+	}
+
+	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE ? = SOURCEID";
+		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+
+			throw new UnknownNodeException();
+		}
+		return nodelinks;
+	}
+
+	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE KPNSNID = ?";
+
+		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, subnodeId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setSubnodeId(result.getInt(6));
+					nodelink.setTreeId(result.getInt(7));
+					nodelinks.add(nodelink);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			throw new UnknownSubnodeException();
+		}
+		return nodelinks;
 	}
 }
