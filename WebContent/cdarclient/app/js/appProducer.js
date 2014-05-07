@@ -139,11 +139,7 @@ app.controller(
 								TreeService.updateTree({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id
-								}, $scope.knowledgetree, function(response) {
-									// noty({type: 'success', text :
-									// 'knowledge tree renamed
-									// successfully', timeout: 1500});
-								}, function(error) {
+								}, $scope.knowledgetree, function(response) { }, function(error) {
 									noty({
 										type : 'alert',
 										text : 'error while saving tree title',
