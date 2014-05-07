@@ -49,7 +49,7 @@ public class ProjectTreeManager {
 		return projectTrees;
 	}
 
-	public CreationTree addProjectTree(CreationTree projectTree) throws Exception {
+	public Tree addProjectTree(Tree projectTree) throws Exception {
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 		projectTree = ptr.createProjectTree(projectTree);
 		Directory directory = new Directory();
