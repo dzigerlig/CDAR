@@ -181,6 +181,110 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			});
         });
     };
+    
+    $scope.zoomUpNode = function(nodeid) {
+		TreeService.nodeZoomUp({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : nodeid
+		}, function(resNodes) {
+			$scope.zoomUpSubnode(nodeid, resNodes);
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom up',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.zoomDownNode = function(nodeid) {
+		TreeService.nodeZoomDown({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : nodeid
+		}, function(resNodes) {
+			$scope.zoomDownSubnode(nodeid, resNodes);
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom down',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.zoomUpSubnode = function(nodeid, resNodes) {
+		TreeService.subnodeZoomUp({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : nodeid
+		}, function(resSubnodes) {
+			myJsPlumb.drawExistingNodes(resNodes,
+					resSubnodes);
+			$scope.zoomUpLink(nodeid, resSubnodes);
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom up',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.zoomDownSubnode = function(nodeid, resNodes) {
+		TreeService.subnodeZoomDown({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : nodeid
+		}, function(resSubnodes) {
+			myJsPlumb.drawExistingNodes(resNodes,
+					resSubnodes);
+			$scope.zoomDownLink(nodeid, resSubnodes);
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom down',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.zoomUpLink = function(nodeid, resSubnodes) {
+		TreeService.linkZoomUp({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id3 : nodeid
+		}, function(resLinks) {
+			myJsPlumb.makeNodeHierarchy(resLinks,
+					resSubnodes);
+			w_launch();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom up',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.zoomDownLink = function(nodeid, resSubnodes) {
+		TreeService.linkZoomDown({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id3 : nodeid
+		}, function(resLinks) {
+			myJsPlumb.makeNodeHierarchy(resLinks,
+					resSubnodes);
+			w_launch();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom down',
+				timeout : 1500
+			});
+		});
+	};
 
     reloadTree();
 
