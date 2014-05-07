@@ -194,10 +194,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									title : this.newSubnodeName
 								}, function(response) {
 									$scope.getSubnodesOfNode();
-									// getSubnodes();
-									$scope.newSubnodeName = 'Subnode';
-									// noty({type: 'success', text : 'subnode
-									// added successfully', timeout: 1500});
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -320,8 +316,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							var changeWikiFields = function() {
 								$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
-								$("#wikiArea").val(
-										$scope.selectedNode.wikiContentPlain);
+								$("#wikiArea").val($scope.selectedNode.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id, name) {
@@ -348,12 +343,10 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							$scope.saveWikiNodeEntry = function() {
 								if ($scope.selectedNode !== 0) {
-									$scope.selectedNode.wikiContentPlain = $(
-											"#wikiArea").val();
+									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
 									switchNodeToRead();
 									setLoadingNode();
-									TreeService
-											.updateNodeWiki(
+									TreeService.updateNodeWiki(
 													{
 														entity1 : 'ktrees',
 														id1 : $routeParams.treeId,

@@ -313,8 +313,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			title : this.newSubnodeName
 		}, function(response) {
 			$scope.getSubnodesOfNode();
-			this.newSubnodeName = 'Subnode';
-			$scope.newSubnodeName = 'Subnode';
 		}, function(error) {
 			noty({
 				type : 'alert',
