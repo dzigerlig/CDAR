@@ -10,7 +10,7 @@ var myJsPlumb = (function () {
 
     //private Methods
     function buildContent() {
-        jsPlumb.detachEveryConnection();
+        //jsPlumb.detachEveryConnection();
         jsPlumb.deleteEveryEndpoint();
 
         $("#jsplumb-container").empty();
@@ -120,6 +120,7 @@ var myJsPlumb = (function () {
     }
 
     function connectNodes(stateSource, stateTarget, id, subnode) {
+    	console.log(subnode);
         var label = "";
         if (subnode !== undefined) {
             label = subnode.title;
@@ -382,11 +383,11 @@ var myJsPlumb = (function () {
             selectedElement = null;
             var map = {};
             jQuery.each(resSubnodes, function (object) {
-                if (map[this.knid] === undefined) {
+                if (map[this.nodeId] === undefined) {
                     var arr = [ this ];
-                    map[this.knid] = arr;
+                    map[this.nodeId] = arr;
                 } else {
-                    var arr = map[this.knid];
+                    var arr = map[this.nodeId];
                     arr.push(this);
                 }
             });
@@ -483,8 +484,9 @@ var myJsPlumb = (function () {
             var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
             jQuery.each(data,
                 function (object) {
+            	console.log(this);
                     connectNodes(NODE + this.sourceId, NODE + this.targetId,
-                        this.id, map[this.ksnid]);
+                        this.id, map[this.subnodeId]);
                     direction += NODE + this.sourceId + " -> " + NODE  + this.targetId + ";";
                 });
             direction += "}";

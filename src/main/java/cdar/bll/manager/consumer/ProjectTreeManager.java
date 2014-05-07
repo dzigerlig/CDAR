@@ -69,6 +69,7 @@ public class ProjectTreeManager {
 			UnknownTreeException, UnknownProjectTreeException,
 			UnknownNodeException, UnknownProjectNodeException {
 		Map<Integer, Integer> linkMapping = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> subnodeMapping = new HashMap<Integer, Integer>();
 		NodeManager nm = new NodeManager();
 		SubnodeManager snm = new SubnodeManager();
 		NodeLinkManager nlm = new NodeLinkManager();
@@ -111,6 +112,7 @@ public class ProjectTreeManager {
 			projectNode.setWikititle(node.getWikititle());
 			projectNode.setDirectoryId(directoryMapping.get(node
 					.getDirectoryId()));
+			projectNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
 			projectNode = pnr.createProjectNode(projectNode);
 			linkMapping.put(node.getId(), projectNode.getId());
 		}
@@ -121,7 +123,8 @@ public class ProjectTreeManager {
 			projectSubnode.setWikititle(subnode.getWikititle());
 			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
 			projectSubnode.setPosition(subnode.getPosition());
-			psr.createProjectSubnode(projectSubnode);
+			projectSubnode= psr.createProjectSubnode(projectSubnode);
+			subnodeMapping.put(subnode.getId(), projectSubnode.getId());
 		}
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
@@ -131,7 +134,7 @@ public class ProjectTreeManager {
 					.setSourceId(linkMapping.get(nodelink.getSourceId()));
 			projectNodeLink
 					.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			projectNodeLink.setSubnodeId(nodelink.getSubnodeId());
+			projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink.getSubnodeId()));
 			projectNodeLink.setTreeId(ptreeId);
 			pnlr.createProjectNodeLink(projectNodeLink);
 		}

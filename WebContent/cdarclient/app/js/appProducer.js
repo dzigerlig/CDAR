@@ -474,7 +474,7 @@ app.controller(
 								TreeService.getLinks({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
-								}, resSubnodes, function(response) {
+								}, function(response) {
 									myJsPlumb.makeNodeHierarchy(response,
 											resSubnodes);
 									w_launch();
@@ -487,15 +487,15 @@ app.controller(
 								});
 							};
 
-							$scope.updateLink = function(linkId, subnodeId) {
+							$scope.updateLink = function(linkId, subnodeid) {
+								console.log($routeParams.treeId);
 								TreeService.updateLink({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : linkId
-
 								}, {
 									id : linkId,
-									subnodeId : subnodeId
+									subnodeId : subnodeid
 								}, function(response) {
 									// noty({type: 'success', text : 'link added
 									// successfully', timeout: 1500});
