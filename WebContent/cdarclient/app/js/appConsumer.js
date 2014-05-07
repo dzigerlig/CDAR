@@ -79,6 +79,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService) {
 	$scope.isProducer = false;
+	myJsPlumb.initialize();
     $scope.UserService = UserService;
     $scope.projecttree = "";
     
