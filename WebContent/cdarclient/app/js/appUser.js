@@ -1,8 +1,9 @@
 app.controller("LoginController", ['$scope', '$location', 'AuthenticationService', 'UserService', function($scope, $location,
 		AuthenticationService, UserService) {
 	UserService.removeCookies();
-	
 	$scope.chkbKnowledgeProducer = "";
+	
+	$scope.loading = false;
 
 	$scope.credentials = {
 		username : '',
@@ -10,6 +11,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 	};
 	
 	$scope.login = function() {
+		$scope.loading = true;
 		AuthenticationService.login.user({username:$scope.credentials.username,password: $scope.credentials.password}, function(response) {
 				UserService.setUsername(response.username);
 				UserService.setAccesstoken(response.accesstoken);
@@ -27,6 +29,7 @@ app.controller("LoginController", ['$scope', '$location', 'AuthenticationService
 				}
 		}, function(error) {
 			noty({type: 'alert', text : 'wrong username/password combination', timeout: 4000});
+			$scope.loading = false;
 		});
 	};
 }]);

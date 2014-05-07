@@ -9,12 +9,15 @@
 						autofocus data-ng-model="credentials.username" /> <input
 						type="password" class="form-control" placeholder="Password"
 						required data-ng-model="credentials.password" />
-					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="chkbKnowledgeProducer"><b>Log in as Knowledge Producer</b></label>
+					<div data-ng-hide="loading">
+						<div class="checkbox">
+							<label><input type="checkbox" data-ng-model="chkbKnowledgeProducer"><b>Log in as Knowledge Producer</b></label>
+						</div>
+						<button class="btn btn-lg btn-success btn-block" type="submit">Sign
+							in</button>
+						<a class="btn btn-lg btn-primary btn-block" href="#/registration">Register</a>
 					</div>
-					<button class="btn btn-lg btn-success btn-block" type="submit">Sign
-						in</button>
-					<a class="btn btn-lg btn-primary btn-block" href="#/registration">Register</a>
+					<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif' data-ng-show="loading"/>
 				</form>
 			</div>
 		</div>
