@@ -329,6 +329,28 @@ var myJsPlumb = (function() {
 		return allTargetConnection.concat(allSourceConnection);
 	}
 
+	function getStatusImage(status) {
+		var state;
+		switch (status) {
+		case 1:
+			state = "undecided.png";
+			break;
+		case 2:
+			state = "accepted.png";
+			break;
+		case 3:
+			state = "declined.png";
+			break;
+		case 4:
+			state = "revoked.png";
+			break;
+		default:
+			state = "undecided.png";
+			break;
+		}
+		return 'app/img/' + state;
+	}
+
 	// public Methods
 	return {
 		initialize : function() {
@@ -413,29 +435,17 @@ var myJsPlumb = (function() {
 					var connect = $('<div>').addClass('ep draglink');
 					var downtree = $('<div>').addClass('downtree');
 					var uptree = $('<div>').addClass('uptree');
+
 					if (!scope.isProducer) {
-						switch (this.status) {
-						case 1:
-						    state = "undecided.png";
-						    break;
-						case 2:
-							state = "accepted.png";
-						    break;
-						case 3:
-							state = "declined.png";
-						    break;
-						case 4:
-							state = "revoked.png";
-						    break;
-						default:
-							state = "undecided.png";
-						    break;
-						}
-						state = "undecided.png";
+
 						var status = $('<div>').attr('id', STATUS + this.id)
-								.addClass('status').css('background-image', 'url(app/img/' + state + ')');
+								.addClass('status').css(
+										'background-image',
+										'url(' + getStatusImage(this.status)
+												+ ')');
 						newState.append(status);
-					
+					}
+
 					newState.append(downtree);
 					newState.append(uptree);
 					newState.css({
@@ -461,9 +471,9 @@ var myJsPlumb = (function() {
 					makeSource(connect, newState);
 
 					appendElements(title, connect, newState, option);
-				}
 
-			}});
+				}
+			});
 		},
 		remove : function() {
 			if (selectedElement !== null) {
@@ -531,6 +541,12 @@ var myJsPlumb = (function() {
 			if (title.size() !== 0) {
 				title[0].innerHTML = newTitle;
 			}
+		},
+		
+		setStatusImage : function(node) {
+			var imageDiv = $('#' + STATUS + node.id);
+			imageDiv.css('background-image', 'url('
+					+ getStatusImage(node.status) + ')');
 		},
 
 		updateSubnodesOfNode : function(newSubnode, nodeId, changes) {

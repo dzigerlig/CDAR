@@ -471,7 +471,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.updateNodeStatus = function(status) {
 		var oldStatus = $scope.selectedNode.status;
 		$scope.selectedNode.status = status;
-		
+		myJsPlumb.setStatusImage($scope.selectedNode);
 		TreeService.updateNode({entity1:'ptrees',
 			id1 : $scope.projecttree.id,
 			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) { }, function(error) {
