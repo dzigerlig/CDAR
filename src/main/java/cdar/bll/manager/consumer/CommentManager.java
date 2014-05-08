@@ -22,6 +22,16 @@ public class CommentManager {
 		return comments;
 	}
 	
+	public Set<Comment> getCommentsByTree(int treeId) {
+		Set<Comment> comments = new HashSet<Comment>();
+		
+		for (Comment comment : cr.getCommentsByTree(treeId)) {
+			comments.add(comment);
+		}
+		
+		return comments;
+	}
+	
 	public Comment getComment(int commentId) throws UnknownCommentException, EntityException {
 		return cr.getComment(commentId);
 	}

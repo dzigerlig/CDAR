@@ -30,7 +30,36 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						TABLE
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th class="col-md-1">#</th>
+										<th class="col-md-1">Date</th>
+										<th class="col-md-5">XmlString</th>
+										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="xmltree in xmlTrees | orderBy:'id':false">
+										<td>{{$index+1}}</td>
+										<td>{{xmltree.creationTime}}</td>
+										<td>{{xmltree.xmlString}}</td>
+										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
+										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td colspan="4">
+											<form id="formTreeXml" data-role="form" data-ng-submit="addNewSimpleXmlTree()">
+												<div class="input-append">
+													<button class="btn btn-success" type="submit">Create new Simple Export</button>
+												</div>
+											</form>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 					</div>
 				</div>
 				<div class="row">
