@@ -30,7 +30,28 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				},
 				// SIMPLEEXPORT
-				// noch leer
+				'getSimpleExports' : {
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'simpleexport'
+					}
+				},
+				'addSimpleExport' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'simpleexport'
+					}
+				}, 'deleteSimpleExport' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'simpleexport',
+						action : 'delete'
+					}
+				},
 				
 				//DIRECTORIES
 				'getDirectories' : {

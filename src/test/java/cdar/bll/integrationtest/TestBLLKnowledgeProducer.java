@@ -12,7 +12,7 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.bll.entity.XmlTree;
+import cdar.bll.entity.TreeXml;
 import cdar.bll.entity.producer.Template;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.DirectoryManager;
@@ -21,7 +21,6 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.manager.producer.TreeManager;
-import cdar.bll.manager.producer.XmlTreeManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -736,16 +735,16 @@ public class TestBLLKnowledgeProducer {
 //		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
 //	}
 	
-	@Test
-	public void testSimpleImportExportEmptyTree() throws Exception {
-		XmlTreeManager xtm = new XmlTreeManager();
-		Tree tree = new Tree();
-		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
-		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
-		xtm.cleanTree(xmlTree.getId());
-		xtm.setXmlTree(xmlTree.getId());
-	}
+//	@Test
+//	public void testSimpleImportExportEmptyTree() throws Exception {
+//		XmlTreeManager xtm = new XmlTreeManager();
+//		Tree tree = new Tree();
+//		tree.setTitle("MyTree");
+//		tree = tm.addTree(um.getUser(username).getId(), tree);
+//		TreeXml xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
+//		xtm.cleanTree(xmlTree.getId());
+//		xtm.setXmlTree(xmlTree.getId());
+//	}
 	
 //	@Test
 //	public void testSimpleImportExportTreeOneNode() throws Exception {

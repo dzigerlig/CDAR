@@ -49,6 +49,36 @@ public class CommentRepository {
 		return usercomments;
 	}
 	
+	public List<Comment> getCommentsByTree(int treeId) {
+		String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT, KPNID FROM USERCOMMENT WHERE KPNID = ?";
+//
+		List<Comment> usercomments = new ArrayList<Comment>();
+//
+//		try (Connection connection = DBConnection.getConnection();
+//				PreparedStatement preparedStatement = connection
+//						.prepareStatement(sql)) {
+//			preparedStatement.setInt(1, kpnid);
+//
+//			try (ResultSet result = preparedStatement.executeQuery()) {
+//				while (result.next()) {
+//					Comment usercomment = new Comment();
+//					usercomment.setId(result.getInt(1));
+//					usercomment.setCreationTime(DateHelper.getDate(result.getString(2)));
+//					usercomment.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+//					usercomment.setUserId(result.getInt(4));
+//					usercomment.setComment(result.getString(5));
+//					usercomment.setNodeId(result.getInt(6));
+//					usercomments.add(usercomment);
+//				}
+//			} catch (ParseException e) {
+//				throw new EntityException();
+//			}
+//		} catch (SQLException ex) {
+//			throw new EntityException();
+//		}
+		return usercomments;
+	}
+	
 	public Comment getComment(int id) throws UnknownCommentException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM USERCOMMENT WHERE ID = ?";
 

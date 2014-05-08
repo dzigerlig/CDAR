@@ -82,21 +82,6 @@ public class ProjectTreeController {
 	}
 	
 	@GET
-	@Path("{ptreeid}/ktrees/{ktreeid}/copy")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTreeToProjectTree(@PathParam("ktreeid") int ktreeid, @PathParam("ptreeid") int ptreeid) {
-		System.out.println("ktreeid: " + ktreeid);
-		System.out.println("ptreeid: " + ptreeid);
-		try {
-			ptm.addKnowledgeTreeToProjectTree(ktreeid, ptreeid);
-			return StatusHelper.getStatusOk(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return StatusHelper.getStatusBadRequest();
-		}
-	}
-	
-	@GET
 	@Path("{ptreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("ptreeid") int treeId) {
