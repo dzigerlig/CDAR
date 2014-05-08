@@ -23,7 +23,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 		final ExtendedUriInfo extendendUriInfo = (ExtendedUriInfo) requestContext
 				.getUriInfo();
 
-		if (!extendendUriInfo.getPath().contains("user")) {
+		/*if (!extendendUriInfo.getPath().contains("user")) {
 			try {
 				final int uid = Integer.parseInt(requestContext
 						.getHeaderString("uid"));
@@ -39,7 +39,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 				ex.printStackTrace();
 				abortRequest(requestContext);
 			}
-		}
+		}*/
 	}
 
 	private void abortRequest(ContainerRequestContext requestContext) {

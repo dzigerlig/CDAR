@@ -228,6 +228,7 @@ var myJsPlumb = (function() {
 
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
+			console.log(isInizialized);
 			if (!isInizialized) {
 				myJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
@@ -376,8 +377,6 @@ var myJsPlumb = (function() {
 			var list = $('<ul>').addClass('optionList');
 			var downtree = $('<div>').addClass('downtree');
 			var uptree = $('<div>').addClass('uptree');
-			console.log(scope);
-			console.log(scope.isProducer);
 			if (!scope.isProducer) {
 				var status = $('<div>').attr('id', STATUS + response.id)
 						.addClass('status');
@@ -418,7 +417,6 @@ var myJsPlumb = (function() {
 					arr.push(this);
 				}
 			});
-
 			jQuery.each(data, function(object) {
 				if (this.dynamicTreeFlag) {
 					if (map[this.id] !== undefined) {
@@ -445,7 +443,6 @@ var myJsPlumb = (function() {
 												+ ')');
 						newState.append(status);
 					}
-
 					newState.append(downtree);
 					newState.append(uptree);
 					newState.css({
@@ -475,7 +472,7 @@ var myJsPlumb = (function() {
 				}
 			});
 		},
-		remove : function() {
+		removeSelected : function() {
 			if (selectedElement !== null) {
 				if (selectedElement.indexOf(NODE) > -1) {
 					myJsPlumb.detachNode(selectedElement.replace(NODE, ""));
@@ -498,16 +495,16 @@ var myJsPlumb = (function() {
 		},
 
 		detachNode : function(id) {
+			console.log(id);
 			var newState = $('#' + NODE + id);
 			if (newState.size() !== 0) {
-
 				var connections = getConnections(newState);
 				jQuery.each(connections, function() {
 					scope.deleteLink(this.id.replace(LINK, ""));
 				});
-
 				scope.undropNode(newState[0].id.replace(NODE, ""));
 				jsPlumb.detachAllConnections($(newState));
+				jsPlumb.removeAllEndpoints($(newState));
 				$(newState).remove();
 			}
 		},
@@ -561,7 +558,6 @@ var myJsPlumb = (function() {
 				newSubnode.sort(function(a, b) {
 					return parseInt(a.position) - parseInt(b.position);
 				});
-
 				jQuery.each(newSubnode, function(object) {
 					optionList.append($('<li>').text(this.title));
 				});
@@ -570,7 +566,6 @@ var myJsPlumb = (function() {
 					var allSourceConnection = jsPlumb.getConnections({
 						source : $("#" + NODE + nodeId)
 					});
-
 					var map = {};
 					jQuery.each(changes.changedEntities, function(object) {
 						map[this.id] = true;
@@ -600,6 +595,7 @@ var myJsPlumb = (function() {
 							});
 				}
 			}
-		}
+		}				
+
 	};
 })();
