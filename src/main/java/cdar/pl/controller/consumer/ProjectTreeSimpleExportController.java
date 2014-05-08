@@ -1,6 +1,5 @@
 package cdar.pl.controller.consumer;
 
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -13,14 +12,11 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.consumer.CreationTree;
-import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.pl.controller.StatusHelper;
 
-@Path("ptrees")
-public class ProjectTreeController {
-	private ProjectTreeManager ptm = new ProjectTreeManager();
-	
+@Path("ptrees/{treeid}/simpleexport")
+public class ProjectTreeSimpleExportController {
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProjectTreesByUid(@HeaderParam("uid") int uid) {
@@ -77,18 +73,6 @@ public class ProjectTreeController {
 			ptm.deleteProjectTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
-			return StatusHelper.getStatusBadRequest();
-		}
-	}
-	
-	@GET
-	@Path("{ptreeid}/subnodes")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSubnodes(@PathParam("ptreeid") int treeId) {
-		try {
-			ProjectSubnodeManager psm = new ProjectSubnodeManager();
-			return StatusHelper.getStatusOk(psm.getProjectSubnodesFromProjectTree(treeId));
-		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

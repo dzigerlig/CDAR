@@ -1,4 +1,4 @@
-package cdar.bll.manager.producer;
+package cdar.bll.manager.importexport;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +17,8 @@ import cdar.bll.entity.TreeXml;
 import cdar.bll.entity.export.CDAR_TreeExportModel;
 import cdar.bll.entity.export.CDAR_TreeSimple;
 import cdar.bll.entity.producer.Template;
+import cdar.bll.manager.consumer.ProjectTreeManager;
+import cdar.bll.manager.producer.DirectoryManager;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
@@ -32,7 +34,9 @@ import cdar.dal.producer.SubnodeRepository;
 import cdar.dal.producer.TemplateRepository;
 import cdar.dal.producer.XmlTreeRepository;
 
-public class XmlTreeManager {
+public class ImportExportManager {
+	private ProjectTreeManager ptm = new ProjectTreeManager();
+	
 	private DirectoryManager dm = new DirectoryManager();
 	private NodeRepository nr = new NodeRepository();
 	private NodeLinkRepository nlr = new NodeLinkRepository();

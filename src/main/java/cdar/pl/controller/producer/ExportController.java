@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
-import cdar.bll.entity.XmlTree;
+import cdar.bll.entity.TreeXml;
 import cdar.bll.manager.producer.XmlTreeManager;
 import cdar.pl.controller.StatusHelper;
 
@@ -43,7 +43,7 @@ public class ExportController {
 		@POST
 		@Path("set")
 		@Consumes(MediaType.APPLICATION_JSON)
-		public Response setKnowledgeTreeSimpleXml(XmlTree xmlTree) {
+		public Response setKnowledgeTreeSimpleXml(TreeXml xmlTree) {
 			try {
 				xtm.cleanTree(xmlTree.getId());
 				return StatusHelper.getStatusOk(xtm.setXmlTree(xmlTree.getId()));

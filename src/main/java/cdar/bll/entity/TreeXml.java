@@ -2,16 +2,17 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
-public class XmlTree extends BasicEntity {
+public class TreeXml extends BasicEntity {
 	private int userId;
 	private int treeId;
 	private String xmlString;
+	private boolean isFull;
 	
-	public XmlTree() {
+	public TreeXml() {
 		super();
 	}
 	
-	public XmlTree(int id, Date creationDate, Date lastModification, int userId, int treeId, String xmlString) {
+	public TreeXml(int id, Date creationDate, Date lastModification, int userId, int treeId, String xmlString) {
 		super(id, creationDate, lastModification);
 		setUserId(userId);
 		setTreeId(treeId);
@@ -40,5 +41,13 @@ public class XmlTree extends BasicEntity {
 
 	public void setXmlString(String xmlString) {
 		this.xmlString = xmlString;
+	}
+
+	public boolean getIsFull() {
+		return isFull;
+	}
+
+	public void setIsFull(boolean isFull) {
+		this.isFull = isFull;
 	}
 }

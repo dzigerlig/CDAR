@@ -12,7 +12,7 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.bll.entity.XmlTree;
+import cdar.bll.entity.TreeXml;
 import cdar.bll.entity.producer.Template;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.DirectoryManager;
@@ -742,7 +742,7 @@ public class TestBLLKnowledgeProducer {
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
 		tree = tm.addTree(um.getUser(username).getId(), tree);
-		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
+		TreeXml xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
 		xtm.cleanTree(xmlTree.getId());
 		xtm.setXmlTree(xmlTree.getId());
 	}

@@ -1,0 +1,55 @@
+<div id="wrapper">
+	<div ng-include src="'templates/navigation.html'"></div>
+
+		<div id="page-content-wrapper">
+			<div class="row">
+				<div class="content-header">
+					<div class="col-md-9">
+						<h1>
+							<a id="menu-toggle" class="btn btn-default"><i
+								class="icon-reorder"></i></a> CDAR - Knowledge Consumer
+						</h1>
+					</div>
+					<div ng-include src="'templates/heading.html'"></div>
+				</div>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-2">
+						<a class="btn btn-md btn-primary btn-block"
+							href="#/projecttree/{{projecttree.id}}">back to projecttree</a>
+					</div>
+					<div class="col-md-10">
+						<p class="lead">Import/Export: {{knowledgetree.name}}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Simple Import/Export (with Wiki-References)</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						TABLE
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Full Import/Export (copying current wiki-entires)</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						TABLE
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>

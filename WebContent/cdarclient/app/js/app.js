@@ -40,6 +40,12 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
+    $routeProvider.when('/projecttree/:treeId/importexport', {
+    	templateUrl: 'knowledgeconsumer/importexport.html',
+    	controller: 'ProjectTreeImportExportController',
+    	needsLogin: true
+    });
+    
     $routeProvider.when('/knowledgetree/:treeId', {
     	templateUrl: 'knowledgeproducer/knowledgetree.html',
     	controller: 'KnowledgeTreeController',
