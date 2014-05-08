@@ -110,7 +110,7 @@ app.controller("AccessController", [
 				UserService, TreeService) {
 			$scope.UserService = UserService;
 			$scope.isProducer = UserService.getIsProducer();
-
+$scope.treeId= $routeParams.treeId;
 			$scope.users = "";
 			//| orderBy:'id':false
 			// TreeService.getUsers().....function(response) { $scope.users =
