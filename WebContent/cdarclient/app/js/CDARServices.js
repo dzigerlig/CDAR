@@ -38,25 +38,33 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				},
 				// SIMPLEEXPORT
-				'getSimpleExports' : {
+				'getExports' : {
 					headers : customHeaders,
 					method : 'GET',
 					isArray : true,
 					params : {
-						entity2 : 'simpleexport'
+						entity2 : 'exports'
 					}
 				},
-				'addSimpleExport' : {
+				'setExport' : {
 					headers : customHeaders,
-					method : 'POST',
+					method : 'GET',
 					params : {
-						entity2 : 'simpleexport'
+						entity2 : 'exports',
+						action : 'set'
 					}
-				}, 'deleteSimpleExport' : {
+				},
+				'addExport' : {
 					headers : customHeaders,
 					method : 'POST',
 					params : {
-						entity2 : 'simpleexport',
+						entity2 : 'exports'
+					}
+				}, 'deleteExport' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'exports',
 						action : 'delete'
 					}
 				},

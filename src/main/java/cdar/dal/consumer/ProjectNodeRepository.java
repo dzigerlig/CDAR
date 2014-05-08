@@ -14,6 +14,7 @@ import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
+import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
@@ -77,9 +78,10 @@ public class ProjectNodeRepository {
 		throw new UnknownProjectNodeException();
 	}
 	
-	public ProjectNode createProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException {
+	public ProjectNode createProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException {
 		final String sqlProjectNode = "INSERT INTO KNOWLEDGEPROJECTNODE (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS) VALUES (?, ?, ?, ?, ?, ?)";
 		final String sqlMapping = "INSERT INTO KNOWLEDGEPROJECTNODEMAPPING (kpnid, pdid) VALUES (?, ?)";
+		final String sqlWikiUpdate = "UPDATE KNOWLEDGEPROJECTNODE SET WIKITITLE = ? where id = ?";
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sqlProjectNode, Statement.RETURN_GENERATED_KEYS)) {
@@ -88,16 +90,31 @@ public class ProjectNodeRepository {
 			preparedStatement.setInt(3, projectNode.getTreeId());
 			preparedStatement.setString(4, projectNode.getWikititle());
 			preparedStatement.setInt(5, projectNode.getDynamicTreeFlag());
-			preparedStatement.setInt(6, 0);
+			preparedStatement.setInt(6, projectNode.getStatus());
 			
 			preparedStatement.executeUpdate();
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					projectNode.setId(generatedKeys.getInt(1));
+					if (projectNode.getWikititle()==null || projectNode.getWikititle().isEmpty()) {
+						projectNode.setWikititle(String.format("PROJECTNODE_%d", projectNode.getId()));
+					}
 				}
 			}
 		} catch (Exception ex) {
 			throw new UnknownProjectTreeException();
+		}
+		
+		//wiki update
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sqlWikiUpdate)) {
+			preparedStatement.setString(1, projectNode.getWikititle());
+			preparedStatement.setInt(2, projectNode.getId());
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new CreationException();
 		}
 		
 		// projectNodeMapping
