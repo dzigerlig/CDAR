@@ -1,6 +1,8 @@
 package cdar.pl.controller.consumer;
 
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -12,10 +14,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.CreationTree;
+import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.pl.controller.StatusHelper;
+import cdar.pl.controller.UserController;
 
 @Path("ptrees")
 public class ProjectTreeController {
@@ -89,6 +94,23 @@ public class ProjectTreeController {
 			ProjectSubnodeManager psm = new ProjectSubnodeManager();
 			return StatusHelper.getStatusOk(psm.getProjectSubnodesFromProjectTree(treeId));
 		} catch (Exception ex) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	@GET
+	@Path("{ptreeid}/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsersWithTreeRight(@PathParam("ptreeid") int treeId) {
+		try {	
+			UserManager um = new UserManager();
+			List<User> userList=um.getUsersByTree(treeId);
+			for (User user : um.getUsers()) {
+				if(!userList.contains(user))
+				{userList.add(user);}
+			}
+			return StatusHelper.getStatusOk(userList);
+		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

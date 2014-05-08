@@ -26,7 +26,9 @@ public class UserManager {
 	public UserManager() {
 	}
 
-	public User loginUser(String username, String password) throws UnknownUserException, EntityException, WrongCredentialsException {
+	public User loginUser(String username, String password)
+			throws UnknownUserException, EntityException,
+			WrongCredentialsException {
 		User user = getUser(username);
 
 		if (user.getPassword().equals(password)) {
@@ -36,7 +38,8 @@ public class UserManager {
 			} catch (WikiLoginException ex) {
 				throw new WrongCredentialsException();
 			}
-			user.setAccesstoken(DigestUtils.shaHex(String.format("%s%s", user.getPassword(), new Date().toString())));
+			user.setAccesstoken(DigestUtils.shaHex(String.format("%s%s",
+					user.getPassword(), new Date().toString())));
 			updateUser(user);
 			return user;
 		} else {
@@ -44,7 +47,8 @@ public class UserManager {
 		}
 	}
 
-	public User createUser(User user, boolean createWikiUser) throws UsernameInvalidException {
+	public User createUser(User user, boolean createWikiUser)
+			throws UsernameInvalidException {
 		try {
 			if (createWikiUser) {
 				try {
@@ -62,32 +66,34 @@ public class UserManager {
 		}
 	}
 
-	public void deleteUser(int userId) throws UnknownUserException, EntityException, UnknownTreeException, UnknownProjectTreeException {
+	public void deleteUser(int userId) throws UnknownUserException,
+			EntityException, UnknownTreeException, UnknownProjectTreeException {
 		TreeManager tm = new TreeManager();
 		ProjectTreeManager ptm = new ProjectTreeManager();
-		
+
 		for (Tree tree : tm.getTrees(userId)) {
 			tm.deleteTree(tree.getId());
 		}
-		
+
 		for (Tree projectTree : ptm.getProjectTrees(userId)) {
 			ptm.deleteProjectTree(projectTree.getId());
 		}
-		
+
 		userRepository.deleteUser(userId);
 	}
 
-	public User updateUser(User user) throws UnknownUserException, EntityException {
+	public User updateUser(User user) throws UnknownUserException,
+			EntityException {
 		User updatedUser = userRepository.getUser(user.getId());
-		
-		if (user.getAccesstoken()!=null) {
+
+		if (user.getAccesstoken() != null) {
 			updatedUser.setAccesstoken(user.getAccesstoken());
 		}
-		
-		if (user.getPassword()!=null) {
+
+		if (user.getPassword() != null) {
 			updatedUser.setPassword(user.getPassword());
 		}
-		
+
 		return userRepository.updateUser(updatedUser);
 	}
 
@@ -95,11 +101,16 @@ public class UserManager {
 		return userRepository.getUser(username);
 	}
 
-	public User getUser(int userId) throws UnknownUserException, EntityException {
+	public User getUser(int userId) throws UnknownUserException,
+			EntityException {
 		return userRepository.getUser(userId);
 	}
 
 	public List<User> getUsers() throws EntityException {
 		return userRepository.getUsers();
+	}
+
+	public List<User> getUsersByTree(int treeId) throws EntityException, UnknownUserException {
+		return userRepository.getUsersByTree(treeId);
 	}
 }

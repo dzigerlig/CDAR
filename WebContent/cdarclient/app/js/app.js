@@ -64,6 +64,18 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
+    $routeProvider.when('/knowledgetree/:treeId/users', {
+    	templateUrl: 'user/users.html',
+    	controller: 'AccessController',
+    	needsLogin: true
+    });
+    
+    $routeProvider.when('/projecttree/:treeId/users', {
+    	templateUrl: 'user/users.html',
+    	controller: 'AccessController',
+    	needsLogin: true
+    });
+    
     $routeProvider.when('/account', {
     	templateUrl: 'user/account.html',
     	controller: 'AccountController',

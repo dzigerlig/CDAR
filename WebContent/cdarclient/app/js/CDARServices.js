@@ -29,6 +29,14 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'copy'
 					}
 				},
+				'getAllUsersWithTreeRight' : {
+					headers : customHeaders,
+					method : 'GET',
+					isArray : true,
+					params : {
+						entity2 : 'users'
+					}
+				},
 				// SIMPLEEXPORT
 				'getSimpleExports' : {
 					headers : customHeaders,

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cdar.bll.entity.Directory;
+import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
@@ -30,7 +32,8 @@ public class UserRepository {
 				User user = new User();
 				user.setId(result.getInt(1));
 				user.setCreationTime(DateHelper.getDate(result.getString(2)));
-				user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+				user.setLastModificationTime(DateHelper.getDate(result
+						.getString(3)));
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
@@ -54,7 +57,8 @@ public class UserRepository {
 				while (result.next()) {
 					user.setId(result.getInt(1));
 					user.setCreationTime(DateHelper.getDate(result.getString(2)));
-					user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					user.setLastModificationTime(DateHelper.getDate(result
+							.getString(3)));
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
@@ -81,7 +85,8 @@ public class UserRepository {
 				while (result.next()) {
 					user.setId(result.getInt(1));
 					user.setCreationTime(DateHelper.getDate(result.getString(2)));
-					user.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					user.setLastModificationTime(DateHelper.getDate(result
+							.getString(3)));
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
@@ -97,7 +102,7 @@ public class UserRepository {
 		throw new UnknownUserException();
 	}
 
-	public User createUser(User user) throws UsernameInvalidException  {
+	public User createUser(User user) throws UsernameInvalidException {
 		final String sql = "INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)";
 
 		try (Connection connection = DBConnection.getConnection();
@@ -146,11 +151,42 @@ public class UserRepository {
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, userId);
-			if (preparedStatement.executeUpdate()!=1) {
+			if (preparedStatement.executeUpdate() != 1) {
 				throw new UnknownUserException();
 			}
 		} catch (Exception ex) {
 			throw new UnknownUserException();
 		}
+	}
+
+	public List<User> getUsersByTree(int treeId) throws EntityException,
+			UnknownUserException {
+		final String sql = "SELECT * FROM cdar.user AS user, cdar.knowledgeprojecttreemapping AS mapping WHERE user.id=mapping.uid AND   mapping.kptid=?";
+		List<User> users = new ArrayList<User>();
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, treeId);
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					User user = new User();
+					user.setId(result.getInt(1));
+					user.setCreationTime(DateHelper.getDate(result.getString(2)));
+					user.setLastModificationTime(DateHelper.getDate(result
+							.getString(3)));
+					user.setUsername(result.getString(4));
+					user.setPassword(result.getString(5));
+					user.setAccesstoken(result.getString(6));
+					user.setTreeaccess(true);
+					users.add(user);
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			throw new UnknownUserException();
+		}
+		return users;
 	}
 }

@@ -1,5 +1,8 @@
 package cdar.pl.controller;
 
+
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,7 +18,24 @@ import cdar.bll.manager.UserManager;
 @Path("users")
 public class UserController {
 	private UserManager userManager = new UserManager();
-
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsers() {
+		try {
+			List<User> userList = userManager.getUsers();
+			for (User user : userList) {
+				user.setPassword("");
+				user.setAccesstoken("");
+			}
+			return Response
+					.ok(userList, MediaType.APPLICATION_JSON)
+					.build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.NO_CONTENT).build();
+		}
+	}
+	
 	@GET
 	@Path("login")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +49,7 @@ public class UserController {
 			return StatusHelper.getStatusUnauthorized();
 		}
 	}
+
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
