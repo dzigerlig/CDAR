@@ -5,6 +5,7 @@ import java.util.Date;
 public class TreeXml extends BasicEntity {
 	private int userId;
 	private int treeId;
+	private String title;
 	private String xmlString;
 	private boolean isFull;
 	
@@ -49,5 +50,13 @@ public class TreeXml extends BasicEntity {
 
 	public void setIsFull(boolean isFull) {
 		this.isFull = isFull;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

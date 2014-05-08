@@ -20,7 +20,7 @@ import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class ProjectTreeXmlRepository {
 	public List<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, TREEID, FULLFLAG FROM PROJECTTREEXML WHERE TREEID = ?";
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, XMLSTRING, UID, TREEID, FULLFLAG FROM PROJECTTREEXML WHERE TREEID = ?";
 
 		List<TreeXml> xmlTrees = new ArrayList<TreeXml>();
 
@@ -32,10 +32,11 @@ public class ProjectTreeXmlRepository {
 					xmlTree.setId(result.getInt(1));
 					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
 					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					xmlTree.setXmlString(result.getString(4));
-					xmlTree.setUserId(result.getInt(5));
-					xmlTree.setTreeId(result.getInt(6));
-					xmlTree.setIsFull(result.getInt(7) == 1);
+					xmlTree.setTitle(result.getString(4));
+					xmlTree.setXmlString(result.getString(5));
+					xmlTree.setUserId(result.getInt(6));
+					xmlTree.setTreeId(result.getInt(7));
+					xmlTree.setIsFull(result.getInt(8) == 1);
 					xmlTrees.add(xmlTree);
 				}
 			} catch (ParseException e) {
@@ -48,7 +49,7 @@ public class ProjectTreeXmlRepository {
 	}
 
 	public TreeXml getXmlTree(int id) throws UnknownXmlTreeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, TREEID, FULLFLAG FROM PROJECTTREEXML WHERE ID = ?";
+		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, XMLSTRING, UID, TREEID, FULLFLAG FROM PROJECTTREEXML WHERE ID = ?";
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setInt(1, id);
@@ -58,10 +59,11 @@ public class ProjectTreeXmlRepository {
 					xmlTree.setId(result.getInt(1));
 					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
 					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					xmlTree.setXmlString(result.getString(4));
-					xmlTree.setUserId(result.getInt(5));
-					xmlTree.setTreeId(result.getInt(6));
-					xmlTree.setIsFull(result.getInt(7) == 1);
+					xmlTree.setTitle(result.getString(4));
+					xmlTree.setXmlString(result.getString(5));
+					xmlTree.setUserId(result.getInt(6));
+					xmlTree.setTreeId(result.getInt(7));
+					xmlTree.setIsFull(result.getInt(8) == 1);
 					return xmlTree;
 				}
 			} catch (ParseException e) {
@@ -75,7 +77,7 @@ public class ProjectTreeXmlRepository {
 	}
 	
 	public TreeXml createXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
-		final String sql = "INSERT INTO PROJECTTREEXML (CREATION_TIME, uid, treeid, xmlstring, fullflag) VALUES (?, ?, ?, ?, ?)";
+		final String sql = "INSERT INTO PROJECTTREEXML (CREATION_TIME, uid, treeid, xmlstring, fullflag, title) VALUES (?, ?, ?, ?, ?, ?)";
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -89,7 +91,7 @@ public class ProjectTreeXmlRepository {
 			} else {
 				preparedStatement.setInt(5, 0);
 			}
-
+			preparedStatement.setString(6,  xmlTree.getTitle());
 			preparedStatement.executeUpdate();
 
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {

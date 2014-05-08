@@ -16,7 +16,7 @@ import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.manager.importexport.ConsumerImportExportManager;
 import cdar.pl.controller.StatusHelper;
 
-@Path("ptrees/{treeid}/simpleexport")
+@Path("ptrees/{treeid}/exports")
 public class ProjectTreeSimpleExportController {
 	ConsumerImportExportManager ciem = new ConsumerImportExportManager();
 
@@ -34,8 +34,11 @@ public class ProjectTreeSimpleExportController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addXmlTree(@HeaderParam("uid") int uid, @PathParam("treeid") int treeId, TreeXml treeXml) {
 		try {
-			//check if simple or not
-			return StatusHelper.getStatusCreated(ciem.addXmlTreeSimple(uid, treeId));
+			if (treeXml.getIsFull()) {
+				return StatusHelper.getStatusCreated(ciem.addXmlTreeFull(uid, treeId, treeXml.getTitle()));
+			} else {
+				return StatusHelper.getStatusCreated(ciem.addXmlTreeSimple(uid, treeId, treeXml.getTitle()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return StatusHelper.getStatusBadRequest();
@@ -53,12 +56,24 @@ public class ProjectTreeSimpleExportController {
 		}
 	}
 	
+	@GET
+	@Path("{xmltreeid}/set")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setXmlTree(@PathParam("xmltreeid") int xmlTreeId) {
+		try {
+			ciem.setXmlTree(xmlTreeId);
+			return StatusHelper.getStatusOk(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteXmlTree(TreeXml treeXml) {
 		try {
-			System.out.println("ok");
 			ciem.deleteXmlTree(treeXml.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {

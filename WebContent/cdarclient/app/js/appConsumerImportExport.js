@@ -5,6 +5,9 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			$scope.projecttree = "";
 			$scope.xmlTrees = "";
 			
+			$scope.newSimpleTreeName = "";
+			$scope.newFullTreeName = "";
+			
 			TreeService.getTree({
 				entity1 : 'ptrees',
 				id1 : $routeParams.treeId
@@ -19,12 +22,11 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			});
 			
 			var reloadXmlTrees = function() {
-					TreeService.getSimpleExports({
+					TreeService.getExports({
 					entity1 : 'ptrees',
 					id1 : $routeParams.treeId
 				}, function(response) {
 					$scope.xmlTrees = response;
-					alert(JSON.stringify($scope.xmlTrees));
 				}, function(error) {
 					noty({
 						type : 'alert',
@@ -32,10 +34,10 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 						timeout : 1500
 					});
 				});
-			}
+			};
 			
 			$scope.deleteXmlTree = function(xmlTreeId) {
-				TreeService.deleteSimpleExport({
+				TreeService.deleteExport({
 					entity1 : 'ptrees',
 					id1 : $routeParams.treeId,
 				}, { id : xmlTreeId}, function(response) {
@@ -46,15 +48,28 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 						text : 'cannot delete tree',
 						timeout : 1500
 					});
-				})
+				});
+			};
+			
+			$scope.setXmlTree = function(xmlTreeId) {
+				TreeService.setExport({
+					entity1 : 'ptrees',
+					id1 : $routeParams.treeId,
+					id2 : xmlTreeId
+				}, function(response) {
+					alert("ok!");
+				}, function(error) {
+					alert("not ok!");
+				});
 			};
 			
 			$scope.addNewSimpleXmlTree = function() {
-				TreeService.addSimpleExport({
+				TreeService.addExport({
 					entity1: 'ptrees',
 					id1 : $routeParams.treeId
-				}, {id : 1}, function(response) {
+				}, {isFull : false, title : $scope.newSimpleTreeName}, function(response) {
 					reloadXmlTrees();
+					$scope.newSimpleTreeName = "";
 				}, function(error) {
 					noty({
 						type : 'alert',
@@ -62,6 +77,22 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 						timeout : 1500
 					});
 				});			
+			};
+			
+			$scope.addNewFullXmlTree = function() {
+				TreeService.addExport({
+					entity1: 'ptrees',
+					id1 : $routeParams.treeId
+				}, {isFull : true, title : $scope.newFullTreeName}, function(response) {
+					reloadXmlTrees();
+					$scope.newFullTreeName = "";
+				}, function(error) {
+					noty({
+						type : 'alert',
+						text : 'cannot add tree',
+						timeout : 1500
+					});
+				});	
 			};
 			
 			reloadXmlTrees();

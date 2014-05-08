@@ -83,7 +83,7 @@ public class ProjectSubnodeRepository {
 	
 	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
 		final String sql = "INSERT INTO KNOWLEDGEPROJECTSUBNODE (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?)";
-		final String sqlUpdate = "UPDATE KNOWLEDGESUBNODE SET WIKITITLE = ? where id = ?";
+		final String sqlUpdate = "UPDATE KNOWLEDGEPROJECTSUBNODE SET WIKITITLE = ? where id = ?";
 		
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -94,7 +94,7 @@ public class ProjectSubnodeRepository {
 			preparedStatement.setInt(4, projectSubnode.getPosition());
 			preparedStatement.setInt(5, 0);
 			preparedStatement.executeUpdate();
-
+			
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					projectSubnode.setId(generatedKeys.getInt(1));

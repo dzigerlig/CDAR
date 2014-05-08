@@ -88,7 +88,7 @@ public class ProjectNodeRepository {
 			preparedStatement.setInt(3, projectNode.getTreeId());
 			preparedStatement.setString(4, projectNode.getWikititle());
 			preparedStatement.setInt(5, projectNode.getDynamicTreeFlag());
-			preparedStatement.setInt(6, 0);
+			preparedStatement.setInt(6, projectNode.getStatus());
 			
 			preparedStatement.executeUpdate();
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {

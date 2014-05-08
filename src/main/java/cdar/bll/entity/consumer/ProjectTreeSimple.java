@@ -12,8 +12,10 @@ import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
+import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 @XmlRootElement
@@ -26,6 +28,7 @@ public class ProjectTreeSimple {
 		private Set<Comment> comments;
 		
 		private ProjectTreeManager ptm = new ProjectTreeManager();
+		private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		private ProjectNodeManager pnm = new ProjectNodeManager();
 		private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		private ProjectDirectoryManager pdm = new ProjectDirectoryManager();
@@ -33,12 +36,13 @@ public class ProjectTreeSimple {
 		
 		public ProjectTreeSimple() {}
 		
-		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException {
+		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException {
 			setTree(ptm.getProjectTree(treeId));
 			setProjectNodes(pnm.getProjectNodes(treeId));
 			setLinks(pnlm.getProjectNodeLinks(treeId));
 			setDirectories(pdm.getDirectories(treeId));
 			setComments(cm.getCommentsByTree(treeId));
+			setProjectSubnodes(psm.getProjectSubnodesFromProjectTree(treeId));
 		}
 
 		public Tree getTree() {
