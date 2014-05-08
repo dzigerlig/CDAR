@@ -96,5 +96,4 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			};
 			
 			reloadXmlTrees();
-			
 } ]);

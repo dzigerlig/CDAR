@@ -14,6 +14,8 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {
+	private int nodeId;
+	private int subnodeId;
 	private String wikicontentplain;
 	private String wikicontenthtml;
 	private String wikiConnection;
@@ -28,6 +30,7 @@ setWikiConnection();
 				.getWikititle());
 		setWikiConnection();
 		fillWikiContent();
+		setNodeId(node.getId());
 	}
 
 	public WikiEntry(Node node) {
@@ -35,6 +38,7 @@ setWikiConnection();
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikititle());
 		setWikiConnection();
+		setNodeId(node.getId());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
 		if (wec.isKeyInMap(node.getWikititle())) {
 			setWikiContentPlain(wec.getValue(node.getWikititle()));
@@ -49,6 +53,7 @@ setWikiConnection();
 				.getLastModificationTime(), subnode.getTitle(), subnode
 				.getWikititle());
 		fillWikiContent();
+		setSubnodeId(subnode.getId());
 	}
 
 	private void fillWikiContent() {
@@ -57,9 +62,7 @@ setWikiConnection();
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikititle()));
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb,
-					"http://"+wikiConnection+"/images/${image}",
-					"http://"+wikiConnection+"/index.php/${title}");
+			WikiModel.toHtml(getWikiContentPlain(), sb, "http://"+wikiConnection+"/images/${image}", "http://"+wikiConnection+"/index.php/${title}");
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			/*
@@ -102,6 +105,7 @@ setWikiConnection();
 					wikiConnection+"/index.php/${title}");
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new UnknownUserException();
 		}
 		return this;
@@ -118,5 +122,21 @@ setWikiConnection();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public int getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(int nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public int getSubnodeId() {
+		return subnodeId;
+	}
+
+	public void setSubnodeId(int subnodeId) {
+		this.subnodeId = subnodeId;
 	}
 }

@@ -21,8 +21,13 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.TreeXml;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
+import cdar.bll.entity.consumer.ProjectTreeFull;
 import cdar.bll.entity.consumer.ProjectTreeSimple;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
+import cdar.bll.wiki.MediaWikiCreationModel;
+import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.WikiEntry;
+import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
@@ -34,6 +39,7 @@ import cdar.dal.exceptions.UnknownEntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
+import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.exceptions.UnknownTreeException;
@@ -68,6 +74,20 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
+	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+		ProjectTreeFull pts = new ProjectTreeFull(treeId);
+		try {
+			final Marshaller m = JAXBContext.newInstance(ProjectTreeFull.class).createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			final StringWriter w = new StringWriter();
+			m.marshal(pts, w);
+			return w.toString();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public ProjectTreeSimple getProjectTreeSimple(String xmlString) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ProjectTreeSimple.class);
@@ -75,6 +95,19 @@ public class ConsumerImportExportManager {
 			StringReader reader = new StringReader(xmlString);
 			ProjectTreeSimple treeSimple = (ProjectTreeSimple) unmarshaller.unmarshal(reader);
 			return treeSimple;
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private ProjectTreeFull getProjectTreeFull(String xmlString) {
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(ProjectTreeFull.class);
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			StringReader reader = new StringReader(xmlString);
+			ProjectTreeFull treeFull = (ProjectTreeFull) unmarshaller.unmarshal(reader);
+			return treeFull;
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -125,24 +158,123 @@ public class ConsumerImportExportManager {
 		cleanTree(treeXml.getTreeId());
 		
 		if (treeXml.getIsFull()) {
-			//todo setFull
+			setFullXmlTree(treeXml);
 		} else {
 			setSimpleXmlTree(treeXml);
 		}
 	}
 
-	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException {
-		ProjectTreeSimple projectTreeSimple = getProjectTreeSimple(treeXml.getXmlString());
-		
+	private void setFullXmlTree(TreeXml treeXml) throws CreationException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownUserException, EntityException {
+		ProjectTreeFull projectTreeFull = getProjectTreeFull(treeXml.getXmlString());
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		
+		List<Directory> directoryList = new ArrayList<Directory>(projectTreeFull.getDirectories());
+
+		Collections.sort(directoryList, new Comparator<Directory>() {
+			@Override
+			public int compare(Directory directory1, Directory directory2) {
+				return new Integer(directory1.getParentId()).compareTo(directory2.getParentId());
+			}
+		});
+
+		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
+		Map<Integer, String> nodeWikiMapping = new HashMap<Integer, String>();
+		Map<Integer, String> subnodeWikiMapping = new HashMap<Integer, String>();
+
+		for (Directory directory : directoryList) {
+			if (directory.getParentId()==0) {
+				directoryMapping.put(directory.getId(), directory.getId());
+			} else {
+				Directory newDirectory = new Directory();
+				newDirectory.setTitle(directory.getTitle());
+				newDirectory.setTreeId(directory.getTreeId());
+				newDirectory.setParentId(directoryMapping.get(directory.getParentId()));
+				newDirectory = pdm.addDirectory(newDirectory);
+				directoryMapping.put(directory.getId(), newDirectory.getId());
+			}
+		}
+		
+		ProjectNodeRepository pnr = new ProjectNodeRepository();
+
+		Map<Integer, Integer> nodeMapping = new HashMap<Integer, Integer>();
+		if (projectTreeFull.getProjectNodes() != null) {
+			for (ProjectNode node : projectTreeFull.getProjectNodes()) {
+				ProjectNode newNode = new ProjectNode();
+				newNode.setTreeId(node.getTreeId());
+				newNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
+				newNode.setTitle(node.getTitle());
+				newNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
+				newNode.setStatus(node.getStatus());
+				newNode = pnr.createProjectNode(newNode);
+				nodeMapping.put(node.getId(), newNode.getId());
+				nodeWikiMapping.put(node.getId(), newNode.getWikititle());
+			}
+		}
+		
+		ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
+
+		Map<Integer, Integer> subnodeMapping = new HashMap<Integer, Integer>();
+		if (projectTreeFull.getProjectSubnodes() != null) {
+			for (ProjectSubnode subnode : projectTreeFull.getProjectSubnodes()) {
+				ProjectSubnode newProjectSubnode = new ProjectSubnode();
+				newProjectSubnode.setPosition(subnode.getPosition());
+				newProjectSubnode.setTitle(subnode.getTitle());
+				newProjectSubnode.setNodeId(nodeMapping.get(subnode.getNodeId()));
+				newProjectSubnode.setStatus(subnode.getStatus());
+				newProjectSubnode = psr.createProjectSubnode(newProjectSubnode);
+				subnodeMapping.put(subnode.getId(), newProjectSubnode.getId());
+				subnodeWikiMapping.put(subnode.getId(), newProjectSubnode.getWikititle());
+			}
+		}
+		
+		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
+
+		if (projectTreeFull.getLinks() != null) {
+			for (NodeLink nodeLink : projectTreeFull.getLinks()) {
+				NodeLink newNodeLink = new NodeLink();
+				newNodeLink.setTreeId(nodeLink.getTreeId());
+				newNodeLink.setSourceId(nodeMapping.get(nodeLink.getSourceId()));
+				newNodeLink.setTargetId(nodeMapping.get(nodeLink.getTargetId()));
+				if (nodeLink.getSubnodeId() != 0) {
+					newNodeLink.setSubnodeId(subnodeMapping.get(nodeLink.getSubnodeId()));
+				}
+				pnlr.createProjectNodeLink(newNodeLink);
+			}
+		}
+		
+		WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
+		
+		if (projectTreeFull.getWikiEntries() != null) {
+			for (WikiEntry wikiEntry : projectTreeFull.getWikiEntries()) {
+				String wikititle = null;
+				if (wikiEntry.getNodeId()!=0) {
+					wikititle = nodeWikiMapping.get(wikiEntry.getNodeId());
+					
+				}
+				
+				if (wikiEntry.getSubnodeId()!=0) {
+					wikititle = subnodeWikiMapping.get(wikiEntry.getSubnodeId());
+				}
+				
+				String textPlain = wikiEntry.getWikiContentPlain();
+				
+				wikiHelper.addWikiEntry(wikititle, textPlain);
+
+				MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeXml.getUserId(), treeXml.getTreeId(), wikititle, textPlain, wikiHelper);
+				mwm.start();
+			}
+		}
+	}
+
+	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException {
+		ProjectTreeSimple projectTreeSimple = getProjectTreeSimple(treeXml.getXmlString());
+		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		List<Directory> directoryList = new ArrayList<Directory>(projectTreeSimple.getDirectories());
 
 		Collections.sort(directoryList, new Comparator<Directory>() {
 			@Override
 			public int compare(Directory directory1, Directory directory2) {
-				return new Integer(directory1.getParentId())
-						.compareTo(directory2.getParentId());
+				return new Integer(directory1.getParentId()).compareTo(directory2.getParentId());
 			}
 		});
 
@@ -211,9 +343,8 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	public Object addXmlTreeFull(int uid, int treeId, String title) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException {
-		//todo change logic
-		final String xmlString = getTreeSimpleXmlString(treeId);
+	public TreeXml addXmlTreeFull(int uid, int treeId, String title) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+		final String xmlString = getTreeFullXmlString(treeId);
 		TreeXml xmlTree = new TreeXml();
 		xmlTree.setTitle(title);
 		xmlTree.setUserId(uid);
@@ -222,4 +353,5 @@ public class ConsumerImportExportManager {
 		xmlTree.setIsFull(true);
 		return ptxr.createXmlTree(xmlTree);
 	}
+
 }

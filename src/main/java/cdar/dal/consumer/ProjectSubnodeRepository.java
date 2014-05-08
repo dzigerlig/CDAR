@@ -98,7 +98,7 @@ public class ProjectSubnodeRepository {
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					projectSubnode.setId(generatedKeys.getInt(1));
-					if (projectSubnode.getWikititle().isEmpty()) {
+					if (projectSubnode.getWikititle()==null || projectSubnode.getWikititle().isEmpty()) {
 						projectSubnode.setWikititle(String.format("PROJECTSUBNODE_%d", projectSubnode.getId()));
 					}
 				}

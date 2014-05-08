@@ -25,7 +25,7 @@ public class ProjectTreeSimpleExportController {
 	public Response getXmlTrees(@PathParam("treeid") int treeId) {
 		try {
 			return StatusHelper.getStatusOk(ciem.getXmlTrees(treeId));
-		} catch (Exception e) {
+		} catch (Exception e) {  
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -42,7 +42,7 @@ public class ProjectTreeSimpleExportController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return StatusHelper.getStatusBadRequest();
-		}
+		} 
 	}
 	
 	@GET

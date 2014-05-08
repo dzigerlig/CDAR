@@ -6,6 +6,7 @@ import java.util.Set;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.consumer.ProjectNodeRepository;
+import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
@@ -28,7 +29,7 @@ public class ProjectNodeManager {
 		return pnr.getProjectNode(projectNodeId);
 	}
 
-	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException {
+	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException {
 		return pnr.createProjectNode(projectNode);
 	}
 
