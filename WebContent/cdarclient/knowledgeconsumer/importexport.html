@@ -47,13 +47,13 @@
 										<td>{{xmltree.creationTime}}</td>
 										<td>{{xmltree.title}}</td>
 										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
-										<td><a href="{{getXmlFileString(xmltree.id)}}" download="export.xml" target="_blank">Save</a></td>
+										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
 									</tr>
 									<tr>
 										<td colspan="2"></td>
-										<td colspan="3">
-											<form id="formTreeXml" data-role="form" data-ng-submit="addNewSimpleXmlTree()">
+										<td colspan="4">
+											<form id="formTreeXml" data-role="form" data-ng-submit="addNewSimpleXmlTree($scope.newSimpleTreeName)">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="export name" required autofocus data-ng-model="newSimpleTreeName" />
 													<button class="btn btn-success" type="submit">Create new Simple Export</button>
@@ -77,8 +77,9 @@
 									<tr>
 										<th class="col-md-1">#</th>
 										<th class="col-md-1">Date</th>
-										<th class="col-md-5">Title</th>
+										<th class="col-md-3">Title</th>
 										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Export</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
 								</thead>
@@ -88,12 +89,13 @@
 										<td>{{xmltree.creationTime}}</td>
 										<td>{{xmltree.title}}</td>
 										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
+										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
 									</tr>
 									<tr>
 										<td colspan="2"></td>
-										<td colspan="3">
-											<form id="formTreeXml" data-role="form" data-ng-submit="addNewFullXmlTree()">
+										<td colspan="4">
+											<form id="formTreeXml" data-role="form" data-ng-submit="addNewFullXmlTree($scope.newFullTreeName)">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="export name" required autofocus data-ng-model="newFullTreeName" />
 													<button class="btn btn-success" type="submit">Create new Full Export</button>
