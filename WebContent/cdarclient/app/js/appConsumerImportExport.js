@@ -64,6 +64,9 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			};
 			
 			$scope.addNewSimpleXmlTree = function(treetitle, xml) {
+				if (!treetitle) {
+					treetitle = $scope.newSimpleTreeName;
+				}
 				TreeService.addExport({
 					entity1: 'ptrees',
 					id1 : $routeParams.treeId
@@ -80,6 +83,9 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			};
 			
 			$scope.addNewFullXmlTree = function(treetitle, xml) {
+				if (!treetitle) {
+					treetitle = $scope.newFullTreeName;
+				}
 				TreeService.addExport({
 					entity1: 'ptrees',
 					id1 : $routeParams.treeId

@@ -100,6 +100,7 @@ public class ProjectTreeXmlRepository {
 				}
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new UnknownXmlTreeException();
 		}
 		return xmlTree;
