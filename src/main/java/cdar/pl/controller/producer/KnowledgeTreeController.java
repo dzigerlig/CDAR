@@ -1,5 +1,7 @@
 package cdar.pl.controller.producer;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -11,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
 import cdar.pl.controller.StatusHelper;
@@ -82,6 +86,38 @@ public class KnowledgeTreeController {
 		try {
 			SubnodeManager sm = new SubnodeManager();
 			return StatusHelper.getStatusOk(sm.getSubnodesFromTree(treeId));
+		} catch (Exception e) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	@GET
+	@Path("{ktreeid}/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsersWithTreeRight(@PathParam("ktreeid") int treeId) {
+		try {
+			UserManager um = new UserManager();
+			List<User> userList = um.getUsersByTree(treeId);
+			for (User user : um.getUsers()) {
+				if (!userList.contains(user)) {
+					userList.add(user);
+				}
+			}
+			return StatusHelper.getStatusOk(userList);
+		} catch (Exception e) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+
+	@POST
+	@Path("{ktreeid}/users/{uid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setUserRight(@PathParam("ktreeid") int treeId,@PathParam("uid") int userId,User user) {
+		try {	
+			user.setId(userId);
+			UserManager um = new UserManager();
+			um.setProducerUserRight(treeId, user);
+			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

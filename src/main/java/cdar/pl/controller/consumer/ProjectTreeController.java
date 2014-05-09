@@ -126,7 +126,7 @@ public class ProjectTreeController {
 		try {	
 			user.setId(userId);
 			UserManager um = new UserManager();
-			um.setProducerUserRight(treeId, user);
+			um.setConsumerUserRight(treeId, user);
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();

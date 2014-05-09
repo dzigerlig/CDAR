@@ -121,7 +121,6 @@ app.controller("AccessController", [
 			} else {
 				roleEntity = 'ptrees';
 			}
-			console.log(roleEntity);
 			var getAllUsers = function() {
 				TreeService.getAllUsersWithTreeRight({
 					entity1 : roleEntity,
