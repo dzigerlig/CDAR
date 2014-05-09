@@ -36,6 +36,12 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'users'
 					}
+				},'setUserRight' : {
+					headers : customHeaders,
+					method : 'POST',
+					params : {
+						entity2 : 'users',
+					}
 				},
 				// SIMPLEEXPORT
 				'getExports' : {
@@ -857,11 +863,15 @@ app.factory('AuthenticationService', [ '$log', '$resource', '$location', 'UserSe
 					}
 				}),
 				edit : $resource('../webapi/users/:userid', {}, {
-					changepw : {
+					changepw:{
 						method : 'POST',
 						params : {},
-						isArray : false
-					}
+						isArray : false},
+				changeRights:{
+					method : 'POST',
+					params : {},
+					isArray : false}
+
 				}),
 				logout : function() {
 					UserService.removeCookies();
