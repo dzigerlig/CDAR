@@ -27,7 +27,6 @@ import cdar.bll.entity.consumer.ProjectTreeSimple;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
-import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.consumer.ProjectNodeLinkRepository;
@@ -142,18 +141,22 @@ public class ConsumerImportExportManager {
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		CommentManager cm = new CommentManager();
 		
-		for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
-			pnr.deleteProjectNode(projectNode.getId());
-		}
-
-		for (Directory directory : pdm.getDirectories(projectTreeId)) {
-			if (directory.getParentId()!=0) {
-				pdm.deleteDirectory(directory.getId());
+		try {
+			for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
+				pnr.deleteProjectNode(projectNode.getId());
 			}
-		}
-		
-		for (Comment comment : cm.getCommentsByTree(projectTreeId)) {
-			cm.deleteComment(comment.getId());
+	
+			for (Directory directory : pdm.getDirectories(projectTreeId)) {
+				if (directory.getParentId()!=0) {
+					pdm.deleteDirectory(directory.getId());
+				}
+			}
+			
+			for (Comment comment : cm.getCommentsByTree(projectTreeId)) {
+				cm.deleteComment(comment.getId());
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
