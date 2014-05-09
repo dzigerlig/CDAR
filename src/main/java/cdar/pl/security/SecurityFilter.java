@@ -1,6 +1,8 @@
 package cdar.pl.security;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -23,13 +25,20 @@ public class SecurityFilter implements ContainerRequestFilter {
 		final ExtendedUriInfo extendendUriInfo = (ExtendedUriInfo) requestContext
 				.getUriInfo();
 
-		/*if (!extendendUriInfo.getPath().contains("user")) {
+		if (!extendendUriInfo.getPath().contains("user")) {
+			int uid = 0;
+			String accesstoken = null;
+			
 			try {
-				final int uid = Integer.parseInt(requestContext
-						.getHeaderString("uid"));
-				final String accesstoken = requestContext
-						.getHeaderString("accesstoken");
-
+				if (extendendUriInfo.getPath().contains("filexml")) {
+					Map<String, List<String>> queryParameters = extendendUriInfo.getQueryParameters();
+					uid = Integer.parseInt(queryParameters.get("uid").get(0));
+					accesstoken = queryParameters.get("accesstoken").get(0);
+				} else {
+					uid = Integer.parseInt(requestContext.getHeaderString("uid"));
+					accesstoken = requestContext.getHeaderString("accesstoken");
+				}
+			
 				User user = um.getUser(uid);
 
 				if (!user.getAccesstoken().equals(accesstoken)) {
@@ -39,7 +48,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 				ex.printStackTrace();
 				abortRequest(requestContext);
 			}
-		}*/
+		}
 	}
 
 	private void abortRequest(ContainerRequestContext requestContext) {

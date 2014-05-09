@@ -14,6 +14,8 @@ import cdar.bll.entity.Tree;
 import cdar.bll.entity.TreeXml;
 import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.manager.importexport.ConsumerImportExportManager;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{treeid}/exports")
@@ -26,6 +28,18 @@ public class ProjectTreeSimpleExportController {
 		try {
 			return StatusHelper.getStatusOk(ciem.getXmlTrees(treeId));
 		} catch (Exception e) {  
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	@GET
+	@Path("{xmltreeid}/filexml")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getXmlFileString(@PathParam ("xmltreeid") int xmlTreeId) {
+		ConsumerImportExportManager ciem = new ConsumerImportExportManager();
+		try {
+			return StatusHelper.getStatusOk(ciem.getXmlTree(xmlTreeId).getXmlString());
+		} catch (UnknownXmlTreeException | EntityException e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

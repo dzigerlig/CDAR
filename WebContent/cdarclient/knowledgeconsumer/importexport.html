@@ -35,8 +35,9 @@
 									<tr>
 										<th class="col-md-1">#</th>
 										<th class="col-md-1">Date</th>
-										<th class="col-md-5">Title</th>
+										<th class="col-md-3">Title</th>
 										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Export</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
 								</thead>
@@ -46,6 +47,7 @@
 										<td>{{xmltree.creationTime}}</td>
 										<td>{{xmltree.title}}</td>
 										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
+										<td><a href="{{getXmlFileString(xmltree.id)}}" download="export.xml" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
 									</tr>
 									<tr>
@@ -101,6 +103,17 @@
 									</tr>
 								</tbody>
 							</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Import from File</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-append">
+						<input class="form-horizontal" type="file" id="file" name="file"/>
+						<br /><button class="btn btn-success col-md-1" ng-click="add()">Add</button>
 					</div>
 				</div>
 			</div>

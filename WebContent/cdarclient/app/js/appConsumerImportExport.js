@@ -95,5 +95,25 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 				});	
 			};
 			
+			$scope.saveExport = function(xmltree) {
+				alert(JSON.stringify(xmltree));
+			};
+			
+			$scope.add = function() {
+			  var f = document.getElementById('file').files[0],
+			      r = new FileReader();
+			  r.onloadend = function(e){
+			    var data = e.target.result;
+			    //send you binary data via $http or $resource or do anything else with it
+			    alert(data);
+			  }
+			  r.readAsBinaryString(f);
+			}
+			
+			$scope.getXmlFileString = function(xmlId) {
+				//http://localhost:8080/CDAR/webapi/ptrees/4/exports/18/filexml?uid=2&accesstoken=16450de3afd4a11e7d16d3493b8a12e9d4355f72
+				return "../webapi/ptrees/" + $routeParams.treeId + " /exports/" + xmlId + "/filexml?uid=" + UserService.getUserId() + "&accesstoken=" + UserService.getAccesstoken();
+			};
+			
 			reloadXmlTrees();
 } ]);

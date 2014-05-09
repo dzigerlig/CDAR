@@ -14,6 +14,9 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
+import cdar.bll.manager.importexport.ConsumerImportExportManager;
+import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownXmlTreeException;
 
 @Path("users")
 public class UserController {
@@ -49,7 +52,6 @@ public class UserController {
 			return StatusHelper.getStatusUnauthorized();
 		}
 	}
-
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
