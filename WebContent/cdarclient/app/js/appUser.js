@@ -114,9 +114,9 @@ app.controller("AccessController", [
 			// | orderBy:'id':false
 			// TreeService.getUsers().....function(response) { $scope.users =
 			// response; }
-
+			
 			var roleEntity = "";
-			if ($scope.isProducer === true) {
+			if ($scope.isProducer === 'true') {
 				roleEntity = 'ktrees';
 			} else {
 				roleEntity = 'ptrees';
