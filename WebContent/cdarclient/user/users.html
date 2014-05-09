@@ -1,0 +1,77 @@
+<div id="wrapper">
+	<div ng-include src="'templates/navigation.html'"></div>
+
+		<div id="page-content-wrapper">
+			<div class="row">
+				<div class="content-header">
+					<div class="col-md-9">
+						<h1>
+							<a id="menu-toggle" class="btn btn-default"><i
+								class="icon-reorder"></i></a> CDAR - Knowledge Consumer
+						</h1>
+					</div>
+					<div ng-include src="'templates/heading.html'"></div>
+				</div>
+			</div>
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-2">
+						<a class="btn btn-md btn-primary btn-block"
+							data-ng-show="UserService.getIsProducer()=='false'" href="#/projecttree/{{treeId}}">back to projecttree</a>
+							<a class="btn btn-md btn-primary btn-block"
+							data-ng-show="UserService.getIsProducer()=='true'" href="#/projecttree/{{treeId}}">back to projecttree</a>
+					</div>
+					<div class="col-md-10">
+						<p class="lead">Access Right: {{knowledgetree.name}}</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Access Right</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th class="col-md-1">#</th>
+										<th class="col-md-1">Name</th>
+										<th class="col-md-2">Delete access right</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="user in users | filter : { treeaccess : true }">
+										<td>{{$index+1}}</td>
+										<td>{{user.username}}</td>
+										<td data-ng-show="UserService.getUserId()===user.id"><a data-ng-click="removeAccessRight(user.id)" href=""></a></td>
+										<td data-ng-show="UserService.getUserId()!==user.id"><a data-ng-click="removeAccessRight(user.id)" href="">Delete</a></td>
+									</tr>
+										<tr>
+										<td></td>
+											<td colspan="2">
+												<form id="formAddUsers" data-role="form" data-ng-submit="addAccessRight()">
+													<select class="form-horizontal" id="UserList" data-ng-model="selectedUserId">
+														<option style="display:none" value="">select a tree</option>
+														<option
+															data-ng-repeat="user in users| filter : { treeaccess : false }"
+															value="{{user.id}}">{{user.username}}</option>
+													</select>
+													<button class="btn btn-success" type="submit">Add tree</button>
+												</form>
+											</td>
+									</tr>
+								</tbody>
+							</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("active");
+		});
+	</script>

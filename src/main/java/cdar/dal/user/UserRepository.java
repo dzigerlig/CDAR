@@ -189,4 +189,25 @@ public class UserRepository {
 		}
 		return users;
 	}
+
+	public void setProducerUserRight(int treeId, User user)
+			throws UnknownUserException {
+		final String sql;
+		if (user.isTreeaccess()) {
+			sql = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (KPTID, UID) VALUES (?, ?)";
+		} else {
+			sql = "DELETE FROM KNOWLEDGEPROJECTTREEMAPPING WHERE KPTID = ? AND UID = ?";
+		}
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setInt(1, treeId);
+			preparedStatement.setInt(2, user.getId());
+			if (preparedStatement.executeUpdate() != 1) {
+				throw new UnknownUserException();
+			}
+		} catch (Exception ex) {
+			throw new UnknownUserException();
+		}
+	}
 }

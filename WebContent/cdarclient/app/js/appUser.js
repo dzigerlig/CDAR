@@ -110,29 +110,65 @@ app.controller("AccessController", [
 				UserService, TreeService) {
 			$scope.UserService = UserService;
 			$scope.isProducer = UserService.getIsProducer();
-$scope.treeId= $routeParams.treeId;
+			$scope.treeId = $routeParams.treeId;
+			$scope.selectedUserId = "";
 			$scope.users = "";
-			//| orderBy:'id':false
+			// | orderBy:'id':false
 			// TreeService.getUsers().....function(response) { $scope.users =
 			// response; }
 
 			var roleEntity = "";
 			if ($scope.isProducer === true) {
-				roleEntity= 'ktrees';
+				roleEntity = 'ktrees';
 			} else {
-				roleEntity= 'ptrees';
+				roleEntity = 'ptrees';
 			}
-			TreeService.getAllUsersWithTreeRight({
-				entity1 : roleEntity,
-				id1 : $routeParams.treeId
-			}, function(response) {
-				$scope.users = response;
-			}, function(error) {
-				noty({
-					type : 'alert',
-					text : 'error getting subnodes',
-					timeout : 1500
+			var getAllUsers = function() {
+				TreeService.getAllUsersWithTreeRight({
+					entity1 : roleEntity,
+					id1 : $routeParams.treeId
+				}, function(response) {
+					$scope.users = response;
+				}, function(error) {
+					noty({
+						type : 'alert',
+						text : 'error getting subnodes',
+						timeout : 1500
+					});
 				});
-			});
+			}
+			getAllUsers();
+			$scope.addAccessRight = function() {
+				if ($scope.selectedUserId.length !== 0) {
+					TreeService.setUserRight({
+						entity1 : roleEntity,
+						id1 : $routeParams.treeId,
+						id2 : $scope.selectedUserId
+					}, {
+						treeaccess : true
+					}, function(response) {
+						getAllUsers();
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot update node status',
+							timeout : 1500
+						});
+					});
+				}
+			};
+			$scope.removeAccessRight = function(userid) {
+				TreeService.setUserRight({
+					entity1 : roleEntity,
+					id1 : $routeParams.treeId,
+					id2 : userid
+				}, {
+					treeaccess : false
+				}, function(response) {
+					getAllUsers();
+				}, function(error) {
+					alert("access right change failed!");
+				});
+			};
 
 		} ]);
