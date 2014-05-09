@@ -187,7 +187,7 @@ public class ConsumerImportExportManager {
 			} else {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
-				newDirectory.setTreeId(directory.getTreeId());
+				newDirectory.setTreeId(treeXml.getTreeId());
 				newDirectory.setParentId(directoryMapping.get(directory.getParentId()));
 				newDirectory = pdm.addDirectory(newDirectory);
 				directoryMapping.put(directory.getId(), newDirectory.getId());
@@ -200,7 +200,7 @@ public class ConsumerImportExportManager {
 		if (projectTreeFull.getProjectNodes() != null) {
 			for (ProjectNode node : projectTreeFull.getProjectNodes()) {
 				ProjectNode newNode = new ProjectNode();
-				newNode.setTreeId(node.getTreeId());
+				newNode.setTreeId(treeXml.getTreeId());
 				newNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
 				newNode.setTitle(node.getTitle());
 				newNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
@@ -249,7 +249,6 @@ public class ConsumerImportExportManager {
 				String wikititle = null;
 				if (wikiEntry.getNodeId()!=0) {
 					wikititle = nodeWikiMapping.get(wikiEntry.getNodeId());
-					
 				}
 				
 				if (wikiEntry.getSubnodeId()!=0) {
@@ -287,7 +286,7 @@ public class ConsumerImportExportManager {
 			} else {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
-				newDirectory.setTreeId(directory.getTreeId());
+				newDirectory.setTreeId(treeXml.getTreeId());
 				newDirectory.setParentId(directoryMapping.get(directory.getParentId()));
 				newDirectory = pdm.addDirectory(newDirectory);
 				directoryMapping.put(directory.getId(), newDirectory.getId());
@@ -300,7 +299,7 @@ public class ConsumerImportExportManager {
 		if (projectTreeSimple.getProjectNodes() != null) {
 			for (ProjectNode node : projectTreeSimple.getProjectNodes()) {
 				ProjectNode newNode = new ProjectNode();
-				newNode.setTreeId(node.getTreeId());
+				newNode.setTreeId(treeXml.getTreeId());
 				newNode.setDirectoryId(directoryMapping.get(node.getDirectoryId()));
 				newNode.setTitle(node.getTitle());
 				newNode.setWikititle(node.getWikititle());
