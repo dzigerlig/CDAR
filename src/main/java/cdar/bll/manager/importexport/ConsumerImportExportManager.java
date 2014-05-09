@@ -154,7 +154,6 @@ public class ConsumerImportExportManager {
 
 	public void setXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException, UnknownTemplateException, UnknownDirectoryException, UnknownTreeException, CreationException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException, UnknownProjectNodeException   {
 		TreeXml treeXml = getXmlTree(xmlTreeId);
-		
 		cleanTree(treeXml.getTreeId());
 		
 		if (treeXml.getIsFull()) {
@@ -180,10 +179,12 @@ public class ConsumerImportExportManager {
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		Map<Integer, String> nodeWikiMapping = new HashMap<Integer, String>();
 		Map<Integer, String> subnodeWikiMapping = new HashMap<Integer, String>();
+		
+		int rootDirectory = ((Directory)pdm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
 
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
-				directoryMapping.put(directory.getId(), directory.getId());
+				directoryMapping.put(directory.getId(), rootDirectory);
 			} else {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
@@ -232,7 +233,7 @@ public class ConsumerImportExportManager {
 		if (projectTreeFull.getLinks() != null) {
 			for (NodeLink nodeLink : projectTreeFull.getLinks()) {
 				NodeLink newNodeLink = new NodeLink();
-				newNodeLink.setTreeId(nodeLink.getTreeId());
+				newNodeLink.setTreeId(treeXml.getTreeId());
 				newNodeLink.setSourceId(nodeMapping.get(nodeLink.getSourceId()));
 				newNodeLink.setTargetId(nodeMapping.get(nodeLink.getTargetId()));
 				if (nodeLink.getSubnodeId() != 0) {
@@ -265,7 +266,7 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException {
+	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException, EntityException {
 		ProjectTreeSimple projectTreeSimple = getProjectTreeSimple(treeXml.getXmlString());
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		List<Directory> directoryList = new ArrayList<Directory>(projectTreeSimple.getDirectories());
@@ -279,10 +280,11 @@ public class ConsumerImportExportManager {
 
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		
-
+		int rootDirectory = ((Directory)pdm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
+		
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
-				directoryMapping.put(directory.getId(), directory.getId());
+				directoryMapping.put(directory.getId(), rootDirectory);
 			} else {
 				Directory newDirectory = new Directory();
 				newDirectory.setTitle(directory.getTitle());
@@ -327,11 +329,11 @@ public class ConsumerImportExportManager {
 		}
 		
 		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
-
+		
 		if (projectTreeSimple.getLinks() != null) {
 			for (NodeLink nodeLink : projectTreeSimple.getLinks()) {
 				NodeLink newNodeLink = new NodeLink();
-				newNodeLink.setTreeId(nodeLink.getTreeId());
+				newNodeLink.setTreeId(treeXml.getTreeId());
 				newNodeLink.setSourceId(nodeMapping.get(nodeLink.getSourceId()));
 				newNodeLink.setTargetId(nodeMapping.get(nodeLink.getTargetId()));
 				if (nodeLink.getSubnodeId() != 0) {
