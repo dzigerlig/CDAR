@@ -20,9 +20,7 @@ app.controller("LoginController", [ '$scope', '$location',
 					UserService.setUsername(response.username);
 					UserService.setAccesstoken(response.accesstoken);
 					UserService.setUserId(response.id);
-
-					customHeaders.uid = response.id;
-					customHeaders.accesstoken = response.accesstoken;
+CDAR.setCustomHeader(response.id,response.accesstoken);
 
 					if ($scope.chkbKnowledgeProducer) {
 						UserService.setIsProducer('true');

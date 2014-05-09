@@ -1,8 +1,20 @@
-//workaround used for ressource service headers
-var customHeaders = {
-		'uid': 'none',
-		'accesstoken': 'no-token'
-};
+var CDAR = (function() {
+	var customHeaders = {
+			'uid': 'none',
+			'accesstoken': 'no-token'
+	};
+	
+	return{ 
+		getCustomHeader: function(){
+			return customHeaders;
+		}
+        ,setCustomHeader: function(uid,accesstoken){
+            customHeaders.accesstoken=accesstoken;
+            customHeaders.uid=uid;
+        }
+	};	
+})();
+
 
 var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
 
@@ -97,8 +109,7 @@ app.run(function ($rootScope, $location, editableOptions, UserService) {
         event.preventDefault();
     });
     
-    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
-    
-    customHeaders.uid = UserService.getUserId();
-    customHeaders.accesstoken = UserService.getAccesstoken();
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2',
+									// 'default'
+    CDAR.setCustomHeader(UserService.getUserId(),UserService.getAccesstoken());
 });
