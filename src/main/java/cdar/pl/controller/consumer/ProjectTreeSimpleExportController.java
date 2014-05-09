@@ -49,9 +49,9 @@ public class ProjectTreeSimpleExportController {
 	public Response addXmlTree(@HeaderParam("uid") int uid, @PathParam("treeid") int treeId, TreeXml treeXml) {
 		try {
 			if (treeXml.getIsFull()) {
-				return StatusHelper.getStatusCreated(ciem.addXmlTreeFull(uid, treeId, treeXml.getTitle()));
+				return StatusHelper.getStatusCreated(ciem.addXmlTreeFull(uid, treeId, treeXml.getTitle(), treeXml.getXmlString()));
 			} else {
-				return StatusHelper.getStatusCreated(ciem.addXmlTreeSimple(uid, treeId, treeXml.getTitle()));
+				return StatusHelper.getStatusCreated(ciem.addXmlTreeSimple(uid, treeId, treeXml.getTitle(), treeXml.getXmlString()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
