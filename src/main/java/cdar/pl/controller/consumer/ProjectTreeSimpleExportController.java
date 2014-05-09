@@ -71,6 +71,19 @@ public class ProjectTreeSimpleExportController {
 		}
 	}
 	
+	@POST
+	@Path("{xmltreeid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateXmlTree(TreeXml treeXml) {
+		try {
+			return StatusHelper.getStatusOk(ciem.updateXmlTree(treeXml));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
 	@GET
 	@Path("{xmltreeid}/set")
 	@Produces(MediaType.APPLICATION_JSON)

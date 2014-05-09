@@ -66,7 +66,15 @@ app.factory('TreeService',['$resource', function($resource) {
 					params : {
 						entity2 : 'exports'
 					}
-				}, 'deleteExport' : {
+				},
+				'updateExport' : {
+					headers : CDAR.getCustomHeader(),
+					method : 'POST',
+					params : {
+						entity2 : 'exports'
+					}
+				},
+				'deleteExport' : {
 					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {

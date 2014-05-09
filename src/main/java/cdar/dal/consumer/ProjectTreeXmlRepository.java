@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cdar.bll.entity.Tree;
 import cdar.bll.entity.TreeXml;
 import cdar.dal.DBConnection;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownEntityException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
@@ -117,5 +119,38 @@ public class ProjectTreeXmlRepository {
 		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();
 		}
+	}
+	
+	
+//	public Tree updateProjectTree(Tree projectTree) throws UnknownProjectTreeException {
+//		final String sql = "UPDATE KNOWLEDGEPROJECTTREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
+//		try (Connection connection = DBConnection.getConnection();
+//				PreparedStatement preparedStatement = connection
+//						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+//			preparedStatement.setString(1, DateHelper.getDate(new Date()));
+//			preparedStatement.setString(2, projectTree.getTitle());
+//			preparedStatement.setInt(3, projectTree.getId());
+//
+//			preparedStatement.executeUpdate();
+//		} catch (Exception ex) {
+//			throw new UnknownProjectTreeException();
+//		}
+//		return projectTree;
+//	}
+
+	public TreeXml updateXmlTree(TreeXml updatedTreeXml) throws UnknownXmlTreeException {
+		final String sql = "UPDATE PROJECTTREEXML SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
+			preparedStatement.setString(2, updatedTreeXml.getTitle());
+			preparedStatement.setInt(3, updatedTreeXml.getId());
+
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			throw new UnknownXmlTreeException();
+		}
+		return updatedTreeXml;
 	}
 }

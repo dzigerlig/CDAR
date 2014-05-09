@@ -60,7 +60,7 @@
 									<tr data-ng-repeat="xmltree in xmlTrees | orderBy:'id':false | filter : { isFull : false }" >
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
-										<td>{{xmltree.title}}</td>
+										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
 										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
@@ -102,7 +102,7 @@
 									<tr data-ng-repeat="xmltree in xmlTrees | orderBy:'id':false | filter : { isFull : true }" >
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
-										<td>{{xmltree.title}}</td>
+										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
 										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>

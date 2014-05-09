@@ -63,7 +63,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     		entity1 : 'ptrees',
     		id1 : tree.id
     	}, tree, function(response) {}, function(error) {
-    		tree.title = oldTitle;
+    		 reloadTrees();
 			noty({
 				type : 'alert',
 				text : 'error while saving tree title',

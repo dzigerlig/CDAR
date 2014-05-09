@@ -47,7 +47,6 @@ import cdar.dal.exceptions.UnknownTemplateException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
-import cdar.dal.producer.NodeRepository;
 
 public class ConsumerImportExportManager {
 	public ProjectTreeXmlRepository ptxr = new ProjectTreeXmlRepository();
@@ -364,6 +363,14 @@ public class ConsumerImportExportManager {
 		xmlTree.setXmlString(xmlString);
 		xmlTree.setIsFull(true);
 		return ptxr.createXmlTree(xmlTree);
+	}
+
+	public TreeXml updateXmlTree(TreeXml treeXml) throws UnknownXmlTreeException, EntityException {
+		TreeXml updatedTreeXml = ptxr.getXmlTree(treeXml.getId());
+		if (treeXml.getTitle()!=null) {
+			updatedTreeXml.setTitle(treeXml.getTitle());
+		}
+		return ptxr.updateXmlTree(updatedTreeXml);
 	}
 
 }

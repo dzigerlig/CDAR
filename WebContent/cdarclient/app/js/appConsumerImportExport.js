@@ -51,6 +51,26 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 				});
 			};
 			
+			 $scope.saveXmlTreeTitle = function(data, treeId) {
+				 var xmltree = $.grep($scope.xmlTrees, function(t) {
+			    		return t.id === treeId;
+			    	})[0];
+			    
+			    	xmltree.title = data;
+				 
+			    	TreeService.updateExport({
+						entity1 : 'ptrees',
+						id1 : $routeParams.treeId,
+						id2 : treeId
+					}, xmltree, function(response) { }, function(error) {
+						noty({
+							type : 'alert',
+							text : 'error while saving title',
+							timeout : 1500
+						});
+					});
+			    };
+			
 			$scope.importTitle = "";
 			$scope.importId = "";
 			
