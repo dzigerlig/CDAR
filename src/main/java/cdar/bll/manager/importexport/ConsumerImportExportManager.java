@@ -23,6 +23,7 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.entity.consumer.ProjectTreeFull;
 import cdar.bll.entity.consumer.ProjectTreeSimple;
+import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.MediaWikiModel;
@@ -137,6 +138,7 @@ public class ConsumerImportExportManager {
 	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException {
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+		CommentManager cm = new CommentManager();
 		
 		for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
 			pnr.deleteProjectNode(projectNode.getId());
@@ -147,7 +149,8 @@ public class ConsumerImportExportManager {
 				pdm.deleteDirectory(directory.getId());
 			}
 		}
-
+		
+		for (C)
 		//todo
 		//Comments
 	}

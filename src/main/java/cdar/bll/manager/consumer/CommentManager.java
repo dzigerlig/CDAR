@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.entity.consumer.Comment;
+import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.consumer.CommentRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownCommentException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class CommentManager {
 	private CommentRepository cr = new CommentRepository();
@@ -22,11 +24,13 @@ public class CommentManager {
 		return comments;
 	}
 	
-	public Set<Comment> getCommentsByTree(int treeId) {
+	public Set<Comment> getCommentsByTree(int treeId) throws UnknownProjectTreeException, EntityException {
 		Set<Comment> comments = new HashSet<Comment>();
 		
-		for (Comment comment : cr.getCommentsByTree(treeId)) {
-			comments.add(comment);
+		ProjectNodeManager pnm = new ProjectNodeManager();
+		
+		for (ProjectNode projectNode : pnm.getProjectNodes(treeId)) {
+			comments.addAll(getComments(projectNode.getId()));
 		}
 		
 		return comments;
