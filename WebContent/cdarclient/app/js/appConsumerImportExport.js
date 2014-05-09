@@ -117,8 +117,6 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 				if (data.indexOf("projectTreeSimple") > -1) {
 					$scope.addNewSimpleXmlTree("imported xml", data);
 				};
-			    
-			    alert(data);
 			  }
 			  r.readAsBinaryString(f);
 			}
