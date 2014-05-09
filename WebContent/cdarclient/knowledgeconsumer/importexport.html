@@ -23,6 +23,21 @@
 						<p class="lead">Import/Export: {{knowledgetree.name}}</p>
 					</div>
 				</div>
+				
+				<div class="row">
+					<div class="col-md-12">
+						<h1>Import from File</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<input class="btn form-horizontal" type="file" id="file" name="file"/>
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-success col-md-3" ng-click="add()">Add</button>
+					</div>
+				</div>
+				
 				<div class="row">
 					<div class="col-md-12">
 						<h1>Simple Import/Export (with Wiki-References)</h1>
@@ -46,7 +61,7 @@
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
 										<td>{{xmltree.title}}</td>
-										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
+										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
 									</tr>
@@ -78,7 +93,7 @@
 										<th class="col-md-1">#</th>
 										<th class="col-md-1">Date</th>
 										<th class="col-md-3">Title</th>
-										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Import</th>
 										<th class="col-md-2">Export</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
@@ -88,7 +103,7 @@
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
 										<td>{{xmltree.title}}</td>
-										<td><a data-ng-click="setXmlTree(xmltree.id)" href="">Set this one</a></td>
+										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
 									</tr>
@@ -107,20 +122,33 @@
 							</table>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<h1>Import from File</h1>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-append">
-						<input class="form-horizontal" type="file" id="file" name="file"/>
-						<br /><button class="btn btn-success col-md-1" ng-click="add()">Add</button>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
+	
+	<div id="importTreeModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-sm">
+       <div class="modal-content">
+ 
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+           <h4 class="modal-title" id="modalLabel">Import XML Tree: {{importTitle}}</h4>
+         </div>
+         <div class="modal-body">
+	         <div class="panel panel-default">
+				  <div class="panel-body">
+				    Do you want to overwrite your existing tree?
+				  </div>
+				</div>
+ 	        <div class="alert alert-warning">If the selected export data is corrupted, your current tree may be gone forever!</div>
+ 	        
+ 			<a href="" class="btn btn-primary" type="submit" data-ng-click="setExport(true)">YES</a>
+ 			<a href="" class="btn btn-success" type="submit" data-ng-click="setExport(false)">NO</a>
+ 			<a href="" class="btn btn-default" data-dismiss="modal">Cancel</a>
+         </div>
+       </div>
+     </div>
+   </div>
 
 	<script>
 		$("#menu-toggle").click(function(e) {

@@ -7,6 +7,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -73,9 +74,9 @@ public class ProjectTreeSimpleExportController {
 	@GET
 	@Path("{xmltreeid}/set")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setXmlTree(@PathParam("xmltreeid") int xmlTreeId) {
+	public Response setXmlTree(@PathParam("xmltreeid") int xmlTreeId, @QueryParam("cleantree") boolean cleantree) {
 		try {
-			ciem.setXmlTree(xmlTreeId);
+			ciem.setXmlTree(xmlTreeId, cleantree);
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
 			e.printStackTrace();

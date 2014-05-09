@@ -19,6 +19,7 @@ import javax.xml.bind.Unmarshaller;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.TreeXml;
+import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.entity.consumer.ProjectTreeFull;
@@ -35,6 +36,7 @@ import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeXmlRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownEntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -135,7 +137,7 @@ public class ConsumerImportExportManager {
 	}
 
 
-	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException {
+	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		CommentManager cm = new CommentManager();
@@ -150,14 +152,17 @@ public class ConsumerImportExportManager {
 			}
 		}
 		
-		for (C)
-		//todo
-		//Comments
+		for (Comment comment : cm.getCommentsByTree(projectTreeId)) {
+			cm.deleteComment(comment.getId());
+		}
 	}
 
-	public void setXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException, UnknownTemplateException, UnknownDirectoryException, UnknownTreeException, CreationException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException, UnknownProjectNodeException   {
+	public void setXmlTree(int xmlTreeId, boolean cleanTree) throws UnknownXmlTreeException, EntityException, UnknownTemplateException, UnknownDirectoryException, UnknownTreeException, CreationException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException   {
 		TreeXml treeXml = getXmlTree(xmlTreeId);
-		cleanTree(treeXml.getTreeId());
+		
+		if (cleanTree) {
+			cleanTree(treeXml.getTreeId());
+		}
 		
 		if (treeXml.getIsFull()) {
 			setFullXmlTree(treeXml);

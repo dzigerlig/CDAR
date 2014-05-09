@@ -1,5 +1,5 @@
-app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
+app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location) {
 			$scope.UserService = UserService;
 			
 			$scope.projecttree = "";
@@ -51,15 +51,39 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 				});
 			};
 			
-			$scope.setXmlTree = function(xmlTreeId) {
+			$scope.importTitle = "";
+			$scope.importId = "";
+			
+			$scope.showImportTreeModal = function(title, treeId) {
+				$scope.importTitle = title;
+				$scope.importId = treeId;
+				$('#importTreeModal').modal().show();
+			};
+			
+			$scope.setExport = function(cleanBool) { 
+				setXmlTree($scope.importId, cleanBool);
+				$('#importTreeModal').modal('hide');
+			};
+			
+			var setXmlTree = function(xmlTreeId, cleanBool) {
 				TreeService.setExport({
 					entity1 : 'ptrees',
 					id1 : $routeParams.treeId,
-					id2 : xmlTreeId
+					id2 : xmlTreeId,
+					cleantree : cleanBool
 				}, function(response) {
-					alert("ok!");
+					noty({
+						type : 'success',
+						text : "Import successfully",
+						timeout : 1500
+					});
+					$location.path('/projecttree/' + $routeParams.treeId);
 				}, function(error) {
-					alert("not ok!");
+					noty({
+						type : 'alert',
+						text : "Couldn't import :'" + $scope.importTitle + "'successfully",
+						timeout : 1500
+					});
 				});
 			};
 			
@@ -72,6 +96,11 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 					id1 : $routeParams.treeId
 				}, {isFull : false, title : treetitle, xmlString : xml}, function(response) {
 					reloadXmlTrees();
+					noty({
+						type : 'success',
+						text : 'Export "' + treetitle + '" added successfully!',
+						timeout : 1500
+					});
 					$scope.newSimpleTreeName = "";
 				}, function(error) {
 					noty({
@@ -91,6 +120,11 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 					id1 : $routeParams.treeId
 				}, {isFull : true, title : treetitle, xmlString : xml}, function(response) {
 					reloadXmlTrees();
+					noty({
+						type : 'success',
+						text : 'Export "' + treetitle + '" added successfully!',
+						timeout : 1500
+					});
 					$scope.newFullTreeName = "";
 				}, function(error) {
 					noty({
@@ -99,10 +133,6 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 						timeout : 1500
 					});
 				});	
-			};
-			
-			$scope.saveExport = function(xmltree) {
-				alert(JSON.stringify(xmltree));
 			};
 			
 			$scope.add = function() {
