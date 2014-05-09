@@ -228,7 +228,6 @@ var myJsPlumb = (function() {
 
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
-			console.log(isInizialized);
 			if (!isInizialized) {
 				myJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
@@ -495,7 +494,6 @@ var myJsPlumb = (function() {
 		},
 
 		detachNode : function(id) {
-			console.log(id);
 			var newState = $('#' + NODE + id);
 			if (newState.size() !== 0) {
 				var connections = getConnections(newState);

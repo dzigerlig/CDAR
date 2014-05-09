@@ -3,41 +3,41 @@ app.factory('TreeService',['$resource', function($resource) {
 			{}, {
 				//TREES
 				'getTrees' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 				}, 'addTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST'
 				}, 'getTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false
 				}, 'updateTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST'
 				}, 'deleteTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						action : 'delete'
 					}
 				}, 'copyTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						action : 'copy'
 					}
 				},
 				'getAllUsersWithTreeRight' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity2 : 'users'
 					}
 				},'setUserRight' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'users',
@@ -45,7 +45,7 @@ app.factory('TreeService',['$resource', function($resource) {
 				},
 				// SIMPLEEXPORT
 				'getExports' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -53,7 +53,7 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				},
 				'setExport' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						entity2 : 'exports',
@@ -61,13 +61,13 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				},
 				'addExport' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'exports'
 					}
 				}, 'deleteExport' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'exports',
@@ -77,33 +77,33 @@ app.factory('TreeService',['$resource', function($resource) {
 				
 				//DIRECTORIES
 				'getDirectories' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity2 : 'directories'
 					}
 				}, 'addDirectory' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'directories'
 					}
 				}, 'getDirectory' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false,
 					params : {
 						entity2 : 'directories'
 					}
 				}, 'updateDirectory' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'directories'
 					}
 				}, 'deleteDirectory' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'directories',
@@ -112,61 +112,61 @@ app.factory('TreeService',['$resource', function($resource) {
 				},
 				//NODES
 				'getNodes' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method  : 'GET',
 					isArray : true,
 					params : {
 						entity2 : 'nodes'
 					}
 				}, 'addNode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes'
 					}
 				}, 'getNode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false,
 					params : {
 						entity2 : 'nodes'
 					}
 				}, 'updateNode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes'
 					}
 				}, 'deleteNode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
 						action : 'delete'
 					}
 				}, 'getNodeWiki' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						entity2 : 'nodes',
 						action : 'wiki'
 					}
 				}, 'renameNode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
 						action : 'rename'
 					}
 				}, 'updateNodeWiki' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
 						action : 'wiki'
 					}
 				}, 'nodeZoomUp' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -174,7 +174,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'zoomup'
 					}
 				}, 'nodeZoomDown' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -184,7 +184,7 @@ app.factory('TreeService',['$resource', function($resource) {
 				},
 				//SUBNODES
 				'getSubnodes' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method  : 'GET',
 					isArray : true,
 					params : {
@@ -192,21 +192,21 @@ app.factory('TreeService',['$resource', function($resource) {
 						entity3 : 'subnodes'
 					}
 				},'getSubnodesFromTree' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method  : 'GET',
 					isArray : true,
 					params : {
 						entity2 : 'subnodes'
 					}
 				}, 'addSubnode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
 						entity3 : 'subnodes'
 					}
 				}, 'getSubnode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false,
 					params : {
@@ -214,14 +214,14 @@ app.factory('TreeService',['$resource', function($resource) {
 						entity3 : 'subnodes'
 					}
 				}, 'updateSubnode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
 						entity3 : 'subnodes'
 					}
 				}, 'deleteSubnode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
@@ -229,7 +229,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'delete'
 					}
 				}, 'getSubnodeWiki' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						entity2 : 'nodes',
@@ -237,7 +237,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'wiki'
 					}
 				}, 'updateSubnodeWiki' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
@@ -245,7 +245,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'wiki'
 					}
 				}, 'subnodeZoomUp' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -254,7 +254,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'zoomup'
 					}
 				}, 'subnodeZoomDown' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -263,7 +263,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'zoomdown'
 					}
 				}, 'renameSubnode' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'nodes',
@@ -273,7 +273,7 @@ app.factory('TreeService',['$resource', function($resource) {
 				}, 
 				//LINKS
 				'getLinks' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -281,13 +281,13 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 				},
 				'addLink' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'links'
 					}
 				}, 'deleteLink' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'links',
@@ -295,13 +295,13 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 					
 				},'updateLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'links'
 					}
 				}, 'linkZoomDown' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -310,7 +310,7 @@ app.factory('TreeService',['$resource', function($resource) {
 						action : 'zoomdown'
 					}
 				}, 'linkZoomUp' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -321,34 +321,34 @@ app.factory('TreeService',['$resource', function($resource) {
 				}, 
 				//Templates
 				'getTemplates' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
 						entity2 : 'templates'
 					}
 				}, 'addTemplate' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'templates'
 					}
 				}, 'getTemplate' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false,
 					params : {
 						entity2 : 'templates'
 					}
 				}, 'updateTemplate' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'templates'
 					}
 					
 				}, 'deleteTemplate' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'templates',
@@ -357,7 +357,7 @@ app.factory('TreeService',['$resource', function($resource) {
 				}, 
 				//Comments
 				'getComments' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -365,14 +365,14 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 					
 				}, 'addComment' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'comments'
 					}
 					
 				}, 'getComment' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -380,14 +380,14 @@ app.factory('TreeService',['$resource', function($resource) {
 					}
 					
 				}, 'updateComment' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'comments'
 					}
 					
 				}, 'deleteComment' : {
-					headers : customHeaders,
+					headers : CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity2 : 'comments',
@@ -404,33 +404,33 @@ app.factory('TreeService',['$resource', function($resource) {
 //			return $resource('../webapi/ptree/:treeid/:action/:ktreeid/',
 //					{}, {
 //						'getTrees' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'GET',
 //							isArray : true
 //						},
 //						'addTree' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'POST',
 //							params : {
 //								action : 'add'
 //							}
 //						},
 //						'removeTree' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'POST',
 //							params : {
 //								action : 'delete'
 //							}
 //						},
 //						'getTree' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'GET',
 //							isArray : false
 //						},
 //
 //						// action: nodes?
 //						'getNodes' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'GET',
 //							params : {
 //								action : "nodes"
@@ -438,7 +438,7 @@ app.factory('TreeService',['$resource', function($resource) {
 //							isArray : true
 //						},
 //						'copyTree' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'GET',
 //							isArray : false,
 //							params : {
@@ -455,11 +455,11 @@ app.factory('TreeService',['$resource', function($resource) {
 //			return $resource('../webapi/wiki/:role/:entity/:nodeid/', {},
 //					{
 //						'getWikiEntry' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'GET'
 //						},
 //						'postEntry' : {
-//							headers: customHeaders,
+//							headers: CDAR.getCustomHeader(),
 //							method : 'POST'
 //						}
 //					});
@@ -473,12 +473,12 @@ app.factory('ProducerTreeService', [
 				// Tree
 
 				'getTrees' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true
 				},
 				'addTree' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'tree',
@@ -486,7 +486,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'renameTree' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'tree',
@@ -494,20 +494,20 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'removeTree' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						action : 'delete'
 					}
 				},
 				'getTree' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {}
 				},
 				// EXPORT export/simple/{ktreeid}
 				'getXmlTreesSimple' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -515,7 +515,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'removeXmlTreeSimple' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'simpleexport',
@@ -523,7 +523,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'setXmlTreeSimple' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'singleexport',
@@ -531,7 +531,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'addXmlTreeSimple' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						entity : 'simpleexport',
@@ -541,7 +541,7 @@ app.factory('ProducerTreeService', [
 
 				// Directories
 				'getDirectories' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -549,7 +549,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'addDirectory' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'directories',
@@ -557,7 +557,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'deleteDirectory' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'directories',
@@ -565,7 +565,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'renameDirectory' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'directories',
@@ -574,7 +574,7 @@ app.factory('ProducerTreeService', [
 				},
 
 				'moveDirectory' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'directories',
@@ -584,7 +584,7 @@ app.factory('ProducerTreeService', [
 
 				// Nodes
 				'getNodes' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -592,14 +592,14 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'getNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					params : {
 						entity : 'nodes'
 					}
 				},
 				'addNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -607,7 +607,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'deleteNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -615,7 +615,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'dropNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -623,7 +623,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'renameNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -631,7 +631,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'undropNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -640,7 +640,7 @@ app.factory('ProducerTreeService', [
 				},
 
 				'moveNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'nodes',
@@ -648,7 +648,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'zoomUpNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -657,7 +657,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'zoomDownNode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -668,7 +668,7 @@ app.factory('ProducerTreeService', [
 
 				// Links
 				'getLinks' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -676,7 +676,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'addLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'links',
@@ -684,7 +684,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'deleteLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'links',
@@ -692,7 +692,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'updateLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'links',
@@ -701,7 +701,7 @@ app.factory('ProducerTreeService', [
 				},
 				
 				'zoomUpLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -710,7 +710,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'zoomDownLink' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -721,7 +721,7 @@ app.factory('ProducerTreeService', [
 
 				// Templates
 				'getTemplates' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -729,7 +729,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'getTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : false,
 					params : {
@@ -737,7 +737,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'addTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -745,7 +745,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'editTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -753,7 +753,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'renameTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'templates',
@@ -761,7 +761,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'setDefaultTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					isArray : true,
 					params : {
@@ -771,7 +771,7 @@ app.factory('ProducerTreeService', [
 				},
 				// Subnodes
 				'getSubnodes' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -779,7 +779,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'addSubnode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -787,7 +787,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'renameSubnode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -795,7 +795,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'moveSubnodeUp' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -803,7 +803,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'moveSubnodeDown' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -811,7 +811,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'deleteSubnode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'subnodes',
@@ -819,14 +819,14 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'deleteTemplate' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'POST',
 					params : {
 						entity : 'templates',
 						action : 'delete'
 					}
 				},'zoomUpSubnode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -835,7 +835,7 @@ app.factory('ProducerTreeService', [
 					}
 				},
 				'zoomDownSubnode' : {
-					headers: customHeaders,
+					headers: CDAR.getCustomHeader(),
 					method : 'GET',
 					isArray : true,
 					params : {
@@ -911,8 +911,7 @@ app.factory('UserService', [ '$location', '$cookieStore', function($location, $c
 			$cookieStore.put('cdarProducer', val);
 		},
 		removeCookies : function() {
-			customHeaders.uid = 'none';
-			customHeaders.accesstoken = 'no-token';
+			CDAR.setCustomHeader('none','no-token');
 			$cookieStore.remove('cdarUsername');
 			$cookieStore.remove('cdarAccesstoken');
 			$cookieStore.remove('cdarId');

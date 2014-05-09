@@ -194,6 +194,26 @@ public class UserRepository {
 			throws UnknownUserException {
 		final String sql;
 		if (user.isTreeaccess()) {
+			sql = "INSERT INTO KNOWLEDGETREEMAPPING (KTID, UID) VALUES (?, ?)";
+		} else {
+			sql = "DELETE FROM KNOWLEDGETREEMAPPING WHERE KTID = ? AND UID = ?";
+		}
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setInt(1, treeId);
+			preparedStatement.setInt(2, user.getId());
+			if (preparedStatement.executeUpdate() != 1) {
+				throw new UnknownUserException();
+			}
+		} catch (Exception ex) {
+			throw new UnknownUserException();
+		}
+	}
+
+	public void setConsumerUserRight(int treeId, User user) throws UnknownUserException {
+		final String sql;
+		if (user.isTreeaccess()) {
 			sql = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (KPTID, UID) VALUES (?, ?)";
 		} else {
 			sql = "DELETE FROM KNOWLEDGEPROJECTTREEMAPPING WHERE KPTID = ? AND UID = ?";
@@ -208,6 +228,6 @@ public class UserRepository {
 			}
 		} catch (Exception ex) {
 			throw new UnknownUserException();
-		}
+		}		
 	}
 }

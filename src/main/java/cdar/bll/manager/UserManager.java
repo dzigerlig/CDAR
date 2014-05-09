@@ -114,7 +114,11 @@ public class UserManager {
 		return userRepository.getUsersByTree(treeId);
 	}
 
+	public void setConsumerUserRight(int treeId, User user) throws UnknownUserException {
+		userRepository.setConsumerUserRight(treeId, user);		
+	}
+
 	public void setProducerUserRight(int treeId, User user) throws UnknownUserException {
-		userRepository.setProducerUserRight(treeId, user);		
+		userRepository.setProducerUserRight(treeId, user);				
 	}
 }
