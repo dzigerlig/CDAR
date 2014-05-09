@@ -4,8 +4,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.UserService = UserService;
     $scope.projecttree = "";
     
-    UserService.setIsProducer('false');
-    
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
     
