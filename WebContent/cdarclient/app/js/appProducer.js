@@ -12,7 +12,7 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 			$scope.newTreeName = "";
 			$scope.UserService = UserService;
 			
-			UserService.setIsProducer(false);
+			UserService.setIsProducer('false');
 
 			var reloadTrees = function() {
 				TreeService.getTrees({
