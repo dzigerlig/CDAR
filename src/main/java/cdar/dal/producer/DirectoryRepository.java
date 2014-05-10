@@ -13,6 +13,7 @@ import java.util.List;
 
 import cdar.bll.entity.Directory;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
@@ -20,7 +21,7 @@ import cdar.dal.exceptions.UnknownUserException;
 
 public class DirectoryRepository {
 	public List<Directory> getDirectories(int treeid) throws EntityException, UnknownUserException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM DIRECTORY WHERE KTRID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM %s WHERE KTRID = ?",DBTableHelper.DIRECTORY);
 
 		List<Directory> directories = new ArrayList<Directory>();
 
@@ -49,7 +50,7 @@ public class DirectoryRepository {
 	}
 
 	public Directory getDirectory(int id) throws UnknownDirectoryException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = ?",DBTableHelper.DIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -77,7 +78,7 @@ public class DirectoryRepository {
 	}
 
 	public Directory createDirectory(Directory directory) throws UnknownDirectoryException {
-		final String sql = "INSERT INTO DIRECTORY (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)",DBTableHelper.DIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -105,7 +106,7 @@ public class DirectoryRepository {
 	}
 
 	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException {
-		final String sql = "UPDATE DIRECTORY SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?",DBTableHelper.DIRECTORY);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -127,7 +128,7 @@ public class DirectoryRepository {
 	}
 
 	public void deleteDirectory(int directoryId) throws UnknownDirectoryException {
-		final String sql = "DELETE FROM DIRECTORY WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.DIRECTORY);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

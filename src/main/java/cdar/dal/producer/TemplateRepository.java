@@ -12,6 +12,7 @@ import java.util.List;
 
 import cdar.bll.entity.producer.Template;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownTemplateException;
@@ -19,7 +20,7 @@ import cdar.dal.exceptions.UnknownTreeException;
 
 public class TemplateRepository {
 	public List<Template> getTemplates(int treeId) throws EntityException, UnknownTreeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE FROM KNOWLEDGETEMPLATE WHERE KTRID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE FROM %s WHERE KTRID = ?",DBTableHelper.TEMPLATE);
 
 		List<Template> templates = new ArrayList<Template>();
 
@@ -51,7 +52,7 @@ public class TemplateRepository {
 	}
 
 	public Template getTemplate(int templateId) throws UnknownTemplateException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -82,7 +83,7 @@ public class TemplateRepository {
 	}
 	
 	public Template createTemplate(Template template) throws UnknownTemplateException {
-		final String sql = "INSERT INTO KNOWLEDGETEMPLATE (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE) VALUES (?, ?, ?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.TEMPLATE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -117,7 +118,7 @@ public class TemplateRepository {
 	}
 	
 	public Template updateTemplate(Template template) throws UnknownTemplateException {
-		final String sql = "UPDATE KNOWLEDGETEMPLATE SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?",DBTableHelper.TEMPLATE);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, template.getTitle());
@@ -141,7 +142,7 @@ public class TemplateRepository {
 	}
 	
 	public void deleteTemplate(int templateId) throws UnknownTemplateException  {
-		final String sql = "DELETE FROM KNOWLEDGETEMPLATE WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

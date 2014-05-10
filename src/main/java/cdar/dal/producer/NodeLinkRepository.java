@@ -13,6 +13,7 @@ import java.util.List;
 
 import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -22,7 +23,7 @@ import cdar.dal.exceptions.UnknownTreeException;
 
 public class NodeLinkRepository {
 	public List<NodeLink> getNodeLinks(int treeId) throws EntityException, UnknownTreeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM NODELINK WHERE KTRID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM %s WHERE KTRID = ?", DBTableHelper.NODELINK);
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
@@ -53,7 +54,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = TARGETID";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = TARGETID",DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -83,7 +84,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getSiblingNodeLinks(int nodeid) throws UnknownTreeException, EntityException {
-		final String sql = "SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM NODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?";
+		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?", DBTableHelper.NODELINK,DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -114,7 +115,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE ? = SOURCEID";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = SOURCEID",DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -144,7 +145,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM NODELINK WHERE KSNID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE KSNID = ?",DBTableHelper.NODELINK);
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
@@ -175,7 +176,7 @@ public class NodeLinkRepository {
 	}
 
 	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM NODELINK WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM %s WHERE ID = ?",DBTableHelper.NODELINK);
 
 
 		try (Connection connection = DBConnection.getConnection();
@@ -205,7 +206,7 @@ public class NodeLinkRepository {
 	}
 	
 	public NodeLink createNodeLink(NodeLink nodeLink) throws UnknownTreeException {
-		final String sql = "INSERT INTO NODELINK (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.NODELINK);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -234,7 +235,7 @@ public class NodeLinkRepository {
 	}
 	
 	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException {
-		final String sql = "UPDATE NODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?",DBTableHelper.NODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -257,7 +258,7 @@ public class NodeLinkRepository {
 	}
 	
 	public void deleteNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
-		final String sql = "DELETE FROM NODELINK WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?", DBTableHelper.NODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

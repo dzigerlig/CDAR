@@ -12,6 +12,7 @@ import java.util.List;
 
 import cdar.bll.entity.Tree;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -23,10 +24,10 @@ public class TreeRepository {
 	public List<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;
 		if (uid == 0) {
-			sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE";
+			sql = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM %s",DBTableHelper.TREE);
 		} else {
-			sql = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM KNOWLEDGETREE LEFT JOIN knowledgetreemapping ON knowledgetreemapping.ktrid = knowledgetree.id where knowledgetreemapping.uid = %d;",
-							uid);
+			sql = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM %s AS TREE LEFT JOIN %s AS MAPPING ON MAPPING.ktrid = TREE.id where MAPPING.uid = %d;",
+							DBTableHelper.TREE,DBTableHelper.TREEMAPPING,uid);
 		}
 
 		List<Tree> trees = new ArrayList<Tree>();
@@ -52,7 +53,7 @@ public class TreeRepository {
 	}
 
 	public Tree getTree(int treeId) throws UnknownTreeException   {
-		final String sql = "SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM KNOWLEDGETREE AS TREE JOIN KNOWLEDGETREEMAPPING AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?";
+		final String sql = String.format("SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM %s AS TREE JOIN %s AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?",DBTableHelper.TREE,DBTableHelper.TREEMAPPING);
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -75,8 +76,8 @@ public class TreeRepository {
 	}
 	
 	public Tree createTree(Tree tree) throws CreationException   {
-		final String sql = "INSERT INTO KNOWLEDGETREE (CREATION_TIME, TITLE) VALUES (?, ?)";
-		final String sql2 = "INSERT INTO KNOWLEDGETREEMAPPING (uid, ktrid) VALUES (?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE) VALUES (?, ?)",DBTableHelper.TREE);
+		final String sql2 = String.format("INSERT INTO %s (uid, ktrid) VALUES (?, ?)",DBTableHelper.TREEMAPPING);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -106,7 +107,7 @@ public class TreeRepository {
 	}
 	
 	public Tree updateTree(Tree tree) throws UnknownTreeException   {
-		final String sql = "UPDATE KNOWLEDGETREE SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?", DBTableHelper.TREE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -122,7 +123,7 @@ public class TreeRepository {
 	}
 	
 	public void deleteTree(int treeId) throws UnknownTreeException   {
-		final String sql = "DELETE FROM KNOWLEDGETREE WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TREE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

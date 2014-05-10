@@ -12,6 +12,7 @@ import java.util.List;
 
 import cdar.bll.entity.TreeXml;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownEntityException;
@@ -20,7 +21,7 @@ import cdar.dal.exceptions.UnknownXmlTreeException;
 
 public class XmlTreeRepository {
 	public List<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM KNOWLEDGETREEXML WHERE KTRID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE KTRID = ?",DBTableHelper.TREEXML);
 
 		List<TreeXml> xmlTrees = new ArrayList<TreeXml>();
 
@@ -50,7 +51,7 @@ public class XmlTreeRepository {
 	}
 
 	public TreeXml getXmlTree(int id) throws UnknownXmlTreeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM KNOWLEDGETREEXML WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -79,7 +80,7 @@ public class XmlTreeRepository {
 	}
 	
 	public TreeXml createXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
-		final String sql = "INSERT INTO KNOWLEDGETREEXML (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?)",DBTableHelper.TREEXML);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -109,7 +110,7 @@ public class XmlTreeRepository {
 	}
 	
 	public TreeXml updateXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
-		final String sql = "UPDATE KNOWLEDGETREEXML SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, xmlTree.getTitle());
@@ -123,7 +124,7 @@ public class XmlTreeRepository {
 	}
 	
 	public void deleteXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException   {
-		final String sql = "DELETE FROM KNOWLEDGETREEXML WHERE ID = ?";
+		final String sql = String.format("DELETE FROM KNOWLEDGETREEXML WHERE ID = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

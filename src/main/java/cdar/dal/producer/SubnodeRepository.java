@@ -12,6 +12,7 @@ import java.util.List;
 
 import cdar.bll.entity.Subnode;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -21,7 +22,7 @@ import cdar.dal.exceptions.UnknownTreeException;
 
 public class SubnodeRepository {
 	public List<Subnode> getSubnodes(int nodeId) throws EntityException, UnknownNodeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE KNID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM %s WHERE KNID = ?",DBTableHelper.SUBNODE);
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
@@ -52,7 +53,7 @@ public class SubnodeRepository {
 	}
 
 	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM KNOWLEDGESUBNODE WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM %s WHERE ID = ?",DBTableHelper.SUBNODE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -81,7 +82,7 @@ public class SubnodeRepository {
 	}
 	
 	public List<Subnode> getParentSubnode(int nodeId) throws EntityException {
-		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KNID) AS NODES, KNOWLEDGESUBNODE AS SUBN WHERE SUBN.KNID=NODES.ID;";
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KNID) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID;",DBTableHelper.NODELINK, DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
@@ -112,7 +113,7 @@ public class SubnodeRepository {
 	}
 
 	public List<Subnode> getSiblingSubnode(int nodeId) throws EntityException {
-		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM NODELINK AS LINK WHERE ( SELECT LINKTO.SOURCEID FROM NODELINK AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>%d) AS NODES, KNOWLEDGESUBNODE AS SUBN WHERE SUBN.KNID=NODES.ID";
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>%d) AS NODES %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -143,7 +144,7 @@ public class SubnodeRepository {
 	}
 	
 	public List<Subnode> getFollowerSubnode(int nodeId) throws EntityException {
-		final String sql = "SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM NODELINK AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, KNOWLEDGENODE AS NODE, KNOWLEDGENODEMAPPING AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID) AS NODES, KNOWLEDGESUBNODE AS SUBN WHERE SUBN.KNID=NODES.ID";
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
@@ -186,7 +187,7 @@ public class SubnodeRepository {
 	}
 
 	public List<Subnode> getSubnodesByTree(int treeId) throws UnknownTreeException {
-		final String sql = "SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM KNOWLEDGESUBNODE AS SUBNODE JOIN KNOWLEDGENODE ON KNOWLEDGENODE.ID = SUBNODE.KNID WHERE KNOWLEDGENODE.KTRID = ?";
+		final String sql = String.format("SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM %s AS SUBNODE JOIN %s AS NODE ON NODE.ID = SUBNODE.KNID WHERE NODE.KTRID = ?",DBTableHelper.SUBNODE,DBTableHelper.NODE);
 
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
@@ -215,8 +216,8 @@ public class SubnodeRepository {
 	}
 	
 	public Subnode createSubnode(Subnode subnode) throws UnknownNodeException, CreationException {
-		final String sql = "INSERT INTO KNOWLEDGESUBNODE (CREATION_TIME, KNID, TITLE, POSITION) VALUES (?, ?, ?, ?)";
-		final String sqlUpdate = "UPDATE KNOWLEDGESUBNODE SET WIKITITLE = ? where id = ?";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KNID, TITLE, POSITION) VALUES (?, ?, ?, ?)",DBTableHelper.SUBNODE);
+		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.SUBNODE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -251,7 +252,7 @@ public class SubnodeRepository {
 	}
 	
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
-		final String sql = "UPDATE KNOWLEDGESUBNODE SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?",DBTableHelper.SUBNODE);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setInt(2, subnode.getNodeId());
@@ -267,7 +268,7 @@ public class SubnodeRepository {
 	}
 	
 	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
-		final String sql = "DELETE FROM KNOWLEDGESUBNODE WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.SUBNODE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
