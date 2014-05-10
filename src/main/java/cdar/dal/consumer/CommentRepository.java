@@ -12,6 +12,7 @@ import java.util.List;
 
 import cdar.bll.entity.consumer.Comment;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -20,7 +21,7 @@ import cdar.dal.exceptions.UnknownCommentException;
 public class CommentRepository {
 
 	public List<Comment> getComments(int kpnid) throws EntityException {
-		String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM USERCOMMENT WHERE KPNID = ?";
+		String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM %s WHERE KPNID = ?",DBTableHelper.USERCOMMENT);
 
 		List<Comment> usercomments = new ArrayList<Comment>();
 
@@ -50,7 +51,7 @@ public class CommentRepository {
 	}
 	
 	public Comment getComment(int id) throws UnknownCommentException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM USERCOMMENT WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM %s WHERE ID = ?",DBTableHelper.USERCOMMENT);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -79,7 +80,7 @@ public class CommentRepository {
 	}
 	
 	public Comment createComment(Comment comment) throws CreationException {
-		final String sql = "INSERT INTO USERCOMMENT (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, UID, KPNID, COMMENT) VALUES (?, ?, ?, ?)",DBTableHelper.USERCOMMENT);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -102,7 +103,7 @@ public class CommentRepository {
 	}
 	
 	public Comment updateComment(Comment comment) throws UnknownCommentException  {
-		final String sql = "UPDATE USERCOMMENT SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, UID = ?, KPNID = ?, COMMENT = ?  WHERE id = ?",DBTableHelper.USERCOMMENT);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -120,7 +121,7 @@ public class CommentRepository {
 	}
 
 	public void deleteComment(int commentId) throws UnknownCommentException {
-		final String sql = "DELETE FROM USERCOMMENT WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.USERCOMMENT);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

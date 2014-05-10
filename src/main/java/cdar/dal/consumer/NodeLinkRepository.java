@@ -13,6 +13,7 @@ import java.util.List;
 
 import cdar.bll.entity.NodeLink;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -24,7 +25,7 @@ import cdar.dal.exceptions.UnknownTreeException;
 
 public class NodeLinkRepository {
 	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE KPTID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM %s WHERE KPTID = ?",DBTableHelper.PROJECTNODELINK);
 
 		List<NodeLink> projectNodeLinks = new ArrayList<NodeLink>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -52,7 +53,7 @@ public class NodeLinkRepository {
 	}
 	
 	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -80,7 +81,7 @@ public class NodeLinkRepository {
 	}
 	
 	public NodeLink createProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
-		final String sql = "INSERT INTO KNOWLEDGEPROJECTNODELINK (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)";
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -109,7 +110,7 @@ public class NodeLinkRepository {
 	}
 	
 	public NodeLink updateProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectNodeLinkException {
-		final String sql = "UPDATE KNOWLEDGEPROJECTNODELINK SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?";
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -132,7 +133,7 @@ public class NodeLinkRepository {
 	}
 	
 	public void deleteProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
-		final String sql = "DELETE FROM KNOWLEDGEPROJECTNODELINK WHERE ID = ?";
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -146,7 +147,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE ? = TARGETID";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = TARGETID",DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -178,7 +179,7 @@ public class NodeLinkRepository {
 	}
 	
 		public List<NodeLink> getSiblingNodeLinks(int nodeid) throws UnknownTreeException, EntityException {
-		final String sql = "SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM KNOWLEDGEPROJECTNODELINK AS LINK WHERE (SELECT LINKTO.SOURCEID FROM KNOWLEDGEPROJECTNODELINK AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?";
+		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -211,7 +212,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE ? = SOURCEID";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = SOURCEID", DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -243,7 +244,7 @@ public class NodeLinkRepository {
 	}
 
 	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
-		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM KNOWLEDGEPROJECTNODELINK WHERE KPNSNID = ?";
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE KPNSNID = ?",DBTableHelper.PROJECTNODELINK);
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
