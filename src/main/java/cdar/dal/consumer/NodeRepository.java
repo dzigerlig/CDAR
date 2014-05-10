@@ -19,7 +19,7 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
-public class ProjectNodeRepository {
+public class NodeRepository {
 	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = "SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, MAPPING.PDID FROM KNOWLEDGEPROJECTNODE AS PNODE, KNOWLEDGEPROJECTNODEMAPPING AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID";
 		List<ProjectNode> projectNodes = new ArrayList<ProjectNode>();

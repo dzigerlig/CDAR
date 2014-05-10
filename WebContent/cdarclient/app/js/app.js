@@ -7,8 +7,8 @@ var CDAR = (function() {
 	return{ 
 		getCustomHeader: function(){
 			return customHeaders;
-		}
-        ,setCustomHeader: function(uid,accesstoken){
+		},
+		setCustomHeader: function(uid,accesstoken){
             customHeaders.accesstoken=accesstoken;
             customHeaders.uid=uid;
         }
@@ -70,20 +70,14 @@ app.config(function ($routeProvider,$httpProvider) {
     	needsLogin: true
     });
     
-    $routeProvider.when('/knowledgetree/:treeId/settings', {
-    	templateUrl: 'knowledgeproducer/settings.html',
-    	controller: 'TreeSettingsController',
-    	needsLogin: true
-    });
-    
     $routeProvider.when('/knowledgetree/:treeId/users', {
-    	templateUrl: 'user/users.html',
+    	templateUrl: 'sharedfiles/useraccess.html',
     	controller: 'AccessController',
     	needsLogin: true
     });
     
     $routeProvider.when('/projecttree/:treeId/users', {
-    	templateUrl: 'user/users.html',
+    	templateUrl: 'sharedfiles/useraccess.html',
     	controller: 'AccessController',
     	needsLogin: true
     });
