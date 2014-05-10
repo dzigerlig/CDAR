@@ -5,7 +5,7 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
-import cdar.dal.consumer.ProjectNodeRepository;
+import cdar.dal.consumer.NodeRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -13,7 +13,7 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 public class ProjectNodeManager {
-	private ProjectNodeRepository pnr = new ProjectNodeRepository();
+	private NodeRepository pnr = new NodeRepository();
 	
 	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		Set<ProjectNode> projectNodes = new HashSet<ProjectNode>();

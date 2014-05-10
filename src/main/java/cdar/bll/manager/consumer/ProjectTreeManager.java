@@ -20,8 +20,8 @@ import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.dal.consumer.ProjectDirectoryRepository;
-import cdar.dal.consumer.ProjectNodeLinkRepository;
-import cdar.dal.consumer.ProjectNodeRepository;
+import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.NodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeRepository;
 import cdar.dal.exceptions.CreationException;
@@ -35,8 +35,8 @@ import cdar.dal.exceptions.UnknownUserException;
 public class ProjectTreeManager {
 
 	private ProjectTreeRepository ptr = new ProjectTreeRepository();
-	private ProjectNodeRepository pnr = new ProjectNodeRepository();
-	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
+	private NodeRepository pnr = new NodeRepository();
+	private NodeLinkRepository pnlr = new NodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
 	public Set<Tree> getProjectTrees(int uid) throws UnknownUserException,

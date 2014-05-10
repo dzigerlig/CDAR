@@ -6,15 +6,6 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import cdar.bll.entity.Directory;
-import cdar.bll.entity.NodeLink;
-import cdar.bll.entity.Tree;
-import cdar.bll.manager.consumer.CommentManager;
-import cdar.bll.manager.consumer.ProjectDirectoryManager;
-import cdar.bll.manager.consumer.ProjectNodeLinkManager;
-import cdar.bll.manager.consumer.ProjectNodeManager;
-import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntry;
 import cdar.dal.exceptions.EntityException;

@@ -22,7 +22,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 
-public class ProjectNodeLinkRepository {
+public class NodeLinkRepository {
 	public List<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = "SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM KNOWLEDGEPROJECTNODELINK WHERE KPTID = ?";
 
