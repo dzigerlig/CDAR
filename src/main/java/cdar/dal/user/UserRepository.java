@@ -14,6 +14,7 @@ import cdar.bll.entity.Directory;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.dal.DBConnection;
+import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
@@ -22,7 +23,10 @@ import cdar.dal.exceptions.UsernameInvalidException;
 public class UserRepository {
 
 	public List<User> getUsers() throws EntityException {
-		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER";
+
+		final String sql = String
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s",
+						DBTableHelper.USER);
 		ResultSet result = null;
 		List<User> users = new ArrayList<User>();
 		try (Connection connection = DBConnection.getConnection();
@@ -47,7 +51,9 @@ public class UserRepository {
 
 	public User getUser(int id) throws UnknownUserException, EntityException {
 		User user = new User();
-		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE ID = ?";
+		final String sql = String
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s WHERE ID = ?",
+						DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -74,7 +80,9 @@ public class UserRepository {
 	}
 
 	public User getUser(String username) throws UnknownUserException {
-		final String sql = "SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM USER WHERE USERNAME = ?";
+		final String sql = String
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s WHERE USERNAME = ?",
+						DBTableHelper.USER);
 		User user = new User();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -103,7 +111,9 @@ public class UserRepository {
 	}
 
 	public User createUser(User user) throws UsernameInvalidException {
-		final String sql = "INSERT INTO USER (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)";
+		final String sql = String
+				.format("INSERT INTO %s (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
+						DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -127,7 +137,9 @@ public class UserRepository {
 	}
 
 	public User updateUser(User user) throws UnknownUserException {
-		final String sql = "UPDATE USER SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?";
+		final String sql = String
+				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+						DBTableHelper.USER);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -161,7 +173,9 @@ public class UserRepository {
 
 	public List<User> getUsersByTree(int treeId) throws EntityException,
 			UnknownUserException {
-		final String sql = "SELECT * FROM cdar.user AS user, cdar.knowledgeprojecttreemapping AS mapping WHERE user.id=mapping.uid AND   mapping.kptid=?";
+		final String sql = String
+				.format("SELECT * FROM %s AS user, %s AS mapping WHERE user.id=mapping.uid AND   mapping.kptid=?",
+						DBTableHelper.USER, DBTableHelper.PROJECTTREEMAPPING);
 		List<User> users = new ArrayList<User>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -194,9 +208,11 @@ public class UserRepository {
 			throws UnknownUserException {
 		final String sql;
 		if (user.isTreeaccess()) {
-			sql = "INSERT INTO KNOWLEDGETREEMAPPING (KTID, UID) VALUES (?, ?)";
+			sql = String.format("INSERT INTO %s (KTID, UID) VALUES (?, ?)",
+					DBTableHelper.TREEMAPPING);
 		} else {
-			sql = "DELETE FROM KNOWLEDGETREEMAPPING WHERE KTID = ? AND UID = ?";
+			sql = String.format("DELETE FROM %s WHERE KTID = ? AND UID = ?",
+					DBTableHelper.TREEMAPPING);
 		}
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -211,12 +227,15 @@ public class UserRepository {
 		}
 	}
 
-	public void setConsumerUserRight(int treeId, User user) throws UnknownUserException {
+	public void setConsumerUserRight(int treeId, User user)
+			throws UnknownUserException {
 		final String sql;
 		if (user.isTreeaccess()) {
-			sql = "INSERT INTO KNOWLEDGEPROJECTTREEMAPPING (KPTID, UID) VALUES (?, ?)";
+			sql = String.format("INSERT INTO %s (KPTID, UID) VALUES (?, ?)",
+					DBTableHelper.PROJECTTREEMAPPING);
 		} else {
-			sql = "DELETE FROM KNOWLEDGEPROJECTTREEMAPPING WHERE KPTID = ? AND UID = ?";
+			sql = String.format("DELETE FROM %s WHERE KPTID = ? AND UID = ?",
+					DBTableHelper.PROJECTTREEMAPPING);
 		}
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -228,6 +247,6 @@ public class UserRepository {
 			}
 		} catch (Exception ex) {
 			throw new UnknownUserException();
-		}		
+		}
 	}
 }
