@@ -24,32 +24,15 @@ import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
 @XmlRootElement
-public class ProjectTreeFull {
-	private Tree tree;
-	private Set<ProjectNode> projectNodes;
-	private Set<ProjectSubnode> projectSubnodes;
-	private Set<NodeLink> links;
-	private Set<Directory> directories;
-	private Set<Comment> comments;
+public class ProjectTreeFull extends ProjectTreeSimple {
 	private Set<WikiEntry> wikiEntries;
 	
-	private ProjectTreeManager ptm = new ProjectTreeManager();
-	private ProjectSubnodeManager psm = new ProjectSubnodeManager();
-	private ProjectNodeManager pnm = new ProjectNodeManager();
-	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-	private ProjectDirectoryManager pdm = new ProjectDirectoryManager();
-	private CommentManager cm = new CommentManager();
 	private MediaWikiModel mwm = new MediaWikiModel();
 	
 	public ProjectTreeFull() { }
 	
 	public ProjectTreeFull(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
-		setTree(ptm.getProjectTree(treeId));
-		setProjectNodes(pnm.getProjectNodes(treeId));
-		setLinks(pnlm.getProjectNodeLinks(treeId));
-		setDirectories(pdm.getDirectories(treeId));
-		setComments(cm.getCommentsByTree(treeId));
-		setProjectSubnodes(psm.getProjectSubnodesFromProjectTree(treeId));
+		super(treeId);
 		fillWikiEntries();
 	}
 	
@@ -67,60 +50,6 @@ public class ProjectTreeFull {
 		setWikiEntries(wikiEntries);
 	}
 	
-	public Tree getTree() {
-		return tree;
-	}
-
-	@XmlElement
-	public void setTree(Tree tree) {
-		this.tree = tree;
-	}
-
-	public Set<ProjectNode> getProjectNodes() {
-		return projectNodes;
-	}
-
-	@XmlElement
-	public void setProjectNodes(Set<ProjectNode> projectNodes) {
-		this.projectNodes = projectNodes;
-	}
-
-	public Set<ProjectSubnode> getProjectSubnodes() {
-		return projectSubnodes;
-	}
-
-	@XmlElement
-	public void setProjectSubnodes(Set<ProjectSubnode> projectSubnodes) {
-		this.projectSubnodes = projectSubnodes;
-	}
-
-	public Set<NodeLink> getLinks() {
-		return links;
-	}
-
-	@XmlElement
-	public void setLinks(Set<NodeLink> links) {
-		this.links = links;
-	}
-
-	public Set<Directory> getDirectories() {
-		return directories;
-	}
-
-	@XmlElement
-	public void setDirectories(Set<Directory> directories) {
-		this.directories = directories;
-	}
-
-	public Set<Comment> getComments() {
-		return comments;
-	}
-
-	@XmlElement
-	public void setComments(Set<Comment> comments) {
-		this.comments = comments;
-	}
-
 	@XmlElement
 	public Set<WikiEntry> getWikiEntries() {
 		return wikiEntries;
