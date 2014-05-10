@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
@@ -15,6 +16,7 @@ import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
+@XmlRootElement
 public class TreeFull extends TreeSimple {
 	private Set<WikiEntry> wikiEntries;
 	

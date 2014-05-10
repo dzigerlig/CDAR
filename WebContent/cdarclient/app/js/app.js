@@ -53,8 +53,14 @@ app.config(function ($routeProvider,$httpProvider) {
     });
     
     $routeProvider.when('/projecttree/:treeId/importexport', {
-    	templateUrl: 'knowledgeconsumer/importexport.html',
-    	controller: 'ProjectTreeImportExportController',
+    	templateUrl: 'sharedfiles/importexport.html',
+    	controller: 'ImportExportController',
+    	needsLogin: true
+    });
+    
+    $routeProvider.when('/knowledgetree/:treeId/importexport', {
+    	templateUrl: 'sharedfiles/importexport.html',
+    	controller: 'ImportExportController',
     	needsLogin: true
     });
     
@@ -103,7 +109,6 @@ app.run(function ($rootScope, $location, editableOptions, UserService) {
         event.preventDefault();
     });
     
-    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2',
-									// 'default'
+    editableOptions.theme = 'bs3';
     CDAR.setCustomHeader(UserService.getUserId(),UserService.getAccesstoken());
 });

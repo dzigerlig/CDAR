@@ -1,18 +1,25 @@
-app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location',
+app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location',
 		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location) {
 			$scope.UserService = UserService;
 			
-			$scope.projecttree = "";
+			$scope.tree = "";
 			$scope.xmlTrees = "";
 			
 			$scope.newSimpleTreeName = "";
 			$scope.newFullTreeName = "";
+			var userRole = "";
+			
+			if ($scope.UserService.getIsProducer()==='true') {
+				userRole = "ktrees";
+			} else {
+				userRole = "ptrees";
+			}
 			
 			TreeService.getTree({
-				entity1 : 'ptrees',
+				entity1 : userRole,
 				id1 : $routeParams.treeId
 			}, function(response) {
-				$scope.projecttree = response;
+				$scope.tree = response;
 			}, function(error) {
 				noty({
 					type : 'alert',
@@ -23,7 +30,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			
 			var reloadXmlTrees = function() {
 					TreeService.getExports({
-					entity1 : 'ptrees',
+					entity1 : userRole,
 					id1 : $routeParams.treeId
 				}, function(response) {
 					$scope.xmlTrees = response;
@@ -38,7 +45,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			
 			$scope.deleteXmlTree = function(xmlTreeId) {
 				TreeService.deleteExport({
-					entity1 : 'ptrees',
+					entity1 : userRole,
 					id1 : $routeParams.treeId,
 				}, { id : xmlTreeId}, function(response) {
 					reloadXmlTrees();
@@ -59,7 +66,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			    	xmltree.title = data;
 				 
 			    	TreeService.updateExport({
-						entity1 : 'ptrees',
+						entity1 : userRole,
 						id1 : $routeParams.treeId,
 						id2 : treeId
 					}, xmltree, function(response) { }, function(error) {
@@ -87,7 +94,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			
 			var setXmlTree = function(xmlTreeId, cleanBool) {
 				TreeService.setExport({
-					entity1 : 'ptrees',
+					entity1 : userRole,
 					id1 : $routeParams.treeId,
 					id2 : xmlTreeId,
 					cleantree : cleanBool
@@ -97,7 +104,11 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 						text : "Import successfully",
 						timeout : 1500
 					});
-					$location.path('/projecttree/' + $routeParams.treeId);
+					if ($scope.UserService.getIsProducer()==='true') {
+						$location.path('/knowledgetree/' + $routeParams.treeId);
+					} else {
+						$location.path('/projecttree/' + $routeParams.treeId);
+					}
 				}, function(error) {
 					noty({
 						type : 'alert',
@@ -112,7 +123,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 					treetitle = $scope.newSimpleTreeName;
 				}
 				TreeService.addExport({
-					entity1: 'ptrees',
+					entity1: userRole,
 					id1 : $routeParams.treeId
 				}, {isFull : false, title : treetitle, xmlString : xml}, function(response) {
 					reloadXmlTrees();
@@ -136,7 +147,7 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 					treetitle = $scope.newFullTreeName;
 				}
 				TreeService.addExport({
-					entity1: 'ptrees',
+					entity1: userRole,
 					id1 : $routeParams.treeId
 				}, {isFull : true, title : treetitle, xmlString : xml}, function(response) {
 					reloadXmlTrees();
@@ -160,19 +171,43 @@ app.controller("ProjectTreeImportExportController", [ '$scope', '$routeParams', 
 			  r.onloadend = function(e) {
 			    var data = e.target.result;
 			    
-			    if (data.indexOf("projectTreeFull") > -1) {
-			    	$scope.addNewFullXmlTree("imported xml", data);
-				};
-				
-				if (data.indexOf("projectTreeSimple") > -1) {
-					$scope.addNewSimpleXmlTree("imported xml", data);
-				};
+			    
+			    if ($scope.UserService.getIsProducer()==='true') {
+				    if (data.indexOf("treeFull") > -1) {
+				    	$scope.addNewFullXmlTree("imported xml", data);
+				    }
+				    
+				    else if (data.indexOf("treeSimple") > -1) {
+				    	$scope.addNewSimpleXmlTree("imported xml", data);
+				    }
+				    else {
+				    	noty({
+							type : 'alert',
+							text : 'specified file does not match - maybe you are trying to add a consumer export to a producer tree?',
+							timeout : 8000
+						});
+				    }
+			    } if ($scope.UserService.getIsProducer()==='false') {
+				    if (data.indexOf("projectTreeFull") > -1) {
+				    	$scope.addNewFullXmlTree("imported xml", data);
+				    }
+				    else if (data.indexOf("projectTreeSimple") > -1) {
+				    	$scope.addNewSimpleXmlTree("imported xml", data);
+				    }
+				    else {
+				    	noty({
+							type : 'alert',
+							text : 'specified file does not match - maybe you are trying to add a producer export to a consumer tree?',
+							timeout : 8000
+						});
+				    }
+			    }
 			  }
 			  r.readAsBinaryString(f);
 			}
 			
 			$scope.getXmlFileString = function(xmlId) {
-				return "../webapi/ptrees/" + $routeParams.treeId + " /exports/" + xmlId + "/filexml?uid=" + UserService.getUserId() + "&accesstoken=" + UserService.getAccesstoken();
+				return "../webapi/" + userRole + "/" + $routeParams.treeId + " /exports/" + xmlId + "/filexml?uid=" + UserService.getUserId() + "&accesstoken=" + UserService.getAccesstoken();
 			};
 			
 			reloadXmlTrees();

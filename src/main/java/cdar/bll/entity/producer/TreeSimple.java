@@ -40,6 +40,7 @@ public class TreeSimple {
 	public TreeSimple() {}
 	
 	public TreeSimple(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException {
+		System.out.println("treeid: " + treeId);
 		setTree(trm.getTree(treeId));
 		setNodes(nm.getNodes(treeId));
 		setSubnodes(sm.getSubnodesFromTree(treeId));

@@ -6,8 +6,8 @@
 				<div class="content-header">
 					<div class="col-md-9">
 						<h1>
-							<a id="menu-toggle" class="btn btn-default"><i
-								class="icon-reorder"></i></a> CDAR - Knowledge Consumer
+							<div data-ng-show="UserService.getIsProducer()==='true'"><a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a> CDAR - Knowledge Producer</div>
+							<div data-ng-show="UserService.getIsProducer()==='false'"><a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a> CDAR - Knowledge Consumer</div>
 						</h1>
 					</div>
 					<div ng-include src="'templates/heading.html'"></div>
@@ -16,8 +16,8 @@
 			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-2">
-						<a class="btn btn-md btn-primary btn-block"
-							href="#/projecttree/{{projecttree.id}}">back to projecttree</a>
+						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">back to knowledgetree</a></div>
+						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">back to projecttree</a></div>
 					</div>
 					<div class="col-md-10">
 						<p class="lead">Import/Export: {{knowledgetree.name}}</p>

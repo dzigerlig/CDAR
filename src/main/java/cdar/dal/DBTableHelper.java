@@ -11,7 +11,7 @@ public class DBTableHelper {
 	public static final String SUBNODE = "KnowledgeSubnode";
 	public static final String TREEMAPPING = "KnowledgeTreeMapping";
 	public static final String NODEMAPPING = "KnowledgeNodeMapping";
-	public static final String TREEXML = "KnowledgeTreXml";
+	public static final String TREEXML = "KnowledgeTreeXml";
 
 	public static final String PROJECTTREE = "KnowledgeProjectTree";
 	public static final String PROJECTDIRECTORY = "KnowledgeProjectDirectory";

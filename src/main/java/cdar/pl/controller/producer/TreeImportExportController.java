@@ -12,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.TreeXml;
-import cdar.bll.manager.importexport.ConsumerImportExportManager;
 import cdar.bll.manager.importexport.ProducerImportExportManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
@@ -24,10 +23,11 @@ public class TreeImportExportController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getXmlTrees(@PathParam("treeid") int treeId) {
+	public Response getXmlTrees(@PathParam("ktreeid") int treeId) {
 		try {
 			return StatusHelper.getStatusOk(piem.getXmlTrees(treeId));
 		} catch (Exception e) {  
+			e.printStackTrace();
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -36,9 +36,8 @@ public class TreeImportExportController {
 	@Path("{xmltreeid}/filexml")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getXmlFileString(@PathParam ("xmltreeid") int xmlTreeId) {
-		ConsumerImportExportManager ciem = new ConsumerImportExportManager();
 		try {
-			return StatusHelper.getStatusOk(ciem.getXmlTree(xmlTreeId).getXmlString());
+			return StatusHelper.getStatusOk(piem.getXmlTree(xmlTreeId).getXmlString());
 		} catch (UnknownXmlTreeException | EntityException e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -46,7 +45,7 @@ public class TreeImportExportController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addXmlTree(@HeaderParam("uid") int uid, @PathParam("treeid") int treeId, TreeXml treeXml) {
+	public Response addXmlTree(@HeaderParam("uid") int uid, @PathParam("ktreeid") int treeId, TreeXml treeXml) {
 		try {
 			if (treeXml.getIsFull()) {
 				return StatusHelper.getStatusCreated(piem.addXmlTreeFull(uid, treeId, treeXml.getTitle(), treeXml.getXmlString()));

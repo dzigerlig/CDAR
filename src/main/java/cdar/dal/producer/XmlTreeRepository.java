@@ -80,7 +80,7 @@ public class XmlTreeRepository {
 	}
 	
 	public TreeXml createXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?)",DBTableHelper.TREEXML);
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.TREEXML);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
