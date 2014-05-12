@@ -9,6 +9,7 @@
 				</div>
 			</div>
 			<tabset justified="true" class="well" data-ng-show="selectedNode.id" type="pills">
+				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 				<tab class="readtab-cdar">
 					<tab-heading id="nodewikiread" active="nodetabs[0].active">{{nodetabs[0].title}}</tab-heading>
 					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
@@ -55,8 +56,8 @@
 									{{DescriptionService.getSubnodeDescription()}}</a></td>
 						</tr>
 						<tr>
-							<td></td>
-							<td colspan="4">
+							<td colspan="2"></td>
+							<td colspan="3">
 								<form id="formAddTree" data-role="form"
 									data-ng-submit="addNewSubnode(); newSubnodeName='Subnode'">
 									<div class="input-append">
@@ -70,7 +71,8 @@
 						</tr>
 					</table>
 				</div>
-				<tabset justified="true" class="well" data-ng-show="selectedSubnodeId" type="pills">
+				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
+				<tabset justified="true" class="well" data-ng-show="selectedSubnode.id" type="pills">
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
 					<p data-ng-bind-html="subnodeHtmlText" />
 					</tab>

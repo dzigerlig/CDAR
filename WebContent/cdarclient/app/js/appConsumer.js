@@ -10,10 +10,10 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     
 	$scope.wikiHtmlText = "";
 	
-	$scope.selectedSubnodeId = 0;
-	
-	$scope.selectedNode = "";
+	$scope.selectedNode = { id : 0 , title : "" };
 	$scope.selectedNodeWiki = "";
+	
+	$scope.selectedSubnode = { id : 0, title : "" };
 	
 	$scope.subnodes = "";
 	$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
@@ -401,8 +401,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	$scope.changeSubnode = function(subnodeid, name) {
 		setLoadingSubnode();
-		$scope.selectedSubnodeId = subnodeid;
-		$scope.selectedSubnodeName = name;
+		$scope.selectedSubnode.id = subnodeid;
+		$scope.selectedSubnode.title = name;
 		TreeService.getSubnodeWiki({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,

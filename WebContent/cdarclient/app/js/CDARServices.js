@@ -445,6 +445,7 @@ app.service('DescriptionService', ['$resource', '$cookieStore', function($resour
 	descriptionResource.get().$promise.then(function(response) {
 	   $cookieStore.put('cdarNodeDescription', response.nodeDescription);
 	   $cookieStore.put('cdarSubnodeDescription', response.subnodeDescription);
+	   $cookieStore.put('cdarWikiUrl', response.wikiUrl);
     });
 	
 	this.getNodeDescription = function() {
@@ -453,7 +454,11 @@ app.service('DescriptionService', ['$resource', '$cookieStore', function($resour
 	
 	this.getSubnodeDescription = function() {
 		return $cookieStore.get('cdarSubnodeDescription');
-	}
+	};
+	
+	this.getWikiUrl = function() {
+		return $cookieStore.get('cdarWikiUrl');
+	};
 }])
 
 app.factory('UserService', [ '$location', '$cookieStore', function($location, $cookieStore) {
