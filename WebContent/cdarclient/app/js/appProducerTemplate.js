@@ -9,7 +9,6 @@ app.controller("TemplatesController", [
 			$scope.knowledgetree = "";
 			$scope.templates = "";
 			$scope.selectedTemplate = "";
-			$scope.selectedTemplateId = 0;
 			
 			$scope.templateHtml = '';
 			$scope.templatePlain = '';
@@ -64,8 +63,8 @@ app.controller("TemplatesController", [
 			$scope.deleteTemplate = function(templateId) {
 				TreeService.deleteTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId}, { id : templateId }, function(response) {
 					reloadTemplates();
-					if ($scope.selectedTemplateId==templateId) {
-						$scope.selectedTemplateId = 0;
+					if ($scope.selectedTemplate.id==templateId) {
+						$scope.selectedTemplate.id = 0;
 					}
 					noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
 				}, function(error) {
@@ -128,7 +127,7 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.changeTemplate = function(id) {
-				$scope.selectedTemplateId = id;
+				$scope.selectedTemplate.id = id;
 				setLoading();
 				TreeService.getTemplate({
 					entity1 : 'ktrees',

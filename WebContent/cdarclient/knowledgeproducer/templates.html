@@ -124,8 +124,8 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-12" class="well">
-						<h3>Selected template:</h3>
-						<div id="wiki" data-ng-show="selectedTemplateId">
+						<h3>Selected template: {{selectedTemplate.title}}</h3>
+						<div id="wiki" data-ng-show="selectedTemplate.id">
 							<tabset justified="true" class="well"> <tab
 								heading="{{tabs[0].title}}" id="wikiread"
 								active="tabs[0].active">
@@ -139,7 +139,7 @@
 							</form>
 							</tab> </tabset>
 						</div>
-						<div id="wikiNoEntry" data-ng-hide="selectedTemplateId">
+						<div id="wikiNoEntry" data-ng-hide="selectedTemplate.id">
 							<p class="well">no wiki entry selected</p>
 						</div>
 					</div>
