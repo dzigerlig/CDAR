@@ -20,9 +20,9 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
-public class NodeRepository {
+public class ProjectNodeRepository {
 	public List<ProjectNode> getProjectNodes(int projectTreeId) throws UnknownProjectTreeException, EntityException {
-		final String sql = String.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID",DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
+		final String sql = String.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.INHERITEDTREEID, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID",DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
 		List<ProjectNode> projectNodes = new ArrayList<ProjectNode>();
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -37,7 +37,8 @@ public class NodeRepository {
 					projectNode.setWikititle(result.getString(5));
 					projectNode.setDynamicTreeFlag(result.getInt(6));
 					projectNode.setStatus(result.getInt(7));
-					projectNode.setDirectoryId(result.getInt(8));
+					projectNode.setInheritedTreeId(result.getInt(8));
+					projectNode.setDirectoryId(result.getInt(9));
 					projectNode.setTreeId(projectTreeId);
 					projectNodes.add(projectNode);
 				}
@@ -51,7 +52,7 @@ public class NodeRepository {
 	}
 	
 	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException, EntityException {
-		final String sql = String.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.ID = ? AND PNODE.ID = MAPPING.KPNID",DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
+		final String sql = String.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, PNODE.INHERITEDTREEID, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.ID = ? AND PNODE.ID = MAPPING.KPNID",DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
 		
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
@@ -67,7 +68,8 @@ public class NodeRepository {
 					projectNode.setDynamicTreeFlag(result.getInt(6));
 					projectNode.setStatus(result.getInt(7));
 					projectNode.setTreeId(result.getInt(8));
-					projectNode.setDirectoryId(result.getInt(9));
+					projectNode.setInheritedTreeId(result.getInt(9));
+					projectNode.setDirectoryId(result.getInt(10));
 					return projectNode;
 				}
 			} catch (ParseException e) {
@@ -80,7 +82,7 @@ public class NodeRepository {
 	}
 	
 	public ProjectNode createProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException {
-		final String sqlProjectNode = String.format("INSERT INTO %s (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTNODE);
+		final String sqlProjectNode = String.format("INSERT INTO %s (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS, INHERITEDTREEID) VALUES (?, ?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTNODE);
 		final String sqlMapping = String.format("INSERT INTO %s (kpnid, pdid) VALUES (?, ?)",DBTableHelper.PROJECTNODEMAPPING);
 		final String sqlWikiUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.PROJECTNODE);
 		try (Connection connection = DBConnection.getConnection();
@@ -92,6 +94,7 @@ public class NodeRepository {
 			preparedStatement.setString(4, projectNode.getWikititle());
 			preparedStatement.setInt(5, projectNode.getDynamicTreeFlag());
 			preparedStatement.setInt(6, projectNode.getStatus());
+			preparedStatement.setInt(7, projectNode.getInheritedTreeId());
 			
 			preparedStatement.executeUpdate();
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -163,7 +166,7 @@ public class NodeRepository {
 	}
 	
 	public List<ProjectNode> getSiblingNode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM (SELECT * FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?", DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
+		final String sql = String.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT * FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?", DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
 
 		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
 
@@ -184,7 +187,8 @@ public class NodeRepository {
 					node.setDynamicTreeFlag(result.getInt(6));
 					node.setTreeId(result.getInt(7));
 					node.setStatus(result.getInt(8));
-					node.setDirectoryId(result.getInt(9));
+					node.setInheritedTreeId(result.getInt(9));
+					node.setDirectoryId(result.getInt(10));
 					nodes.add(node);
 				}
 			} catch (ParseException e) {
@@ -197,7 +201,7 @@ public class NodeRepository {
 	}
 
 	public List<ProjectNode> getParentNode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KPNID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
+		final String sql = String.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KPNID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
 
 		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
 
@@ -217,8 +221,9 @@ public class NodeRepository {
 					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
 					node.setTreeId(result.getInt(7));
-					node.setDirectoryId(result.getInt(9));
 					node.setStatus(result.getInt(8));
+					node.setInheritedTreeId(result.getInt(9));
+					node.setDirectoryId(result.getInt(10));
 					nodes.add(node);
 				}
 			} catch (ParseException e) {
@@ -231,7 +236,7 @@ public class NodeRepository {
 	}
 
 	public List<ProjectNode> getFollowerNode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, MAPPING.PDID FROM (SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
+		final String sql = String.format("SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING);
 
 		List<ProjectNode> nodes = new ArrayList<ProjectNode>();
 
@@ -250,8 +255,9 @@ public class NodeRepository {
 					node.setWikititle(result.getString(5));
 					node.setDynamicTreeFlag(result.getInt(6));
 					node.setTreeId(result.getInt(7));
-					node.setDirectoryId(result.getInt(9));
 					node.setStatus(result.getInt(8));
+					node.setInheritedTreeId(result.getInt(9));
+					node.setDirectoryId(result.getInt(10));
 					nodes.add(node);
 				}
 			} catch (ParseException e) {

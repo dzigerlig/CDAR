@@ -485,7 +485,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		myJsPlumb.setStatusImage($scope.selectedNode);
 		TreeService.updateNode({entity1:'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) { }, function(error) {
+			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) {
+				$scope.selectedNode = response;
+			}, function(error) {
 				noty({
 					type : 'alert',
 					text : 'cannot update ' + DescriptionService.getNodeDescription() + ' status',

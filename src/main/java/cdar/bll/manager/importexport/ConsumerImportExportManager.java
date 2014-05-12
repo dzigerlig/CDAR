@@ -30,7 +30,7 @@ import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntry;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.consumer.NodeLinkRepository;
-import cdar.dal.consumer.NodeRepository;
+import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeXmlRepository;
 import cdar.dal.exceptions.CreationException;
@@ -136,7 +136,7 @@ public class ConsumerImportExportManager {
 
 
 	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
-		NodeRepository pnr = new NodeRepository();
+		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
 		CommentManager cm = new CommentManager();
 		
@@ -205,7 +205,7 @@ public class ConsumerImportExportManager {
 			}
 		}
 		
-		NodeRepository pnr = new NodeRepository();
+		ProjectNodeRepository pnr = new ProjectNodeRepository();
 
 		Map<Integer, Integer> nodeMapping = new HashMap<Integer, Integer>();
 		if (projectTreeFull.getProjectNodes() != null) {
@@ -305,7 +305,7 @@ public class ConsumerImportExportManager {
 			}
 		}
 		
-		NodeRepository pnr = new NodeRepository();
+		ProjectNodeRepository pnr = new ProjectNodeRepository();
 
 		Map<Integer, Integer> nodeMapping = new HashMap<Integer, Integer>();
 		if (projectTreeSimple.getProjectNodes() != null) {

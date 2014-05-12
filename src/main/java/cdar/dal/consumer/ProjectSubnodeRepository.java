@@ -23,7 +23,7 @@ import cdar.dal.exceptions.UnknownProjectSubnodeException;
 
 public class ProjectSubnodeRepository {
 	public List<ProjectSubnode> getProjectSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
 
 		List<ProjectSubnode> projectsubnodes = new ArrayList<ProjectSubnode>();
 
@@ -40,6 +40,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setWikititle(result.getString(5));
 					projectSubnode.setPosition(result.getInt(6));
 					projectSubnode.setStatus(result.getInt(7));
+					projectSubnode.setInheritedTreeId(result.getInt(8));
 					projectSubnode.setNodeId(kpnid);
 					projectsubnodes.add(projectSubnode);
 				}
@@ -53,7 +54,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
 
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -71,6 +72,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setNodeId(result.getInt(4));
 					projectSubnode.setPosition(result.getInt(7));
 					projectSubnode.setStatus(result.getInt(8));
+					projectSubnode.setInheritedTreeId(result.getInt(9));
 					return projectSubnode;
 				}
 			} catch (ParseException e) {
@@ -83,7 +85,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS) VALUES (?, ?, ?, ?, ?)",DBTableHelper.PROJECTSUBNODE);
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTSUBNODE);
 		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.PROJECTSUBNODE);
 		
 		try (Connection connection = DBConnection.getConnection();
@@ -94,6 +96,7 @@ public class ProjectSubnodeRepository {
 			preparedStatement.setString(3, projectSubnode.getTitle());
 			preparedStatement.setInt(4, projectSubnode.getPosition());
 			preparedStatement.setInt(5, 0);
+			preparedStatement.setInt(6, projectSubnode.getInheritedTreeId());
 			preparedStatement.executeUpdate();
 			
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -158,7 +161,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public List<ProjectSubnode> getParentSubnode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KPNID) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID;",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KPNID) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID;",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 
 		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
 
@@ -178,6 +181,7 @@ public class ProjectSubnodeRepository {
 					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnode.setStatus(result.getInt(8));
+					subnode.setInheritedTreeId(result.getInt(9));
 					subnodes.add(subnode);
 				}
 			} catch (ParseException e) {
@@ -190,7 +194,7 @@ public class ProjectSubnodeRepository {
 	}
 
 	public List<ProjectSubnode> getSiblingSubnode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE  ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>%d) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID", DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE  ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>%d) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID", DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -210,6 +214,7 @@ public class ProjectSubnodeRepository {
 					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnode.setStatus(result.getInt(8));
+					subnode.setInheritedTreeId(result.getInt(9));
 					subnodes.add(subnode);
 				}
 			} catch (ParseException e) {
@@ -222,7 +227,7 @@ public class ProjectSubnodeRepository {
 	}
 	
 	public List<ProjectSubnode> getFollowerSubnode(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS FROM"
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM"
 				+ " ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB,"
 				+ " %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID) AS NODES,"
 				+ " %s AS SUBN WHERE SUBN.KPNID=NODES.ID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
@@ -245,6 +250,7 @@ public class ProjectSubnodeRepository {
 					subnode.setWikititle(result.getString(6));
 					subnode.setPosition(result.getInt(7));
 					subnode.setStatus(result.getInt(8));
+					subnode.setInheritedTreeId(result.getInt(9));
 					subnodes.add(subnode);
 				}
 			} catch (ParseException e) {
