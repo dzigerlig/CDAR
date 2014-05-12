@@ -90,8 +90,8 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 
 		} ]);
 
-app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route',
-						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
+app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', 'DescriptionService',
+						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, DescriptionService) {
 							// Workaround draw links not correct
 							if (getReload()) {
 								setReload(false);
@@ -100,7 +100,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							setReload(true);
 							//
 							$scope.isProducer = true;
-
+							
+							$scope.DescriptionService = DescriptionService;
+							
 							myJsPlumb.initialize();
 							$scope.treeId = $routeParams.treeId;
 							$scope.UserService = UserService;
@@ -115,7 +117,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.selectedSubnode = "";
 							$scope.selectedSubnodeId = 0;
 							$scope.selectedSubnodeName = '';
-							$scope.newSubnodeName = 'Subnode';
+							$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 							$scope.subnodeHtmlText = "";
 							
 							$scope.nodeTitle = "";
@@ -148,7 +150,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting subnodes',
+										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
 										timeout : 1500
 									});
 								});
@@ -176,7 +178,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting subnodes',
+										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
 										timeout : 1500
 									});
 								});
@@ -197,7 +199,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot add subnode',
+										text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -250,7 +252,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														changeWikiFieldsSubnode();
 														noty({
 															type : 'success',
-															text : 'subnode text edited successfully',
+															text : DescriptionService.getSubnodeDescription() + ' text edited successfully',
 															timeout : 1500
 														});
 													}, function(error) {
@@ -274,13 +276,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									$scope.getSubnodesOfNode(response);
 									noty({
 										type : 'success',
-										text : 'subnode deleted successfully',
+										text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
 										timeout : 1500
 									});
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error deleting subnode',
+										text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -288,9 +290,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							var showNodeTitle = function() {
 								if ($scope.selectedNodeId !== 0) {
-									$scope.nodeTitle = "Selected node: " + $scope.selectedNodeName;
+									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNodeName;
 								} else {
-									$scope.nodeTitle = "Selected node: no node selected";
+									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + " : no " + DescriptionService.getNodeDescription() + " selected";
 								}
 							};
 
@@ -358,7 +360,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														changeWikiFields(response);
 														noty({
 															type : 'success',
-															text : 'node text edited successfully',
+															text : DescriptionService.getNodeDescription() + ' text edited successfully',
 															timeout : 1500
 														});
 													}, function(error) {
@@ -403,7 +405,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting nodes',
+										text : 'error getting ' + DescriptionService.getNodeDescription() + 's',
 										timeout : 1500
 									});
 								});
@@ -426,7 +428,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting subnodes',
+										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's', 
 										timeout : 1500
 									});
 								});
@@ -483,7 +485,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error adding node',
+										text : 'error adding ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -504,7 +506,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error adding node',
+										text : 'error adding ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -521,13 +523,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									myJsPlumb.detachNode(nodeId);
 									noty({
 										type : 'success',
-										text : 'node deleted successfully',
+										text : DescriptionService.getNodeDescription() + ' deleted successfully',
 										timeout : 1500
 									});
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot delete node',
+										text : 'cannot delete ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -543,7 +545,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting node',
+										text : 'error getting ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -562,7 +564,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error dropping node',
+										text : 'error dropping ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -581,7 +583,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error undropping node',
+										text : 'error undropping ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -603,7 +605,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot rename node',
+										text : 'cannot rename ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -622,7 +624,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error moving node',
+										text : 'error moving ' + DescriptionService.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -895,7 +897,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									}, function (error) {
 										noty({
 											type : 'alert',
-											text : 'error renaming subnode',
+											text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
 											timeout : 1500
 										});
 									});

@@ -1,10 +1,9 @@
-app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', function ($scope, AuthenticationService, TreeService, UserService) {
+app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', function ($scope, AuthenticationService, TreeService, UserService, $resource) {
     $scope.projectTrees = "";
     $scope.newTreeName = "";
     $scope.UserService = UserService;
     $scope.knowledgetrees = "";
     $scope.selectedktreeId = "";
-    
     
     TreeService.getTrees({entity1: 'ktrees' }, function (response) {
         $scope.knowledgetrees = response;

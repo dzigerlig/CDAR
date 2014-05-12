@@ -82,7 +82,6 @@ public class MediaWikiCreationModel extends Thread {
 		try (InputStream resourceStream = loader
 				.getResourceAsStream(resourceName)) {			prop.load(resourceStream);
 			wikiConnection = prop.getProperty("MEDIAWIKI_CONNECTION");
-			System.out.println(wikiConnection);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
