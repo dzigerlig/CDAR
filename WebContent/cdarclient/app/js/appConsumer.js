@@ -1,7 +1,8 @@
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
     $scope.UserService = UserService;
+    $scope.DescriptionService = DescriptionService;
     $scope.projecttree = "";
     
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
@@ -15,7 +16,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.selectedNodeWiki = "";
 	
 	$scope.subnodes = "";
-	$scope.newSubnodeName = 'Subnode';
+	$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 	
 	$scope.subnodeHtmlText = "";
 
@@ -46,7 +47,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 }, function(error) {
                 	noty({
         				type : 'alert',
-        				text : 'error getting nodes',
+        				text : 'error getting ' + DescriptionService.getNodeDescription() + 's',
         				timeout : 1500
         			});
                 });
@@ -68,7 +69,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
         	noty({
 				type : 'alert',
-				text : 'error getting subnodes',
+				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
 				timeout : 1500
 			});
         });
@@ -214,9 +215,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     //SELECTED NODE / SUBNODE
     var showNodeTitle = function() {
 		if ($scope.selectedNode.id !== 0) {
-			$scope.nodeTitle = "Selected node: " + $scope.selectedNode.title;
+			$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
 		} else {
-			$scope.nodeTitle = "Selected node: no node selected";
+			$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription() + " selected";
 		}
 	};
 
@@ -250,7 +251,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'error getting subnodes',
+				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
 				timeout : 1500
 			});
 		});
@@ -284,7 +285,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'error getting node',
+				text : 'error getting ' + DescriptionService.getNodeDescription(),
 				timeout : 1500
 			});
 		});
@@ -314,7 +315,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 								changeWikiFields(response);
 								noty({
 									type : 'success',
-									text : 'node text edited successfully',
+									text : DescriptionService.getNodeDescription() + ' text edited successfully',
 									timeout : 1500
 								});
 							}, function(error) {
@@ -341,7 +342,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'cannot add subnode',
+				text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
 				timeout : 1500
 			});
 		});
@@ -369,7 +370,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'error getting subnodes',
+				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's', 
 				timeout : 1500
 			});
 		});
@@ -386,13 +387,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.getSubnodesOfNode(response);
 			noty({
 				type : 'success',
-				text : 'subnode deleted successfully',
+				text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
 				timeout : 1500
 			});
 		}, function(error) {
 			noty({
 				type : 'alert',
-				text : 'error deleting subnode',
+				text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
 				timeout : 1500
 			});
 		});
@@ -443,7 +444,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 								changeWikiFieldsSubnode();
 								noty({
 									type : 'success',
-									text : 'subnode text edited successfully',
+									text : DescriptionService.getSubnodeDescription() + ' text edited successfully',
 									timeout : 1500
 								});
 							}, function(error) {
@@ -477,7 +478,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) { }, function(error) {
 				noty({
 					type : 'alert',
-					text : 'cannot update node status',
+					text : 'cannot update ' + DescriptionService.getNodeDescription() + ' status',
 					timeout : 1500
 				});
 			});

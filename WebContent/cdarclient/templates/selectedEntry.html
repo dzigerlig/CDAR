@@ -1,6 +1,6 @@
 	<div class="row">
 	<div class="col-lg-12" class="well">
-		<h2>Node:</h2>
+		<h2>{{DescriptionService.getNodeDescription()}}:</h2>
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-6"><h3>{{nodeTitle}}</h3></div>
@@ -25,7 +25,7 @@
 			</tabset>
 		</div>
 		<div data-ng-show="selectedNode.id">
-			<h3>Subnodes:</h3>
+			<h3>{{DescriptionService.getSubnodeDescription()}}:</h3>
 			<div class="col-md-12" class="well">
 				<div>
 					<table
@@ -34,9 +34,9 @@
 							<tr>
 								<th class="col-md-1">#</th>
 								<th class="col-md-1">Position</th>
-								<th class="col-md-6">Subnode Name</th>
-								<th class="col-md-2">Edit subnode title</th>
-								<th class="col-md-2">Delete subnode</th>
+								<th class="col-md-6">{{DescriptionService.getSubnodeDescription()}} Name</th>
+								<th class="col-md-2">Edit {{DescriptionService.getSubnodeDescription()}} title</th>
+								<th class="col-md-2">Delete {{DescriptionService.getSubnodeDescription()}}</th>
 							</tr>
 						</thead>
 						<tr data-ng-repeat="subnode in subnodes | orderBy:'position':false">
@@ -52,7 +52,7 @@
 								onbeforesave="editSubnodeTitle($data, subnode.id)">edit title</a>
 							</td>
 							<td><a data-ng-click="deleteSubnode(subnode.id)" href="">Delete
-									Subnode</a></td>
+									{{DescriptionService.getSubnodeDescription()}}</a></td>
 						</tr>
 						<tr>
 							<td></td>
@@ -63,7 +63,7 @@
 										<input class="form-horizontal" placeholder="subnode title"
 											required data-ng-model="newSubnodeName" />
 										<button class="btn btn-success" type="submit">Add
-											subnode</button>
+											{{DescriptionService.getSubnodeDescription()}}</button>
 									</div>
 								</form>
 							</td>
