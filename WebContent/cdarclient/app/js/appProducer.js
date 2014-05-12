@@ -108,15 +108,11 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.UserService = UserService;
 							$scope.knowledgetree = "";
 							$scope.nodes = "";
-							$scope.selectedNode = "";
-							$scope.selectedNodeId = 0;
-							$scope.selectedNodeName = '';
+							$scope.selectedNode = {id:0, title:""};
 
 							// SUBNODES //
 							$scope.subnodes = "";
-							$scope.selectedSubnode = "";
-							$scope.selectedSubnodeId = 0;
-							$scope.selectedSubnodeName = '';
+							$scope.selectedSubnode = {id:0, title:""};
 							$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 							$scope.subnodeHtmlText = "";
 							
@@ -144,7 +140,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.getSubnodes({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
-									id2 : $scope.selectedNodeId,
+									id2 : $scope.selectedNode.id,
 								}, function(response) {
 									$scope.subnodes = response;
 								}, function(error) {
@@ -163,7 +159,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									if (typeof idObject === 'object') {
 										changes = idObject;
 									}
-									identity = $scope.selectedNodeId;
+									identity = $scope.selectedNode.id;
 								} else {
 									identity = idObject;
 								}
@@ -190,9 +186,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.addSubnode({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
-									id2 : $scope.selectedNodeId
+									id2 : $scope.selectedNode.id
 								}, {
-									nodeId : $scope.selectedNodeId,
+									nodeId : $scope.selectedNode.id,
 									title : this.newSubnodeName
 								}, function(response) {
 									$scope.getSubnodesOfNode();
@@ -207,12 +203,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							$scope.changeSubnode = function(subnodeid, name) {
 								setLoadingSubnode();
-								$scope.selectedSubnodeId = subnodeid;
-								$scope.selectedSubnodeName = name;
+								$scope.selectedSubnode.id = subnodeid;
+								$scope.selectedSubnode.title = name;
+								updateSubnodeTitle();
 								TreeService.getSubnodeWiki({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
-									id2 : $scope.selectedNodeId,
+									id2 : $scope.selectedNode.id,
 									id3 : subnodeid
 								}, function(response) {
 									$scope.selectedSubnode = response;
@@ -243,7 +240,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 													{
 														entity1 : 'ktrees',
 														id1 : $scope.knowledgetree.id,
-														id2 : $scope.selectedNodeId,
+														id2 : $scope.selectedNode.id,
 														id3 : $scope.selectedSubnode.id
 													},
 													$scope.selectedSubnode,
@@ -269,7 +266,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.deleteSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
-									id2 : $scope.selectedNodeId,
+									id2 : $scope.selectedNode.id,
 								}, {
 									id : subnodeId
 								}, function(response) {
@@ -279,6 +276,10 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 										text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
 										timeout : 1500
 									});
+									if ($scope.selectedSubnode.id === subnodeId) {
+										$scope.selectedSubnode.id = 0;
+										updateSubnodeTitle();
+									}
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -288,15 +289,23 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								});
 							};
 
-							var showNodeTitle = function() {
-								if ($scope.selectedNodeId !== 0) {
-									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNodeName;
+							var updateNodeTitle = function() {
+								if ($scope.selectedNode.id !== 0) {
+									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
 								} else {
-									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + " : no " + DescriptionService.getNodeDescription() + " selected";
+									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription() + " selected";
+								}
+							};
+							
+							var updateSubnodeTitle = function() {
+								if ($scope.selectedSubnode.id !== 0) {
+									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": " + $scope.selectedSubnode.title;
+								} else {
+									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": no " + DescriptionService.getSubnodeDescription() + " selected";
 								}
 							};
 
-							showNodeTitle();
+							updateNodeTitle();
 
 							var switchNodeToRead = function() {
 								$scope.nodetabs[0].active = true;
@@ -323,16 +332,16 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							$scope.changeNode = function(id, name) {
 								setLoadingNode();
-								$scope.selectedNodeId = id;
-								$scope.selectedNodeName = name;
-								showNodeTitle();
-								getSubnodes();
 								TreeService.getNodeWiki({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : id
 								}, function(response) {
 									$scope.selectedNode = response;
+									updateNodeTitle();
+									$scope.selectedSubnode.id = 0;
+									updateSubnodeTitle();
+									getSubnodes();
 									changeWikiFields();
 								}, function(error) {
 									noty({
@@ -888,7 +897,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								})[0];
 								subnode.title = data;
 
-								TreeService.renameSubnode( { entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : $scope.selectedNodeId, id3 : id },subnode, function(
+								TreeService.renameSubnode( { entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
 										response) {
 										$scope.getSubnodesOfNode(response);
 										// noty({type: 'success', text :
@@ -938,4 +947,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 								});
 							};
+							
+							updateSubnodeTitle();
 						} ]);

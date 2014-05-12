@@ -6,6 +6,7 @@ import java.util.Properties;
 public class CdarDescriptions {
 	private String nodeDescription;
 	private String subnodeDescription;
+	private String wikiUrl;
 
 	public CdarDescriptions() throws Exception {
 		getPropertyValue();
@@ -20,6 +21,7 @@ public class CdarDescriptions {
 			prop.load(resourceStream);
 			setNodeDescription(prop.getProperty("NODE_DESCRIPTION"));
 			setSubnodeDescription(prop.getProperty("SUBNODE_DESCRIPTION"));
+			setWikiUrl(prop.getProperty("MEDIAWIKI_CONNECTION"), prop.getProperty("MEDIAWIKI_PAGEURL"));
 		} catch (Exception ex) {
 			throw ex;
 		}
@@ -39,5 +41,17 @@ public class CdarDescriptions {
 
 	public void setSubnodeDescription(String subnodeDescription) {
 		this.subnodeDescription = subnodeDescription;
+	}
+
+	public String getWikiUrl() {
+		return wikiUrl;
+	}
+
+	public void setWikiUrl(String domain, String page) {
+		if (domain.contains("http://")) {
+			this.wikiUrl = String.format("%s/%s/", domain, page);
+		} else {
+			this.wikiUrl = String.format("http://%s/%s/", domain, page);
+		}
 	}
 }

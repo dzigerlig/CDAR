@@ -21,7 +21,7 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.consumer.NodeLinkRepository;
-import cdar.dal.consumer.NodeRepository;
+import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeRepository;
 import cdar.dal.exceptions.CreationException;
@@ -35,7 +35,7 @@ import cdar.dal.exceptions.UnknownUserException;
 public class ProjectTreeManager {
 
 	private ProjectTreeRepository ptr = new ProjectTreeRepository();
-	private NodeRepository pnr = new NodeRepository();
+	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	private NodeLinkRepository pnlr = new NodeLinkRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
@@ -112,6 +112,7 @@ public class ProjectTreeManager {
 			projectNode.setDirectoryId(directoryMapping.get(node
 					.getDirectoryId()));
 			projectNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
+			projectNode.setInheritedTreeId(node.getTreeId());
 			projectNode = pnr.createProjectNode(projectNode);
 			linkMapping.put(node.getId(), projectNode.getId());
 		}
@@ -122,6 +123,7 @@ public class ProjectTreeManager {
 			projectSubnode.setWikititle(subnode.getWikititle());
 			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
 			projectSubnode.setPosition(subnode.getPosition());
+			projectSubnode.setInheritedTreeId(ktreeId);
 			projectSubnode= psr.createProjectSubnode(projectSubnode);
 			subnodeMapping.put(subnode.getId(), projectSubnode.getId());
 		}

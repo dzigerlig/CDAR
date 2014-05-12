@@ -6,6 +6,7 @@ import cdar.bll.entity.Subnode;
 
 public class ProjectSubnode extends Subnode {
 	private int status;
+	private int inheritedTreeId;
 
 	public ProjectSubnode() {
 		super();
@@ -23,5 +24,13 @@ public class ProjectSubnode extends Subnode {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public int getInheritedTreeId() {
+		return inheritedTreeId;
+	}
+
+	public void setInheritedTreeId(int inheritedTreeId) {
+		this.inheritedTreeId = inheritedTreeId;
 	}
 }
