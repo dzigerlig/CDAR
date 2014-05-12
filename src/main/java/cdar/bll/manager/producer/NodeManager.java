@@ -5,6 +5,7 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
+import cdar.bll.wiki.MediaWikiModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -15,8 +16,6 @@ import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.NodeRepository;
 
 public class NodeManager {
-	private WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
-
 	private NodeRepository nr = new NodeRepository();
 
 	public Set<Node> getNodes(int treeid) throws EntityException, UnknownTreeException   {
@@ -49,12 +48,10 @@ public class NodeManager {
 		if (templateContent == null) {
 			templateContent = "== CDAR ==";
 		}
-
-		wikiHelper.addWikiEntry(node.getWikititle(), templateContent);
-
-		MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid, node.getTreeId(),
-				node.getWikititle(), templateContent, wikiHelper);
-		mwm.start();
+		
+		MediaWikiModel mwm = new MediaWikiModel();
+		mwm.createWikiEntry(uid, node.getWikititle(), templateContent);
+		
 		return node;
 	}
 

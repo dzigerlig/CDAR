@@ -13,30 +13,21 @@ import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 
 public class MediaWikiCreationModel extends Thread {
-	private int ktrid;
 	private int uid;
 	private String title;
-	private String templateContent;
+	private String content;
 	private WikiEntryConcurrentHelper wikiHelper;
 	private String wikiConnection;
 
-	public MediaWikiCreationModel(int uid, int ktrid, String title, String templateContent, WikiEntryConcurrentHelper wikiHelper) {
+	public MediaWikiCreationModel(int uid, String title, String content, WikiEntryConcurrentHelper wikiHelper) {
 		super();
-		setKtrid(ktrid);
 		setTitle(title);
 		setWikiHelper(wikiHelper);
-		setTemplateContent(templateContent);
+		setContent(content);
 		setUid(uid);
 		setWikiConnection();
 	}
 
-	public int getKtrid() {
-		return ktrid;
-	}
-
-	public void setKtrid(int ktrid) {
-		this.ktrid = ktrid;
-	}
 
 	public String getTitle() {
 		return title;
@@ -71,7 +62,7 @@ public class MediaWikiCreationModel extends Thread {
 	private void createEntry(Wiki wiki, String username, String password)
 			throws IOException, FailedLoginException, LoginException {
 		wiki.login(username, password);
-		wiki.edit(getTitle(), getTemplateContent(), "");
+		wiki.edit(getTitle(), getContent(), "");
 	}
 
 	private void setWikiConnection() {
@@ -98,12 +89,12 @@ public class MediaWikiCreationModel extends Thread {
 		}
 	}
 
-	public String getTemplateContent() {
-		return templateContent;
+	public String getContent() {
+		return content;
 	}
 
-	public void setTemplateContent(String templateContent) {
-		this.templateContent = templateContent;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public int getUid() {
@@ -113,5 +104,4 @@ public class MediaWikiCreationModel extends Thread {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-
 }

@@ -19,6 +19,7 @@ import javax.xml.bind.Unmarshaller;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.TreeXml;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
@@ -27,7 +28,6 @@ import cdar.bll.entity.consumer.ProjectTreeSimple;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.consumer.NodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
@@ -267,10 +267,8 @@ public class ConsumerImportExportManager {
 				}
 				
 				String textPlain = wikiEntry.getWikiContentPlain();
-				
 				wikiHelper.addWikiEntry(wikititle, textPlain);
-
-				MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeXml.getUserId(), treeXml.getTreeId(), wikititle, textPlain, wikiHelper);
+				MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeXml.getUserId(), wikititle, textPlain, wikiHelper);
 				mwm.start();
 			}
 		}

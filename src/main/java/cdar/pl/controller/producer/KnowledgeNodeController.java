@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Node;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")

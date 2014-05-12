@@ -6,8 +6,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;

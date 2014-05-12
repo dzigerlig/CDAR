@@ -22,7 +22,6 @@ public class SubnodeManager {
 		return sr.createSubnode(subnode);
 	}
 
-	// whole tree
 	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {
 		NodeRepository nr = new NodeRepository();
 		Set<Subnode> subnodes = new HashSet<Subnode>();

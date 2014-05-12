@@ -265,7 +265,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
-	$scope.changeNode = function(id, name) {
+	$scope.changeNode = function(id) {
 		setLoadingNode();
 		
 		TreeService.getNode({
@@ -487,6 +487,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $scope.projecttree.id,
 			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) {
 				$scope.selectedNode = response;
+				$scope.changeNode(response.id);
 			}, function(error) {
 				noty({
 					type : 'alert',

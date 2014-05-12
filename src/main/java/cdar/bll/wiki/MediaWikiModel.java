@@ -1,6 +1,9 @@
 package cdar.bll.wiki;
 
+import org.wikipedia.Wiki;
+
 import cdar.bll.entity.User;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
@@ -55,5 +58,14 @@ public class MediaWikiModel {
 	public WikiEntry saveKnowledgeProjectSubnodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
 		User user = um.getUser(userId);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
+	}
+	
+	public void createWikiEntry(int userId, String title, String content) throws UnknownUserException, EntityException {
+		WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
+		
+		wikiHelper.addWikiEntry(title, content);
+
+		MediaWikiCreationModel mwm = new MediaWikiCreationModel(userId, title, content, wikiHelper);
+		mwm.start();
 	}
 }

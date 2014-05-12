@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;

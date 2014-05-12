@@ -136,14 +136,15 @@ public class ProjectNodeRepository {
 	}
 	
 	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?  WHERE id = ?",DBTableHelper.PROJECTNODE);
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?, WIKITITLE = ?  WHERE id = ?",DBTableHelper.PROJECTNODE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectNode.getTitle());
 			preparedStatement.setInt(3, projectNode.getStatus());
-			preparedStatement.setInt(4, projectNode.getId());
+			preparedStatement.setString(4,  projectNode.getWikititle());
+			preparedStatement.setInt(5, projectNode.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			throw new UnknownProjectNodeException();

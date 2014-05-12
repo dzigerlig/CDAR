@@ -4,11 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.entity.consumer.ProjectNode;
+import cdar.bll.manager.producer.TemplateManager;
+import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -35,7 +39,7 @@ public class ProjectNodeManager {
 		pnr.deleteProjectNode(projectNodeId);
 	}
 
-	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {
+	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		
 		if (projectNode.getTreeId()!=0) {
@@ -49,9 +53,11 @@ public class ProjectNodeManager {
 		if (projectNode.getStatus()!=0) {
 			updatedProjectNode.setStatus(projectNode.getStatus());
 			if (!projectNode.getWikititle().contains("PROJECTNODE_")) {
-				//todo
-				//create wikientry with template
-				//erst text holen --> dann template (falls tree bereits gelöscht)
+				MediaWikiModel mwm = new MediaWikiModel();
+				TemplateManager tm = new TemplateManager();
+				String content = String.format("%s\n\n%s", mwm.getProjectNodeWikiEntry(projectNode.getId()).getWikiContentPlain(), tm.getDefaultProjectTemplateText(projectNode.getInheritedTreeId()));
+				updatedProjectNode.setWikititle(String.format("PROJECTNODE_%d", projectNode.getId()));
+				mwm.createWikiEntry(userId, updatedProjectNode.getWikititle(), content);
 			}
 		}
 		

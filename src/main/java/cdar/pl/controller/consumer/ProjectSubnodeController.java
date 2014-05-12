@@ -14,11 +14,11 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
