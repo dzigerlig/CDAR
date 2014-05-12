@@ -80,8 +80,16 @@ app.controller("AccountController", [ '$scope', '$location',
 		function($scope, $location, AuthenticationService, UserService) {
 			$scope.UserService = UserService;
 			$scope.newPw = '';
+			$scope.repeatPw = '';
 
 			$scope.changePw = function() {
+				if($scope.newPw!==$scope.repeatPw){
+					noty({
+						type : 'warning',
+						text : "Passwords aren't equal",
+						timeout : 1500
+					});					return;
+				}
 				AuthenticationService.edit.changepw({
 					"userid" : UserService.getUserId()
 				}, {
