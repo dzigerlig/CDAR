@@ -205,6 +205,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								setLoadingSubnode();
 								$scope.selectedSubnode.id = subnodeid;
 								$scope.selectedSubnode.title = name;
+								updateSubnodeTitle();
 								TreeService.getSubnodeWiki({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
@@ -275,6 +276,10 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 										text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
 										timeout : 1500
 									});
+									if ($scope.selectedSubnode.id === subnodeId) {
+										$scope.selectedSubnode.id = 0;
+										updateSubnodeTitle();
+									}
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -284,15 +289,23 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								});
 							};
 
-							var showNodeTitle = function() {
+							var updateNodeTitle = function() {
 								if ($scope.selectedNode.id !== 0) {
 									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
 								} else {
 									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription() + " selected";
 								}
 							};
+							
+							var updateSubnodeTitle = function() {
+								if ($scope.selectedSubnode.id !== 0) {
+									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": " + $scope.selectedSubnode.title;
+								} else {
+									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": no " + DescriptionService.getSubnodeDescription() + " selected";
+								}
+							};
 
-							showNodeTitle();
+							updateNodeTitle();
 
 							var switchNodeToRead = function() {
 								$scope.nodetabs[0].active = true;
@@ -325,7 +338,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									id2 : id
 								}, function(response) {
 									$scope.selectedNode = response;
-									showNodeTitle();
+									updateNodeTitle();
+									$scope.selectedSubnode.id = 0;
+									updateSubnodeTitle();
 									getSubnodes();
 									changeWikiFields();
 								}, function(error) {
@@ -932,4 +947,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 								});
 							};
+							
+							updateSubnodeTitle();
 						} ]);

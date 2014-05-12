@@ -6,6 +6,10 @@
 	text-align: center;
 }
 
+.wikientry-cdar {
+	padding-top: 35px;
+}
+
 .userrole { margin-top: -30px; }
 
 body.dragging,body.dragging * {

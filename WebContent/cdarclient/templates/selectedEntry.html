@@ -12,7 +12,7 @@
 				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 				<tab class="readtab-cdar">
 					<tab-heading id="nodewikiread" active="nodetabs[0].active">{{nodetabs[0].title}}</tab-heading>
-					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
+					<p data-ng-bind-html="wikiHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 				</tab>
 				<tab class="writetab-cdar">
 					<tab-heading ng-class="readtab-cdar" id="wikiwrite" active="nodetabs[1].active">{{nodetabs[1].title}}</tab-heading>
@@ -26,7 +26,7 @@
 			</tabset>
 		</div>
 		<div data-ng-show="selectedNode.id">
-			<h3>{{DescriptionService.getSubnodeDescription()}}:</h3>
+		<h2>{{DescriptionService.getSubnodeDescription()}}:</h2>
 			<div class="col-md-12" class="well">
 				<div>
 					<table
@@ -71,10 +71,11 @@
 						</tr>
 					</table>
 				</div>
-				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
+				<div class="col-md-12"><h3>{{subnodeTitle}}</h3></div>
 				<tabset justified="true" class="well" data-ng-show="selectedSubnode.id" type="pills">
+					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
-					<p data-ng-bind-html="subnodeHtmlText" />
+					<p data-ng-bind-html="subnodeHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 					</tab>
 					<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
 						<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
