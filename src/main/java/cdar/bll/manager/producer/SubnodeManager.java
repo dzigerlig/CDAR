@@ -98,6 +98,7 @@ public class SubnodeManager {
 		if (subnode.getPosition()!=0) {
 			updatedSubnode.setPosition(subnode.getPosition());
 		}
+
 		return sr.updateSubnode(updatedSubnode);
 	}
 
