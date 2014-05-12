@@ -49,10 +49,20 @@ app.controller("RegistrationController", [ '$scope', '$location',
 
 			$scope.credentials = {
 				username : "",
-				password : ""
+				password : "",
+				confirmpassword : ""
 			};
 
 			$scope.register = function() {
+				
+				if($scope.credentials.password!==$scope.credentials.confirmpassword){
+					noty({
+						type : 'warning',
+						text : "Passwords aren't equal",
+						timeout : 3500
+					});	
+					return;
+				}
 				$scope.loading = true;
 				AuthenticationService.add.user({
 					username : $scope.credentials.username,
@@ -80,8 +90,16 @@ app.controller("AccountController", [ '$scope', '$location',
 		function($scope, $location, AuthenticationService, UserService) {
 			$scope.UserService = UserService;
 			$scope.newPw = '';
+			$scope.confirmPw = '';
 
 			$scope.changePw = function() {
+				if($scope.newPw!==$scope.confirmPw){
+					noty({
+						type : 'warning',
+						text : "Passwords aren't equal",
+						timeout : 3500
+					});					return;
+				}
 				AuthenticationService.edit.changepw({
 					"userid" : UserService.getUserId()
 				}, {
@@ -134,7 +152,7 @@ app.controller("AccessController", [
 						timeout : 1500
 					});
 				});
-			}
+			};
 			getAllUsers();
 			$scope.addAccessRight = function() {
 				if ($scope.selectedUserId.length !== 0) {

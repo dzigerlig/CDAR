@@ -50,7 +50,7 @@
 									<tr data-ng-repeat="user in users | filter : { treeaccess : true }">
 										<td>{{$index+1}}</td>
 										<td>{{user.username}}</td>
-										<td data-ng-show="UserService.getUserId()===user.id"><a data-ng-click="removeAccessRight(user.id)" href=""></a></td>
+										<td data-ng-show="UserService.getUserId()===user.id"><a data-ng-click="removeAccessRight(user.id)" href="">You can not delete your access rights</a></td>
 										<td data-ng-show="UserService.getUserId()!==user.id"><a data-ng-click="removeAccessRight(user.id)" href="">Delete</a></td>
 									</tr>
 										<tr>
@@ -58,12 +58,12 @@
 											<td colspan="2">
 												<form id="formAddUsers" data-role="form" data-ng-submit="addAccessRight()">
 													<select class="form-horizontal" id="UserList" data-ng-model="selectedUserId">
-														<option style="display:none" value="">select a tree</option>
+														<option style="display:none" value="">select a user</option>
 														<option
 															data-ng-repeat="user in users| filter : { treeaccess : false }"
 															value="{{user.id}}">{{user.username}}</option>
 													</select>
-													<button class="btn btn-success" type="submit">Add tree</button>
+													<button class="btn btn-success" type="submit">Add user</button>
 												</form>
 											</td>
 									</tr>
