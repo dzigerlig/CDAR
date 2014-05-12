@@ -8,19 +8,21 @@
 					<h3><a href="#" ng-init="'Choose Status'" editable-select="selectedNode.status" e-ng-options="s.value as s.text for s in statuses | filter:{show:true}" onbeforesave="updateNodeStatus($data)">Status: {{ showStatus() }}</a></h3>
 				</div>
 			</div>
-			<tabset justified="true" class="well" data-ng-show="selectedNode.id">
-			<tab heading="{{nodetabs[0].title}}" active="nodetabs[0].active"
-				id="nodewikiread">
-			<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
-			</tab> <tab heading="{{nodetabs[1].title}}" id="wikiwrite"
-				active="nodetabs[1].active">
-			<div class="col-md-12">
-				<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
-					<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
-					<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-				</form>
-			</div>
-			</tab> </tabset>
+			<tabset justified="true" class="well" data-ng-show="selectedNode.id" type="pills">
+				<tab class="readtab-cdar">
+					<tab-heading id="nodewikiread" active="nodetabs[0].active">{{nodetabs[0].title}}</tab-heading>
+					<p data-ng-bind-html="wikiHtmlText">no wiki entry selected</p>
+				</tab>
+				<tab class="writetab-cdar">
+					<tab-heading ng-class="readtab-cdar" id="wikiwrite" active="nodetabs[1].active">{{nodetabs[1].title}}</tab-heading>
+					<div class="col-md-12">
+						<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
+							<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
+							<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+						</form>
+					</div>
+				</tab>
+			</tabset>
 		</div>
 		<div data-ng-show="selectedNode.id">
 			<h3>Subnodes:</h3>
@@ -68,7 +70,7 @@
 						</tr>
 					</table>
 				</div>
-				<tabset justified="true" class="well" data-ng-show="selectedSubnodeId">
+				<tabset justified="true" class="well" data-ng-show="selectedSubnodeId" type="pills">
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
 					<p data-ng-bind-html="subnodeHtmlText" />
 					</tab>
