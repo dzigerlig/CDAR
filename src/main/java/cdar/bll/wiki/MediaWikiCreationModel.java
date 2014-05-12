@@ -20,8 +20,7 @@ public class MediaWikiCreationModel extends Thread {
 	private WikiEntryConcurrentHelper wikiHelper;
 	private String wikiConnection;
 
-	public MediaWikiCreationModel(int uid, int ktrid, String title,
-			String templateContent, WikiEntryConcurrentHelper wikiHelper) {
+	public MediaWikiCreationModel(int uid, int ktrid, String title, String templateContent, WikiEntryConcurrentHelper wikiHelper) {
 		super();
 		setKtrid(ktrid);
 		setTitle(title);
@@ -50,13 +49,13 @@ public class MediaWikiCreationModel extends Thread {
 	public void setWikiHelper(WikiEntryConcurrentHelper wikiHelper) {
 		this.wikiHelper = wikiHelper;
 	}
-	
+
 	public WikiEntryConcurrentHelper getWikiHelper() {
 		return wikiHelper;
 	}
 
 	public void createNewWikiEntry(String username, String password) {
-		Wiki wiki = new Wiki(wikiConnection,"");
+		Wiki wiki = new Wiki(wikiConnection, "");
 		try {
 			createEntry(wiki, username, password);
 		} catch (Exception e) {
@@ -69,18 +68,19 @@ public class MediaWikiCreationModel extends Thread {
 		}
 	}
 
-	private void createEntry(Wiki wiki, String username, String password) throws IOException,
-			FailedLoginException, LoginException {
+	private void createEntry(Wiki wiki, String username, String password)
+			throws IOException, FailedLoginException, LoginException {
 		wiki.login(username, password);
 		wiki.edit(getTitle(), getTemplateContent(), "");
 	}
-	
+
 	private void setWikiConnection() {
 		String resourceName = "cdarconfig.properties";
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties prop = new Properties();
 		try (InputStream resourceStream = loader
-				.getResourceAsStream(resourceName)) {			prop.load(resourceStream);
+				.getResourceAsStream(resourceName)) {
+			prop.load(resourceStream);
 			wikiConnection = prop.getProperty("MEDIAWIKI_CONNECTION");
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -113,6 +113,5 @@ public class MediaWikiCreationModel extends Thread {
 	public void setUid(int uid) {
 		this.uid = uid;
 	}
-	
 
 }

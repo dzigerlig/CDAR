@@ -52,8 +52,9 @@ public class WikiEntry extends WikiEntity {
 		super(subnode.getId(), subnode.getCreationTime(), subnode
 				.getLastModificationTime(), subnode.getTitle(), subnode
 				.getWikititle());
-		fillWikiContent();
+		setWikiConnection();
 		setSubnodeId(subnode.getId());
+		fillWikiContent();
 	}
 
 	private void fillWikiContent() {
