@@ -21,7 +21,7 @@ public class WikiEntry extends WikiEntity {
 	private String wikiConnection;
 
 	public WikiEntry() {
-setWikiConnection();
+		setWikiConnection();
 	}
 
 	public WikiEntry(ProjectNode node) {
@@ -57,22 +57,14 @@ setWikiConnection();
 	}
 
 	private void fillWikiContent() {
-		Wiki wiki = new Wiki(wikiConnection,"");
+		Wiki wiki = new Wiki(wikiConnection, "");
 
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikititle()));
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, "http://"+wikiConnection+"/images/${image}", "http://"+wikiConnection+"/index.php/${title}");
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("http://%s/images/${image}", wikiConnection), String.format("http://%s/index.php/${title}", wikiConnection));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
-			/*
-			 * TODO new WikiEntryConcurrentHelper().addWikiEntry(getWikiTitle(),
-			 * getWikiContentPlain());
-			 * 
-			 * MediaWikiCreationModel mwm = new MediaWikiCreationModel(uid,
-			 * treeid, node.getWikititle(), templateContent, wikiHelper);
-			 * mwm.start();
-			 */
 			e.printStackTrace();
 		}
 	}
@@ -96,13 +88,11 @@ setWikiConnection();
 	public WikiEntry saveEntry(String username, String password)
 			throws UnknownUserException {
 		try {
-			Wiki c = new Wiki(wikiConnection,"");
+			Wiki c = new Wiki(wikiConnection, "");
 			c.login(username, password);
 			c.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb,
-					wikiConnection+"/images/${image}",
-					wikiConnection+"/index.php/${title}");
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", wikiConnection), String.format("%s/index.php/${title}", wikiConnection));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,10 +105,9 @@ setWikiConnection();
 		String resourceName = "cdarconfig.properties";
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties prop = new Properties();
-		try (InputStream resourceStream = loader
-				.getResourceAsStream(resourceName)) {			prop.load(resourceStream);
+		try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+			prop.load(resourceStream);
 			wikiConnection = prop.getProperty("MEDIAWIKI_CONNECTION");
-			System.out.println(wikiConnection);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
