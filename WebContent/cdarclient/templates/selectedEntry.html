@@ -42,10 +42,10 @@
 						</thead>
 						<tr data-ng-repeat="subnode in subnodes | orderBy:'position':false">
 							<td>{{$index+1}}</td>
-							<td style="text-align: center;"><a
-								data-ng-click="moveSubnodeUp(subnode.id)" href=""><img
-									src="app/img/arrow_up.png" alt="move option up" /></a> <a
-								data-ng-click="moveSubnodeDown(subnode.id)" href=""><img
+							<td style="text-align: center;">
+								<a data-ng-show="$index" data-ng-click="moveSubnodeUp(subnode.id)" href=""><img
+									src="app/img/arrow_up.png" alt="move option up" /></a>
+								<a data-ng-show="$index+1!==subnodes.length" data-ng-click="moveSubnodeDown(subnode.id)" href=""><img
 									src="app/img/arrow_down.png" alt="move option down" /></a></td>
 							<td><a
 								data-ng-click="changeSubnode(subnode.id, subnode.title)" href="">{{subnode.title}}</a></td>
