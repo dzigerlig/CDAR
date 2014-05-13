@@ -15,6 +15,7 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownSubnodeException;
 
 public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -59,12 +60,40 @@ public class ProjectSubnodeManager {
 			updatedProjectSubnode.setTitle(projectSubnode.getTitle());
 		}
 		if (projectSubnode.getPosition()!=0) {
+			int oldPosition = updatedProjectSubnode.getPosition();
+			int newPosition = projectSubnode.getPosition();
 			updatedProjectSubnode.setPosition(projectSubnode.getPosition());
+			
+			changeOtherProjectSubnodePositions(projectSubnode, oldPosition, newPosition);
 		}
 		if (projectSubnode.getStatus()!=0) {
 			updatedProjectSubnode.setStatus(projectSubnode.getStatus());
 		}
 		return psr.updateProjectSubnode(updatedProjectSubnode);
+	}
+	
+	private void changeOtherProjectSubnodePositions(Subnode projectSubnode, int oldPosition,
+			int newPosition) throws UnknownProjectNodeLinkException, EntityException {
+		for (ProjectSubnode otherProjectSubnode : psr.getProjectSubnodes(projectSubnode.getNodeId())) {
+			if (otherProjectSubnode.getId()!=projectSubnode.getId()) {
+				
+				if (oldPosition < newPosition) {
+					if (otherProjectSubnode.getPosition() > oldPosition
+							&& otherProjectSubnode.getPosition() <= newPosition) {
+						otherProjectSubnode.setPosition(projectSubnode.getPosition() - 1);
+						psr.updateProjectSubnode(otherProjectSubnode);
+					}
+				}
+
+				if (oldPosition > newPosition) {
+					if (otherProjectSubnode.getPosition() >= newPosition
+							&& otherProjectSubnode.getPosition() < oldPosition) {
+						otherProjectSubnode.setPosition(projectSubnode.getPosition() + 1);
+						psr.updateProjectSubnode(otherProjectSubnode);
+					}
+				}
+			}
+		}
 	}
 	
 	public int getNextProjectSubnodePosition(int projectNodeId) throws UnknownProjectNodeLinkException, EntityException {

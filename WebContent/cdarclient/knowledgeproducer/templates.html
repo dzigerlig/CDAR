@@ -126,18 +126,19 @@
 					<div class="col-lg-12" class="well">
 						<h3>Selected template: {{selectedTemplate.title}}</h3>
 						<div id="wiki" data-ng-show="selectedTemplate.id">
-							<tabset justified="true" class="well"> <tab
-								heading="{{tabs[0].title}}" id="wikiread"
-								active="tabs[0].active">
-							<p data-ng-bind-html="templateHtml" />
-							</tab> <tab heading="{{tabs[1].title}}" id="wikiwrite"
-								active="tabs[1].active">
-							<form data-role="form" data-ng-submit="saveTemplate()">
-								<textarea id="templateArea" name="templateArea" cols="80"
-									rows="10"></textarea>
-								<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-							</form>
-							</tab> </tabset>
+							<tabset justified="true" class="well" type="pills">
+								<tab heading="{{tabs[0].title}}" id="wikiread" active="tabs[0].active">
+								<p class="wikientry-cdar" data-ng-bind-html="templateHtml" />
+								</tab>
+								<tab heading="{{tabs[1].title}}" id="wikiwrite"
+									active="tabs[1].active">
+								<form data-role="form" data-ng-submit="saveTemplate()">
+									<textarea id="templateArea" name="templateArea" cols="80"
+										rows="10"></textarea>
+									<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+								</form>
+								</tab>
+							</tabset>
 						</div>
 						<div id="wikiNoEntry" data-ng-hide="selectedTemplate.id">
 							<p class="well">no wiki entry selected</p>

@@ -514,56 +514,6 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test
-	public void TestKnowledgeSubnodePositionChange() throws Exception {
-		final String subnodename = "My Subnode";
-		SubnodeManager snm = new SubnodeManager();
-		NodeManager nm = new NodeManager();
-		Tree tree = new Tree();
-		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
-		DirectoryManager dm = new DirectoryManager();
-		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-		Node node = new Node();
-		node.setTreeId(tree.getId());
-		node.setTitle("Node");
-		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(username).getId(), node);
-		Subnode subnode1 = new Subnode();
-		subnode1.setNodeId(node.getId());
-		subnode1.setTitle(subnodename);
-		Subnode subnode2 = new Subnode();
-		subnode2.setNodeId(node.getId());
-		subnode2.setTitle(subnodename);
-		Subnode subnode3 = new Subnode();
-		subnode3.setNodeId(node.getId());
-		subnode3.setTitle(subnodename);
-		Subnode subnode4 = new Subnode();
-		subnode4.setNodeId(node.getId());
-		subnode4.setTitle(subnodename);
-		subnode1 = snm.addSubnode(subnode1);
-		subnode2 = snm.addSubnode(subnode2);
-		subnode3 = snm.addSubnode(subnode3);
-		subnode4 = snm.addSubnode(subnode4);
-		assertEquals(4, snm.getSubnodesFromNode(node.getId()).size());
-		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		assertTrue(snm.changeSubnodePosition(subnode1.getId(), false));
-		assertEquals(2, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(1, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		assertTrue(snm.changeSubnodePosition(subnode1.getId(), true));
-		assertEquals(1, snm.getSubnode(subnode1.getId()).getPosition());
-		assertEquals(2, snm.getSubnode(subnode2.getId()).getPosition());
-		assertEquals(3, snm.getSubnode(subnode3.getId()).getPosition());
-		assertEquals(4, snm.getSubnode(subnode4.getId()).getPosition());
-		assertFalse(snm.changeSubnodePosition(subnode1.getId(), true));
-		assertFalse(snm.changeSubnodePosition(subnode4.getId(), false));
-	}
-	
-	@Test
 	public void testGetSubnodesUnknownTree() throws Exception {
 		SubnodeManager snm = new SubnodeManager();
 		assertEquals(0, snm.getSubnodesFromTree(unknownId).size());

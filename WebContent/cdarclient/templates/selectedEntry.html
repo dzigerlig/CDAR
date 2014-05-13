@@ -10,12 +10,10 @@
 			</div>
 			<tabset justified="true" class="well" data-ng-show="selectedNode.id" type="pills">
 				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
-				<tab class="readtab-cdar">
-					<tab-heading id="nodewikiread" active="nodetabs[0].active">{{nodetabs[0].title}}</tab-heading>
+				<tab heading="{{nodetabs[0].title}}" id="nodewikiread" active="nodetabs[0].active">
 					<p data-ng-bind-html="wikiHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 				</tab>
-				<tab class="writetab-cdar">
-					<tab-heading ng-class="readtab-cdar" id="wikiwrite" active="nodetabs[1].active">{{nodetabs[1].title}}</tab-heading>
+				<tab heading="{{nodetabs[1].title}}" id="wikiwrite" active="nodetabs[1].active">
 					<div class="col-md-12">
 						<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
 							<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
@@ -42,10 +40,10 @@
 						</thead>
 						<tr data-ng-repeat="subnode in subnodes | orderBy:'position':false">
 							<td>{{$index+1}}</td>
-							<td style="text-align: center;"><a
-								data-ng-click="moveSubnodeUp(subnode.id)" href=""><img
-									src="app/img/arrow_up.png" alt="move option up" /></a> <a
-								data-ng-click="moveSubnodeDown(subnode.id)" href=""><img
+							<td style="text-align: center;">
+								<a data-ng-show="$index" data-ng-click="moveSubnodeUp(subnode.id)" href=""><img
+									src="app/img/arrow_up.png" alt="move option up" /></a>
+								<a data-ng-show="$index+1!==subnodes.length" data-ng-click="moveSubnodeDown(subnode.id)" href=""><img
 									src="app/img/arrow_down.png" alt="move option down" /></a></td>
 							<td><a
 								data-ng-click="changeSubnode(subnode.id, subnode.title)" href="">{{subnode.title}}</a></td>
@@ -59,7 +57,7 @@
 							<td colspan="2"></td>
 							<td colspan="3">
 								<form id="formAddTree" data-role="form"
-									data-ng-submit="addNewSubnode(); newSubnodeName='Subnode'">
+									data-ng-submit="addNewSubnode(); newSubnodeName=DescriptionService.getSubnodeDescription()">
 									<div class="input-append">
 										<input class="form-horizontal" placeholder="subnode title"
 											required data-ng-model="newSubnodeName" />
@@ -75,7 +73,7 @@
 				<tabset justified="true" class="well" data-ng-show="selectedSubnode.id" type="pills">
 					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
-					<p data-ng-bind-html="subnodeHtmlText" class="wikientry-cdar">no wiki entry selected</p>
+						<p data-ng-bind-html="subnodeHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 					</tab>
 					<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
 						<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">

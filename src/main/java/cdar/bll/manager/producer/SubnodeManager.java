@@ -1,6 +1,5 @@
 package cdar.bll.manager.producer;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +21,6 @@ public class SubnodeManager {
 		return sr.createSubnode(subnode);
 	}
 
-	// whole tree
 	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {
 		NodeRepository nr = new NodeRepository();
 		Set<Subnode> subnodes = new HashSet<Subnode>();
@@ -50,45 +48,7 @@ public class SubnodeManager {
 		return sr.getSubnode(subnodeId);
 	}
 
-	public boolean changeSubnodePosition(int id, boolean up) throws UnknownSubnodeException, EntityException, UnknownNodeException {
-		int oldPosition = getSubnode(id).getPosition();
-		int newPosition = up ? oldPosition - 1 : oldPosition + 1;
-
-		Set<Subnode> subnodes = getSubnodesFromNode(getSubnode(id).getNodeId());
-
-		if (subnodes.size() == 0 || newPosition > subnodes.size()
-				|| newPosition < 1) {
-			return false;
-		} else {
-
-			for (Subnode subnode : subnodes) {
-				if (subnode.getId() == id) {
-					subnode.setPosition(newPosition);
-					updateSubnode(subnode);
-				} else {
-					if (oldPosition < newPosition) {
-						if (subnode.getPosition() > oldPosition
-								&& subnode.getPosition() <= newPosition) {
-							subnode.setPosition(subnode.getPosition() - 1);
-							updateSubnode(subnode);
-						}
-					}
-
-					if (oldPosition > newPosition) {
-						if (subnode.getPosition() >= newPosition
-								&& subnode.getPosition() < oldPosition) {
-							subnode.setPosition(subnode.getPosition() + 1);
-							updateSubnode(subnode);
-						}
-					}
-
-				}
-			}
-			return true;
-		}
-	}
-
-	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException {
+	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
 		if (subnode.getNodeId()!=0) {
 			updatedSubnode.setNodeId(subnode.getNodeId());
@@ -97,9 +57,39 @@ public class SubnodeManager {
 			updatedSubnode.setTitle(subnode.getTitle());
 		}
 		if (subnode.getPosition()!=0) {
+			int oldPosition = updatedSubnode.getPosition();
+			int newPosition = subnode.getPosition();
 			updatedSubnode.setPosition(subnode.getPosition());
+			
+			changeOtherSubnodePositions(subnode, oldPosition, newPosition);
 		}
+
 		return sr.updateSubnode(updatedSubnode);
+	}
+
+	private void changeOtherSubnodePositions(Subnode subnode, int oldPosition,
+			int newPosition) throws EntityException, UnknownNodeException,
+			UnknownSubnodeException {
+		for (Subnode otherSubnode : sr.getSubnodes(subnode.getNodeId())) {
+			if (otherSubnode.getId()!=subnode.getId()) {
+				
+				if (oldPosition < newPosition) {
+					if (otherSubnode.getPosition() > oldPosition
+							&& otherSubnode.getPosition() <= newPosition) {
+						otherSubnode.setPosition(subnode.getPosition() - 1);
+						sr.updateSubnode(otherSubnode);
+					}
+				}
+
+				if (oldPosition > newPosition) {
+					if (otherSubnode.getPosition() >= newPosition
+							&& otherSubnode.getPosition() < oldPosition) {
+						otherSubnode.setPosition(subnode.getPosition() + 1);
+						sr.updateSubnode(otherSubnode);
+					}
+				}
+			}
+		}
 	}
 
 	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
@@ -114,14 +104,6 @@ public class SubnodeManager {
 
 	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException   {
 		return sr.getNextSubnodePosition(nodeId);
-	}
-
-	public boolean moveSubnodeUp(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException   {
-		return changeSubnodePosition(subnode.getId(), true);
-	}
-
-	public boolean moveSubnodeDown(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException {
-		return changeSubnodePosition(subnode.getId(), false);
 	}
 
 	public Set<Subnode> zoomUp(int nodeId) throws EntityException, UnknownNodeException {

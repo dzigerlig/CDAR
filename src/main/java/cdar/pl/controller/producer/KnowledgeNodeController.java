@@ -12,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Node;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")
@@ -58,7 +58,7 @@ public class KnowledgeNodeController {
 	@POST
 	@Path("{nodeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNode(@PathParam("nodeid") int nodeid,Node node) {
+	public Response updateNode(@PathParam("nodeid") int nodeid, Node node) {
 		try {
 			node.setId(nodeid);
 			return StatusHelper.getStatusOk(nm.updateNode(node));

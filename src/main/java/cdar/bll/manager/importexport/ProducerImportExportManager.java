@@ -21,12 +21,12 @@ import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.TreeXml;
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.producer.Template;
 import cdar.bll.entity.producer.TreeFull;
 import cdar.bll.entity.producer.TreeSimple;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -266,7 +266,7 @@ public class ProducerImportExportManager {
 				
 				wikiHelper.addWikiEntry(wikititle, textPlain);
 
-				MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeXml.getUserId(), treeXml.getTreeId(), wikititle, textPlain, wikiHelper);
+				MediaWikiCreationModel mwm = new MediaWikiCreationModel(treeXml.getUserId(), wikititle, textPlain, wikiHelper);
 				mwm.start();
 			}
 		}

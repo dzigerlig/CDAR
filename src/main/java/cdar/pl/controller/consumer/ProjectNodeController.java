@@ -10,10 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.wiki.MediaWikiModel;
-import cdar.bll.wiki.WikiEntry;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes")
@@ -54,10 +54,10 @@ public class ProjectNodeController {
 	@POST
 	@Path("{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateNode(@PathParam("nodeid") int nodeId, ProjectNode node) {
+	public Response updateNode(@HeaderParam ("uid") int uid, @PathParam("nodeid") int nodeId, ProjectNode node) {
 		try {
 			node.setId(nodeId);
-			return StatusHelper.getStatusOk(pnm.updateProjectNode(node));
+			return StatusHelper.getStatusOk(pnm.updateProjectNode(uid, node));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

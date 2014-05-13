@@ -265,7 +265,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
-	$scope.changeNode = function(id, name) {
+	$scope.changeNode = function(id) {
 		setLoadingNode();
 		
 		TreeService.getNode({
@@ -487,6 +487,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $scope.projecttree.id,
 			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) {
 				$scope.selectedNode = response;
+				$scope.changeNode(response.id);
 			}, function(error) {
 				noty({
 					type : 'alert',
@@ -494,6 +495,53 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					timeout : 1500
 				});
 			});
+	};
+	
+	$scope.moveSubnodeUp = function(id) {
+		var subnode = $.grep($scope.subnodes, function(t) {
+			return t.id === id;
+		})[0];
+		
+		subnode.position = subnode.position - 1;
+		
+		TreeService.updateSubnode({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : $scope.selectedNode.id,
+			id3 : subnode.id
+		}, subnode, function(response) {
+				$scope.getSubnodesOfNode();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom up',
+				timeout : 1500
+			});
+		});
+	};
+
+	$scope.moveSubnodeDown = function(id) {
+		var subnode = $.grep($scope.subnodes, function(
+				t) {
+			return t.id === id;
+		})[0];
+		
+		subnode.position = subnode.position + 1;
+		
+		TreeService.updateSubnode({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : $scope.selectedNode.id,
+			id3 : subnode.id
+		}, subnode, function(response) {
+				$scope.getSubnodesOfNode();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot zoom down',
+				timeout : 1500
+			});
+		});
 	};
 	
 }]);

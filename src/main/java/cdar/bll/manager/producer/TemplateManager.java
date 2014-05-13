@@ -75,6 +75,15 @@ public class TemplateManager {
 		}
 		return null;
 	}
+	
+	public String getDefaultProjectTemplateText(int ktrid) throws EntityException, UnknownTreeException {
+		for (Template template : tr.getTemplates(ktrid)) {
+			if (template.getIsDefault() && template.getDecisionMade()) {
+				return template.getTemplatetext();
+			}
+		}
+		return null;
+	}
 
 	public Template renameTemplate(Template template) throws UnknownTemplateException, UnknownXmlTreeException, EntityException {
 		Template renamedTemplate = tr.getTemplate(template.getId());

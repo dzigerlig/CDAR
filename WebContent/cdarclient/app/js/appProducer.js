@@ -214,7 +214,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(response) {
 									$scope.selectedSubnode = response;
 									changeWikiFieldsSubnode();
-									// load wiki fields
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -353,7 +352,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.saveWikiNodeEntry = function() {
-								if ($scope.selectedNode !== 0) {
+								if ($scope.selectedNode.id !== 0) {
 									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
 									switchNodeToRead();
 									setLoadingNode();
@@ -913,14 +912,19 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.moveSubnodeUp = function(id) {
-								TreeService.moveSubnodeUp({
-									id : id
-								}, function(response) {
+								var subnode = $.grep($scope.subnodes, function(t) {
+									return t.id === id;
+								})[0];
+								
+								subnode.position = subnode.position - 1;
+								
+								TreeService.updateSubnode({
+									entity1 : 'ktrees',
+									id1 : $routeParams.treeId,
+									id2 : $scope.selectedNode.id,
+									id3 : subnode.id
+								}, subnode, function(response) {
 										$scope.getSubnodesOfNode();
-										// noty({type: 'success', text :
-										// 'subnode position changed
-										// successfully', timeout: 1500});
-										// getSubnodes();
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -931,14 +935,20 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.moveSubnodeDown = function(id) {
-								TreeService.moveSubnodeDown({
-									id : id
-								}, function(response) {
+								var subnode = $.grep($scope.subnodes, function(
+										t) {
+									return t.id === id;
+								})[0];
+								
+								subnode.position = subnode.position + 1;
+								
+								TreeService.updateSubnode({
+									entity1 : 'ktrees',
+									id1 : $routeParams.treeId,
+									id2 : $scope.selectedNode.id,
+									id3 : subnode.id
+								}, subnode, function(response) {
 										$scope.getSubnodesOfNode();
-										// noty({type: 'success', text :
-										// 'subnode position changed
-										// successfully', timeout: 1500});
-										// getSubnodes();
 								}, function(error) {
 									noty({
 										type : 'alert',

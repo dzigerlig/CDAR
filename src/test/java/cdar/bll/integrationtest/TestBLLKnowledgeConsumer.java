@@ -310,7 +310,7 @@ public class TestBLLKnowledgeConsumer {
 		assertEquals(0, pnm.getProjectNode(projectNode.getId()).getStatus());
 		projectNode.setTitle(newProjectNodeName);
 		projectNode.setStatus(2);
-		pnm.updateProjectNode(projectNode);
+		pnm.updateProjectNode(um.getUser(username).getId(), projectNode);
 		assertEquals(newProjectNodeName, pnm.getProjectNode(projectNode.getId()).getTitle());
 		assertEquals(2, pnm.getProjectNode(projectNode.getId()).getStatus());
 		pnm.deleteProjectNode(projectNode.getId());
@@ -334,7 +334,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectNodeManager pnm = new ProjectNodeManager();
 		ProjectNode projectNode = pnm.getProjectNode(unknownId);
 		projectNode.setTitle("Unknown project node");
-		pnm.updateProjectNode(projectNode);
+		pnm.updateProjectNode(um.getUser(username).getId(), projectNode);
 	}
 	
 	@Test (expected = UnknownProjectNodeException.class)

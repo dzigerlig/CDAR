@@ -1,4 +1,4 @@
-package cdar.bll.wiki;
+package cdar.bll.entity;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -7,10 +7,8 @@ import info.bliki.wiki.model.WikiModel;
 
 import org.wikipedia.Wiki;
 
-import cdar.bll.entity.Node;
-import cdar.bll.entity.Subnode;
-import cdar.bll.entity.WikiEntity;
 import cdar.bll.entity.consumer.ProjectNode;
+import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {
@@ -29,8 +27,14 @@ public class WikiEntry extends WikiEntity {
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikititle());
 		setWikiConnection();
-		fillWikiContent();
 		setNodeId(node.getId());
+		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
+		if (wec.isKeyInMap(node.getWikititle())) {
+			setWikiContentPlain(wec.getValue(node.getWikititle()));
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+		} else {
+			fillWikiContent();
+		}
 	}
 
 	public WikiEntry(Node node) {
@@ -54,7 +58,13 @@ public class WikiEntry extends WikiEntity {
 				.getWikititle());
 		setWikiConnection();
 		setSubnodeId(subnode.getId());
-		fillWikiContent();
+		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
+		if (wec.isKeyInMap(subnode.getWikititle())) {
+			setWikiContentPlain(wec.getValue(subnode.getWikititle()));
+			setWikiContentHtml(WikiModel.toHtml(getWikiContentPlain()));
+		} else {
+			fillWikiContent();
+		}
 	}
 
 	private void fillWikiContent() {
