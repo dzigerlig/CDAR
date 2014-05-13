@@ -214,7 +214,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(response) {
 									$scope.selectedSubnode = response;
 									changeWikiFieldsSubnode();
-									// load wiki fields
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -353,7 +352,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.saveWikiNodeEntry = function() {
-								if ($scope.selectedNode !== 0) {
+								if ($scope.selectedNode.id !== 0) {
 									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
 									switchNodeToRead();
 									setLoadingNode();
