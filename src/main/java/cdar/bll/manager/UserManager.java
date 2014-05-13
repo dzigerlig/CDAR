@@ -36,6 +36,7 @@ public class UserManager {
 				WikiRepository wr = new WikiRepository();
 				wr.tryLogin(username, password);
 			} catch (WikiLoginException ex) {
+				System.out.println(ex.getMessage());
 				throw new WrongCredentialsException();
 			}
 			user.setAccesstoken(DigestUtils.shaHex(String.format("%s%s",
@@ -92,6 +93,9 @@ public class UserManager {
 
 		if (user.getPassword() != null) {
 			updatedUser.setPassword(user.getPassword());
+		}
+		if (user.getDrillHierarchies() != 0) {
+			updatedUser.setDrillHierarchies(user.getDrillHierarchies());
 		}
 
 		return userRepository.updateUser(updatedUser);

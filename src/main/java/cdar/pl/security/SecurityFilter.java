@@ -45,6 +45,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 					abortRequest(requestContext);
 				}
 			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
 				ex.printStackTrace();
 				abortRequest(requestContext);
 			}

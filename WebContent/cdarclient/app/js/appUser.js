@@ -86,11 +86,24 @@ app.controller("RegistrationController", [ '$scope', '$location',
 		} ]);
 
 app.controller("AccountController", [ '$scope', '$location',
-		'AuthenticationService', 'UserService',
-		function($scope, $location, AuthenticationService, UserService) {
+		'AuthenticationService', 'UserService','$filter',
+		function($scope, $location, AuthenticationService, UserService,$filter) {
 			$scope.UserService = UserService;
 			$scope.newPw = '';
 			$scope.confirmPw = '';
+			$scope.statuses = [
+			                   {value: 2, text: '2', show: true},
+			                   {value: 3, text: '3', show: true},
+			                   {value: 4, text: '4', show: true},
+			                   {value: 5, text: '5', show: true},
+			                   {value: 6, text: '6', show: true},
+			                   {value: 7, text: '7', show: true},
+			                 ]; 
+			$scope.showStatus = function() {
+				console.log(selected[0]);
+			    var selected = $filter('filter')($scope.statuses, {value: 2});
+			    return selected[0].text;
+			  };
 
 			$scope.changePw = function() {
 				if($scope.newPw!==$scope.confirmPw){
