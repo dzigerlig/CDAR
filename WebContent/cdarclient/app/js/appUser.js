@@ -20,7 +20,7 @@ app.controller("LoginController", [ '$scope', '$location',
 					UserService.setUsername(response.username);
 					UserService.setAccesstoken(response.accesstoken);
 					UserService.setUserId(response.id);
-CDAR.setCustomHeader(response.id,response.accesstoken);
+					CDAR.setCustomHeader(response.id,response.accesstoken);
 
 					if ($scope.chkbKnowledgeProducer) {
 						UserService.setIsProducer('true');
@@ -39,6 +39,20 @@ CDAR.setCustomHeader(response.id,response.accesstoken);
 				});
 			};
 		} ]);
+
+app.controller('ConfirmationController', ['$scope', '$modalInstance', 'data', 
+       function ($scope, $modalInstance, data) {
+	
+       $scope.data = data;
+       
+       $scope.ok = function() {
+           $modalInstance.close();
+       };
+
+       $scope.cancel = function() {
+           $modalInstance.dismiss();
+       };    
+   }]);
 
 app.controller("RegistrationController", [ '$scope', '$location',
 		'AuthenticationService', 'UserService',
@@ -134,9 +148,9 @@ app.controller("AccessController", [
 		'$location',
 		'AuthenticationService',
 		'UserService',
-		'TreeService',
+		'TreeService', '$modal',
 		function($scope, $routeParams, $location, AuthenticationService,
-				UserService, TreeService) {
+				UserService, TreeService, $modal) {
 			$scope.UserService = UserService;
 			$scope.isProducer = UserService.getIsProducer();
 			$scope.treeId = $routeParams.treeId;
@@ -187,17 +201,31 @@ app.controller("AccessController", [
 				}
 			};
 			$scope.removeAccessRight = function(userid) {
-				TreeService.setUserRight({
-					entity1 : roleEntity,
-					id1 : $routeParams.treeId,
-					id2 : userid
-				}, {
-					treeaccess : false
-				}, function(response) {
-					getAllUsers();
-				}, function(error) {
-					alert("access right change failed!");
-				});
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete User Right',
+		                        message: 'Do you really want to delete this User Right?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.setUserRight({
+						entity1 : roleEntity,
+						id1 : $routeParams.treeId,
+						id2 : userid
+					}, {
+						treeaccess : false
+					}, function(response) {
+						getAllUsers();
+					}, function(error) {
+						alert("access right change failed!");
+					});
+			    });
 			};
-
 		} ]);

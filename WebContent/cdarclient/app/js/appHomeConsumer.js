@@ -1,4 +1,4 @@
-app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', function ($scope, AuthenticationService, TreeService, UserService, $resource) {
+app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', '$modal', function ($scope, AuthenticationService, TreeService, UserService, $resource, $modal) {
     $scope.projectTrees = "";
     $scope.newTreeName = "";
     $scope.UserService = UserService;
@@ -39,15 +39,30 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     };
 
     $scope.deleteTree = function (treeid) {
-        TreeService.deleteTree({ entity1: 'ptrees' }, { id: treeid }, function (response) {
-            reloadTrees();
-        }, function (error) {
-        	noty({
-				type : 'alert',
-				text : 'cannot delete tree',
-				timeout : 1500
-			});
-        });
+    	$modal.open({ 
+            templateUrl: 'templates/confirmation.html',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                data: function() { 
+                    return {
+                        title: 'Delete Tree',
+                        message: 'Do you really want to delete this Project Tree?' 
+                    };
+                }
+	            },
+	            controller: 'ConfirmationController' 
+	    }).result.then(function(result) {
+	    	TreeService.deleteTree({ entity1: 'ptrees' }, { id: treeid }, function (response) {
+	            reloadTrees();
+	        }, function (error) {
+	        	noty({
+					type : 'alert',
+					text : 'cannot delete tree',
+					timeout : 1500
+				});
+	        });
+	    });
     };
     
     $scope.saveProjectTreeTitle = function(data, id) {
