@@ -4,8 +4,8 @@ app.controller("TemplatesController", [
 		'TreeService',
 		'AuthenticationService',
 		'UserService',
-		'$route',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
+		'$route', '$modal',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $modal) {
 			$scope.knowledgetree = "";
 			$scope.templates = "";
 			$scope.selectedTemplate = "";
