@@ -38,22 +38,22 @@ public class ProjectNodeLinkController {
 	}
 	
 	@GET
-	@Path("nodes/{nodeid}/zoomup")
+	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomUpNodeLink(@PathParam ("nodeid") int nodeId) {
+	public Response drillUpNodeLink(@PathParam ("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.zoomUp(nodeId));
+			return StatusHelper.getStatusOk(pnlm.drillUp(nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
 	@GET
-	@Path("nodes/{nodeid}/zoomdown")
+	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomDownNodeLink(@PathParam ("nodeid") int nodeId) {
+	public Response drillDownNodeLink(@PathParam ("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.zoomDown(nodeId));
+			return StatusHelper.getStatusOk(pnlm.drillDown(nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

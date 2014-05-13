@@ -105,7 +105,7 @@ public class NodeManager {
 		return nr.updateNode(updatedNode);
 	}
 
-	public Set<Node> zoomUp(int nodeId) throws UnknownNodeException, EntityException {
+	public Set<Node> drillUp(int nodeId) throws UnknownNodeException, EntityException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
 		return recursiveZoomUp(nodeId, 2, nodes);
@@ -124,7 +124,7 @@ public class NodeManager {
 		return nodes;
 	}
 
-	public Set<Node> zoomDown(int nodeId) throws UnknownNodeException, EntityException {
+	public Set<Node> drillDown(int nodeId) throws UnknownNodeException, EntityException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
 		return recursiveZoomDown(nodeId, 2, nodes);

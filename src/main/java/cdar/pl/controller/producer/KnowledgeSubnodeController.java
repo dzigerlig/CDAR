@@ -100,22 +100,22 @@ public class KnowledgeSubnodeController {
 	}
 
 	@GET
-	@Path("zoomup")
+	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomUpSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillUpSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(sm.zoomUp(nodeId));
+			return StatusHelper.getStatusOk(sm.drillUp(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
 	@GET
-	@Path("zoomdown")
+	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomDownSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillDownSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(sm.zoomDown(nodeId));
+			return StatusHelper.getStatusOk(sm.drillDown(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

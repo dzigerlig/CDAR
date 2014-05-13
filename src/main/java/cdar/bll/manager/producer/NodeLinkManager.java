@@ -58,12 +58,12 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public Set<NodeLink> zoomUp(int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
+	public Set<NodeLink> drillUp(int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveZoomUp(nodeId, 2, links);
 	}
 	
-	public Set<NodeLink> zoomDown(int nodeId) throws UnknownNodeException, EntityException  {
+	public Set<NodeLink> drillDown(int nodeId) throws UnknownNodeException, EntityException  {
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveZoomDown(nodeId, 2, links);
 	}

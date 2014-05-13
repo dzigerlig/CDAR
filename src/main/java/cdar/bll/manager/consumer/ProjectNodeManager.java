@@ -65,7 +65,7 @@ public class ProjectNodeManager {
 	}
 
 
-	public Set<ProjectNode> zoomUp(int nodeId) throws UnknownProjectNodeException, EntityException {
+	public Set<ProjectNode> drillUp(int nodeId) throws UnknownProjectNodeException, EntityException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getProjectNode(nodeId));
 		return recursiveZoomUp(nodeId, 2, nodes);
@@ -82,7 +82,7 @@ public class ProjectNodeManager {
 		}
 		return nodes;
 	}
-	public Set<ProjectNode> zoomDown(int nodeId) throws EntityException, UnknownProjectNodeException {
+	public Set<ProjectNode> drillDown(int nodeId) throws EntityException, UnknownProjectNodeException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getProjectNode(nodeId));
 		return recursiveZoomDown(nodeId, 2, nodes);

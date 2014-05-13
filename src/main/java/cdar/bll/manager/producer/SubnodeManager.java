@@ -106,7 +106,7 @@ public class SubnodeManager {
 		return sr.getNextSubnodePosition(nodeId);
 	}
 
-	public Set<Subnode> zoomUp(int nodeId) throws EntityException, UnknownNodeException {
+	public Set<Subnode> drillUp(int nodeId) throws EntityException, UnknownNodeException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
@@ -128,7 +128,7 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Set<Subnode> zoomDown(int nodeId) throws EntityException, UnknownNodeException  {
+	public Set<Subnode> drillDown(int nodeId) throws EntityException, UnknownNodeException  {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);

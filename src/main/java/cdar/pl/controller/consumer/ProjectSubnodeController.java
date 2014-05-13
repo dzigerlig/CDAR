@@ -93,22 +93,22 @@ public class ProjectSubnodeController {
 	}
 	
 	@GET
-	@Path("zoomup")
+	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomUpSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillUpSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(psm.zoomUp(nodeId));
+			return StatusHelper.getStatusOk(psm.drillUp(nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
 	
 	@GET
-	@Path("zoomdown")
+	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomDownSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillDownSubnode(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(psm.zoomDown(nodeId));
+			return StatusHelper.getStatusOk(psm.drillDown(nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

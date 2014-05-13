@@ -63,11 +63,11 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	// Changed
-	@Path("nodes/{nodeid}/zoomup")
+	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomUpLink(@PathParam("nodeid") int nodeId) {
+	public Response drillUpLink(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.zoomUp(nodeId));
+			return StatusHelper.getStatusOk(lm.drillUp(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -75,11 +75,11 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	// Changed
-	@Path("nodes/{nodeid}/zoomdown")
+	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response zoomDownLink(@PathParam("nodeid") int nodeId) {
+	public Response drillDownLink(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.zoomDown(nodeId));
+			return StatusHelper.getStatusOk(lm.drillDown(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

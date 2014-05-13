@@ -126,7 +126,7 @@ public class ProjectSubnodeManager {
 		psr.deleteProjectSubnode(projectSubnodeId);
 	}
 
-	public Set<ProjectSubnode> zoomUp(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
+	public Set<ProjectSubnode> drillUp(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
@@ -148,7 +148,7 @@ public class ProjectSubnodeManager {
 		return subnodes;
 	}
 
-	public Set<ProjectSubnode> zoomDown(int nodeId) throws UnknownProjectNodeLinkException, EntityException  {
+	public Set<ProjectSubnode> drillDown(int nodeId) throws UnknownProjectNodeLinkException, EntityException  {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
