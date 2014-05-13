@@ -15,7 +15,9 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
+import cdar.bll.entity.User;
 import cdar.bll.entity.WikiEntry;
+import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
@@ -102,9 +104,9 @@ public class KnowledgeSubnodeController {
 	@GET
 	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillUpSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillUpSubnode(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(sm.drillUp(nodeId));
+			return StatusHelper.getStatusOk(sm.drillUp(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -113,9 +115,9 @@ public class KnowledgeSubnodeController {
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillDownSubnode(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(sm.drillDown(nodeId));
+			return StatusHelper.getStatusOk(sm.drillDown(uid, nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

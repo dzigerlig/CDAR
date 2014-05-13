@@ -11,7 +11,9 @@ import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeLinkRepository;
+import cdar.dal.user.UserRepository;
 
 public class NodeLinkManager {
 	private NodeLinkRepository nlr = new NodeLinkRepository();
@@ -58,14 +60,14 @@ public class NodeLinkManager {
 		return nodeLinks;
 	}
 	
-	public Set<NodeLink> drillUp(int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
+	public Set<NodeLink> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException, UnknownUserException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomUp(nodeId, 2, links);
+		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 	
-	public Set<NodeLink> drillDown(int nodeId) throws UnknownNodeException, EntityException  {
+	public Set<NodeLink> drillDown(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomDown(nodeId, 2, links);
+		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 
 	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {

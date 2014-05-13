@@ -2,6 +2,7 @@ package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -10,6 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.pl.controller.StatusHelper;
 
@@ -65,9 +68,9 @@ public class KnowledgeNodeLinkController {
 	// Changed
 	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillUpLink(@PathParam("nodeid") int nodeId) {
+	public Response drillUpLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.drillUp(nodeId));
+			return StatusHelper.getStatusOk(lm.drillUp(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -77,9 +80,9 @@ public class KnowledgeNodeLinkController {
 	// Changed
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownLink(@PathParam("nodeid") int nodeId) {
+	public Response drillDownLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.drillDown(nodeId));
+			return StatusHelper.getStatusOk(lm.drillDown(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
