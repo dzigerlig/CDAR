@@ -2,6 +2,7 @@ package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -40,9 +41,9 @@ public class ProjectNodeLinkController {
 	@GET
 	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillUpNodeLink(@PathParam ("nodeid") int nodeId) {
+	public Response drillUpNodeLink(@HeaderParam("uid") int uid,@PathParam ("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.drillUp(nodeId));
+			return StatusHelper.getStatusOk(pnlm.drillUp(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -51,9 +52,9 @@ public class ProjectNodeLinkController {
 	@GET
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownNodeLink(@PathParam ("nodeid") int nodeId) {
+	public Response drillDownNodeLink(@HeaderParam("uid") int uid,@PathParam ("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(pnlm.drillDown(nodeId));
+			return StatusHelper.getStatusOk(pnlm.drillDown(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

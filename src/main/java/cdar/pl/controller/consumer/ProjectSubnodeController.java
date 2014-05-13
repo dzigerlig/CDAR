@@ -95,9 +95,9 @@ public class ProjectSubnodeController {
 	@GET
 	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillUpSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillUpSubnode(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(psm.drillUp(nodeId));
+			return StatusHelper.getStatusOk(psm.drillUp(uid,nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -106,9 +106,9 @@ public class ProjectSubnodeController {
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownSubnode(@PathParam("nodeid") int nodeId) {
+	public Response drillDownSubnode(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(psm.drillDown(nodeId));
+			return StatusHelper.getStatusOk(psm.drillDown(uid,nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

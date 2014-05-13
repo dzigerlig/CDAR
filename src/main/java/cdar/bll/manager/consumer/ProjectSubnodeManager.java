@@ -16,6 +16,8 @@ import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
+import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.user.UserRepository;
 
 public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -126,12 +128,12 @@ public class ProjectSubnodeManager {
 		psr.deleteProjectSubnode(projectSubnodeId);
 	}
 
-	public Set<ProjectSubnode> drillUp(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
+	public Set<ProjectSubnode> drillUp(int uid, int nodeId) throws UnknownProjectNodeLinkException, EntityException, UnknownUserException {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
-		return recursiveZoomUp(nodeId, 2, subnodes);
+		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
 	private Set<ProjectSubnode> recursiveZoomUp(int nodeId, int quantity,
@@ -148,12 +150,12 @@ public class ProjectSubnodeManager {
 		return subnodes;
 	}
 
-	public Set<ProjectSubnode> drillDown(int nodeId) throws UnknownProjectNodeLinkException, EntityException  {
+	public Set<ProjectSubnode> drillDown(int uid, int nodeId) throws UnknownProjectNodeLinkException, EntityException, UnknownUserException  {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
-		return recursiveZoomDown(nodeId, 2, subnodes);
+		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
 	private Set<ProjectSubnode> recursiveZoomDown(int nodeId, int quantity,
