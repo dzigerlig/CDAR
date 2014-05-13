@@ -22,14 +22,4 @@
     <servlet-name>Jersey Web Application</servlet-name>
     <url-pattern>/webapi/*</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>producer</display-name>
-    <servlet-name>producer</servlet-name>
-    <jsp-file>/reporting/producer.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>producer</servlet-name>
-    <url-pattern>/producer</url-pattern>
-  </servlet-mapping>
 </web-app>
