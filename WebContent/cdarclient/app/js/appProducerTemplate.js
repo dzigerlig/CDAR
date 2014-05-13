@@ -4,8 +4,8 @@ app.controller("TemplatesController", [
 		'TreeService',
 		'AuthenticationService',
 		'UserService',
-		'$route',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route) {
+		'$route', '$modal',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $modal) {
 			$scope.knowledgetree = "";
 			$scope.templates = "";
 			$scope.selectedTemplate = "";
@@ -61,19 +61,35 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.deleteTemplate = function(templateId) {
-				TreeService.deleteTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId}, { id : templateId }, function(response) {
-					reloadTemplates();
-					if ($scope.selectedTemplate.id==templateId) {
-						$scope.selectedTemplate.id = 0;
-					}
-					noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
-				}, function(error) {
-					noty({
-						type : 'alert',
-						text : 'cannot delete template',
-						timeout : 1500
+				
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete Template',
+		                        message: 'Do you really want to delete this Template?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.deleteTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId}, { id : templateId }, function(response) {
+						reloadTemplates();
+						if ($scope.selectedTemplate.id==templateId) {
+							$scope.selectedTemplate.id = 0;
+						}
+						noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot delete template',
+							timeout : 1500
+						});
 					});
-				});
+			    });
 			};
 			
 			$scope.editTemplateTitle = function(data, id) {

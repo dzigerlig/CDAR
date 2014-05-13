@@ -1,5 +1,5 @@
-app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location) {
+app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location, $modal) {
 			$scope.UserService = UserService;
 			
 			$scope.tree = "";
@@ -44,18 +44,34 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			};
 			
 			$scope.deleteXmlTree = function(xmlTreeId) {
-				TreeService.deleteExport({
-					entity1 : userRole,
-					id1 : $routeParams.treeId,
-				}, { id : xmlTreeId}, function(response) {
-					reloadXmlTrees();
-				}, function (error) {
-					noty({
-						type : 'alert',
-						text : 'cannot delete tree',
-						timeout : 1500
+				
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete Export',
+		                        message: 'Do you really want to delete this Export?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.deleteExport({
+						entity1 : userRole,
+						id1 : $routeParams.treeId,
+					}, { id : xmlTreeId}, function(response) {
+						reloadXmlTrees();
+					}, function (error) {
+						noty({
+							type : 'alert',
+							text : 'cannot delete tree',
+							timeout : 1500
+						});
 					});
-				});
+			    });
 			};
 			
 			 $scope.saveXmlTreeTitle = function(data, treeId) {
@@ -171,7 +187,6 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			  r.onloadend = function(e) {
 			    var data = e.target.result;
 			    
-			    
 			    if ($scope.UserService.getIsProducer()==='true') {
 				    if (data.indexOf("treeFull") > -1) {
 				    	$scope.addNewFullXmlTree("imported xml", data);
@@ -187,7 +202,9 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 							timeout : 8000
 						});
 				    }
-			    } if ($scope.UserService.getIsProducer()==='false') {
+			    }
+			    
+			    if ($scope.UserService.getIsProducer()==='false') {
 				    if (data.indexOf("projectTreeFull") > -1) {
 				    	$scope.addNewFullXmlTree("imported xml", data);
 				    }
@@ -200,11 +217,11 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 							text : 'specified file does not match - maybe you are trying to add a producer export to a consumer tree?',
 							timeout : 8000
 						});
-				    }
-			    }
-			  }
-			  r.readAsBinaryString(f);
-			}
+                    }
+                }
+               };
+             r.readAsBinaryString(f);
+             };
 			
 			$scope.getXmlFileString = function(xmlId) {
 				return "../webapi/" + userRole + "/" + $routeParams.treeId + " /exports/" + xmlId + "/filexml?uid=" + UserService.getUserId() + "&accesstoken=" + UserService.getAccesstoken();

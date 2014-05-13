@@ -6,8 +6,8 @@ function setReload(value) {
 	reload = value;
 }
 
-app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService',
-		function($scope, $location, TreeService, AuthenticationService, UserService) {
+app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService', '$modal',
+		function($scope, $location, TreeService, AuthenticationService, UserService, $modal) {
 			$scope.knowledgeTrees = "";
 			$scope.newTreeName = "";
 			$scope.UserService = UserService;
@@ -46,24 +46,39 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 			};
 
 			$scope.deleteTree = function(treeid) {
-				TreeService.deleteTree({
-					entity1 : 'ktrees'
-				}, {
-					id : treeid
-				}, function(response) {
-					reloadTrees();
-					noty({
-						type : 'success',
-						text : 'knowledge tree deleted successfully',
-						timeout : 1500
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete Tree',
+		                        message: 'Do you really want to delete this Tree?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.deleteTree({
+						entity1 : 'ktrees'
+					}, {
+						id : treeid
+					}, function(response) {
+						reloadTrees();
+						noty({
+							type : 'success',
+							text : 'knowledge tree deleted successfully',
+							timeout : 1500
+						});
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'delete tree failed',
+							timeout : 1500
+						});
 					});
-				}, function(error) {
-					noty({
-						type : 'alert',
-						text : 'delete tree failed',
-						timeout : 1500
-					});
-				});
+			    });
 			};
 
 			$scope.saveKnowledgeTreeTitle = function(data, id) {
