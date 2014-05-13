@@ -106,6 +106,7 @@ public class ProjectNodeRepository {
 				}
 			}
 		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
 			throw new UnknownProjectTreeException();
 		}
 		

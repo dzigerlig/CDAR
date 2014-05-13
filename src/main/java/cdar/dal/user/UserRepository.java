@@ -25,7 +25,7 @@ public class UserRepository {
 	public List<User> getUsers() throws EntityException {
 
 		final String sql = String
-				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s",
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s",
 						DBTableHelper.USER);
 		ResultSet result = null;
 		List<User> users = new ArrayList<User>();
@@ -41,6 +41,7 @@ public class UserRepository {
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
+				user.setDrillHierarchies(result.getInt(7));
 				users.add(user);
 			}
 		} catch (Exception ex) {
@@ -52,7 +53,7 @@ public class UserRepository {
 	public User getUser(int id) throws UnknownUserException, EntityException {
 		User user = new User();
 		final String sql = String
-				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s WHERE ID = ?",
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s WHERE ID = ?",
 						DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
@@ -68,6 +69,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
+					user.setDrillHierarchies(result.getInt(7));
 					return user;
 				}
 			} catch (ParseException e) {
@@ -81,7 +83,7 @@ public class UserRepository {
 
 	public User getUser(String username) throws UnknownUserException {
 		final String sql = String
-				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN FROM %s WHERE USERNAME = ?",
+				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s WHERE USERNAME = ?",
 						DBTableHelper.USER);
 		User user = new User();
 
@@ -98,6 +100,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
+					user.setDrillHierarchies(result.getInt(7));
 					return user;
 				}
 			} catch (ParseException e) {
@@ -112,7 +115,7 @@ public class UserRepository {
 
 	public User createUser(User user) throws UsernameInvalidException {
 		final String sql = String
-				.format("INSERT INTO %s (CREATION_TIME, USERNAME, PASSWORD) VALUES (?, ?, ?)",
+				.format("INSERT INTO %s (CREATION_TIME, USERNAME, PASSWORD,DRILL_HIERARCHY) VALUES (?, ?, ?,?)",
 						DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
@@ -121,6 +124,7 @@ public class UserRepository {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
+			preparedStatement.setInt(4, 4);
 
 			preparedStatement.executeUpdate();
 
@@ -138,7 +142,7 @@ public class UserRepository {
 
 	public User updateUser(User user) throws UnknownUserException {
 		final String sql = String
-				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ? WHERE id = ?",
+				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ?, DRILL_HIERARCHY=? WHERE id = ?",
 						DBTableHelper.USER);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -147,7 +151,8 @@ public class UserRepository {
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 			preparedStatement.setString(4, user.getAccesstoken());
-			preparedStatement.setInt(5, user.getId());
+			preparedStatement.setInt(5, user.getDrillHierarchies());
+			preparedStatement.setInt(6, user.getId());
 
 			preparedStatement.executeUpdate();
 
@@ -192,6 +197,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
+					user.setDrillHierarchies(result.getInt(7));
 					user.setTreeaccess(true);
 					users.add(user);
 				}
