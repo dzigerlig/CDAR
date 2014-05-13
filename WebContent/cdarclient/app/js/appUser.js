@@ -78,7 +78,7 @@ app
 								}, function(response) {
 									noty({
 										type : 'success',
-										text : 'user created',
+										text : 'user "'+$scope.credentials.username+'" created',
 										timeout : 4000
 									});
 									$location.path('/login');
