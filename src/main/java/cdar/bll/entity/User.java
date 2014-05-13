@@ -7,7 +7,7 @@ public class User extends BasicEntity {
 	private String password;
 	private String accesstoken;
 	private boolean treeaccess;
-	private int drillHierarchies;
+	private int drillHierarchy;
 
 	public User() {
 
@@ -62,12 +62,12 @@ public class User extends BasicEntity {
 		this.treeaccess = treeaccess;
 	}
 
-	public int getDrillHierarchies() {
-		return drillHierarchies;
+	public int getDrillHierarchy() {
+		return drillHierarchy;
 	}
 
-	public void setDrillHierarchies(int drillHierarchies) {
-		this.drillHierarchies = drillHierarchies;
+	public void setDrillHierarchy(int drillHierarchy) {
+		this.drillHierarchy = drillHierarchy;
 	}
 
 	@Override

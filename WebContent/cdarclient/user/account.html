@@ -56,9 +56,9 @@
 				<div class="col-md-4">
 					<h3>
 						<a href="#" ng-init="'Choose Hierarchy'"
-							editable-select="selectedNode.status"
-							e-ng-options="s.value as s.text for s in statuses | filter:{show:true}"
-							onbeforesave="updateNodeStatus($data)">quantity of drill
+							editable-select="drillHierarchy"
+							e-ng-options="s.value as s.text for s in statuses"
+							onbeforesave="updateDrillHierarchy($data)">quantity of drill
 							hierarchies: {{ showStatus() }}</a>
 					</h3>
 				</div>

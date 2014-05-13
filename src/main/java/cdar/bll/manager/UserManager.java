@@ -94,8 +94,8 @@ public class UserManager {
 		if (user.getPassword() != null) {
 			updatedUser.setPassword(user.getPassword());
 		}
-		if (user.getDrillHierarchies() != 0) {
-			updatedUser.setDrillHierarchies(user.getDrillHierarchies());
+		if (user.getDrillHierarchy() != 0) {
+			updatedUser.setDrillHierarchy(user.getDrillHierarchy());
 		}
 
 		return userRepository.updateUser(updatedUser);

@@ -41,7 +41,7 @@ public class UserRepository {
 				user.setUsername(result.getString(4));
 				user.setPassword(result.getString(5));
 				user.setAccesstoken(result.getString(6));
-				user.setDrillHierarchies(result.getInt(7));
+				user.setDrillHierarchy(result.getInt(7));
 				users.add(user);
 			}
 		} catch (Exception ex) {
@@ -69,7 +69,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
-					user.setDrillHierarchies(result.getInt(7));
+					user.setDrillHierarchy(result.getInt(7));
 					return user;
 				}
 			} catch (ParseException e) {
@@ -100,7 +100,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
-					user.setDrillHierarchies(result.getInt(7));
+					user.setDrillHierarchy(result.getInt(7));
 					return user;
 				}
 			} catch (ParseException e) {
@@ -151,7 +151,7 @@ public class UserRepository {
 			preparedStatement.setString(2, user.getUsername());
 			preparedStatement.setString(3, user.getPassword());
 			preparedStatement.setString(4, user.getAccesstoken());
-			preparedStatement.setInt(5, user.getDrillHierarchies());
+			preparedStatement.setInt(5, user.getDrillHierarchy());
 			preparedStatement.setInt(6, user.getId());
 
 			preparedStatement.executeUpdate();
@@ -197,7 +197,7 @@ public class UserRepository {
 					user.setUsername(result.getString(4));
 					user.setPassword(result.getString(5));
 					user.setAccesstoken(result.getString(6));
-					user.setDrillHierarchies(result.getInt(7));
+					user.setDrillHierarchy(result.getInt(7));
 					user.setTreeaccess(true);
 					users.add(user);
 				}

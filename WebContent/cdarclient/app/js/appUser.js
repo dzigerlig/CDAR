@@ -13,14 +13,15 @@ app.controller("LoginController", [ '$scope', '$location',
 
 			$scope.login = function() {
 				$scope.loading = true;
-				AuthenticationService.login.user({
+				AuthenticationService.loginUser({
 					username : $scope.credentials.username,
 					password : $scope.credentials.password
 				}, function(response) {
 					UserService.setUsername(response.username);
 					UserService.setAccesstoken(response.accesstoken);
 					UserService.setUserId(response.id);
-CDAR.setCustomHeader(response.id,response.accesstoken);
+					UserService.setDrillHierarchy(response.drillHierarchy);
+					CDAR.setCustomHeader(response.id, response.accesstoken);
 
 					if ($scope.chkbKnowledgeProducer) {
 						UserService.setIsProducer('true');
@@ -40,93 +41,142 @@ CDAR.setCustomHeader(response.id,response.accesstoken);
 			};
 		} ]);
 
-app.controller("RegistrationController", [ '$scope', '$location',
-		'AuthenticationService', 'UserService',
-		function($scope, $location, AuthenticationService, UserService) {
-			$scope.loading = false;
+app
+		.controller(
+				"RegistrationController",
+				[
+						'$scope',
+						'$location',
+						'AuthenticationService',
+						'UserService',
+						function($scope, $location, AuthenticationService,
+								UserService) {
+							$scope.loading = false;
 
-			UserService.removeCookies();
+							UserService.removeCookies();
 
-			$scope.credentials = {
-				username : "",
-				password : "",
-				confirmpassword : ""
-			};
+							$scope.credentials = {
+								username : "",
+								password : "",
+								confirmpassword : ""
+							};
 
-			$scope.register = function() {
-				
-				if($scope.credentials.password!==$scope.credentials.confirmpassword){
-					noty({
-						type : 'warning',
-						text : "Passwords aren't equal",
-						timeout : 3500
-					});	
-					return;
-				}
-				$scope.loading = true;
-				AuthenticationService.add.user({
-					username : $scope.credentials.username,
-					password : $scope.credentials.password
-				}, function(response) {
-					noty({
-						type : 'success',
-						text : 'user created',
-						timeout : 4000
-					});
-					$location.path('/login');
-				}, function(error) {
-					noty({
-						type : 'alert',
-						text : 'user creation failed',
-						timeout : 4000
-					});
-					$scope.loading = false;
-				});
-			};
-		} ]);
+							$scope.register = function() {
 
-app.controller("AccountController", [ '$scope', '$location',
-		'AuthenticationService', 'UserService','$filter',
-		function($scope, $location, AuthenticationService, UserService,$filter) {
-			$scope.UserService = UserService;
-			$scope.newPw = '';
-			$scope.confirmPw = '';
-			$scope.statuses = [
-			                   {value: 2, text: '2', show: true},
-			                   {value: 3, text: '3', show: true},
-			                   {value: 4, text: '4', show: true},
-			                   {value: 5, text: '5', show: true},
-			                   {value: 6, text: '6', show: true},
-			                   {value: 7, text: '7', show: true},
-			                 ]; 
-			$scope.showStatus = function() {
-				console.log(selected[0]);
-			    var selected = $filter('filter')($scope.statuses, {value: 2});
-			    return selected[0].text;
-			  };
+								if ($scope.credentials.password !== $scope.credentials.confirmpassword) {
+									noty({
+										type : 'warning',
+										text : "Passwords aren't equal",
+										timeout : 3500
+									});
+									return;
+								}
+								$scope.loading = true;
+								AuthenticationService.addUser({
+									username : $scope.credentials.username,
+									password : $scope.credentials.password
+								}, function(response) {
+									noty({
+										type : 'success',
+										text : 'user created',
+										timeout : 4000
+									});
+									$location.path('/login');
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'user creation failed',
+										timeout : 4000
+									});
+									$scope.loading = false;
+								});
+							};
+						} ]);
 
-			$scope.changePw = function() {
-				if($scope.newPw!==$scope.confirmPw){
-					noty({
-						type : 'warning',
-						text : "Passwords aren't equal",
-						timeout : 3500
-					});					return;
-				}
-				AuthenticationService.edit.changepw({
-					"userid" : UserService.getUserId()
-				}, {
-					id : UserService.getUserId(),
-					username : UserService.getUsername(),
-					password : $scope.newPw
-				}, function(response) {
-					alert("pw changed!");
+app.controller("AccountController",
+		[
+				'$scope',
+				'$location',
+				'AuthenticationService',
+				'UserService',
+				'$filter',
+				function($scope, $location, AuthenticationService, UserService,
+						$filter) {
+					$scope.UserService = UserService;
 					$scope.newPw = '';
-				}, function(error) {
-					alert("pw change failed!");
-				});
-			};
-		} ]);
+					$scope.confirmPw = '';
+					$scope.drillHierarchy = UserService.getDrillHierarchy();
+					$scope.statuses = [ {
+						value : 2,
+						text : '2',
+						show : true
+					}, {
+						value : 3,
+						text : '3',
+						show : true
+					}, {
+						value : 4,
+						text : '4',
+						show : true
+					}, {
+						value : 5,
+						text : '5',
+						show : true
+					}, {
+						value : 6,
+						text : '6',
+						show : true
+					}, {
+						value : 7,
+						text : '7',
+						show : true
+					} ];
+					$scope.showStatus = function() {
+						return $scope.drillHierarchy;
+					};
+
+					$scope.updateDrillHierarchy = function(newValue) {
+						if ($scope.drillHierarchy !== newValue) {
+							$scope.drillHierarchy = newValue;
+							UserService.setDrillHierarchy(newValue);
+							AuthenticationService.updateUser({
+								userid : UserService.getUserId()
+							}, {
+								id : UserService.getUserId(),
+								drillHierarchy: $scope.drillHierarchy
+							}, function(response) {
+							
+							}, function(error) {
+								alert("change failed!");
+							});
+						}
+					};
+
+					$scope.changePw = function() {
+						console.log($scope.newPw);
+						console.log($scope.confirmPw);
+						if ($scope.newPw !== $scope.confirmPw) {
+							noty({
+								type : 'warning',
+								text : "Passwords aren't equal",
+								timeout : 3500
+							});
+							return;
+						}
+						AuthenticationService.updateUser({
+							userid : UserService.getUserId()
+						}, {
+							id : UserService.getUserId(),
+							username : UserService.getUsername(),
+							password : $scope.newPw
+						}, function(response) {
+							alert("pw changed!");
+							$scope.newPw = '';
+						}, function(error) {
+							alert("pw change failed!");
+						});
+					};
+				} ]);
 
 app.controller("AccessController", [
 		'$scope',
@@ -145,7 +195,7 @@ app.controller("AccessController", [
 			// | orderBy:'id':false
 			// TreeService.getUsers().....function(response) { $scope.users =
 			// response; }
-			
+
 			var roleEntity = "";
 			if ($scope.isProducer === 'true') {
 				roleEntity = 'ktrees';
