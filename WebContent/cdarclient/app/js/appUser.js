@@ -145,16 +145,22 @@ app.controller("AccountController",
 								id : UserService.getUserId(),
 								drillHierarchy: $scope.drillHierarchy
 							}, function(response) {
-							
+								noty({
+									type : 'success',
+									text : "Drill hierarchy have been changed to "+$scope.drillHierarchy,
+									timeout : 3500
+								});
 							}, function(error) {
-								alert("change failed!");
+								noty({
+									type : 'warning',
+									text : "failed to change",
+									timeout : 3500
+								});
 							});
 						}
 					};
 
 					$scope.changePw = function() {
-						console.log($scope.newPw);
-						console.log($scope.confirmPw);
 						if ($scope.newPw !== $scope.confirmPw) {
 							noty({
 								type : 'warning',
@@ -170,8 +176,13 @@ app.controller("AccountController",
 							username : UserService.getUsername(),
 							password : $scope.newPw
 						}, function(response) {
-							alert("pw changed!");
+							noty({
+								type : 'success',
+								text : "Password have been changed",
+								timeout : 3500
+							});
 							$scope.newPw = '';
+							$scope.confirmPw = '';
 						}, function(error) {
 							alert("pw change failed!");
 						});
