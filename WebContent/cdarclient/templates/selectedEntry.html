@@ -59,7 +59,7 @@
 							<td colspan="2"></td>
 							<td colspan="3">
 								<form id="formAddTree" data-role="form"
-									data-ng-submit="addNewSubnode(); newSubnodeName='Subnode'">
+									data-ng-submit="addNewSubnode(); newSubnodeName=DescriptionService.getSubnodeDescription()">
 									<div class="input-append">
 										<input class="form-horizontal" placeholder="subnode title"
 											required data-ng-model="newSubnodeName" />
