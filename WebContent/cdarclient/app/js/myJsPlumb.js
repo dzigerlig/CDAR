@@ -211,7 +211,7 @@ var myJsPlumb = (function() {
 		}
 		selectedElement = null;
 	}
-
+	
 	function zoomUpEvent(uptree, newState) {
 		uptree.click(function(e) {
 			e.stopPropagation();
@@ -593,7 +593,19 @@ var myJsPlumb = (function() {
 							});
 				}
 			}
-		}				
+		},	
+		
+		drillDownButton: function(){
+			if (selectedElement.indexOf(NODE) > -1) {
+				scope.zoomDownNode(selectedElement.replace(NODE, ""));
+			}
+		},
+		
+		drillUpButton: function(){
+			if (selectedElement.indexOf(NODE) > -1) {
+				scope.zoomUpNode(selectedElement.replace(NODE, ""));
+			}
+		}
 
 	};
 })();
