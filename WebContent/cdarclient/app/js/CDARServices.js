@@ -33,6 +33,13 @@ app
 												action : 'delete'
 											}
 										},
+										'copyTree' : {
+											headers : CDAR.getCustomHeader(),
+											method : 'GET',
+											params : {
+												action : 'copy'
+											}
+										},
 										'getAllUsersWithTreeRight' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -468,6 +475,42 @@ app.factory('AuthenticationService', [ '$log', '$resource', '$location',
 			);
 		} ]);
 
+/*
+return { 
+	add : $resource('../webapi/users', {}, { 
+		user : {
+			method : 'POST',
+			params : {},
+			isArray : false 
+		} }), 
+	login : $resource('../webapi/users/login/:user/:pw', {}, {
+		user : { 
+			method : 'GET',
+			isArray : false 
+		 } }), 
+	update : $resource('../webapi/users/:userid', {}, {
+		method : 'POST', 
+		isArray : false 
+		}), 
+	edit :  $resource('../webapi/users/:userid', {}, { 
+	  changepw:{ 
+		  method : 'POST', 
+		  params :  {}, 
+		  isArray : false
+		 }, 		 
+	  changeRights:{ 
+		method : 'POST', 
+		params : {},
+		isArray : false
+		} 
+	}), 
+	logout : function() { 
+	 UserService.removeCookies();
+	 $location.path('/login'); 
+ }
+};
+} ]);*/
+
 
 app.service('DescriptionService', [
 		'$resource',
@@ -494,7 +537,7 @@ app.service('DescriptionService', [
 			this.getWikiUrl = function() {
 				return $cookieStore.get('cdarWikiUrl');
 			};
-		} ]);
+		} ])
 
 app.factory('UserService', [ '$location', '$cookieStore',
 		function($location, $cookieStore) {
@@ -549,4 +592,4 @@ app.factory('UserService', [ '$location', '$cookieStore',
 					}
 				}
 			};
-} ]);
+		} ]);
