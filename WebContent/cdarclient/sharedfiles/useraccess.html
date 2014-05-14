@@ -50,7 +50,7 @@
 									<tr data-ng-repeat="user in users | filter : { treeaccess : true }">
 										<td>{{$index+1}}</td>
 										<td>{{user.username}}</td>
-										<td data-ng-show="UserService.getUserId()===user.id"><a data-ng-click="removeAccessRight(user.id)" href="">You can not delete your access rights</a></td>
+										<td data-ng-show="UserService.getUserId()===user.id">You can not delete your access rights</td>
 										<td data-ng-show="UserService.getUserId()!==user.id"><a data-ng-click="removeAccessRight(user.id)" href="">Delete</a></td>
 									</tr>
 										<tr>

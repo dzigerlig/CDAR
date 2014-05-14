@@ -8,6 +8,7 @@ public class Comment extends BasicEntity {
 	private int userId;
 	private int nodeId;
 	private String comment;
+	private String username;
 	
 	public Comment() {
 		super();
@@ -43,5 +44,13 @@ public class Comment extends BasicEntity {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
