@@ -1,6 +1,5 @@
 package cdar.bll.wiki;
 
-import org.wikipedia.Wiki;
 
 import cdar.bll.entity.User;
 import cdar.bll.entity.WikiEntry;
@@ -9,7 +8,6 @@ import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
-import cdar.bll.manager.producer.TemplateManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
