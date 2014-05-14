@@ -123,27 +123,21 @@ app.controller("AccountController",
 					$scope.statuses = [ {
 						value : 2,
 						text : '2',
-						show : true
 					}, {
 						value : 3,
 						text : '3',
-						show : true
 					}, {
 						value : 4,
 						text : '4',
-						show : true
 					}, {
 						value : 5,
 						text : '5',
-						show : true
 					}, {
 						value : 6,
 						text : '6',
-						show : true
 					}, {
 						value : 7,
 						text : '7',
-						show : true
 					} ];
 					$scope.showStatus = function() {
 						return $scope.drillHierarchy;
@@ -161,7 +155,7 @@ app.controller("AccountController",
 							}, function(response) {
 								noty({
 									type : 'success',
-									text : "Drill hierarchy have been changed to "+$scope.drillHierarchy,
+									text : "Drill hierarchy has been changed to " + $scope.drillHierarchy,
 									timeout : 3500
 								});
 							}, function(error) {
