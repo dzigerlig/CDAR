@@ -77,6 +77,12 @@
 							${ tree.getNodeWikiEntryHtml(node.getId()) }
 						</td>
 					</tr>
+					<tr>
+						<td><strong><%= tree.getCdarDescriptions().getNodeDescription() %> Status:</strong></td>
+						<td>
+							${ tree.getNodeStatus(node.getStatus()) }
+						</td>
+					</tr>
 				<tbody>
 				
 				</tbody>

@@ -74,4 +74,13 @@ public class ProjectTreeBean extends ReportingBean {
 	public ProjectSubnode getSubnode(int subnodeId) throws UnknownProjectSubnodeException, EntityException {
 		return psm.getProjectSubnode(subnodeId);
 	}
+	
+	public String getNodeStatus(int status) {
+		switch (status) {
+			case 2: return "accepted";
+			case 3: return "declined";
+			case 4: return "revoked";
+			default: return "undecided";
+		}
+	}
 }
