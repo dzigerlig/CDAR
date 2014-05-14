@@ -800,76 +800,76 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								});
 							};
 
-							$scope.zoomUpNode = function(nodeid) {
-								TreeService.nodeZoomUp({
+							$scope.drillUpNode = function(nodeid) {
+								TreeService.nodeDrillUp({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resNodes) {
-									$scope.zoomUpSubnode(nodeid, resNodes);
+									$scope.drillUpSubnode(nodeid, resNodes);
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom up',
+										text : 'cannot drill up',
 										timeout : 1500
 									});
 								});
 							};
 
-							$scope.zoomDownNode = function(nodeid) {
-								TreeService.nodeZoomDown({
+							$scope.drillDownNode = function(nodeid) {
+								TreeService.nodeDrillDown({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resNodes) {
-									$scope.zoomDownSubnode(nodeid, resNodes);
+									$scope.drillDownSubnode(nodeid, resNodes);
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom down',
+										text : 'cannot drill down',
 										timeout : 1500
 									});
 								});
 							};
 
-							$scope.zoomUpSubnode = function(nodeid, resNodes) {
-								TreeService.subnodeZoomUp({
+							$scope.drillUpSubnode = function(nodeid, resNodes) {
+								TreeService.subnodeDrillUp({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resSubnodes) {
 									myJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
-									$scope.zoomUpLink(nodeid, resSubnodes);
+									$scope.drillUpLink(nodeid, resSubnodes);
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom up',
+										text : 'cannot drill up',
 										timeout : 1500
 									});
 								});
 							};
 
-							$scope.zoomDownSubnode = function(nodeid, resNodes) {
-								TreeService.subnodeZoomDown({
+							$scope.drillDownSubnode = function(nodeid, resNodes) {
+								TreeService.subnodeDrillDown({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resSubnodes) {
 									myJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
-									$scope.zoomDownLink(nodeid, resSubnodes);
+									$scope.drillDownLink(nodeid, resSubnodes);
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom down',
+										text : 'cannot drill down',
 										timeout : 1500
 									});
 								});
 							};
 
-							$scope.zoomUpLink = function(nodeid, resSubnodes) {
-								TreeService.linkZoomUp({
+							$scope.drillUpLink = function(nodeid, resSubnodes) {
+								TreeService.linkDrillUp({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id3 : nodeid
@@ -880,14 +880,14 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom up',
+										text : 'cannot drill up',
 										timeout : 1500
 									});
 								});
 							};
 
-							$scope.zoomDownLink = function(nodeid, resSubnodes) {
-								TreeService.linkZoomDown({
+							$scope.drillDownLink = function(nodeid, resSubnodes) {
+								TreeService.linkDrillDown({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id3 : nodeid
@@ -898,7 +898,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom down',
+										text : 'cannot drill down',
 										timeout : 1500
 									});
 								});
@@ -943,7 +943,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom up',
+										text : 'cannot drill up',
 										timeout : 1500
 									});
 								});
@@ -967,7 +967,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot zoom down',
+										text : 'cannot drill down',
 										timeout : 1500
 									});
 								});

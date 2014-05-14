@@ -211,18 +211,18 @@ var myJsPlumb = (function() {
 		}
 		selectedElement = null;
 	}
-
-	function zoomUpEvent(uptree, newState) {
+	
+	function drillUpEvent(uptree, newState) {
 		uptree.click(function(e) {
 			e.stopPropagation();
-			scope.zoomUpNode(newState[0].id.replace(NODE, ""));
+			scope.drillUpNode(newState[0].id.replace(NODE, ""));
 		});
 	}
 
-	function zoomDownEvent(downtree, newState) {
+	function drillDownEvent(downtree, newState) {
 		downtree.click(function(e) {
 			e.stopPropagation();
-			scope.zoomDownNode(newState[0].id.replace(NODE, ""));
+			scope.drillDownNode(newState[0].id.replace(NODE, ""));
 		});
 	}
 
@@ -390,8 +390,8 @@ var myJsPlumb = (function() {
 				'top' : e.pageY - $('#jsplumb-container').offset().top,
 				'left' : e.pageX - $('#jsplumb-container').offset().left
 			});
-			zoomDownEvent(downtree, newState);
-			zoomUpEvent(uptree, newState);
+			drillDownEvent(downtree, newState);
+			drillUpEvent(uptree, newState);
 			makeNodesDraggable(newState);
 			showSubnodesEvent(newState);
 			clickNodeEvent(newState);
@@ -456,8 +456,8 @@ var myJsPlumb = (function() {
 						});
 						option.append(list);
 					}
-					zoomDownEvent(downtree, newState);
-					zoomUpEvent(uptree, newState);
+					drillDownEvent(downtree, newState);
+					drillUpEvent(uptree, newState);
 					makeNodesDraggable(newState);
 
 					showSubnodesEvent(newState);
@@ -593,7 +593,19 @@ var myJsPlumb = (function() {
 							});
 				}
 			}
-		}				
+		},	
+		
+		drillDownButton: function(){
+			if (selectedElement.indexOf(NODE) > -1) {
+				scope.drillDownNode(selectedElement.replace(NODE, ""));
+			}
+		},
+		
+		drillUpButton: function(){
+			if (selectedElement.indexOf(NODE) > -1) {
+				scope.drillUpNode(selectedElement.replace(NODE, ""));
+			}
+		}
 
 	};
 })();

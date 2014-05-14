@@ -197,22 +197,22 @@ app
 												action : 'wiki'
 											}
 										},
-										'nodeZoomUp' : {
+										"nodeDrillUp" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'nodes',
-												action : 'zoomup'
+												action : 'drillup'
 											}
 										},
-										'nodeZoomDown' : {
+										"nodeDrillDown" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'nodes',
-												action : 'zoomdown'
+												action : 'drilldown'
 											}
 										},
 										// SUBNODES
@@ -285,24 +285,24 @@ app
 												action : 'wiki'
 											}
 										},
-										'subnodeZoomUp' : {
+										"subnodeDrillUp" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'nodes',
 												entity3 : 'subnodes',
-												action : 'zoomup'
+												action : 'drillup'
 											}
 										},
-										'subnodeZoomDown' : {
+										"subnodeDrillDown" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'nodes',
 												entity3 : 'subnodes',
-												action : 'zoomdown'
+												action : 'drilldown'
 											}
 										},
 										'renameSubnode' : {
@@ -346,24 +346,24 @@ app
 												entity2 : 'links'
 											}
 										},
-										'linkZoomDown' : {
+										"linkDrillDown" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'links',
 												entity3 : 'nodes',
-												action : 'zoomdown'
+												action : 'drilldown'
 											}
 										},
-										'linkZoomUp' : {
+										"linkDrillUp" : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
 											isArray : true,
 											params : {
 												entity2 : 'links',
 												entity3 : 'nodes',
-												action : 'zoomup'
+												action : 'drillup'
 											}
 										},
 										// Templates

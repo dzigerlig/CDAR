@@ -10,7 +10,9 @@
 	padding-top: 35px;
 }
 
-.userrole { margin-top: -30px; }
+.userrole {
+	margin-top: -30px;
+}
 
 body.dragging,body.dragging * {
 	cursor: move !important;
@@ -90,7 +92,7 @@ body.dragging,body.dragging * {
 	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
 	-moz-transition: -moz-box-shadow 0.25s ease-in;
 	transition: box-shadow 0.25s ease-in;
-		background-color: orange;
+	background-color: orange;
 	background-size: 1em;
 	background-image: url(../img/treedown.png);
 }
@@ -108,36 +110,46 @@ body.dragging,body.dragging * {
 	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
 	-moz-transition: -moz-box-shadow 0.25s ease-in;
 	transition: box-shadow 0.25s ease-in;
-background-color: orange;
+	background-color: orange;
 	background-size: 1em;
 	background-image: url(../img/treeup.png);
 }
 
+.drillTree {	
+	width: 1.5em;
+	height: 1.5em;
+	box-shadow: 0px 0px 2px black;
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+	background-color: orange;
+	background-size: 3em;
+}
+
 .status {
-	position:absolute;
+	position: absolute;
 	bottom: 37%;
 	left: 5px;
-	width:1em;
-	height:1em;
+	width: 1em;
+	height: 1em;
 	border-radius: 0.5em;
-	background-color:white;
+	background-color: white;
 	box-shadow: 0px 0px 2px black;
-	-webkit-transition:-webkit-box-shadow 0.25s ease-in;
-	-moz-transition:-moz-box-shadow 0.25s ease-in;
-	transition:box-shadow 0.25s ease-in;
-		background-size: 1em;
-	
+	-webkit-transition: -webkit-box-shadow 0.25s ease-in;
+	-moz-transition: -moz-box-shadow 0.25s ease-in;
+	transition: box-shadow 0.25s ease-in;
+	background-size: 1em;
 }
 
-.draglink{
-		background-image: url(../img/circle.png);	
-			background-size: 1em;		
+.draglink {
+	background-image: url(../img/circle.png);
+	background-size: 1em;
 }
 
-.selectednode{
+.selectednode {
 	background-color: #beebff;
 }
 
-.cdar-register{
+.cdar-register {
 	margin-top: 15px;
 }
