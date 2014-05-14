@@ -33,13 +33,6 @@ app
 												action : 'delete'
 											}
 										},
-										'copyTree' : {
-											headers : CDAR.getCustomHeader(),
-											method : 'GET',
-											params : {
-												action : 'copy'
-											}
-										},
 										'getAllUsersWithTreeRight' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
