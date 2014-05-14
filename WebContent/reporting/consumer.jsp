@@ -2,13 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page errorPage="error.html" %>
 
-<jsp:useBean id="tree" class="cdar.bll.reporting.TreeBean" scope="request" />
+<jsp:useBean id="tree" class="cdar.bll.reporting.ProjectTreeBean" scope="request" />
 <% tree.setTreeId(Integer.parseInt(request.getParameter("treeid"))); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-	<title>Producer Tree Export: <%=tree.getTreeTitle()%></title>
+	<title>Consumer Tree Export: <%=tree.getTreeTitle()%></title>
 	<link href="../cdarclient/vendor/css/bootstrap.css" rel="stylesheet">
 	<link rel="icon" href="../cdarclient/app/img/favicon.ico" type="image/x-icon">
 </head>
@@ -17,7 +17,7 @@
 	<div class="container">
 
 		<div class="page-header">
-			<h1>Producer Tree Report: <%=tree.getTreeTitle()%></h1>
+			<h1>Consumer Tree Report: <%=tree.getTreeTitle()%></h1>
 			<p class="lead">Generated on: <%= tree.getCreationTime().toGMTString() %></p>
 		</div>
 

@@ -1,15 +1,11 @@
 package cdar.bll.reporting;
 
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import cdar.bll.entity.CdarDescriptions;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
-import cdar.bll.entity.WikiEntry;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
@@ -19,12 +15,12 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
-import cdar.dal.exceptions.UnknownUserException;
 
-public class TreeBean {
-	private int treeId;
-	private Date creationTime;
-	private CdarDescriptions cdarDescriptions;
+public class TreeBean extends ReportingBean {
+	
+	public TreeBean() throws Exception {
+		super();
+	}
 
 	private TreeManager tm = new TreeManager();
 	private NodeManager nm = new NodeManager();
@@ -32,36 +28,6 @@ public class TreeBean {
 	private MediaWikiModel mwm = new MediaWikiModel();
 	private NodeLinkManager nlm = new NodeLinkManager();
 
-	public TreeBean() throws Exception {
-		setCreationTime(new Date());
-		setCdarDescriptions(new CdarDescriptions());
-	}
-
-	public int getTreeId() {
-		return treeId;
-	}
-
-	public void setTreeId(int treeId) throws UnknownTreeException,
-			EntityException, UnknownNodeException, UnknownUserException,
-			UnknownSubnodeException {
-		this.treeId = treeId;
-	}
-
-	public Date getCreationTime() {
-		return creationTime;
-	}
-
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
-	}
-
-	public CdarDescriptions getCdarDescriptions() {
-		return cdarDescriptions;
-	}
-
-	public void setCdarDescriptions(CdarDescriptions cdarDescriptions) {
-		this.cdarDescriptions = cdarDescriptions;
-	}
 
 	public String getTreeTitle() throws UnknownTreeException {
 		return tm.getTree(getTreeId()).getTitle();
