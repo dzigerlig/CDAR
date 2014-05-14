@@ -25,7 +25,7 @@
 			</div>
 			<div class="col-md-2">
 				<a href="#/knowledgetree/{{knowledgetree.id}}/importexport"
-						class="btn btn-md btn-success btn-block">Import/Export</a>
+					class="btn btn-md btn-success btn-block">Import/Export</a>
 			</div>
 			<div class="col-md-2">
 				<a href="#/knowledgetree/{{knowledgetree.id}}/users"
@@ -44,7 +44,8 @@
 				</button>
 				<button type="button" class="btn btn-success btn-sm"
 					onclick="myJsTree.createNode();">
-					<i class="glyphicon glyphicon-asterisk"></i> Create {{DescriptionService.getNodeDescription()}}
+					<i class="glyphicon glyphicon-asterisk"></i> Create
+					{{DescriptionService.getNodeDescription()}}
 				</button>
 				<button type="button" class="btn btn-warning btn-sm"
 					onclick="myJsTree.rename();">
@@ -59,11 +60,26 @@
 					id="plugins4_q" placeholder="Search" />
 				<div id="jstree"></div>
 			</div>
+
 			<div class="col-md-9">
-				<button type="button" class="btn btn-danger btn-sm"
-					onclick="myJsPlumb.removeSelected();">
-					<i class="glyphicon glyphicon-remove"></i> Remove
-				</button>
+
+				<p class="navbar-text" align="right">
+					<button type="button" class="btn btn-success btn-sm">
+						<img class="drillTree" src="../cdarclient/app/img/treedown.png">Drill down
+					</button>
+					<button type="button" class="btn btn-success btn-sm">
+						<img class="drillTree" src="../cdarclient/app/img/treeup.png">Drill down
+					</button>
+					
+					<button type="button" class="btn btn-danger btn-sm"
+						onclick="myJsPlumb.removeSelected();">
+						<i class="glyphicon glyphicon-remove"></i> Remove selected from
+						Diagram
+					</button>
+				</p>
+				<!-- <p>
+						
+					</p> -->
 				<div id="jsplumb-container"></div>
 
 				<textarea id="dot-src" style="display: none;"> </textarea>
