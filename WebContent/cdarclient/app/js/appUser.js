@@ -133,12 +133,6 @@ app.controller("AccountController",
 					}, {
 						value : 5,
 						text : '5',
-					}, {
-						value : 6,
-						text : '6',
-					}, {
-						value : 7,
-						text : '7',
 					} ];
 					$scope.showStatus = function() {
 						return $scope.drillHierarchy;

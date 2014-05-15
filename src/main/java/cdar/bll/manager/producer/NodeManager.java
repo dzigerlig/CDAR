@@ -109,17 +109,17 @@ public class NodeManager {
 	public Set<Node> drillUp(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
-		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
+		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 
-	private Set<Node> recursiveZoomUp(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
+	private Set<Node> recursiveDrillUp(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (Node node : nr.getSiblingNode(nodeId)) {
 				nodes.add(node);
 			}
 			for (Node node : nr.getParentNode(nodeId)) {
 				nodes.add(node);
-				nodes = recursiveZoomUp(node.getId(), quantity - 1, nodes);
+				nodes = recursiveDrillUp(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;
@@ -128,14 +128,14 @@ public class NodeManager {
 	public Set<Node> drillDown(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException {
 		Set<Node> nodes = new HashSet<Node>();
 		nodes.add(nr.getNode(nodeId));
-		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
+		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 
-	private Set<Node> recursiveZoomDown(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
+	private Set<Node> recursiveDrillDown(int nodeId, int quantity, Set<Node> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (Node node : nr.getFollowerNode(nodeId)) {
 				nodes.add(node);
-				nodes = recursiveZoomDown(node.getId(), quantity - 1, nodes);
+				nodes = recursiveDrillDown(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;

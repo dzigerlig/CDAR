@@ -117,6 +117,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.isProducer = true;
 							
 							$scope.DescriptionService = DescriptionService;
+							$scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
+							$scope.defaultNodeName = DescriptionService.getNodeDescription();
 							$scope.defaultLinkName = 'all ' +DescriptionService.getSubnodeDescription()+'s';
 
 							myJsPlumb.initialize();

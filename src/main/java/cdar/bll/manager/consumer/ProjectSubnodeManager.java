@@ -133,10 +133,10 @@ public class ProjectSubnodeManager {
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
-		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
+		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
-	private Set<ProjectSubnode> recursiveZoomUp(int nodeId, int quantity,
+	private Set<ProjectSubnode> recursiveDrillUp(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectSubnode subnode : psr.getSiblingSubnode(nodeId)) {
@@ -144,7 +144,7 @@ public class ProjectSubnodeManager {
 			}
 			for (ProjectSubnode subnode : psr.getParentSubnode(nodeId)) {
 				subnodes.add(subnode);
-				subnodes = recursiveZoomUp(subnode.getNodeId(), quantity - 1, subnodes);
+				subnodes = recursiveDrillUp(subnode.getNodeId(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;
@@ -155,15 +155,15 @@ public class ProjectSubnodeManager {
 		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
-		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
+		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
-	private Set<ProjectSubnode> recursiveZoomDown(int nodeId, int quantity,
+	private Set<ProjectSubnode> recursiveDrillDown(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectSubnode subnode : psr.getFollowerSubnode(nodeId)) {
 				subnodes.add(subnode);
-				subnodes = recursiveZoomDown(subnode.getNodeId(), quantity - 1, subnodes);
+				subnodes = recursiveDrillDown(subnode.getNodeId(), quantity - 1, subnodes);
 			}
 		}
 		return subnodes;

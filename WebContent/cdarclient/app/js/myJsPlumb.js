@@ -263,11 +263,13 @@ var myJsPlumb = (function() {
 	function showSubnodePopup(info) {
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
-		$.each(info.connection.source.data(SUBNODE).subnode, function(object) {
-			buildPopupContent(this.id, this.title);
-		});
+		if (info.connection.source.data(SUBNODE).subnode) {
+			$.each(info.connection.source.data(SUBNODE).subnode, function(
+					object) {
+				buildPopupContent(this.id, this.title);
+			});
+		}
 		buildPopupContent(-1, scope.defaultLinkName);
-		$('#popup-box-1').show();
 	}
 
 	function buildPopupContent(id, title) {

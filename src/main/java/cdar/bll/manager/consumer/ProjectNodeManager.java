@@ -69,16 +69,16 @@ public class ProjectNodeManager {
 	public Set<ProjectNode> drillUp(int uid, int nodeId) throws UnknownProjectNodeException, EntityException, UnknownUserException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getProjectNode(nodeId));
-		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
+		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
-	private Set<ProjectNode> recursiveZoomUp(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
+	private Set<ProjectNode> recursiveDrillUp(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectNode node : pnr.getSiblingNode(nodeId)) {
 				nodes.add(node);
 			}
 			for (ProjectNode node : pnr.getParentNode(nodeId)) {
 				nodes.add(node);
-				nodes = recursiveZoomUp(node.getId(), quantity - 1, nodes);
+				nodes = recursiveDrillUp(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;
@@ -86,14 +86,14 @@ public class ProjectNodeManager {
 	public Set<ProjectNode> drillDown(int uid, int nodeId) throws EntityException, UnknownProjectNodeException, UnknownUserException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getProjectNode(nodeId));
-		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
+		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 
-	private Set<ProjectNode> recursiveZoomDown(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
+	private Set<ProjectNode> recursiveDrillDown(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectNode node : pnr.getFollowerNode(nodeId)) {
 				nodes.add(node);
-				nodes = recursiveZoomDown(node.getId(), quantity - 1, nodes);
+				nodes = recursiveDrillDown(node.getId(), quantity - 1, nodes);
 			}
 		}
 		return nodes;

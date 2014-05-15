@@ -275,7 +275,7 @@ var myJsTree = (function () {
             sel = ref.create_node(sel, {
                 "type": "file",
                 "id": DIRECTORY + NODE + response.id,
-                "text": "new Node"
+                "text": 'new '+scope.defaultNodeName
             });
             if (sel) {
                 ref.edit(sel);
@@ -289,7 +289,7 @@ var myJsTree = (function () {
             sel = sel[0];
             sel = ref.create_node(sel, {
                 "type": "default",
-                'text': 'new Folder',
+                'text': 'new '+scope.defaultDirectoryName,
                 "id": DIRECTORY + response.id
             });
             if (sel) {
