@@ -1,4 +1,4 @@
-package cdar;
+package cdar.dal;
 
 import java.io.InputStream;
 import java.util.Properties;

@@ -26,5 +26,4 @@ public class ChangesWrapper<T> {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-
 }

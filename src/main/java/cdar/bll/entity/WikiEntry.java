@@ -9,6 +9,7 @@ import org.wikipedia.Wiki;
 
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
+import cdar.dal.PropertyHelper;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {
@@ -16,17 +17,16 @@ public class WikiEntry extends WikiEntity {
 	private int subnodeId;
 	private String wikicontentplain;
 	private String wikicontenthtml;
-	private String wikiConnection;
+	
+	private PropertyHelper propertyHelper = new PropertyHelper();
 
 	public WikiEntry() {
-		setWikiConnection();
 	}
 
 	public WikiEntry(ProjectNode node) {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikititle());
-		setWikiConnection();
 		setNodeId(node.getId());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
 		if (wec.isKeyInMap(node.getWikititle())) {
@@ -41,7 +41,6 @@ public class WikiEntry extends WikiEntity {
 		super(node.getId(), node.getCreationTime(), node
 				.getLastModificationTime(), node.getTitle(), node
 				.getWikititle());
-		setWikiConnection();
 		setNodeId(node.getId());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
 		if (wec.isKeyInMap(node.getWikititle())) {
@@ -56,7 +55,6 @@ public class WikiEntry extends WikiEntity {
 		super(subnode.getId(), subnode.getCreationTime(), subnode
 				.getLastModificationTime(), subnode.getTitle(), subnode
 				.getWikititle());
-		setWikiConnection();
 		setSubnodeId(subnode.getId());
 		WikiEntryConcurrentHelper wec = new WikiEntryConcurrentHelper();
 		if (wec.isKeyInMap(subnode.getWikititle())) {
@@ -68,12 +66,12 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	private void fillWikiContent() {
-		Wiki wiki = new Wiki(wikiConnection, "");
+		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
 
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikititle()));
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("http://%s/images/${image}", wikiConnection), String.format("http://%s/index.php/${title}", wikiConnection));
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("http://%s/images/${image}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")), String.format("http://%s/index.php/${title}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,29 +97,17 @@ public class WikiEntry extends WikiEntity {
 	public WikiEntry saveEntry(String username, String password)
 			throws UnknownUserException {
 		try {
-			Wiki c = new Wiki(wikiConnection, "");
+			Wiki c = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
 			c.login(username, password);
 			c.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", wikiConnection), String.format("%s/index.php/${title}", wikiConnection));
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")), String.format("%s/index.php/${title}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new UnknownUserException();
 		}
 		return this;
-	}
-
-	private void setWikiConnection() {
-		String resourceName = "cdarconfig.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties prop = new Properties();
-		try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
-			prop.load(resourceStream);
-			wikiConnection = prop.getProperty("MEDIAWIKI_CONNECTION");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	public int getNodeId() {
