@@ -516,9 +516,12 @@ app.service('DescriptionService', [
 		'$resource',
 		'$cookieStore',
 		function($resource, $cookieStore) {
+			
 			var descriptionResource = $resource('../webapi/descriptions');
 
 			descriptionResource.get().$promise.then(function(response) {
+				$cookieStore.put('cdarDirectoryDescription',
+						response.directoryDescription);
 				$cookieStore.put('cdarNodeDescription',
 						response.nodeDescription);
 				$cookieStore.put('cdarSubnodeDescription',
@@ -526,6 +529,9 @@ app.service('DescriptionService', [
 				$cookieStore.put('cdarWikiUrl', response.wikiUrl);
 			});
 
+			this.getDirectoryDescription = function() {
+				return $cookieStore.get('cdarDirectoryDescription');
+			};
 			this.getNodeDescription = function() {
 				return $cookieStore.get('cdarNodeDescription');
 			};
@@ -537,7 +543,7 @@ app.service('DescriptionService', [
 			this.getWikiUrl = function() {
 				return $cookieStore.get('cdarWikiUrl');
 			};
-		} ])
+		} ]);
 
 app.factory('UserService', [ '$location', '$cookieStore',
 		function($location, $cookieStore) {

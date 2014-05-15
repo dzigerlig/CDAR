@@ -3,6 +3,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	myJsPlumb.initialize();
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
+	$scope.defaultLinkName = DescriptionService.getSubnodeDescription();
+
     $scope.projecttree = "";
     
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];

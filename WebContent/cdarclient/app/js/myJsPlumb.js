@@ -60,11 +60,14 @@ var myJsPlumb = (function() {
 								if (this.id === lastConnectionID) {
 									this.getOverlay("label").setLabel(
 											$(element.currentTarget).val());
-									scope.updateLink(this.id.replace(LINK, ""),
-											$(element.currentTarget).attr("id")
-													.replace(SUBNODE, ""));
+									if ($(element.currentTarget).attr("id")
+											.replace(SUBNODE, "") != -1) {
+										scope.updateLink(this.id.replace(LINK,
+												""), $(element.currentTarget)
+												.attr("id")
+												.replace(SUBNODE, ""));
+									}
 									$('[id^=popup-box-]').hide();
-
 								}
 							});
 						});
@@ -108,14 +111,11 @@ var myJsPlumb = (function() {
 		jsPlumb.makeTarget(newState, {
 			anchor : 'Continuous',
 			endpoint : "Blank"
-		/*
-		 * dropOptions : { hoverClass : "dragHover" }
-		 */
 		});
 	}
 
 	function connectNodes(stateSource, stateTarget, id, subnode) {
-		var label = "";
+		var label = scope.defaultLinkName;
 		if (subnode !== undefined) {
 			label = subnode.title;
 		}
@@ -152,8 +152,6 @@ var myJsPlumb = (function() {
 		newState.dblclick(function(e) {
 			$('#' + newState[0].id + ' .option').toggle();
 			jsPlumb.repaintEverything();
-
-			// detachNode(newState[0].id.replace(NODE, ""));
 		});
 	}
 
@@ -211,7 +209,7 @@ var myJsPlumb = (function() {
 		}
 		selectedElement = null;
 	}
-	
+
 	function drillUpEvent(uptree, newState) {
 		uptree.click(function(e) {
 			e.stopPropagation();
@@ -265,21 +263,20 @@ var myJsPlumb = (function() {
 	function showSubnodePopup(info) {
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
-		$
-				.each(
-						info.connection.source.data(SUBNODE).subnode,
-						function(object) {
-							$('#radio-form')
-									.append(
-											"<input type=\"radio\" id=\""
-													+ SUBNODE
-													+ this.id
-													+ "\" name=\"option\" class=\"radio_item\" value=\""
-													+ this.title + "\">"
-													+ this.title + "<br>");
-						});
+		$.each(info.connection.source.data(SUBNODE).subnode, function(object) {
+			buildPopupContent(this.id, this.title);
+		});
+		buildPopupContent(-1, scope.defaultLinkName);
 		$('#popup-box-1').show();
 	}
+
+	function buildPopupContent(id, title) {
+		$('#radio-form').append(
+				"<input type=\"radio\" id=\"" + SUBNODE + id
+						+ "\" name=\"option\" class=\"radio_item\" value=\""
+						+ title + "\">" + title + "<br>");
+	}
+	;
 
 	function registerLinkTemplate() {
 		jsPlumb.registerConnectionType("change", {
@@ -351,6 +348,16 @@ var myJsPlumb = (function() {
 		return 'app/img/' + state;
 	}
 
+	function removeLink(id) {
+		var connections = jsPlumb.getConnections();
+		jQuery.each(connections, function(object) {
+			if (id === this.id) {
+				jsPlumb.detach(this);
+			}
+		});
+		scope.deleteLink(id.replace(LINK, ""));
+	}
+
 	// public Methods
 	return {
 		initialize : function() {
@@ -360,8 +367,10 @@ var myJsPlumb = (function() {
 			makePopupEvents();
 			bindNewConnection();
 			$('html').click(function() {
-				// resetSelectDesign();
-				$('[id^=popup-box-]').hide();
+				if ($('[id^=popup-box-]').is(':visible')) {
+					removeLink(lastConnectionID);
+					$('[id^=popup-box-]').hide();
+				}
 			});
 		},
 
@@ -476,13 +485,7 @@ var myJsPlumb = (function() {
 				if (selectedElement.indexOf(NODE) > -1) {
 					myJsPlumb.detachNode(selectedElement.replace(NODE, ""));
 				} else {
-					var connections = jsPlumb.getConnections();
-					jQuery.each(connections, function(object) {
-						if (selectedElement === this.id) {
-							jsPlumb.detach(this);
-						}
-					});
-					scope.deleteLink(selectedElement.replace(LINK, ""));
+					removeLink(selectedElement);
 				}
 			} else {
 				noty({
@@ -537,7 +540,7 @@ var myJsPlumb = (function() {
 				title[0].innerHTML = newTitle;
 			}
 		},
-		
+
 		setStatusImage : function(node) {
 			var imageDiv = $('#' + STATUS + node.id);
 			imageDiv.css('background-image', 'url('
@@ -593,15 +596,15 @@ var myJsPlumb = (function() {
 							});
 				}
 			}
-		},	
-		
-		drillDownButton: function(){
+		},
+
+		drillDownButton : function() {
 			if (selectedElement.indexOf(NODE) > -1) {
 				scope.drillDownNode(selectedElement.replace(NODE, ""));
 			}
 		},
-		
-		drillUpButton: function(){
+
+		drillUpButton : function() {
 			if (selectedElement.indexOf(NODE) > -1) {
 				scope.drillUpNode(selectedElement.replace(NODE, ""));
 			}

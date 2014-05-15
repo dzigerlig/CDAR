@@ -117,7 +117,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.isProducer = true;
 							
 							$scope.DescriptionService = DescriptionService;
-							
+							$scope.defaultLinkName = 'all ' +DescriptionService.getSubnodeDescription()+'s';
+
 							myJsPlumb.initialize();
 							$scope.treeId = $routeParams.treeId;
 							$scope.UserService = UserService;
@@ -155,7 +156,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.getSubnodes({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
-									id2 : $scope.selectedNode.id,
+									id2 : $scope.selectedNode.id
 								}, function(response) {
 									$scope.subnodes = response;
 								}, function(error) {
