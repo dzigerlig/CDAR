@@ -69,6 +69,9 @@
 						</tr>
 					</table>
 				</div>
+				<div class="col-md-12" ng-hide="subnodes">
+					<div class="alert alert-warning">WARNING: You haven't added any {{DescriptionService.getSubnodeDescription}}s yet!</div>
+				</div>
 				<div class="col-md-12"><h3>{{subnodeTitle}}</h3></div>
 				<tabset justified="true" class="well" data-ng-show="selectedSubnode.id" type="pills">
 					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
