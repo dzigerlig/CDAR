@@ -574,19 +574,34 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.deleteComment = function(commentId) {
-		TreeService.deleteComment({
-			entity1 : 'ptrees',
-			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNode.id
-		}, {id : commentId}, function(response) {
-			getComments();
-		}, function (error) {
-			noty({
-				type : 'alert',
-				text : 'cannot delete comment',
-				timeout : 1500
+		
+		$modal.open({ 
+            templateUrl: 'templates/confirmation.html',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                data: function() { 
+                    return {
+                        title: 'Delete Comment',
+                        message: 'Do you really want to delete this Comment?' 
+                    };
+                }
+	            },
+	            controller: 'ConfirmationController' 
+	    }).result.then(function(result) {
+		    TreeService.deleteComment({
+				entity1 : 'ptrees',
+				id1 : $routeParams.treeId,
+				id2 : $scope.selectedNode.id
+			}, {id : commentId}, function(response) {
+				getComments();
+			}, function (error) {
+				noty({
+					type : 'alert',
+					text : 'cannot delete comment',
+					timeout : 1500
+				});
 			});
-		});
+	    });
 	};
-	
 }]);

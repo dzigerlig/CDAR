@@ -114,8 +114,9 @@ app.controller("AccountController",
 				'AuthenticationService',
 				'UserService',
 				'$filter',
+				'$modal',
 				function($scope, $location, AuthenticationService, UserService,
-						$filter) {
+						$filter, $modal) {
 					$scope.UserService = UserService;
 					$scope.newPw = '';
 					$scope.confirmPw = '';
@@ -177,23 +178,44 @@ app.controller("AccountController",
 							});
 							return;
 						}
-						AuthenticationService.updateUser({
-							userid : UserService.getUserId()
-						}, {
-							id : UserService.getUserId(),
-							username : UserService.getUsername(),
-							password : $scope.newPw
-						}, function(response) {
-							noty({
-								type : 'success',
-								text : "Password have been changed",
-								timeout : 3500
+						
+						
+						$modal.open({ 
+				            templateUrl: 'templates/confirmation.html',
+				            backdrop: 'static',
+				            keyboard: false,
+				            resolve: {
+				                data: function() { 
+				                    return {
+				                        title: 'Change password',
+				                        message: 'If you change your password, you need to change it in mediawiki as well in order to login in to CDAR again.' 
+				                    };
+				                }
+					            },
+					            controller: 'ConfirmationController' 
+					    }).result.then(function(result) {
+					    	AuthenticationService.updateUser({
+								userid : UserService.getUserId()
+							}, {
+								id : UserService.getUserId(),
+								username : UserService.getUsername(),
+								password : $scope.newPw
+							}, function(response) {
+								noty({
+									type : 'success',
+									text : "Password have been changed",
+									timeout : 3500
+								});
+								$scope.newPw = '';
+								$scope.confirmPw = '';
+							}, function(error) {
+								noty({
+									type : 'alert',
+									text : "Password change failed",
+									timeout : 3500
+								});
 							});
-							$scope.newPw = '';
-							$scope.confirmPw = '';
-						}, function(error) {
-							alert("pw change failed!");
-						});
+					    });
 					};
 				} ]);
 
