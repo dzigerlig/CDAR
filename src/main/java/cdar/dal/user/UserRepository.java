@@ -176,11 +176,16 @@ public class UserRepository {
 		}
 	}
 
-	public List<User> getUsersByTree(int treeId) throws EntityException,
+	public List<User> getUsersByTree(boolean isProducer, int treeId) throws EntityException,
 			UnknownUserException {
-		final String sql = String
-				.format("SELECT * FROM %s AS user, %s AS mapping WHERE user.id=mapping.uid AND   mapping.kptid=?",
-						DBTableHelper.USER, DBTableHelper.PROJECTTREEMAPPING);
+		String sql = null;
+		if (isProducer) {
+			sql = String.format("SELECT * FROM %s AS user, %s AS mapping WHERE user.id=mapping.uid AND   mapping.ktrid=?",
+					DBTableHelper.USER, DBTableHelper.TREEMAPPING);
+		} else {
+			sql = String.format("SELECT * FROM %s AS user, %s AS mapping WHERE user.id=mapping.uid AND   mapping.kptid=?",
+							DBTableHelper.USER, DBTableHelper.PROJECTTREEMAPPING);
+		}
 		List<User> users = new ArrayList<User>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -205,6 +210,7 @@ public class UserRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new UnknownUserException();
 		}
 		return users;
@@ -214,10 +220,10 @@ public class UserRepository {
 			throws UnknownUserException {
 		final String sql;
 		if (user.isTreeaccess()) {
-			sql = String.format("INSERT INTO %s (KTID, UID) VALUES (?, ?)",
+			sql = String.format("INSERT INTO %s (KTRID, UID) VALUES (?, ?)",
 					DBTableHelper.TREEMAPPING);
 		} else {
-			sql = String.format("DELETE FROM %s WHERE KTID = ? AND UID = ?",
+			sql = String.format("DELETE FROM %s WHERE KTRID = ? AND UID = ?",
 					DBTableHelper.TREEMAPPING);
 		}
 		try (Connection connection = DBConnection.getConnection();

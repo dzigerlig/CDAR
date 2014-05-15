@@ -226,16 +226,14 @@ app.controller("AccessController", [
 		'AuthenticationService',
 		'UserService',
 		'TreeService',
+		'$modal',
 		function($scope, $routeParams, $location, AuthenticationService,
-				UserService, TreeService) {
+				UserService, TreeService, $modal) {
 			$scope.UserService = UserService;
 			$scope.isProducer = UserService.getIsProducer();
 			$scope.treeId = $routeParams.treeId;
 			$scope.selectedUserId = "";
 			$scope.users = "";
-			// | orderBy:'id':false
-			// TreeService.getUsers().....function(response) { $scope.users =
-			// response; }
 
 			var roleEntity = "";
 			if ($scope.isProducer === 'true') {
@@ -252,7 +250,7 @@ app.controller("AccessController", [
 				}, function(error) {
 					noty({
 						type : 'alert',
-						text : 'error getting subnodes',
+						text : 'error getting users',
 						timeout : 1500
 					});
 				});
@@ -271,24 +269,42 @@ app.controller("AccessController", [
 					}, function(error) {
 						noty({
 							type : 'alert',
-							text : 'cannot update node status',
+							text : 'cannot add this user',
 							timeout : 1500
 						});
 					});
 				}
 			};
 			$scope.removeAccessRight = function(userid) {
-				TreeService.setUserRight({
-					entity1 : roleEntity,
-					id1 : $routeParams.treeId,
-					id2 : userid
-				}, {
-					treeaccess : false
-				}, function(response) {
-					getAllUsers();
-				}, function(error) {
-					alert("access right change failed!");
-				});
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete User',
+		                        message: 'Do you really want to delete this User from your Tree?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.setUserRight({
+						entity1 : roleEntity,
+						id1 : $routeParams.treeId,
+						id2 : userid
+					}, {
+						treeaccess : false
+					}, function(response) {
+						getAllUsers();
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'access right change failed!',
+							timeout : 1500
+						});
+					});
+			    });
 			};
-
 		} ]);

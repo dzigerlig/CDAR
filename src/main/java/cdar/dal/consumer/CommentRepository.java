@@ -21,7 +21,7 @@ import cdar.dal.exceptions.UnknownCommentException;
 public class CommentRepository {
 
 	public List<Comment> getComments(int kpnid) throws EntityException {
-		String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN USER AS USER ON USER.ID = COMMENT.UID WHERE KPNID = ?",DBTableHelper.USERCOMMENT);
+		String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.UID WHERE KPNID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		List<Comment> usercomments = new ArrayList<Comment>();
 
@@ -52,7 +52,7 @@ public class CommentRepository {
 	}
 	
 	public Comment getComment(int id) throws UnknownCommentException, EntityException {
-		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN USER AS USER ON USER.ID = COMMENT.ID WHERE ID = ?",DBTableHelper.USERCOMMENT);
+		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.ID WHERE ID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

@@ -114,8 +114,8 @@ public class UserManager {
 		return userRepository.getUsers();
 	}
 
-	public List<User> getUsersByTree(int treeId) throws EntityException, UnknownUserException {
-		return userRepository.getUsersByTree(treeId);
+	public List<User> getUsersByTree(boolean isProducer, int treeId) throws EntityException, UnknownUserException {
+		return userRepository.getUsersByTree(isProducer, treeId);
 	}
 
 	public void setConsumerUserRight(int treeId, User user) throws UnknownUserException {
