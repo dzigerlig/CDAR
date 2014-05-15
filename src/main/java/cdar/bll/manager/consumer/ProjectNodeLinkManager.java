@@ -59,32 +59,32 @@ public class ProjectNodeLinkManager {
 
 	public Set<NodeLink> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException, UnknownUserException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
+		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 	
 	public Set<NodeLink> drillDown(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
 		Set<NodeLink> links = new HashSet<NodeLink>();
-		return recursiveZoomDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
+		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 
-	private Set<NodeLink> recursiveZoomUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
+	private Set<NodeLink> recursiveDrillUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : pnlr.getSiblingNodeLinks(nodeId)) {
 				links.add(nodeLink);
 			}
 			for (NodeLink nodeLink : pnlr.getParentNodeLinks(nodeId)) {
 				links.add(nodeLink);
-				links=recursiveZoomUp(nodeLink.getSourceId(), quantity-1, links);
+				links=recursiveDrillUp(nodeLink.getSourceId(), quantity-1, links);
 			}
 		}
 		return links;
 	}
 	
-	private Set<NodeLink> recursiveZoomDown(int nodeId, int quantity, Set<NodeLink> links) throws UnknownNodeException, EntityException  {
+	private Set<NodeLink> recursiveDrillDown(int nodeId, int quantity, Set<NodeLink> links) throws UnknownNodeException, EntityException  {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : pnlr.getFollowerNodeLinks(nodeId)) {
 				links.add(nodeLink);
-				links = recursiveZoomDown(nodeLink.getTargetId(), quantity-1, links);
+				links = recursiveDrillDown(nodeLink.getTargetId(), quantity-1, links);
 			}
 		}
 		return links;

@@ -70,7 +70,7 @@ body.dragging,body.dragging * {
 	background-color: #EAEDEF;
 	border: 1px solid gray;
 	width: 100%;
-	min-height: 800px;
+	min-height: 680px;
 	overflow: auto;
 }
 
