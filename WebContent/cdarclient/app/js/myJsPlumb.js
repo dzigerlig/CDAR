@@ -11,7 +11,7 @@ var myJsPlumb = (function() {
 
 	// private Methods
 	function buildContent() {
-		// jsPlumb.detachEveryConnection();
+		//jsPlumb.detachEveryConnection();
 		jsPlumb.deleteEveryEndpoint();
 
 		$("#jsplumb-container").empty();
@@ -415,7 +415,8 @@ var myJsPlumb = (function() {
 		drawExistingNodes : function(data, resSubnodes) {
 			buildContent();
 			makePopupEvents();
-			isInizialized = false;
+
+            isInizialized = false;
 			selectedElement = null;
 			var map = {};
 			jQuery.each(resSubnodes, function(object) {
@@ -427,7 +428,8 @@ var myJsPlumb = (function() {
 					arr.push(this);
 				}
 			});
-			jQuery.each(data, function(object) {
+
+            jQuery.each(data, function(object) {
 				if (this.dynamicTreeFlag) {
 					if (map[this.id] !== undefined) {
 						map[this.id].sort(function(a, b) {
@@ -481,7 +483,7 @@ var myJsPlumb = (function() {
 
 				}
 			});
-		},
+        },
 		removeSelected : function() {
 			if (selectedElement !== null) {
 				if (selectedElement.indexOf(NODE) > -1) {

@@ -184,7 +184,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.getSubnodes({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
-									id2 : identity,
+									id2 : identity
 								}, function(response) {
 									$scope.subnodes = response;
 									myJsPlumb.updateSubnodesOfNode(response,
@@ -223,7 +223,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								setLoadingSubnode();
 								$scope.selectedSubnode.id = subnodeid;
 								$scope.selectedSubnode.title = name;
-								updateSubnodeTitle();
 								TreeService.getSubnodeWiki({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
@@ -231,7 +230,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									id3 : subnodeid
 								}, function(response) {
 									$scope.selectedSubnode = response;
-									changeWikiFieldsSubnode();
+                                    updateSubnodeTitle();
+                                    changeWikiFieldsSubnode();
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -283,7 +283,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								TreeService.deleteSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
-									id2 : $scope.selectedNode.id,
+									id2 : $scope.selectedNode.id
 								}, {
 									id : subnodeId
 								}, function(response) {
@@ -413,10 +413,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								});
 							});
 
-							$scope.logout = function() {
-								AuthenticationService.logout();
-							};
-
 							TreeService.getDirectories({
 								entity1 : 'ktrees',
 								id1 : $routeParams.treeId
@@ -446,7 +442,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.getSubnodes = function(resNodes) {
 								TreeService.getSubnodesFromTree({
 									entity1 : 'ktrees',
-									id1 : $routeParams.treeId,
+									id1 : $routeParams.treeId
 								}, function(resSubnodes) {
 									myJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
@@ -463,7 +459,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.getLinks = function(resSubnodes) {
 								TreeService.getLinks({
 									entity1 : 'ktrees',
-									id1 : $routeParams.treeId,
+									id1 : $routeParams.treeId
 								}, function(response) {
 									myJsPlumb.makeNodeHierarchy(response,
 											resSubnodes);
@@ -681,7 +677,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							$scope.deleteLink = function(linkId) {
 								TreeService.deleteLink({
 									entity1 : 'ktrees',
-									id1 : $routeParams.treeId,
+									id1 : $routeParams.treeId
 								}, {
 									id : linkId
 								}, function(response) {

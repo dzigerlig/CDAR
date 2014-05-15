@@ -89,6 +89,331 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+    $scope.updateLink = function(linkId, subnodeid) {
+        TreeService.updateLink({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : linkId
+        }, {
+            id : linkId,
+            subnodeId : subnodeid
+        }, function(response) {
+            // noty({type: 'success', text : 'link added
+            // successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'cannot update link',
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.addNode = function(did) {
+        TreeService.addNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId
+        }, {
+            treeId : $routeParams.treeId,
+            directoryId : did
+        }, function(response) {
+            myJsTree.drawNewNode(response);
+            // noty({type: 'success', text : 'node added
+            // successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error adding ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.addNodeCopy = function(node) {
+        TreeService.addNode({
+                entity1 : 'ktrees',
+                id1 : $routeParams.treeId
+            }, {
+                treeId : $routeParams.treeId,
+                title : node.text,
+                directoryId : 0
+            },
+            function(response) {
+                myJsTree.prepareForSetId(node,
+                    response.id);
+            }, function(error) {
+                noty({
+                    type : 'alert',
+                    text : 'error adding ' + DescriptionService.getNodeDescription(),
+                    timeout : 1500
+                });
+            });
+    };
+
+    $scope.deleteNode = function(nodeId) {
+        myJsPlumb.detachNode(nodeId);
+        TreeService.deleteNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId
+        }, {
+            id : nodeId
+        }, function(response) {
+            myJsPlumb.detachNode(nodeId);
+            noty({
+                type : 'success',
+                text : DescriptionService.getNodeDescription() + ' deleted successfully',
+                timeout : 1500
+            });
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'cannot delete ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.getNode = function(nodeId) {
+        TreeService.getNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : nodeId
+        }, function(node) {
+            myDragDrop.setMovedNode(node);
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error getting ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.dropNode = function(e, nodeId) {
+        TreeService.updateNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : nodeId
+        }, {
+            id : nodeId,
+            dynamicTreeFlag : 1
+        }, function(response) {
+            myJsPlumb.addHTMLNode(response, e);
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error dropping ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.undropNode = function(nodeId) {
+        TreeService.updateNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : nodeId
+        }, {
+            id : nodeId,
+            dynamicTreeFlag : 0
+        }, function(response) {
+            // todo
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error undropping ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.renameNode = function(id, newTitle, did) {
+        TreeService.renameNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : id
+        }, {
+            id : id,
+            title : newTitle,
+            directoryId : did
+        }, function(response) {
+            myJsPlumb.renameNode(id, newTitle);
+            // noty({type: 'success', text : 'node
+            // renamed successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'cannot rename ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.moveNode = function(id, newParentId) {
+        TreeService.updateNode({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : id
+        }, {
+            id : id,
+            directoryId : newParentId
+        }, function(response) {
+            // todo
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error moving ' + DescriptionService.getNodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.addLink = function(treeId, sourceId,
+                              targetId, connection) {
+        TreeService.addLink({
+                entity1 : 'ptrees',
+                id1 : $routeParams.treeId
+            }, {
+                treeId : treeId,
+                sourceId : sourceId,
+                targetId : targetId
+            },
+            function(response) {
+                myJsPlumb.setLinkId(connection,
+                    response.id);
+            }, function(error) {
+                noty({
+                    type : 'alert',
+                    text : 'error adding link',
+                    timeout : 1500
+                });
+            });
+    };
+
+    $scope.deleteLink = function(linkId) {
+        TreeService.deleteLink({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId
+        }, {
+            id : linkId
+        }, function(response) {
+            // noty({type: 'success', text : 'link
+            // deleted successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'cannot delete link',
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.addDirectory = function(parentid) {
+        TreeService.addDirectory({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId
+        }, {
+            treeId : $routeParams.treeId,
+            parentId : parentid
+        }, function(response) {
+            myJsTree.drawNewDirectory(response);
+            // noty({type: 'success', text : 'directory
+            // added successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error adding directory',
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.addDirectoryCopy = function(node) {
+        TreeService.addDirectory({
+                entity1 : 'ptrees',
+                id1 : $routeParams.treeId
+            }, {
+                treeId : $routeParams.treeId,
+                title : node.text,
+                parentid : 0
+            },
+            function(response) {
+                myJsTree.prepareForSetId(node,
+                    response.id);
+            }, function(error) {
+                noty({
+                    type : 'alert',
+                    text : 'error adding directory copy',
+                    timeout : 1500
+                });
+            });
+    };
+
+    $scope.renameDirectory = function(directoryId,
+                                      newTitle) {
+        TreeService.updateDirectory({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : directoryId
+        }, {
+            id : directoryId,
+            title : newTitle
+        }, function(response) {
+            // noty({type: 'success', text : 'directory
+            // renamed successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error renaming directory',
+                timeout : 1500
+            });
+        });
+    };
+
+    $scope.deleteDirectory = function(directoryId) {
+        TreeService.deleteDirectory(
+            {
+                entity1 : 'ptrees',
+                id1 : $routeParams.treeId
+            },
+            {
+                id : directoryId
+            },
+            function(response) {
+                noty({
+                    type : 'success',
+                    text : 'directory deleted successfully',
+                    timeout : 1500
+                });
+            }, function(error) {
+                noty({
+                    type : 'alert',
+                    text : 'error deleting directory',
+                    timeout : 1500
+                });
+            });
+    };
+
+    $scope.moveDirectory = function(directoryId,
+                                    newParentId) {
+        TreeService.updateDirectory({
+            entity1 : 'ptrees',
+            id1 : $routeParams.treeId,
+            id2 : directoryId
+        }, {
+            id : directoryId,
+            parentId : newParentId
+        }, function(response) {
+            // noty({type: 'success', text : 'directory
+            // moved successfully', timeout: 1500});
+        }, function(error) {
+            noty({
+                type : 'alert',
+                text : 'error moving directory',
+                timeout : 1500
+            });
+        });
+    };
     
     $scope.drillUpNode = function(nodeid) {
 		TreeService.nodeDrillUp({
@@ -194,6 +519,28 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+    $scope.editSubnodeTitle = function(data, id) {
+        var subnode = $.grep($scope.subnodes, function(
+            t) {
+            return t.id === id;
+        })[0];
+        subnode.title = data;
+
+        TreeService.renameSubnode( { entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
+            response) {
+            $scope.getSubnodesOfNode(response);
+            // noty({type: 'success', text :
+            // 'subnode renamed successfully',
+            // timeout: 1500});
+        }, function (error) {
+            noty({
+                type : 'alert',
+                text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
+                timeout : 1500
+            });
+        });
+    };
+
     reloadTree();
 
     $scope.saveProjectTreeTitle = function(title) {
@@ -251,7 +598,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.getSubnodes({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNode.id,
+			id2 : $scope.selectedNode.id
 		}, function(response) {
 			$scope.subnodes = response;
 		}, function(error) {
@@ -370,7 +717,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.getSubnodes({
 			entity1 : 'ptrees',
 			id1 : $scope.projecttree.id,
-			id2 : identity,
+			id2 : identity
 		}, function(response) {
 			$scope.subnodes = response;
 			myJsPlumb.updateSubnodesOfNode(response,
@@ -388,7 +735,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.deleteSubnode({
 			entity1 : 'ptrees',
 			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNode.id,
+			id2 : $scope.selectedNode.id
 		}, {
 			id : subnodeId
 		}, function(response) {
@@ -398,6 +745,10 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
 				timeout : 1500
 			});
+            if ($scope.selectedSubnode.id === subnodeId) {
+                $scope.selectedSubnode.id = 0;
+                updateSubnodeTitle();
+            }
 		}, function(error) {
 			noty({
 				type : 'alert',
@@ -546,7 +897,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		TreeService.getComments({
 			entity1 : 'ptrees',
 			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNode.id,
+			id2 : $scope.selectedNode.id
 		}, function(response) {
 			$scope.comments = response;
 		}, function(error) {

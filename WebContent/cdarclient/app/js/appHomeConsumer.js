@@ -85,8 +85,4 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 			});
     	});
     }
-
-    $scope.logout = function () {
-        AuthenticationService.logout();
-    };
 }]);
