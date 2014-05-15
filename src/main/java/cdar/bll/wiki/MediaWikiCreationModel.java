@@ -1,8 +1,6 @@
 package cdar.bll.wiki;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
@@ -11,13 +9,16 @@ import org.wikipedia.Wiki;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
+import cdar.dal.PropertyHelper;
 
 public class MediaWikiCreationModel extends Thread {
 	private int uid;
 	private String title;
 	private String content;
+	
 	private WikiEntryConcurrentHelper wikiHelper;
-	private String wikiConnection;
+	private PropertyHelper propertyHelper = new PropertyHelper();
+	
 
 	public MediaWikiCreationModel(int uid, String title, String content, WikiEntryConcurrentHelper wikiHelper) {
 		super();
@@ -25,7 +26,6 @@ public class MediaWikiCreationModel extends Thread {
 		setWikiHelper(wikiHelper);
 		setContent(content);
 		setUid(uid);
-		setWikiConnection();
 	}
 
 
@@ -46,7 +46,7 @@ public class MediaWikiCreationModel extends Thread {
 	}
 
 	public void createNewWikiEntry(String username, String password) {
-		Wiki wiki = new Wiki(wikiConnection, "");
+		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
 		try {
 			createEntry(wiki, username, password);
 		} catch (Exception e) {
@@ -63,19 +63,6 @@ public class MediaWikiCreationModel extends Thread {
 			throws IOException, FailedLoginException, LoginException {
 		wiki.login(username, password);
 		wiki.edit(getTitle(), getContent(), "");
-	}
-
-	private void setWikiConnection() {
-		String resourceName = "cdarconfig.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties prop = new Properties();
-		try (InputStream resourceStream = loader
-				.getResourceAsStream(resourceName)) {
-			prop.load(resourceStream);
-			wikiConnection = prop.getProperty("MEDIAWIKI_CONNECTION");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	public void run() {

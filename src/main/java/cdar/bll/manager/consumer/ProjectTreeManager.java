@@ -91,7 +91,6 @@ public class ProjectTreeManager {
 			projectDirectory.setTreeId(ptreeId);
 			projectDirectory.setTitle(directory.getTitle());
 			if (directory.getParentId() != 0) {
-				// projectDirectory.setParentId(0);
 				projectDirectory.setParentId(directoryMapping.get(directory
 						.getParentId()));
 				projectDirectory = pdr.createDirectory(projectDirectory);

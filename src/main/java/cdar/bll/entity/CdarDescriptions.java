@@ -1,7 +1,6 @@
 package cdar.bll.entity;
 
-import java.io.InputStream;
-import java.util.Properties;
+import cdar.dal.PropertyHelper;
 
 public class CdarDescriptions {
 	private String directoryDescription;
@@ -14,22 +13,13 @@ public class CdarDescriptions {
 	}
 
 	private void getPropertyValue() throws Exception {
-		String resourceName = "cdarconfig.properties";
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties prop = new Properties();
-		try (InputStream resourceStream = loader
-				.getResourceAsStream(resourceName)) {
-			prop.load(resourceStream);
-			setDirectoryDescription(prop.getProperty("DIRECTORY_DESCRIPTION"));
-			setNodeDescription(prop.getProperty("NODE_DESCRIPTION"));
-			setSubnodeDescription(prop.getProperty("SUBNODE_DESCRIPTION"));
-			setWikiUrl(prop.getProperty("MEDIAWIKI_CONNECTION"), prop.getProperty("MEDIAWIKI_PAGEURL"));
-		} catch (Exception ex) {
-			throw ex;
-		}
+		PropertyHelper propertyHelper = new PropertyHelper();
+		setDirectoryDescription(propertyHelper.getProperty("DIRECTORY_DESCRIPTION"));
+		setNodeDescription(propertyHelper.getProperty("NODE_DESCRIPTION"));
+		setSubnodeDescription(propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+		setWikiUrl(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("MEDIAWIKI_PAGEURL"));
 	}
 	
-
 	public String getDirectoryDescription() {
 		return directoryDescription;
 	}
@@ -65,5 +55,4 @@ public class CdarDescriptions {
 			this.wikiUrl = String.format("http://%s/%s/", domain, page);
 		}
 	}
-
 }
