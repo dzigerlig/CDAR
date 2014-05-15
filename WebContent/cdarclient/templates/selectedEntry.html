@@ -8,17 +8,23 @@
 					<h3><a href="#" ng-init="'Choose Status'" editable-select="selectedNode.status" e-ng-options="s.value as s.text for s in statuses | filter:{show:true}" onbeforesave="updateNodeStatus($data)">Status: {{ showStatus() }}</a></h3>
 				</div>
 			</div>
-			<tabset justified="true" class="well" data-ng-show="selectedNode.id" type="pills">
+			<tabset justified="false" class="well" data-ng-show="selectedNode.id" type="pills">
 				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 				<tab heading="{{nodetabs[0].title}}" id="nodewikiread" active="nodetabs[0].active">
 					<p data-ng-bind-html="wikiHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 				</tab>
 				<tab heading="{{nodetabs[1].title}}" id="wikiwrite" active="nodetabs[1].active">
-					<div class="col-md-12">
-						<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
-							<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
-							<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-						</form>
+					<div class="row">
+						<div class="col-md-12 well">
+							<form data-role="form" data-ng-submit="saveWikiNodeEntry()">
+								<div class="col-md-12 wikientry-cdar">
+									<textarea id="wikiArea" name="wikiArea" cols="80" rows="30"></textarea>
+								</div>
+								<div class="col-md-2 wikientry-cdar">
+									<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</tab>
 			</tabset>
@@ -47,8 +53,7 @@
 									src="app/img/arrow_down.png" alt="move option down" /></a></td>
 							<td><a
 								data-ng-click="changeSubnode(subnode.id, subnode.title)" href="">{{subnode.title}}</a></td>
-							<td><a href="#" editable-text="subnode.title"
-								onbeforesave="editSubnodeTitle($data, subnode.id)">edit title</a>
+							<td><a href="#" editable-text="subnode.title" onbeforesave="editSubnodeTitle($data, subnode.id)">edit title</a>
 							</td>
 							<td><a data-ng-click="deleteSubnode(subnode.id)" href="">Delete
 									{{DescriptionService.getSubnodeDescription()}}</a></td>
@@ -73,22 +78,28 @@
 					<div class="alert alert-warning">WARNING: You haven't added any {{DescriptionService.getSubnodeDescription}}s yet!</div>
 				</div>
 				<div class="col-md-12"><h3>{{subnodeTitle}}</h3></div>
-				<tabset justified="true" class="well" data-ng-show="selectedSubnode.id" type="pills">
+				<tabset justified="false" class="well" data-ng-show="selectedSubnode.id" type="pills">
 					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
 						<p data-ng-bind-html="subnodeHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 					</tab>
 					<tab heading="{{subnodetabs[1].title}}" id="wikiwrite" active="subnodetabs[1].active">
-						<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
-							<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80" rows="30"></textarea>
-							<button class="btn btn-lg btn-success btn-block" type="submit">save</button>
-						</form>
+						<div class="row">
+							<div class="col-md-12 well">
+								<form data-role="form" data-ng-submit="saveWikiSubnodeEntry()">
+									<div class="col-md-12 wikientry-cdar">
+										<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80" rows="30"></textarea>
+									</div>
+									<div class="col-md-2 wikientry-cdar">
+										<button class="btn btn-lg btn-success btn-block col-md-2" type="submit">save</button>
+									</div>
+								</form>
+							</div>
+						</div>
 					</tab>
 				</tabset>
 			</div>
 		</div>
-		
-		
 		
 		<div data-ng-show="UserService.getIsProducer()=='false' && selectedNode.id">
 		<h2>Comments:</h2>
