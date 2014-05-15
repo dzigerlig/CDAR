@@ -228,13 +228,15 @@ app.controller("AccessController", [
 			$scope.treeId = $routeParams.treeId;
 			$scope.selectedUserId = "";
 			$scope.users = "";
-
+			$scope.tree = "";
+			
 			var roleEntity = "";
 			if ($scope.isProducer === 'true') {
 				roleEntity = 'ktrees';
 			} else {
 				roleEntity = 'ptrees';
 			}
+			
 			var getAllUsers = function() {
 				TreeService.getAllUsersWithTreeRight({
 					entity1 : roleEntity,
@@ -249,6 +251,20 @@ app.controller("AccessController", [
 					});
 				});
 			};
+			
+			TreeService.getTree({
+				entity1 : roleEntity,
+				id1 : $routeParams.treeId
+			}, function(response) {
+				$scope.tree = response;
+			}, function(error) {
+				noty({
+					type : 'alert',
+					text : 'error getting tree',
+					timeout : 1500
+				});
+			});
+			
 			getAllUsers();
 			$scope.addAccessRight = function() {
 				if ($scope.selectedUserId.length !== 0) {
