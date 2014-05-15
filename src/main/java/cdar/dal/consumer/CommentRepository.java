@@ -21,7 +21,7 @@ import cdar.dal.exceptions.UnknownCommentException;
 public class CommentRepository {
 
 	public List<Comment> getComments(int kpnid) throws EntityException {
-		String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, UID, COMMENT FROM %s WHERE KPNID = ?",DBTableHelper.USERCOMMENT);
+		String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.UID WHERE KPNID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		List<Comment> usercomments = new ArrayList<Comment>();
 
@@ -39,6 +39,7 @@ public class CommentRepository {
 					usercomment.setNodeId(kpnid);
 					usercomment.setUserId(result.getInt(4));
 					usercomment.setComment(result.getString(5));
+					usercomment.setUsername(result.getString(6));
 					usercomments.add(usercomment);
 				}
 			} catch (ParseException e) {
@@ -51,7 +52,7 @@ public class CommentRepository {
 	}
 	
 	public Comment getComment(int id) throws UnknownCommentException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, UID, COMMENT FROM %s WHERE ID = ?",DBTableHelper.USERCOMMENT);
+		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.ID WHERE ID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -68,9 +69,11 @@ public class CommentRepository {
 					usercomment.setNodeId(result.getInt(4));
 					usercomment.setUserId(result.getInt(5));
 					usercomment.setComment(result.getString(6));
+					usercomment.setUsername(result.getString(7));
 					return usercomment;
 				}
 			} catch (ParseException e) {
+				e.printStackTrace();
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
@@ -97,6 +100,7 @@ public class CommentRepository {
 				}
 			}
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new CreationException();
 		}
 		return comment;

@@ -2,6 +2,7 @@ package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,10 +30,13 @@ public class CommentController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addComment(Comment comment) {
+	public Response addComment(@HeaderParam ("uid") int uid, @PathParam ("nodeid") int nodeId, Comment comment) {
 		try {
+			comment.setUserId(uid);
+			comment.setNodeId(nodeId);
 			return StatusHelper.getStatusCreated(cm.addComment(comment));
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

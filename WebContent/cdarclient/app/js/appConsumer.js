@@ -6,20 +6,14 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.defaultLinkName = DescriptionService.getSubnodeDescription();
 
     $scope.projecttree = "";
-    
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
-    
 	$scope.wikiHtmlText = "";
-	
 	$scope.selectedNode = { id : 0 , title : "" };
 	$scope.selectedNodeWiki = "";
-	
 	$scope.selectedSubnode = { id : 0, title : "" };
-	
 	$scope.subnodes = "";
 	$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
-	
 	$scope.subnodeHtmlText = "";
 
     var reloadTree = function () {
@@ -269,7 +263,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	$scope.changeNode = function(id) {
 		setLoadingNode();
-		
 		TreeService.getNode({
 			entity1 : 'ptrees',
 			id1 : $routeParams.treeId,
@@ -280,6 +273,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.selectedSubnode = {id : 0, title : ""};
 			updateSubnodeTitle();
 			getSubnodes();
+			getComments();
 			TreeService.getNodeWiki({
 				entity1 : 'ptrees',
 				id1 : $routeParams.treeId,
@@ -546,4 +540,70 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	var getComments = function(nodeId) {
+		TreeService.getComments({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : $scope.selectedNode.id,
+		}, function(response) {
+			$scope.comments = response;
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot get comments',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.comments = "";
+	$scope.newCommentText = "";
+	
+	$scope.addComment = function() {
+		TreeService.addComment({
+			entity1 : 'ptrees',
+			id1 : $routeParams.treeId,
+			id2 : $scope.selectedNode.id
+		}, {nodeid : $scope.selectedNode.id, comment : this.newCommentText}, function(response) {
+			getComments();
+		}, function(error) {
+			noty({
+				type : 'alert',
+				text : 'cannot add comment',
+				timeout : 1500
+			});
+		});
+	};
+	
+	$scope.deleteComment = function(commentId) {
+		
+		$modal.open({ 
+            templateUrl: 'templates/confirmation.html',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                data: function() { 
+                    return {
+                        title: 'Delete Comment',
+                        message: 'Do you really want to delete this Comment?' 
+                    };
+                }
+	            },
+	            controller: 'ConfirmationController' 
+	    }).result.then(function(result) {
+		    TreeService.deleteComment({
+				entity1 : 'ptrees',
+				id1 : $routeParams.treeId,
+				id2 : $scope.selectedNode.id
+			}, {id : commentId}, function(response) {
+				getComments();
+			}, function (error) {
+				noty({
+					type : 'alert',
+					text : 'cannot delete comment',
+					timeout : 1500
+				});
+			});
+	    });
+	};
 }]);

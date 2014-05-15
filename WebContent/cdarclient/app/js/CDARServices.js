@@ -412,7 +412,8 @@ app
 											method : 'GET',
 											isArray : true,
 											params : {
-												entity2 : 'comments'
+												entity2 : 'nodes',
+												entity3 : 'comments'
 											}
 
 										},
@@ -420,7 +421,8 @@ app
 											headers : CDAR.getCustomHeader(),
 											method : 'POST',
 											params : {
-												entity2 : 'comments'
+												entity2 : 'nodes',
+												entity3 : 'comments'
 											}
 
 										},
@@ -429,7 +431,8 @@ app
 											method : 'GET',
 											isArray : true,
 											params : {
-												entity2 : 'comments'
+												entity2 : 'nodes',
+												entity3 : 'comments'
 											}
 
 										},
@@ -437,7 +440,8 @@ app
 											headers : CDAR.getCustomHeader(),
 											method : 'POST',
 											params : {
-												entity2 : 'comments'
+												entity2 : 'nodes',
+												entity3 : 'comments'
 											}
 
 										},
@@ -445,7 +449,8 @@ app
 											headers : CDAR.getCustomHeader(),
 											method : 'POST',
 											params : {
-												entity2 : 'comments',
+												entity2 : 'nodes',
+												entity3 : 'comments',
 												action : 'delete'
 											}
 										}
@@ -474,43 +479,6 @@ app.factory('AuthenticationService', [ '$log', '$resource', '$location',
 				}				
 			);
 		} ]);
-
-/*
-return { 
-	add : $resource('../webapi/users', {}, { 
-		user : {
-			method : 'POST',
-			params : {},
-			isArray : false 
-		} }), 
-	login : $resource('../webapi/users/login/:user/:pw', {}, {
-		user : { 
-			method : 'GET',
-			isArray : false 
-		 } }), 
-	update : $resource('../webapi/users/:userid', {}, {
-		method : 'POST', 
-		isArray : false 
-		}), 
-	edit :  $resource('../webapi/users/:userid', {}, { 
-	  changepw:{ 
-		  method : 'POST', 
-		  params :  {}, 
-		  isArray : false
-		 }, 		 
-	  changeRights:{ 
-		method : 'POST', 
-		params : {},
-		isArray : false
-		} 
-	}), 
-	logout : function() { 
-	 UserService.removeCookies();
-	 $location.path('/login'); 
- }
-};
-} ]);*/
-
 
 app.service('DescriptionService', [
 		'$resource',

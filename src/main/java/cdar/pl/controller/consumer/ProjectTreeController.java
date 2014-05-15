@@ -107,11 +107,15 @@ public class ProjectTreeController {
 	public Response getAllUsersWithTreeRight(@PathParam("ptreeid") int treeId) {
 		try {
 			UserManager um = new UserManager();
-			List<User> userList = um.getUsersByTree(treeId);
+			List<User> userList = um.getUsersByTree(false, treeId);
 			for (User user : um.getUsers()) {
 				if (!userList.contains(user)) {
 					userList.add(user);
 				}
+			}
+			for (User user : userList) {
+				user.setPassword("");
+				user.setAccesstoken("");
 			}
 			return StatusHelper.getStatusOk(userList);
 		} catch (Exception e) {

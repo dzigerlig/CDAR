@@ -41,6 +41,20 @@ app.controller("LoginController", [ '$scope', '$location',
 			};
 		} ]);
 
+app.controller('ConfirmationController', ['$scope', '$modalInstance', 'data', 
+                                          function ($scope, $modalInstance, data) {
+
+                                          $scope.data = data;
+                                          
+                                          $scope.ok = function() {
+                                              $modalInstance.close();
+                                          };
+
+                                          $scope.cancel = function() {
+                                              $modalInstance.dismiss();
+                                          };    
+                                      }]);
+
 app
 		.controller(
 				"RegistrationController",
@@ -100,8 +114,9 @@ app.controller("AccountController",
 				'AuthenticationService',
 				'UserService',
 				'$filter',
+				'$modal',
 				function($scope, $location, AuthenticationService, UserService,
-						$filter) {
+						$filter, $modal) {
 					$scope.UserService = UserService;
 					$scope.newPw = '';
 					$scope.confirmPw = '';
@@ -109,27 +124,21 @@ app.controller("AccountController",
 					$scope.statuses = [ {
 						value : 2,
 						text : '2',
-						show : true
 					}, {
 						value : 3,
 						text : '3',
-						show : true
 					}, {
 						value : 4,
 						text : '4',
-						show : true
 					}, {
 						value : 5,
 						text : '5',
-						show : true
 					}, {
 						value : 6,
 						text : '6',
-						show : true
 					}, {
 						value : 7,
 						text : '7',
-						show : true
 					} ];
 					$scope.showStatus = function() {
 						return $scope.drillHierarchy;
@@ -147,7 +156,7 @@ app.controller("AccountController",
 							}, function(response) {
 								noty({
 									type : 'success',
-									text : "Drill hierarchy have been changed to "+$scope.drillHierarchy,
+									text : "Drill hierarchy has been changed to " + $scope.drillHierarchy,
 									timeout : 3500
 								});
 							}, function(error) {
@@ -169,23 +178,44 @@ app.controller("AccountController",
 							});
 							return;
 						}
-						AuthenticationService.updateUser({
-							userid : UserService.getUserId()
-						}, {
-							id : UserService.getUserId(),
-							username : UserService.getUsername(),
-							password : $scope.newPw
-						}, function(response) {
-							noty({
-								type : 'success',
-								text : "Password have been changed",
-								timeout : 3500
+						
+						
+						$modal.open({ 
+				            templateUrl: 'templates/confirmation.html',
+				            backdrop: 'static',
+				            keyboard: false,
+				            resolve: {
+				                data: function() { 
+				                    return {
+				                        title: 'Change password',
+				                        message: 'If you change your password, you need to change it in mediawiki as well in order to login in to CDAR again.' 
+				                    };
+				                }
+					            },
+					            controller: 'ConfirmationController' 
+					    }).result.then(function(result) {
+					    	AuthenticationService.updateUser({
+								userid : UserService.getUserId()
+							}, {
+								id : UserService.getUserId(),
+								username : UserService.getUsername(),
+								password : $scope.newPw
+							}, function(response) {
+								noty({
+									type : 'success',
+									text : "Password have been changed",
+									timeout : 3500
+								});
+								$scope.newPw = '';
+								$scope.confirmPw = '';
+							}, function(error) {
+								noty({
+									type : 'alert',
+									text : "Password change failed",
+									timeout : 3500
+								});
 							});
-							$scope.newPw = '';
-							$scope.confirmPw = '';
-						}, function(error) {
-							alert("pw change failed!");
-						});
+					    });
 					};
 				} ]);
 
@@ -196,16 +226,14 @@ app.controller("AccessController", [
 		'AuthenticationService',
 		'UserService',
 		'TreeService',
+		'$modal',
 		function($scope, $routeParams, $location, AuthenticationService,
-				UserService, TreeService) {
+				UserService, TreeService, $modal) {
 			$scope.UserService = UserService;
 			$scope.isProducer = UserService.getIsProducer();
 			$scope.treeId = $routeParams.treeId;
 			$scope.selectedUserId = "";
 			$scope.users = "";
-			// | orderBy:'id':false
-			// TreeService.getUsers().....function(response) { $scope.users =
-			// response; }
 
 			var roleEntity = "";
 			if ($scope.isProducer === 'true') {
@@ -222,7 +250,7 @@ app.controller("AccessController", [
 				}, function(error) {
 					noty({
 						type : 'alert',
-						text : 'error getting subnodes',
+						text : 'error getting users',
 						timeout : 1500
 					});
 				});
@@ -241,24 +269,42 @@ app.controller("AccessController", [
 					}, function(error) {
 						noty({
 							type : 'alert',
-							text : 'cannot update node status',
+							text : 'cannot add this user',
 							timeout : 1500
 						});
 					});
 				}
 			};
 			$scope.removeAccessRight = function(userid) {
-				TreeService.setUserRight({
-					entity1 : roleEntity,
-					id1 : $routeParams.treeId,
-					id2 : userid
-				}, {
-					treeaccess : false
-				}, function(response) {
-					getAllUsers();
-				}, function(error) {
-					alert("access right change failed!");
-				});
+				$modal.open({ 
+		            templateUrl: 'templates/confirmation.html',
+		            backdrop: 'static',
+		            keyboard: false,
+		            resolve: {
+		                data: function() { 
+		                    return {
+		                        title: 'Delete User',
+		                        message: 'Do you really want to delete this User from your Tree?' 
+		                    };
+		                }
+			            },
+			            controller: 'ConfirmationController' 
+			    }).result.then(function(result) {
+			    	TreeService.setUserRight({
+						entity1 : roleEntity,
+						id1 : $routeParams.treeId,
+						id2 : userid
+					}, {
+						treeaccess : false
+					}, function(response) {
+						getAllUsers();
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'access right change failed!',
+							timeout : 1500
+						});
+					});
+			    });
 			};
-
 		} ]);

@@ -9,8 +9,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 	<title>Producer Tree Export: <%=tree.getTreeTitle()%></title>
-	<link href="../cdarclient/vendor/css/bootstrap.css" rel="stylesheet">
-	<link rel="icon" href="../cdarclient/app/img/favicon.ico" type="image/x-icon">
+	<link href="../vendor/css/bootstrap.css" rel="stylesheet">
+	<link rel="icon" href="../app/img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
