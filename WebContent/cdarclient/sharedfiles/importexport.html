@@ -3,12 +3,15 @@
 
 		<div id="page-content-wrapper">
 			<div class="row">
-				<div class="content-header">
+				<div class="content-header inset">
 					<div class="col-md-9">
-						<h1>
+						<h3>
 							<div data-ng-show="UserService.getIsProducer()==='true'"><a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a> CDAR - Knowledge Producer</div>
 							<div data-ng-show="UserService.getIsProducer()==='false'"><a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a> CDAR - Knowledge Consumer</div>
-						</h1>
+						</h3>
+						<h3>
+							Import/Export: {{knowledgetree.name}}
+						</h3>
 					</div>
 					<div ng-include src="'templates/heading.html'"></div>
 				</div>
@@ -18,9 +21,6 @@
 					<div class="col-md-2">
 						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">back to knowledgetree</a></div>
 						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">back to projecttree</a></div>
-					</div>
-					<div class="col-md-10">
-						<p class="lead">Import/Export: {{knowledgetree.name}}</p>
 					</div>
 				</div>
 				
