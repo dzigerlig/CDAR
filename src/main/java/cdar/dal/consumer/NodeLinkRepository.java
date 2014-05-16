@@ -103,8 +103,7 @@ public class NodeLinkRepository {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw new UnknownProjectTreeException();
+throw new UnknownProjectTreeException();
 		}
 		return projectNodeLink;
 	}

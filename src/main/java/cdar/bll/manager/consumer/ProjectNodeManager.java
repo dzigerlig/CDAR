@@ -6,13 +6,16 @@ import java.util.Set;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.wiki.MediaWikiModel;
+import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.user.UserRepository;
 
 public class ProjectNodeManager {
@@ -32,7 +35,12 @@ public class ProjectNodeManager {
 		return pnr.getProjectNode(projectNodeId);
 	}
 
-	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException {
+	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException {
+		if (projectNode.getDirectoryId() == 0) {
+			ProjectDirectoryRepository dr = new ProjectDirectoryRepository();
+			int rootDirectoryId = dr.getDirectories(projectNode.getTreeId()).get(0).getId();
+			projectNode.setDirectoryId(rootDirectoryId);
+		}
 		return pnr.createProjectNode(projectNode);
 	}
 
@@ -40,7 +48,7 @@ public class ProjectNodeManager {
 		pnr.deleteProjectNode(projectNodeId);
 	}
 
-	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException {
+	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		
 		if (projectNode.getTreeId()!=0) {
@@ -50,6 +58,13 @@ public class ProjectNodeManager {
 		if (projectNode.getTitle()!=null) {
 			updatedProjectNode.setTitle(projectNode.getTitle());
 		}
+		
+		if (projectNode.getDirectoryId()!=0) {
+			updatedProjectNode.setDirectoryId(projectNode.getDirectoryId());
+		}
+		
+		updatedProjectNode.setDynamicTreeFlag(projectNode.getDynamicTreeFlag());
+		
 		
 		if (projectNode.getStatus()!=0) {
 			updatedProjectNode.setStatus(projectNode.getStatus());
@@ -99,7 +114,7 @@ public class ProjectNodeManager {
 		return nodes;
 	}
 
-	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {
+	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
 		return pnr.updateProjectNode(updatedProjectNode);

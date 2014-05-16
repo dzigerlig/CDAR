@@ -1,6 +1,7 @@
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
+	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
     $scope.DescriptionService = DescriptionService;
@@ -131,7 +132,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
     $scope.addNodeCopy = function(node) {
         TreeService.addNode({
-                entity1 : 'ktrees',
+                entity1 : 'ptrees',
                 id1 : $routeParams.treeId
             }, {
                 treeId : $routeParams.treeId,
