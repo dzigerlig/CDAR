@@ -11,9 +11,8 @@ var myJsPlumb = (function() {
 
 	// private Methods
 	function buildContent() {
-		//jsPlumb.detachEveryConnection();
+        //jsPlumb.reset(); bööse
 		jsPlumb.deleteEveryEndpoint();
-
 		$("#jsplumb-container").empty();
 		var container = $("#jsplumb-container");
 		var popup = $('<div>').addClass('popup-box').attr('id', 'popup-box-1');
@@ -115,6 +114,7 @@ var myJsPlumb = (function() {
 	}
 
 	function connectNodes(stateSource, stateTarget, id, subnode) {
+		console.log('connecting nodes');
 		var label = scope.defaultLinkName;
 		if (subnode !== undefined) {
 			label = subnode.title;
@@ -225,6 +225,7 @@ var myJsPlumb = (function() {
 	}
 
 	function bindNewConnection() {
+		console.log('connection is working now');
 		jsPlumb.bind("connection", function(info) {
 			if (!isInizialized) {
 				myJsPlumb.setLinkId(info.connection, info.connection
@@ -254,9 +255,6 @@ var myJsPlumb = (function() {
 				label : label
 			});
 			selectedElement = info.connection.id;
-
-			// TODO Show popup on connection click. conflict with html click
-			// showSubnodePopup(info);
 		});
 	}
 
@@ -390,7 +388,9 @@ var myJsPlumb = (function() {
 			if (!scope.isProducer) {
 				var status = $('<div>').attr('id', STATUS + response.id)
 						.addClass('status');
-				newState.append(status);
+				status.css('background-image', 'url('
+						+ getStatusImage(1) + ')');
+				newState.append(status);				
 			}
 			newState.append(downtree);
 			newState.append(uptree);
@@ -413,6 +413,7 @@ var myJsPlumb = (function() {
 		},
 
 		drawExistingNodes : function(data, resSubnodes) {
+			console.log('draw existing nodes');
 			buildContent();
 			makePopupEvents();
 

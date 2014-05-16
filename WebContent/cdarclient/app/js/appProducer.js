@@ -1,10 +1,10 @@
-var reload = false;
+/*var reload = false;
 function getReload() {
 	return reload;
 }
 function setReload(value) {
 	reload = value;
-}
+}*/
 
 app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService', '$modal',
 		function($scope, $location, TreeService, AuthenticationService, UserService, $modal) {
@@ -108,11 +108,11 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', 'DescriptionService',
 						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, DescriptionService) {
 							// Workaround draw links not correct
-							if (getReload()) {
+							/*if (getReload()) {
 								setReload(false);
 								location.reload();
 							}
-							setReload(true);
+							setReload(true);*/
 							//
 							$scope.isProducer = true;
 							
