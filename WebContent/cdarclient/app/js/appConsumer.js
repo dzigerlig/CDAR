@@ -520,40 +520,58 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 
     $scope.editSubnodeTitle = function(data, id) {
-        var subnode = $.grep($scope.subnodes, function(
-            t) {
-            return t.id === id;
-        })[0];
-        subnode.title = data;
-
-        TreeService.renameSubnode( { entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
-            response) {
-            $scope.getSubnodesOfNode(response);
-            // noty({type: 'success', text :
-            // 'subnode renamed successfully',
-            // timeout: 1500});
-        }, function (error) {
-            noty({
-                type : 'alert',
-                text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
-                timeout : 1500
-            });
-        });
+    	if (data.length>45) {
+    		noty({
+    			type : 'alert',
+    			text : 'Please enter a text with less than 45 Characters',
+    			timeout : 3000
+    		});
+    		return "";
+    	} else {
+	        var subnode = $.grep($scope.subnodes, function(
+	            t) {
+	            return t.id === id;
+	        })[0];
+	        subnode.title = data;
+	
+	        TreeService.renameSubnode( { entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
+	            response) {
+	            $scope.getSubnodesOfNode(response);
+	            // noty({type: 'success', text :
+	            // 'subnode renamed successfully',
+	            // timeout: 1500});
+	        }, function (error) {
+	            noty({
+	                type : 'alert',
+	                text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
+	                timeout : 1500
+	            });
+	        });
+    	}
     };
 
     reloadTree();
 
     $scope.saveProjectTreeTitle = function(title) {
-    	TreeService.updateTree({
-			entity1 : 'ptrees',
-			id1 : $scope.projecttree.id
-		}, $scope.projecttree, function(response) { }, function(error) {
-			noty({
-				type : 'alert',
-				text : 'error while saving tree title',
-				timeout : 1500
+    	if (title.length>45) {
+    		noty({
+    			type : 'alert',
+    			text : 'Please enter a text with less than 45 Characters',
+    			timeout : 3000
+    		});
+    		return "";
+    	} else {
+	    	TreeService.updateTree({
+				entity1 : 'ptrees',
+				id1 : $scope.projecttree.id
+			}, $scope.projecttree, function(response) { }, function(error) {
+				noty({
+					type : 'alert',
+					text : 'error while saving tree title',
+					timeout : 1500
+				});
 			});
-		});
+    	}
     };
     
     
@@ -685,22 +703,30 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.addNewSubnode = function() {
-		TreeService.addSubnode({
-			entity1 : 'ptrees',
-			id1 : $scope.projecttree.id,
-			id2 : $scope.selectedNode.id
-		}, {
-			nodeId : $scope.selectedNode.id,
-			title : this.newSubnodeName
-		}, function(response) {
-			$scope.getSubnodesOfNode();
-		}, function(error) {
+		if (this.newSubnodeName.length>45) {
 			noty({
 				type : 'alert',
-				text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
-				timeout : 1500
+				text : 'Please enter a text with less than 45 Characters',
+				timeout : 3000
 			});
-		});
+		} else {
+			TreeService.addSubnode({
+				entity1 : 'ptrees',
+				id1 : $scope.projecttree.id,
+				id2 : $scope.selectedNode.id
+			}, {
+				nodeId : $scope.selectedNode.id,
+				title : this.newSubnodeName
+			}, function(response) {
+				$scope.getSubnodesOfNode();
+			}, function(error) {
+				noty({
+					type : 'alert',
+					text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
+					timeout : 1500
+				});
+			});
+		}
 	};
 	
 	$scope.getSubnodesOfNode = function(idObject) {
@@ -820,14 +846,14 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	                   {value: 1, text: 'undecided', show: false},
 	                   {value: 2, text: 'accepted', show: true},
 	                   {value: 3, text: 'declined', show: true},
-	                   {value: 4, text: 'revoked', show: true}
-	                 ]; 
+                       {value: 4, text: 'revoked', show: true}
+                      ]; 
 	
 	$scope.showStatus = function() {
-	    var selected = $filter('filter')($scope.statuses, {value: $scope.selectedNode.status});
-	    return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'undecided';
-	  };
-	  
+		var selected = $filter('filter')($scope.statuses, {value: $scope.selectedNode.status});
+		return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'undecided';
+	};
+
 	$scope.updateNodeStatus = function(status) {
 		var oldStatus = $scope.selectedNode.status;
 		$scope.selectedNode.status = status;
@@ -913,23 +939,30 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.newCommentText = "";
 	
 	$scope.addComment = function() {
-		TreeService.addComment({
-			entity1 : 'ptrees',
-			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNode.id
-		}, {nodeid : $scope.selectedNode.id, comment : this.newCommentText}, function(response) {
-			getComments();
-		}, function(error) {
+		if (this.newCommentText.length>200) {
 			noty({
 				type : 'alert',
-				text : 'cannot add comment',
-				timeout : 1500
+				text : 'Please enter a comment with less than 200 Characters',
+				timeout : 3000
 			});
-		});
+		} else {
+			TreeService.addComment({
+				entity1 : 'ptrees',
+				id1 : $routeParams.treeId,
+				id2 : $scope.selectedNode.id
+			}, {nodeid : $scope.selectedNode.id, comment : this.newCommentText}, function(response) {
+				getComments();
+			}, function(error) {
+				noty({
+					type : 'alert',
+					text : 'cannot add comment',
+					timeout : 1500
+				});
+			});
+		}
 	};
 	
 	$scope.deleteComment = function(commentId) {
-		
 		$modal.open({ 
             templateUrl: 'templates/confirmation.html',
             backdrop: 'static',
@@ -941,10 +974,10 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                         message: 'Do you really want to delete this Comment?' 
                     };
                 }
-	            },
-	            controller: 'ConfirmationController' 
-	    }).result.then(function(result) {
-		    TreeService.deleteComment({
+                },
+                controller: 'ConfirmationController' 
+		}).result.then(function(result) {
+			TreeService.deleteComment({
 				entity1 : 'ptrees',
 				id1 : $routeParams.treeId,
 				id2 : $scope.selectedNode.id
@@ -957,6 +990,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					timeout : 1500
 				});
 			});
-	    });
+		});
 	};
 }]);

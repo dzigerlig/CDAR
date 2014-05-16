@@ -44,7 +44,6 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			};
 			
 			$scope.deleteXmlTree = function(xmlTreeId) {
-				
 				$modal.open({ 
 		            templateUrl: 'templates/confirmation.html',
 		            backdrop: 'static',
@@ -75,23 +74,31 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			};
 			
 			 $scope.saveXmlTreeTitle = function(data, treeId) {
-				 var xmltree = $.grep($scope.xmlTrees, function(t) {
-			    		return t.id === treeId;
-			    	})[0];
-			    
-			    	xmltree.title = data;
-				 
-			    	TreeService.updateExport({
-						entity1 : userRole,
-						id1 : $routeParams.treeId,
-						id2 : treeId
-					}, xmltree, function(response) { }, function(error) {
+				 if (data.length>45) {
 						noty({
 							type : 'alert',
-							text : 'error while saving title',
-							timeout : 1500
+							text : 'Please enter a text with less than 45 Characters',
+							timeout : 3000
 						});
-					});
+					} else {
+						var xmltree = $.grep($scope.xmlTrees, function(t) {
+				    		return t.id === treeId;
+				    	})[0];
+				    
+				    	xmltree.title = data;
+					 
+				    	TreeService.updateExport({
+							entity1 : userRole,
+							id1 : $routeParams.treeId,
+							id2 : treeId
+						}, xmltree, function(response) { }, function(error) {
+							noty({
+								type : 'alert',
+								text : 'error while saving title',
+								timeout : 1500
+							});
+						});
+					}
 			    };
 			
 			$scope.importTitle = "";
@@ -138,48 +145,64 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				if (!treetitle) {
 					treetitle = $scope.newSimpleTreeName;
 				}
-				TreeService.addExport({
-					entity1: userRole,
-					id1 : $routeParams.treeId
-				}, {isFull : false, title : treetitle, xmlString : xml}, function(response) {
-					reloadXmlTrees();
-					noty({
-						type : 'success',
-						text : 'Export "' + treetitle + '" added successfully!',
-						timeout : 1500
-					});
-					$scope.newSimpleTreeName = "";
-				}, function(error) {
+				if (treetitle.length>45) {
 					noty({
 						type : 'alert',
-						text : 'cannot add tree',
-						timeout : 1500
+						text : 'Please enter a text with less than 45 Characters',
+						timeout : 3000
 					});
-				});			
+				} else {
+					TreeService.addExport({
+						entity1: userRole,
+						id1 : $routeParams.treeId
+					}, {isFull : false, title : treetitle, xmlString : xml}, function(response) {
+						reloadXmlTrees();
+						noty({
+							type : 'success',
+							text : 'Export "' + treetitle + '" added successfully!',
+							timeout : 1500
+						});
+						$scope.newSimpleTreeName = "";
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot add tree',
+							timeout : 1500
+						});
+					});	
+				}
 			};
 			
 			$scope.addNewFullXmlTree = function(treetitle, xml) {
 				if (!treetitle) {
 					treetitle = $scope.newFullTreeName;
 				}
-				TreeService.addExport({
-					entity1: userRole,
-					id1 : $routeParams.treeId
-				}, {isFull : true, title : treetitle, xmlString : xml}, function(response) {
-					reloadXmlTrees();
-					noty({
-						type : 'success',
-						text : 'Export "' + treetitle + '" added successfully!',
-						timeout : 1500
-					});
-					$scope.newFullTreeName = "";
-				}, function(error) {
+				if (treetitle.length>45) {
 					noty({
 						type : 'alert',
-						text : 'cannot add tree',
-						timeout : 1500
+						text : 'Please enter a text with less than 45 Characters',
+						timeout : 3000
 					});
-				});	
+				} else {
+					TreeService.addExport({
+						entity1: userRole,
+						id1 : $routeParams.treeId
+					}, {isFull : true, title : treetitle, xmlString : xml}, function(response) {
+						reloadXmlTrees();
+						noty({
+							type : 'success',
+							text : 'Export "' + treetitle + '" added successfully!',
+							timeout : 1500
+						});
+						$scope.newFullTreeName = "";
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot add tree',
+							timeout : 1500
+						});
+					});	
+				}
 			};
 			
 			$scope.add = function() {

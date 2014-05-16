@@ -61,7 +61,6 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.deleteTemplate = function(templateId) {
-				
 				$modal.open({ 
 		            templateUrl: 'templates/confirmation.html',
 		            backdrop: 'static',
@@ -93,19 +92,27 @@ app.controller("TemplatesController", [
 			};
 			
 			$scope.editTemplateTitle = function(data, id) {
-				var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
-				template.title = data;
-				
-				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
-					reloadTemplates();
-					noty({type: 'success', text : 'template renamed successfully', timeout: 1500});
-				}, function(error) {
+				if (data.length>45) {
 					noty({
 						type : 'alert',
-						text : 'cannot edit template title',
-						timeout : 1500
+						text : 'Please enter a text with less than 45 Characters',
+						timeout : 3000
 					});
-				});
+				} else {
+					var template = $.grep($scope.templates, function(t) { return t.id === id; })[0];
+					template.title = data;
+					
+					TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
+						reloadTemplates();
+						noty({type: 'success', text : 'template renamed successfully', timeout: 1500});
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot edit template title',
+							timeout : 1500
+						});
+					});
+				}
 			};
 			
 			reloadTemplates();
@@ -118,28 +125,36 @@ app.controller("TemplatesController", [
 					templateName = $scope.newProducerTemplateName;
 				}
 				
-				TreeService.addTemplate({
-					entity1 : 'ktrees',
-					id1 : $routeParams.treeId
-				}, {
-					treeId : $routeParams.treeId,
-					title : templateName,
-					decisionMade : decisionMade
-				}, function(response) {
-					reloadTemplates();
-					if(decisionMade) {
-						$scope.newConsumerTemplateName = '';
-					} else {
-						$scope.newProducerTemplateName = '';
-					}
-					noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
-				}, function(error) {
+				if (templateName.length>45) {
 					noty({
 						type : 'alert',
-						text : 'cannot add new template',
-						timeout : 1500
+						text : 'Please enter a text with less than 45 Characters',
+						timeout : 3000
 					});
-				});
+				} else {
+					TreeService.addTemplate({
+						entity1 : 'ktrees',
+						id1 : $routeParams.treeId
+					}, {
+						treeId : $routeParams.treeId,
+						title : templateName,
+						decisionMade : decisionMade
+					}, function(response) {
+						reloadTemplates();
+						if(decisionMade) {
+							$scope.newConsumerTemplateName = '';
+						} else {
+							$scope.newProducerTemplateName = '';
+						}
+						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
+					}, function(error) {
+						noty({
+							type : 'alert',
+							text : 'cannot add new template',
+							timeout : 1500
+						});
+					});
+				}
 			};
 			
 			$scope.changeTemplate = function(id) {

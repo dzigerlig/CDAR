@@ -25,16 +25,24 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 
     $scope.addNewTree = function() {
     	if ($scope.selectedktreeId.length!==0) {
-	        TreeService.addTree({ entity1: 'ptrees' }, { copyTreeId : $scope.selectedktreeId, title: $scope.newTreeName }, function (response) {
-	            $scope.newTreeName = '';
-	            reloadTrees();
-	        }, function (error) {
-	        	noty({
-					type : 'alert',
-					text : 'error while adding tree',
-					timeout : 1500
-				});
-	        });
+    		if ($scope.newTreeName.length>45) {
+    			noty({
+    				type : 'alert',
+    				text : 'Please enter a text with less than 45 Characters',
+    				timeout : 3000
+    			});
+    		} else {
+		        TreeService.addTree({ entity1: 'ptrees' }, { copyTreeId : $scope.selectedktreeId, title: $scope.newTreeName }, function (response) {
+		            $scope.newTreeName = '';
+		            reloadTrees();
+		        }, function (error) {
+		        	noty({
+						type : 'alert',
+						text : 'error while adding tree',
+						timeout : 1500
+					});
+		        });
+    		}
     	}
     };
 
@@ -66,23 +74,32 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     };
     
     $scope.saveProjectTreeTitle = function(data, id) {
-    	var tree = $.grep($scope.projectTrees, function(t) {
-    		return t.id === id;
-    	})[0];
-    	
-    	var oldTitle = tree.title;
-    	tree.title = data;
-    	
-    	TreeService.updateTree({
-    		entity1 : 'ptrees',
-    		id1 : tree.id
-    	}, tree, function(response) {}, function(error) {
-    		 reloadTrees();
-			noty({
-				type : 'alert',
-				text : 'error while saving tree title',
-				timeout : 1500
-			});
-    	});
-    }
+    	if (data.length>45) {
+    		noty({
+    			type : 'alert',
+    			text : 'Please enter a text with less than 45 Characters',
+    			timeout : 3000
+    		});
+    		return "";
+    	} else {
+	    	var tree = $.grep($scope.projectTrees, function(t) {
+	    		return t.id === id;
+	    	})[0];
+	    	
+	    	var oldTitle = tree.title;
+	    	tree.title = data;
+	    	
+	    	TreeService.updateTree({
+	    		entity1 : 'ptrees',
+	    		id1 : tree.id
+	    	}, tree, function(response) {}, function(error) {
+	    		 reloadTrees();
+				noty({
+					type : 'alert',
+					text : 'error while saving tree title',
+					timeout : 1500
+				});
+	    	});
+    	}
+	};
 }]);
