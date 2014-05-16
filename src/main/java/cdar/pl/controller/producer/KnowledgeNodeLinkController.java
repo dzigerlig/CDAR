@@ -31,7 +31,6 @@ public class KnowledgeNodeLinkController {
 	}
 
 	@POST
-	// Changed
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(NodeLink nodeLink) {
 		try {

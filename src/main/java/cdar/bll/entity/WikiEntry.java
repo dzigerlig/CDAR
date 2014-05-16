@@ -7,9 +7,9 @@ import info.bliki.wiki.model.WikiModel;
 
 import org.wikipedia.Wiki;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
-import cdar.dal.PropertyHelper;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {

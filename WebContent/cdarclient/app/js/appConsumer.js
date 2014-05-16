@@ -1,6 +1,7 @@
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
+	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
     $scope.DescriptionService = DescriptionService;

@@ -11,6 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.internal.util.PropertiesHelper;
+
+import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.manager.producer.NodeManager;
@@ -36,7 +39,8 @@ public class KnowledgeNodeController {
 	public Response addNode(@HeaderParam("uid") int uid, Node node) {
 		try {
 			if (node.getTitle() == null) {
-				node.setTitle("new Node");
+				PropertyHelper propertyHelper = new PropertyHelper();
+				node.setTitle("new "+ propertyHelper.getProperty("NODE_DESCRIPTION"));
 			}
 			return StatusHelper.getStatusCreated(nm.addNode(uid, node));
 		} catch (Exception e) {

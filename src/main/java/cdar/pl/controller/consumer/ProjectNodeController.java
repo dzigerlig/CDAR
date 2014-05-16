@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.consumer.ProjectNodeManager;
@@ -34,6 +35,10 @@ public class ProjectNodeController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNode(ProjectNode projectNode) {
 		try {
+			if (projectNode.getTitle() == null) {
+				PropertyHelper propertyHelper = new PropertyHelper();
+				projectNode.setTitle("new "+ propertyHelper.getProperty("NODE_DESCRIPTION"));
+			}
 			return StatusHelper.getStatusCreated(pnm.addProjectNode(projectNode));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

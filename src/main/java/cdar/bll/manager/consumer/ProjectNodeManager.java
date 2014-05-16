@@ -9,6 +9,7 @@ import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
@@ -40,7 +41,7 @@ public class ProjectNodeManager {
 		pnr.deleteProjectNode(projectNodeId);
 	}
 
-	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException {
+	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		
 		if (projectNode.getTreeId()!=0) {
@@ -50,6 +51,13 @@ public class ProjectNodeManager {
 		if (projectNode.getTitle()!=null) {
 			updatedProjectNode.setTitle(projectNode.getTitle());
 		}
+		
+		if (projectNode.getDirectoryId()!=0) {
+			updatedProjectNode.setDirectoryId(projectNode.getDirectoryId());
+		}
+		
+		updatedProjectNode.setDynamicTreeFlag(projectNode.getDynamicTreeFlag());
+		
 		
 		if (projectNode.getStatus()!=0) {
 			updatedProjectNode.setStatus(projectNode.getStatus());
@@ -99,7 +107,7 @@ public class ProjectNodeManager {
 		return nodes;
 	}
 
-	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException {
+	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
 		return pnr.updateProjectNode(updatedProjectNode);

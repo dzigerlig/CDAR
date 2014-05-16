@@ -17,6 +17,7 @@ import cdar.dal.DBTableHelper;
 import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
+import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
@@ -136,19 +137,35 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 	
-	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, NODESTATUS = ?, WIKITITLE = ?  WHERE id = ?",DBTableHelper.PROJECTNODE);
+	public ProjectNode updateProjectNode(ProjectNode projectNode) throws UnknownProjectNodeException, UnknownNodeException {
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG =?, NODESTATUS = ?, WIKITITLE = ?  WHERE id = ?",DBTableHelper.PROJECTNODE);
+		final String sqlMapping = String.format("INSERT INTO %s (PDID, KPNID) VALUES (?, ?) ON DUPLICATE KEY UPDATE PDID = ?", DBTableHelper.PROJECTNODEMAPPING);
+
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, projectNode.getTitle());
-			preparedStatement.setInt(3, projectNode.getStatus());
-			preparedStatement.setString(4,  projectNode.getWikititle());
-			preparedStatement.setInt(5, projectNode.getId());
+			preparedStatement.setInt(3, projectNode.getDynamicTreeFlag());
+			preparedStatement.setInt(4, projectNode.getStatus());
+			preparedStatement.setString(5,  projectNode.getWikititle());
+			preparedStatement.setInt(6, projectNode.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			throw new UnknownProjectNodeException();
+		}
+		
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sqlMapping)) {
+			preparedStatement.setInt(1, projectNode.getDirectoryId());
+			preparedStatement.setInt(2, projectNode.getId());
+			preparedStatement.setInt(3, projectNode.getDirectoryId());
+
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			throw new UnknownNodeException();
 		}
 		return projectNode;
 	}
@@ -163,6 +180,8 @@ public class ProjectNodeRepository {
 				throw new UnknownProjectNodeException();
 			}
 		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+
 			throw new UnknownProjectNodeException();
 		}
 	}
