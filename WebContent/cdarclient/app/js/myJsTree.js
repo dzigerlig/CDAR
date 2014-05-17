@@ -142,7 +142,20 @@ var myJsTree = (function () {
                     "themes" ]
             });
         $("#jstree").jstree("open_node", $("#" + rootid));
+        
+        var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
+        openRecursiv(3,children);
 
+    }
+    
+    function openRecursiv(val,children){
+    	$.each( children, function( key, value ) {
+    		$("#jstree").jstree("open_node", value);
+    		if(val>=1)
+			{
+    			openRecursiv(--val, $("#jstree").jstree("get_children_dom", value));
+			}
+    	});
     }
 
     function deleteSubnodes(data) {
