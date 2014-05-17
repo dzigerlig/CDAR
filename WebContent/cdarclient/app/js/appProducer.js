@@ -20,6 +20,18 @@ app.controller(
 			 $scope.knowledgeTrees = "";
 			 $scope.newTreeName = "";
 			 $scope.UserService = UserService;
+			 $scope.showLockingNotification = function(error) {
+				 if (error.status === 409) {
+					noty({
+						type : 'error',
+						text : error.data,
+						timeout : 5000
+					});
+					return true;
+				 } else
+				return false;
+			 };
+			 
 			 var reloadTrees = function() {
 				 TreeService.getTrees({
 					 entity1 : 'ktrees'
@@ -91,225 +103,202 @@ app.controller(
 								 });
 							 },
 							 function(error) {
-								 noty({
-									 type : 'alert',
-									 text : 'delete tree failed',
-									 timeout : 1500
-								 });
+								 if (!$scope.showLockingNotification(error)) {
+									 noty({
+										 type : 'alert',
+										 text : 'delete tree failed',
+										 timeout : 1500
+									 })
+								 ;}
 							 });
 				 	});
 			 };
 
 			 $scope.saveKnowledgeTreeTitle = function(data, id) {
-								if (data.length > 45) {
-									noty({
-										type : 'alert',
-										text : 'Please enter a text with less than 45 Characters',
-										timeout : 3000
-									});
-									return "";
-								} else {
-									var tree = $.grep($scope.knowledgeTrees,
-											function(t) {
-												return t.id === id;
-											})[0];
+				 if (data.length > 45) {
+					 noty({
+						 type : 'alert',
+						 text : 'Please enter a text with less than 45 Characters',
+						 timeout : 3000
+					 });
+					 return "";
+				 } else {
+					 var tree = $.grep($scope.knowledgeTrees,function(t) {
+						 return t.id === id;
+					 })[0];
 
-									var oldTitle = tree.title;
-									tree.title = data;
+					 var oldTitle = tree.title;
+					 tree.title = data;
+					 TreeService.updateTree(
+							 {
+								 entity1 : 'ktrees',
+								 id1 : tree.id
+							 },
+							 tree,
+							 function(response) {
+							 },
+							 function(error) {
+									if (!$scope.showLockingNotification(error)) {
+										tree.title = oldTitle;
+										noty({
+											type : 'alert',
+											text : 'error while saving tree title',
+											timeout : 1500
+										});
+								 }
+							 });
+						}
+			 };
+		 } ]);
 
-									TreeService
-											.updateTree(
-													{
-														entity1 : 'ktrees',
-														id1 : tree.id
-													},
-													tree,
-													function(response) {
-													},
-													function(error) {
-														tree.title = oldTitle;
-														noty({
-															type : 'alert',
-															text : 'error while saving tree title',
-															timeout : 1500
-														});
-													});
-								}
-							};
-						} ]);
-
-app
-		.controller(
-				"KnowledgeTreeController",
-				[
-						'$scope',
-						'$routeParams',
-						'TreeService',
-						'AuthenticationService',
-						'UserService',
-						'$route',
-						'DescriptionService',
-						function($scope, $routeParams, TreeService,
-								AuthenticationService, UserService, $route,
-								DescriptionService) {
-							// Workaround draw links not correct
+app.controller("KnowledgeTreeController",
+		[
+		 '$scope',
+		 '$routeParams',
+		 'TreeService',
+		 'AuthenticationService',
+		 'UserService',
+		 '$route',
+		 'DescriptionService',
+		 function($scope, $routeParams, TreeService,
+				 AuthenticationService, UserService, $route,
+				 DescriptionService) {
+						// Workaround draw links not correct
 							/*
 							 * if (getReload()) { setReload(false);
 							 * location.reload(); } setReload(true);
 							 */
 							//
-							$scope.isProducer = true;
+			 $scope.isProducer = true;
+			 $scope.DescriptionService = DescriptionService;
+			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
+			 $scope.defaultNodeName = DescriptionService.getNodeDescription();		
+			 $scope.defaultLinkName = 'all '+ DescriptionService.getSubnodeDescription() + 's';
+			 myJsPlumb.initialize();
+			 $scope.treeId = $routeParams.treeId;
+			 $scope.UserService = UserService;
+			 $scope.knowledgetree = "";
+			 $scope.nodes = "";
+			 $scope.selectedNode = {
+					 id : 0,
+					 title : ""
+			 };
+			 
+			 $scope.showLockingNotification = function(error) {
+				 if (error.status === 409) {
+					noty({
+						type : 'error',
+						text : error.data,
+						timeout : 5000
+					});
+					return true;
+				 } else
+				return false;
+			 };
 
-							$scope.DescriptionService = DescriptionService;
-							$scope.defaultDirectoryName = DescriptionService
-									.getDirectoryDescription();
-							$scope.defaultNodeName = DescriptionService
-									.getNodeDescription();
-							$scope.defaultLinkName = 'all '
-									+ DescriptionService
-											.getSubnodeDescription() + 's';
+			 // SUBNODES //
+			$scope.subnodes = "";
+			$scope.selectedSubnode = {
+					id : 0,
+					title : ""
+			};
+			
+			$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
+			$scope.subnodeHtmlText = "";
+			$scope.nodeitle = "";
+			$scope.wikiHtmlText = "";
+			$scope.nodetabs = [ {
+				title : "READ"
+			}, {
+				title : "WRITE"
+			} ];
+			$scope.subnodetabs = [ {
+				title : "READ"
+			}, {
+				title : "WRITE"
+		} ];
 
-							myJsPlumb.initialize();
-							$scope.treeId = $routeParams.treeId;
-							$scope.UserService = UserService;
-							$scope.knowledgetree = "";
-							$scope.nodes = "";
-							$scope.selectedNode = {
-								id : 0,
-								title : ""
-							};
+			// TREE TITLE
+			$scope.saveKnowledgeTreeTitle = function(title) {
+				if (title.length > 45) {
+					noty({
+						type : 'alert',
+						text : 'Please enter a text with less than 45 Characters',
+						timeout : 3000
+					});
+					return "";
+				} else {
+					TreeService.updateTree({
+						entity1 : 'ktrees',
+						id1 : $scope.knowledgetree.id
+					},
+					$scope.knowledgetree,	function(response) {
+					},
+					function(error) {
+						if (!$scope.showLockingNotification(error)) {
 
-							$scope.showLockingNotification = function(error) {
-								if (error.status === 409) {
-									noty({
-										type : 'error',
-										text : error.data,
-										timeout : 5000
-									});
-									return true;
-								} else
-									return false;
-							};
-
-							// SUBNODES //
-							$scope.subnodes = "";
-							$scope.selectedSubnode = {
-								id : 0,
-								title : ""
-							};
-							$scope.newSubnodeName = DescriptionService
-									.getSubnodeDescription();
-							$scope.subnodeHtmlText = "";
-
-							$scope.nodeTitle = "";
-							$scope.wikiHtmlText = "";
-
-							$scope.nodetabs = [ {
-								title : "READ"
-							}, {
-								title : "WRITE"
-							} ];
-							$scope.subnodetabs = [ {
-								title : "READ"
-							}, {
-								title : "WRITE"
-							} ];
-
-							// TREE TITLE
-							$scope.saveKnowledgeTreeTitle = function(title) {
-								if (title.length > 45) {
-									noty({
-										type : 'alert',
-										text : 'Please enter a text with less than 45 Characters',
-										timeout : 3000
-									});
-									return "";
-								} else {
-									TreeService
-											.updateTree(
-													{
-														entity1 : 'ktrees',
-														id1 : $scope.knowledgetree.id
-													},
-													$scope.knowledgetree,
-													function(response) {
-													},
-													function(error) {
-														noty({
-															type : 'alert',
-															text : 'error while saving tree title',
-															timeout : 1500
-														});
-													});
-								}
-							};
-
-							var getSubnodes = function() {
-								TreeService
-										.getSubnodes(
-												{
-													entity1 : 'ktrees',
-													id1 : $scope.knowledgetree.id,
-													id2 : $scope.selectedNode.id
-												},
-												function(response) {
-													$scope.subnodes = response;
-												},
-												function(error) {
-													noty({
-														type : 'alert',
-														text : 'error getting '
-																+ DescriptionService
-																		.getSubnodeDescription()
-																+ 's',
-														timeout : 1500
-													});
-												});
-							};
-
-							$scope.getSubnodesOfNode = function(idObject) {
-								var identity;
-								var changes = null;
-								if (typeof idObject === 'object'
-										|| idObject === undefined) {
-									if (typeof idObject === 'object') {
-										changes = idObject;
-									}
-									identity = $scope.selectedNode.id;
-								} else {
-									identity = idObject;
-								}
-								TreeService
-										.getSubnodes(
-												{
-													entity1 : 'ktrees',
-													id1 : $scope.knowledgetree.id,
-													id2 : identity
-												},
-												function(response) {
-													$scope.subnodes = response;
-													myJsPlumb
-															.updateSubnodesOfNode(
-																	response,
-																	identity,
-																	changes);
-												},
-												function(error) {
-													noty({
-														type : 'alert',
-														text : 'error getting '
-																+ DescriptionService
-																		.getSubnodeDescription()
-																+ 's',
-														timeout : 1500
-													});
-												});
-							};
-
-							// END SUBNODES //
-
-							$scope.addNewSubnode = function() {
-								if (this.newSubnodeName.length > 45) {
+						noty({
+							type : 'alert',
+							text : 'error while saving tree title',
+							timeout : 1500
+						});
+						}
+					});
+				}
+			};			
+			
+			var getSubnodes = function() {
+				TreeService.getSubnodes(
+						{
+							entity1 : 'ktrees',
+							id1 : $scope.knowledgetree.id,
+							id2 : $scope.selectedNode.id
+						},
+						function(response) {
+							$scope.subnodes = response;
+						},
+						function(error) {
+							noty({
+								type : 'alert',
+								text : 'error getting ' + DescriptionService.getSubnodeDescription()	+ 's',
+								timeout : 1500
+							});
+						});
+			};
+			$scope.getSubnodesOfNode = function(idObject) {
+				var identity;
+				var changes = null;
+				if (typeof idObject === 'object'	|| idObject === undefined) {
+					if (typeof idObject === 'object') {
+						changes = idObject;
+					}
+					identity = $scope.selectedNode.id;
+				} else {
+					identity = idObject;
+				}
+				TreeService.getSubnodes(
+						{
+							entity1 : 'ktrees',
+							id1 : $scope.knowledgetree.id,
+							id2 : identity
+						},
+						function(response) {
+							$scope.subnodes = response;
+							myJsPlumb.updateSubnodesOfNode(	response,	identity,	changes);
+						},
+						function(error) {
+							noty({
+								type : 'alert',
+								text : 'error getting '	+ DescriptionService.getSubnodeDescription()	+ 's',
+								timeout : 1500
+							});
+						});
+				};
+				
+				// END SUBNODES //
+	
+				$scope.addNewSubnode = function() {
+					if (this.newSubnodeName.length > 45) {
 									noty({
 										type : 'alert',
 										text : 'Please enter a text with less than 45 Characters',
@@ -326,11 +315,13 @@ app
 									},	function(response) {
 										$scope.getSubnodesOfNode();
 									},	function(error) {
-										noty({
-											type : 'alert',
-											text : 'cannot add '+ DescriptionService.getSubnodeDescription(),
-											timeout : 1500
-										});
+										if (!$scope.showLockingNotification(error)) {
+											noty({
+												type : 'alert',
+												text : 'cannot add '+ DescriptionService.getSubnodeDescription(),
+												timeout : 1500
+											});
+										}
 									});
 								}
 							};
@@ -357,11 +348,13 @@ app
 									}, function(response) {
 										$scope.getSubnodesOfNode();
 									}, function(error) {
-										noty({
-											type : 'alert',
-											text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
-											timeout : 1500
-										});
+										if (!$scope.showLockingNotification(error)) {
+											noty({
+												type : 'alert',
+												text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
+												timeout : 1500
+											});
+										}
 									});
 								}
 							};
@@ -458,6 +451,8 @@ app
 													}
 												},
 												function(error) {
+													if (!$scope.showLockingNotification(error)) {
+
 													noty({
 														type : 'alert',
 														text : 'error deleting '
@@ -465,6 +460,7 @@ app
 																		.getSubnodeDescription(),
 														timeout : 1500
 													});
+													}
 												});
 							};
 
@@ -685,11 +681,13 @@ app
 									// noty({type: 'success', text : 'link added
 									// successfully', timeout: 1500});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'cannot update link',
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'cannot update link',
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -705,13 +703,13 @@ app
 									// noty({type: 'success', text : 'node added
 									// successfully', timeout: 1500});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error adding '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'error adding '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -732,13 +730,13 @@ app
 															node, response.id);
 												},
 												function(error) {
-													noty({
-														type : 'alert',
-														text : 'error adding '
-																+ DescriptionService
-																		.getNodeDescription(),
-														timeout : 1500
-													});
+													if (!$scope.showLockingNotification(error)) {
+														noty({
+															type : 'alert',
+															text : 'error adding '	+ DescriptionService.getNodeDescription(),
+															timeout : 1500
+														});
+													}
 												});
 							};
 
@@ -759,13 +757,13 @@ app
 										timeout : 1500
 									});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'cannot delete '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'cannot delete '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -798,13 +796,13 @@ app
 								}, function(response) {
 									myJsPlumb.addHTMLNode(response, e);
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error dropping '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'error dropping '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -819,13 +817,13 @@ app
 								}, function(response) {
 									// todo
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error undropping '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'error undropping '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -843,13 +841,13 @@ app
 									// noty({type: 'success', text : 'node
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'cannot rename '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'cannot rename '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -864,13 +862,13 @@ app
 								}, function(response) {
 									// todo
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error moving '
-												+ DescriptionService
-														.getNodeDescription(),
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'error moving '	+ DescriptionService.getNodeDescription(),
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -888,11 +886,13 @@ app
 											myJsPlumb.setLinkId(connection,
 													response.id);
 										}, function(error) {
-											noty({
-												type : 'alert',
-												text : 'error adding link',
-												timeout : 1500
-											});
+											if (!$scope.showLockingNotification(error)) {
+												noty({
+													type : 'alert',
+													text : 'error adding link',
+													timeout : 1500
+												});
+											}
 										});
 							};
 
@@ -906,11 +906,13 @@ app
 									// noty({type: 'success', text : 'link
 									// deleted successfully', timeout: 1500});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'cannot delete link',
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'cannot delete link',
+											timeout : 1500
+										});
+									}
 								});
 							};
 
@@ -937,28 +939,27 @@ app
 							};
 
 							$scope.addDirectoryCopy = function(node) {
-								TreeService
-										.addDirectory(
-												{
-													entity1 : 'ktrees',
-													id1 : $routeParams.treeId
-												},
-												{
-													treeId : $routeParams.treeId,
-													title : node.text,
-													parentid : 0
-												},
-												function(response) {
-													myJsTree.prepareForSetId(
-															node, response.id);
-												},
-												function(error) {
-													noty({
-														type : 'alert',
-														text : 'error adding directory copy',
-														timeout : 1500
-													});
+								TreeService.addDirectory(
+										{
+											entity1 : 'ktrees',
+											id1 : $routeParams.treeId
+										},	{
+											treeId : $routeParams.treeId,
+											title : node.text,
+											parentid : 0
+										},
+										function(response) {
+											myJsTree.prepareForSetId(node, response.id);
+										},
+										function(error) {
+											if (!$scope.showLockingNotification(error)) {
+												noty({
+													type : 'alert',
+													text : 'error adding directory copy',
+													timeout : 1500
 												});
+											}
+										});
 							};
 
 							$scope.renameDirectory = function(directoryId,
@@ -974,11 +975,12 @@ app
 									// noty({type: 'success', text : 'directory
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
+									if (!$scope.showLockingNotification(error)) {
 									noty({
 										type : 'alert',
 										text : 'error renaming directory',
 										timeout : 1500
-									});
+									});}
 								});
 							};
 
@@ -1000,11 +1002,13 @@ app
 													});
 												},
 												function(error) {
+													if (!$scope.showLockingNotification(error)) {
+
 													noty({
 														type : 'alert',
 														text : 'error deleting directory',
 														timeout : 1500
-													});
+													});}
 												});
 							};
 
@@ -1020,12 +1024,13 @@ app
 								}, function(response) {
 									// noty({type: 'success', text : 'directory
 									// moved successfully', timeout: 1500});
-								}, function(error) {
+								}, function(error) {									
+									if (!$scope.showLockingNotification(error)) {
 									noty({
 										type : 'alert',
 										text : 'error moving directory',
 										timeout : 1500
-									});
+									});}
 								});
 							};
 
@@ -1167,13 +1172,15 @@ app
 														// timeout: 1500});
 													},
 													function(error) {
+														if (!$scope.showLockingNotification(error)) {
+
 														noty({
 															type : 'alert',
 															text : 'error renaming '
 																	+ DescriptionService
 																			.getSubnodeDescription(),
 															timeout : 1500
-														});
+														});}
 													});
 								}
 							};
@@ -1194,11 +1201,13 @@ app
 								}, subnode, function(response) {
 									$scope.getSubnodesOfNode();
 								}, function(error) {
+									if (!$scope.showLockingNotification(error)) {
+
 									noty({
 										type : 'alert',
 										text : 'cannot drill up',
 										timeout : 1500
-									});
+									});}
 								});
 							};
 
@@ -1218,11 +1227,13 @@ app
 								}, subnode, function(response) {
 									$scope.getSubnodesOfNode();
 								}, function(error) {
+									if (!$scope.showLockingNotification(error)) {
+
 									noty({
 										type : 'alert',
 										text : 'cannot drill down',
 										timeout : 1500
-									});
+									});}
 								});
 							};
 

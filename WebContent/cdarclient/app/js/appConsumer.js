@@ -18,6 +18,18 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.subnodes = "";
 	$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 	$scope.subnodeHtmlText = "";
+	
+	$scope.showLockingNotification = function(error) {
+		 if (error.status === 409) {
+			noty({
+				type : 'error',
+				text : error.data,
+				timeout : 5000
+			});
+			return true;
+		 } else
+		return false;
+	 };
 
     var reloadTree = function () {
         TreeService.getTree({entity1: 'ptrees', id1: $routeParams.treeId}, function (response) {
@@ -102,11 +114,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'link added
             // successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'cannot update link',
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'cannot update link',
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -122,11 +136,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'node added
             // successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error adding ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error adding ' + DescriptionService.getNodeDescription(),
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -143,11 +159,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
-                noty({
-                    type : 'alert',
-                    text : 'error adding ' + DescriptionService.getNodeDescription(),
-                    timeout : 1500
-                });
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error adding ' + DescriptionService.getNodeDescription(),
+						 timeout : 1500
+					 });
+				 }
             });
     };
 
@@ -166,11 +184,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 timeout : 1500
             });
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'cannot delete ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+                	type : 'alert',
+                	text : 'cannot delete ' + DescriptionService.getNodeDescription(),
+                	timeout : 1500
+            	});
+			 }
         });
     };
 
@@ -201,11 +221,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(response) {
             myJsPlumb.addHTMLNode(response, e);
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error dropping ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error dropping ' + DescriptionService.getNodeDescription(),
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -220,11 +242,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(response) {
             // todo
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error undropping ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error undropping ' + DescriptionService.getNodeDescription(),
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -242,11 +266,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'node
             // renamed successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'cannot rename ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'cannot rename ' + DescriptionService.getNodeDescription(),
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -261,11 +287,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(response) {
             // todo
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error moving ' + DescriptionService.getNodeDescription(),
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error moving ' + DescriptionService.getNodeDescription(),
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -283,11 +311,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsPlumb.setLinkId(connection,
                     response.id);
             }, function(error) {
-                noty({
-                    type : 'alert',
-                    text : 'error adding link',
-                    timeout : 1500
-                });
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error adding link',
+						 timeout : 1500
+					 });
+				 }
             });
     };
 
@@ -301,11 +331,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'link
             // deleted successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'cannot delete link',
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'cannot delete link',
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -321,11 +353,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'directory
             // added successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error adding directory',
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error adding directory',
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -342,11 +376,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
-                noty({
-                    type : 'alert',
-                    text : 'error adding directory copy',
-                    timeout : 1500
-                });
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error adding directory copy',
+						 timeout : 1500
+					 });
+				 }
             });
     };
 
@@ -363,11 +399,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'directory
             // renamed successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error renaming directory',
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error renaming directory',
+					 timeout : 1500
+				 });
+			 }
         });
     };
 
@@ -387,11 +425,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     timeout : 1500
                 });
             }, function(error) {
-                noty({
-                    type : 'alert',
-                    text : 'error deleting directory',
-                    timeout : 1500
-                });
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error deleting directory',
+						 timeout : 1500
+					 });
+				 }
             });
     };
 
@@ -408,11 +448,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'directory
             // moved successfully', timeout: 1500});
         }, function(error) {
-            noty({
-                type : 'alert',
-                text : 'error moving directory',
-                timeout : 1500
-            });
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error moving directory',
+					 timeout : 1500
+				 });
+			 }
         });
     };
     
@@ -542,11 +584,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	            // 'subnode renamed successfully',
 	            // timeout: 1500});
 	        }, function (error) {
-	            noty({
-	                type : 'alert',
-	                text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
-	                timeout : 1500
-	            });
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
+						 timeout : 1500
+					 });
+				 }
 	        });
     	}
     };
@@ -566,11 +610,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				entity1 : 'ptrees',
 				id1 : $scope.projecttree.id
 			}, $scope.projecttree, function(response) { }, function(error) {
-				noty({
-					type : 'alert',
-					text : 'error while saving tree title',
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error while saving tree title',
+						 timeout : 1500
+					 });
+				 }
 			});
     	}
     };
@@ -721,11 +767,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(response) {
 				$scope.getSubnodesOfNode();
 			}, function(error) {
-				noty({
-					type : 'alert',
-					text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
+						 timeout : 1500
+					 });
+				 }
 			});
 		}
 	};
@@ -752,11 +800,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(response) {
 				$scope.getSubnodesOfNode();
 			}, function(error) {
-				noty({
-					type : 'alert',
-					text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {	
+					 noty({
+						 type : 'alert',
+						 text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
+						 timeout : 1500
+					 });
+				 }
 			});
 		}
 	};
@@ -808,11 +858,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 updateSubnodeTitle();
             }
 		}, function(error) {
-			noty({
-				type : 'alert',
-				text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
-				timeout : 1500
-			});
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
+					 timeout : 1500
+				 });
+			 }
 		});
 	};
 	
@@ -865,11 +917,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 									timeout : 1500
 								});
 							}, function(error) {
-								noty({
-									type : 'alert',
-									text : 'cannot edit wiki text',
-									timeout : 1500
-								});
+								 if (!$scope.showLockingNotification(error)) {
+									 noty({
+										 type : 'alert',
+										 text : 'cannot edit wiki text',
+										 timeout : 1500
+									 });
+								 }
 							});
 		}
 	};
@@ -896,11 +950,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				$scope.selectedNode = response;
 				$scope.changeNode(response.id);
 			}, function(error) {
-				noty({
-					type : 'alert',
-					text : 'cannot update ' + DescriptionService.getNodeDescription() + ' status',
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'cannot update ' + DescriptionService.getNodeDescription() + ' status',
+						 timeout : 1500
+					 });
+				 }
 			});
 	};
 	
@@ -919,11 +975,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, subnode, function(response) {
 				$scope.getSubnodesOfNode();
 		}, function(error) {
-			noty({
-				type : 'alert',
-				text : 'cannot drill up',
-				timeout : 1500
-			});
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'cannot drill up',
+					 timeout : 1500
+				 });
+			 }
 		});
 	};
 
@@ -943,11 +1001,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, subnode, function(response) {
 				$scope.getSubnodesOfNode();
 		}, function(error) {
-			noty({
-				type : 'alert',
-				text : 'cannot drill down',
-				timeout : 1500
-			});
+			 if (!$scope.showLockingNotification(error)) {
+				 noty({
+					 type : 'alert',
+					 text : 'cannot drill down',
+					timeout : 1500
+				 });
+			 }
 		});
 	};
 	
@@ -985,11 +1045,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, {nodeid : $scope.selectedNode.id, comment : this.newCommentText}, function(response) {
 				getComments();
 			}, function(error) {
-				noty({
-					type : 'alert',
-					text : 'cannot add comment',
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'cannot add comment',
+						 timeout : 1500
+					 });
+				 }
 			});
 		}
 	};
@@ -1016,11 +1078,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, {id : commentId}, function(response) {
 				getComments();
 			}, function (error) {
-				noty({
-					type : 'alert',
-					text : 'cannot delete comment',
-					timeout : 1500
-				});
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'cannot delete comment',
+						 timeout : 1500
+					 });
+				 }
 			});
 		});
 	};
