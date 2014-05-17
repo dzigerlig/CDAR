@@ -225,7 +225,6 @@ var myJsPlumb = (function() {
 	}
 
 	function bindNewConnection() {
-		console.log('connection is working now');
 		jsPlumb.bind("connection", function(info) {
 			if (!isInizialized) {
 				myJsPlumb.setLinkId(info.connection, info.connection
