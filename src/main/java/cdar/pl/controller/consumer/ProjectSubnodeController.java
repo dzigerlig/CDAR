@@ -21,7 +21,7 @@ import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.pl.controller.StatusHelper;
 
@@ -94,7 +94,7 @@ public class ProjectSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodeWikiEntry(@PathParam("subnodeid") int subnodeId) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm
 					.getKnowledgeProjectSubnodeWikiEntry(subnodeId));
 		} catch (Exception ex) {
@@ -109,7 +109,7 @@ public class ProjectSubnodeController {
 	public Response updateSubnodeWikiEntry(@HeaderParam("uid") int uid,
 			WikiEntry wikiEntry) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm
 					.saveKnowledgeProjectSubnodeWikiEntry(uid, wikiEntry));
 		} catch (Exception ex) {

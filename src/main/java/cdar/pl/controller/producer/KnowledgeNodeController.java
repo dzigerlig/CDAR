@@ -18,7 +18,7 @@ import cdar.bll.entity.WikiEntry;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")
@@ -157,7 +157,7 @@ public class KnowledgeNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getKnowledgeNodeWikiEntry(@PathParam("nodeid") int nodeId) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm
 					.getKnowledgeNodeWikiEntry(nodeId));
 		} catch (Exception e) {
@@ -173,7 +173,7 @@ public class KnowledgeNodeController {
 	public Response updateKnowledgeNodeWikiEntry(@HeaderParam("uid") int uid,
 			WikiEntry wikiEntry) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm.saveKnowledgeNodeWikiEntry(uid,
 					wikiEntry));
 		} catch (Exception e) {

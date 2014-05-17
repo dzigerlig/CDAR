@@ -6,7 +6,7 @@ import java.util.Set;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.CreationException;
@@ -70,7 +70,7 @@ public class ProjectNodeManager {
 		if (projectNode.getStatus()!=0) {
 			updatedProjectNode.setStatus(projectNode.getStatus());
 			if (!projectNode.getWikititle().contains("PROJECTNODE_")) {
-				MediaWikiModel mwm = new MediaWikiModel();
+				MediaWikiManager mwm = new MediaWikiManager();
 				TemplateManager tm = new TemplateManager();
 				String content = String.format("%s\n\n%s", mwm.getProjectNodeWikiEntry(projectNode.getId()).getWikiContentPlain(), tm.getDefaultProjectTemplateText(projectNode.getInheritedTreeId()));
 				updatedProjectNode.setWikititle(String.format("PROJECTNODE_%d", projectNode.getId()));

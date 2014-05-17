@@ -17,7 +17,7 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes")
@@ -93,7 +93,7 @@ public class ProjectNodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNodeWikiEntry(@PathParam("nodeid") int nodeId) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper
 					.getStatusOk(mwm.getProjectNodeWikiEntry(nodeId));
 		} catch (Exception ex) {
@@ -108,7 +108,7 @@ public class ProjectNodeController {
 	public Response updateNodeWikiEntry(@HeaderParam("uid") int uid,
 			WikiEntry wikiEntry) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm.saveProjectNodeWikiEntry(uid,
 					wikiEntry));
 		} catch (Exception ex) {

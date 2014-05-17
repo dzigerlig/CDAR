@@ -15,7 +15,7 @@ import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
-public class MediaWikiModel {
+public class MediaWikiManager {
 	private UserManager um = new UserManager();
 
 	public WikiEntry getProjectNodeWikiEntry(int nodeId) throws UnknownProjectNodeException, EntityException {

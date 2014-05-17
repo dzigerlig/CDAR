@@ -13,12 +13,12 @@ import java.util.List;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.dal.DBConnection;
-import cdar.dal.DBTableHelper;
-import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UsernameInvalidException;
+import cdar.dal.helpers.DBConnection;
+import cdar.dal.helpers.DBTableHelper;
+import cdar.dal.helpers.DateHelper;
 
 public class UserRepository {
 

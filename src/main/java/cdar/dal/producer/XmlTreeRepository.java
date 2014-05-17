@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.TreeXml;
-import cdar.dal.DBConnection;
-import cdar.dal.DBTableHelper;
-import cdar.dal.DateHelper;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownEntityException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
+import cdar.dal.helpers.DBConnection;
+import cdar.dal.helpers.DBTableHelper;
+import cdar.dal.helpers.DateHelper;
 
 public class XmlTreeRepository {
 	public List<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {

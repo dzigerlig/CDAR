@@ -5,7 +5,7 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -50,7 +50,7 @@ public class NodeManager {
 			templateContent = "== CDAR ==";
 		}
 		
-		MediaWikiModel mwm = new MediaWikiModel();
+		MediaWikiManager mwm = new MediaWikiManager();
 		mwm.createWikiEntry(uid, node.getWikititle(), templateContent);
 		
 		return node;

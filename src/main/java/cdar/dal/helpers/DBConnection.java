@@ -1,4 +1,4 @@
-package cdar.dal;
+package cdar.dal.helpers;
 
 import java.io.InputStream;
 import java.sql.DriverManager;

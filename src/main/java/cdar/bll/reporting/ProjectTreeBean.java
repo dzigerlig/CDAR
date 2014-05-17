@@ -10,7 +10,7 @@ import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
@@ -25,7 +25,7 @@ public class ProjectTreeBean extends ReportingBean {
 	private ProjectTreeManager ptm = new ProjectTreeManager();
 	private ProjectNodeManager pnm = new ProjectNodeManager();
 	private ProjectSubnodeManager psm = new ProjectSubnodeManager();
-	private MediaWikiModel mwm = new MediaWikiModel();
+	private MediaWikiManager mwm = new MediaWikiManager();
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 	
 	public String getTreeTitle() throws UnknownProjectTreeException, EntityException {
