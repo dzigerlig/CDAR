@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.PropertyHelper;
+import cdar.bll.entity.Node;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.exceptions.LockingException;
@@ -132,8 +133,15 @@ public class ProjectNodeController {
 	@Path("{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response drillDownNode(@HeaderParam("uid") int uid,
-			@PathParam("nodeid") int nodeId) {
+			@PathParam("ptreeid") int treeId, @PathParam("nodeid") int nodeId) {
 		try {
+			if (nodeId == 0) {
+				ProjectNode rootNode = pnm.getRoot(treeId);
+				if (rootNode == null) {
+					return StatusHelper.getStatusOk(null);
+				}
+				nodeId = rootNode.getId();
+			}
 			return StatusHelper.getStatusOk(pnm.drillDown(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

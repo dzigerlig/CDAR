@@ -3,6 +3,7 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.wiki.MediaWikiModel;
@@ -118,5 +119,9 @@ public class ProjectNodeManager {
 		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
 		return pnr.updateProjectNode(updatedProjectNode);
+	}
+
+	public ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
+		return pnr.getRoot(treeId);
 	}
 }

@@ -15,12 +15,14 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.WikiEntry;
+import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
+import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
@@ -130,9 +132,16 @@ public class ProjectSubnodeController {
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownSubnode(@HeaderParam("uid") int uid,
+	public Response drillDownSubnode(@HeaderParam("uid") int uid,@PathParam("ptreeid") int treeId,
 			@PathParam("nodeid") int nodeId) {
 		try {
+			if (nodeId == 0) {
+				ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
+				if (rootNode == null) {
+					return StatusHelper.getStatusOk(null);
+				}
+				nodeId = rootNode.getId();
+			}
 			return StatusHelper.getStatusOk(psm.drillDown(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();

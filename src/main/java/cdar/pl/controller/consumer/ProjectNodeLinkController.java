@@ -11,9 +11,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
+import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/links")
@@ -81,9 +83,16 @@ public class ProjectNodeLinkController {
 	@GET
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownNodeLink(@HeaderParam("uid") int uid,
+	public Response drillDownNodeLink(@HeaderParam("uid") int uid,@PathParam("ptreeid") int treeId,
 			@PathParam("nodeid") int nodeId) {
 		try {
+			if (nodeId == 0) {
+				ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
+				if (rootNode == null) {
+					return StatusHelper.getStatusOk(null);
+				}
+				nodeId = rootNode.getId();
+			}
 			return StatusHelper.getStatusOk(pnlm.drillDown(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
