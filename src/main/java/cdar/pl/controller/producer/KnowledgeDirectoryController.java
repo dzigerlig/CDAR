@@ -2,6 +2,7 @@ package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -10,12 +11,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Directory;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
 public class KnowledgeDirectoryController {
+	private final boolean ISPRODUCER = true;
 	private DirectoryManager dm = new DirectoryManager();
+	private LockingManager lm = new LockingManager();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -29,13 +34,17 @@ public class KnowledgeDirectoryController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDirectory(Directory directory) {
-		try {
+	public Response addDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Directory directory) {
+		try{
+			lm.lock(ISPRODUCER, treeId, uid);
 			if (directory.getTitle() == null) {
 				directory.setTitle("new folder");
 			}
 			return StatusHelper.getStatusCreated(dm.addDirectory(directory));
-		} catch (Exception e) {
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		} 
+		catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

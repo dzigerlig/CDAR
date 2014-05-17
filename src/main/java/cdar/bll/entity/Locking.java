@@ -20,6 +20,7 @@ public class Locking {
 		this.treeId = treeId;
 		this.isProducer = isProducer;
 		this.lockingTime = new Date();
+		renewLockingTime();
 	}
 
 
@@ -64,6 +65,11 @@ public class Locking {
 		d.setMinutes(d.getMinutes()
 				+ Integer.valueOf(property.getProperty("LOCKING_MINUTE")));
 		setLockingTime(d);
+	}
+	
+
+	public boolean isExpired() {
+		return getLockingTime().before(new Date());
 	}
 
 }

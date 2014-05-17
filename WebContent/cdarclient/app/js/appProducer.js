@@ -6,159 +6,108 @@ function setReload(value) {
 	reload = value;
 }*/
 
-app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService', '$modal',
-		function($scope, $location, TreeService, AuthenticationService, UserService, $modal) {
-			$scope.knowledgeTrees = "";
-			$scope.newTreeName = "";
-			$scope.UserService = UserService;
-			
-			var reloadTrees = function() {
-				TreeService.getTrees({
-					entity1 : 'ktrees'
-				}, function(response) {
-					$scope.knowledgeTrees = response;
-				}, function(error) {
-					noty({
-						type : 'alert',
-						text : 'cannot get trees',
-						timeout : 1500
-					});
-				});
-			};
-
-			reloadTrees();
-
-			$scope.addNewTree = function() {
-				if ($scope.newTreeName.length>45) {
-					noty({
-						type : 'alert',
-						text : 'Please enter a text with less than 45 Characters',
-						timeout : 3000
-					});
-				} else {
-					TreeService.addTree({
-						entity1 : 'ktrees'
-					}, {
-						title : $scope.newTreeName
-					}, function(response) {
-						$scope.newTreeName = '';
-						reloadTrees();
-					}, function(error) {
-						noty({
-							type : 'alert',
-							text : 'cannot add tree',
-							timeout : 1500
-						});
-					});
-				}
-			};
-
-			$scope.deleteTree = function(treeid) {
-				$modal.open({ 
-		            templateUrl: 'templates/confirmation.html',
-		            backdrop: 'static',
-		            keyboard: false,
-		            resolve: {
-		                data: function() { 
-		                    return {
-		                        title: 'Delete Tree',
-		                        message: 'Do you really want to delete this Tree?' 
-		                    };
-		                }
-			            },
-			            controller: 'ConfirmationController' 
-			    }).result.then(function(result) {
-			    	TreeService.deleteTree({
-						entity1 : 'ktrees'
-					}, {
-						id : treeid
-					}, function(response) {
-						reloadTrees();
-						noty({
-							type : 'success',
-							text : 'knowledge tree deleted successfully',
-							timeout : 1500
-						});
-					}, function(error) {
-						noty({
-							type : 'alert',
-							text : 'delete tree failed',
-							timeout : 1500
-						});
-					});
-			    });
-			};
-
-			$scope.saveKnowledgeTreeTitle = function(data, id) {
-				if (data.length>45) {
-					noty({
-						type : 'alert',
-						text : 'Please enter a text with less than 45 Characters',
-						timeout : 3000
-					});
-					return "";
-				} else {
-					var tree = $.grep($scope.knowledgeTrees, function(t) {
-						return t.id === id;
-					})[0];
-					
-					var oldTitle = tree.title;
-					tree.title = data;
-					
-					TreeService.updateTree({
-						entity1 : 'ktrees',
-						id1 : tree.id
-					}, tree, function(response) {
-					}, function(error) {
-						tree.title = oldTitle;
-						noty({
-							type : 'alert',
-							text : 'error while saving tree title',
-							timeout : 1500
-						});
-					});
-				}
-			};
-		} ]);
-
-app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', 'DescriptionService',
-						function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, DescriptionService) {
-							// Workaround draw links not correct
-							/*if (getReload()) {
-								setReload(false);
-								location.reload();
-							}
-							setReload(true);*/
-							//
-							$scope.isProducer = true;
-							
-							$scope.DescriptionService = DescriptionService;
-							$scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
-							$scope.defaultNodeName = DescriptionService.getNodeDescription();
-							$scope.defaultLinkName = 'all ' +DescriptionService.getSubnodeDescription()+'s';
-
-							myJsPlumb.initialize();
-							$scope.treeId = $routeParams.treeId;
+app
+		.controller(
+				"HomeProducerController",
+				[
+						'$scope',
+						'$location',
+						'TreeService',
+						'AuthenticationService',
+						'UserService',
+						'$modal',
+						function($scope, $location, TreeService,
+								AuthenticationService, UserService, $modal) {
+							$scope.knowledgeTrees = "";
+							$scope.newTreeName = "";
 							$scope.UserService = UserService;
-							$scope.knowledgetree = "";
-							$scope.nodes = "";
-							$scope.selectedNode = {id:0, title:""};
 
-							// SUBNODES //
-							$scope.subnodes = "";
-							$scope.selectedSubnode = {id:0, title:""};
-							$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
-							$scope.subnodeHtmlText = "";
-							
-							$scope.nodeTitle = "";
-							$scope.wikiHtmlText = "";
+							var reloadTrees = function() {
+								TreeService.getTrees({
+									entity1 : 'ktrees'
+								}, function(response) {
+									$scope.knowledgeTrees = response;
+								}, function(error) {
+									noty({
+										type : 'alert',
+										text : 'cannot get trees',
+										timeout : 1500
+									});
+								});
+							};
 
-							$scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
-							$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
+							reloadTrees();
 
-							// TREE TITLE
-							$scope.saveKnowledgeTreeTitle = function(title) {
-								if (title.length>45) {
+							$scope.addNewTree = function() {
+								if ($scope.newTreeName.length > 45) {
+									noty({
+										type : 'alert',
+										text : 'Please enter a text with less than 45 Characters',
+										timeout : 3000
+									});
+								} else {
+									TreeService.addTree({
+										entity1 : 'ktrees'
+									}, {
+										title : $scope.newTreeName
+									}, function(response) {
+										$scope.newTreeName = '';
+										reloadTrees();
+									}, function(error) {
+										noty({
+											type : 'alert',
+											text : 'cannot add tree',
+											timeout : 1500
+										});
+									});
+								}
+							};
+
+							$scope.deleteTree = function(treeid) {
+								$modal
+										.open({
+											templateUrl : 'templates/confirmation.html',
+											backdrop : 'static',
+											keyboard : false,
+											resolve : {
+												data : function() {
+													return {
+														title : 'Delete Tree',
+														message : 'Do you really want to delete this Tree?'
+													};
+												}
+											},
+											controller : 'ConfirmationController'
+										}).result
+										.then(function(result) {
+											TreeService
+													.deleteTree(
+															{
+																entity1 : 'ktrees'
+															},
+															{
+																id : treeid
+															},
+															function(response) {
+																reloadTrees();
+																noty({
+																	type : 'success',
+																	text : 'knowledge tree deleted successfully',
+																	timeout : 1500
+																});
+															},
+															function(error) {
+																noty({
+																	type : 'alert',
+																	text : 'delete tree failed',
+																	timeout : 1500
+																});
+															});
+										});
+							};
+
+							$scope.saveKnowledgeTreeTitle = function(data, id) {
+								if (data.length > 45) {
 									noty({
 										type : 'alert',
 										text : 'Please enter a text with less than 45 Characters',
@@ -166,39 +115,169 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 									return "";
 								} else {
-									TreeService.updateTree({
-										entity1 : 'ktrees',
-										id1 : $scope.knowledgetree.id
-									}, $scope.knowledgetree, function(response) { }, function(error) {
-										noty({
-											type : 'alert',
-											text : 'error while saving tree title',
-											timeout : 1500
-										});
+									var tree = $.grep($scope.knowledgeTrees,
+											function(t) {
+												return t.id === id;
+											})[0];
+
+									var oldTitle = tree.title;
+									tree.title = data;
+
+									TreeService
+											.updateTree(
+													{
+														entity1 : 'ktrees',
+														id1 : tree.id
+													},
+													tree,
+													function(response) {
+													},
+													function(error) {
+														tree.title = oldTitle;
+														noty({
+															type : 'alert',
+															text : 'error while saving tree title',
+															timeout : 1500
+														});
+													});
+								}
+							};
+						} ]);
+
+app
+		.controller(
+				"KnowledgeTreeController",
+				[
+						'$scope',
+						'$routeParams',
+						'TreeService',
+						'AuthenticationService',
+						'UserService',
+						'$route',
+						'DescriptionService',
+						function($scope, $routeParams, TreeService,
+								AuthenticationService, UserService, $route,
+								DescriptionService) {
+							// Workaround draw links not correct
+							/*
+							 * if (getReload()) { setReload(false);
+							 * location.reload(); } setReload(true);
+							 */
+							//
+							$scope.isProducer = true;
+
+							$scope.DescriptionService = DescriptionService;
+							$scope.defaultDirectoryName = DescriptionService
+									.getDirectoryDescription();
+							$scope.defaultNodeName = DescriptionService
+									.getNodeDescription();
+							$scope.defaultLinkName = 'all '
+									+ DescriptionService
+											.getSubnodeDescription() + 's';
+
+							myJsPlumb.initialize();
+							$scope.treeId = $routeParams.treeId;
+							$scope.UserService = UserService;
+							$scope.knowledgetree = "";
+							$scope.nodes = "";
+							$scope.selectedNode = {
+								id : 0,
+								title : ""
+							};
+
+							$scope.showLockingNotification = function(error) {
+								if (error.status === 409) {
+									noty({
+										type : 'error',
+										text : error.data,
+										timeout : 5000
 									});
+									return true;
+								} else
+									return false;
+							};
+
+							// SUBNODES //
+							$scope.subnodes = "";
+							$scope.selectedSubnode = {
+								id : 0,
+								title : ""
+							};
+							$scope.newSubnodeName = DescriptionService
+									.getSubnodeDescription();
+							$scope.subnodeHtmlText = "";
+
+							$scope.nodeTitle = "";
+							$scope.wikiHtmlText = "";
+
+							$scope.nodetabs = [ {
+								title : "READ"
+							}, {
+								title : "WRITE"
+							} ];
+							$scope.subnodetabs = [ {
+								title : "READ"
+							}, {
+								title : "WRITE"
+							} ];
+
+							// TREE TITLE
+							$scope.saveKnowledgeTreeTitle = function(title) {
+								if (title.length > 45) {
+									noty({
+										type : 'alert',
+										text : 'Please enter a text with less than 45 Characters',
+										timeout : 3000
+									});
+									return "";
+								} else {
+									TreeService
+											.updateTree(
+													{
+														entity1 : 'ktrees',
+														id1 : $scope.knowledgetree.id
+													},
+													$scope.knowledgetree,
+													function(response) {
+													},
+													function(error) {
+														noty({
+															type : 'alert',
+															text : 'error while saving tree title',
+															timeout : 1500
+														});
+													});
 								}
 							};
 
 							var getSubnodes = function() {
-								TreeService.getSubnodes({
-									entity1 : 'ktrees',
-									id1 : $scope.knowledgetree.id,
-									id2 : $scope.selectedNode.id
-								}, function(response) {
-									$scope.subnodes = response;
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
-										timeout : 1500
-									});
-								});
+								TreeService
+										.getSubnodes(
+												{
+													entity1 : 'ktrees',
+													id1 : $scope.knowledgetree.id,
+													id2 : $scope.selectedNode.id
+												},
+												function(response) {
+													$scope.subnodes = response;
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error getting '
+																+ DescriptionService
+																		.getSubnodeDescription()
+																+ 's',
+														timeout : 1500
+													});
+												});
 							};
 
 							$scope.getSubnodesOfNode = function(idObject) {
 								var identity;
 								var changes = null;
-								if (typeof idObject === 'object' || idObject === undefined) {
+								if (typeof idObject === 'object'
+										|| idObject === undefined) {
 									if (typeof idObject === 'object') {
 										changes = idObject;
 									}
@@ -206,49 +285,67 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								} else {
 									identity = idObject;
 								}
-								TreeService.getSubnodes({
-									entity1 : 'ktrees',
-									id1 : $scope.knowledgetree.id,
-									id2 : identity
-								}, function(response) {
-									$scope.subnodes = response;
-									myJsPlumb.updateSubnodesOfNode(response,
-											identity, changes);
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
-										timeout : 1500
-									});
-								});
+								TreeService
+										.getSubnodes(
+												{
+													entity1 : 'ktrees',
+													id1 : $scope.knowledgetree.id,
+													id2 : identity
+												},
+												function(response) {
+													$scope.subnodes = response;
+													myJsPlumb
+															.updateSubnodesOfNode(
+																	response,
+																	identity,
+																	changes);
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error getting '
+																+ DescriptionService
+																		.getSubnodeDescription()
+																+ 's',
+														timeout : 1500
+													});
+												});
 							};
 
 							// END SUBNODES //
 
 							$scope.addNewSubnode = function() {
-								if (this.newSubnodeName.length>45) {
+								if (this.newSubnodeName.length > 45) {
 									noty({
 										type : 'alert',
 										text : 'Please enter a text with less than 45 Characters',
 										timeout : 3000
 									});
 								} else {
-									TreeService.addSubnode({
-										entity1 : 'ktrees',
-										id1 : $scope.knowledgetree.id,
-										id2 : $scope.selectedNode.id
-									}, {
-										nodeId : $scope.selectedNode.id,
-										title : this.newSubnodeName
-									}, function(response) {
-										$scope.getSubnodesOfNode();
-									}, function(error) {
-										noty({
-											type : 'alert',
-											text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
-											timeout : 1500
-										});
-									});
+									TreeService
+											.addSubnode(
+													{
+														entity1 : 'ktrees',
+														id1 : $scope.knowledgetree.id,
+														id2 : $scope.selectedNode.id
+													},
+													{
+														nodeId : $scope.selectedNode.id,
+														title : this.newSubnodeName
+													},
+													function(response) {
+														$scope
+																.getSubnodesOfNode();
+													},
+													function(error) {
+														noty({
+															type : 'alert',
+															text : 'cannot add '
+																	+ DescriptionService
+																			.getSubnodeDescription(),
+															timeout : 1500
+														});
+													});
 								}
 							};
 
@@ -263,8 +360,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									id3 : subnodeid
 								}, function(response) {
 									$scope.selectedSubnode = response;
-                                    updateSubnodeTitle();
-                                    changeWikiFieldsSubnode();
+									updateSubnodeTitle();
+									changeWikiFieldsSubnode();
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -276,7 +373,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							var changeWikiFieldsSubnode = function() {
 								$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
-								$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
+								$("#wikiSubnodeArea")
+										.val(
+												$scope.selectedSubnode.wikiContentPlain);
 							};
 
 							$scope.saveWikiSubnodeEntry = function() {
@@ -299,10 +398,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														changeWikiFieldsSubnode();
 														noty({
 															type : 'success',
-															text : DescriptionService.getSubnodeDescription() + ' text edited successfully',
+															text : DescriptionService
+																	.getSubnodeDescription()
+																	+ ' text edited successfully',
 															timeout : 1500
 														});
-													}, function(error) {
+													},
+													function(error) {
 														noty({
 															type : 'alert',
 															text : 'cannot edit wiki text',
@@ -313,45 +415,74 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.deleteSubnode = function(subnodeId) {
-								TreeService.deleteSubnode({
-									entity1 : 'ktrees',
-									id1 : $routeParams.treeId,
-									id2 : $scope.selectedNode.id
-								}, {
-									id : subnodeId
-								}, function(response) {
-									$scope.getSubnodesOfNode(response);
-									noty({
-										type : 'success',
-										text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
-										timeout : 1500
-									});
-									if ($scope.selectedSubnode.id === subnodeId) {
-										$scope.selectedSubnode.id = 0;
-										updateSubnodeTitle();
-									}
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
-										timeout : 1500
-									});
-								});
+								TreeService
+										.deleteSubnode(
+												{
+													entity1 : 'ktrees',
+													id1 : $routeParams.treeId,
+													id2 : $scope.selectedNode.id
+												},
+												{
+													id : subnodeId
+												},
+												function(response) {
+													$scope
+															.getSubnodesOfNode(response);
+													noty({
+														type : 'success',
+														text : DescriptionService
+																.getSubnodeDescription()
+																+ ' deleted successfully',
+														timeout : 1500
+													});
+													if ($scope.selectedSubnode.id === subnodeId) {
+														$scope.selectedSubnode.id = 0;
+														updateSubnodeTitle();
+													}
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error deleting '
+																+ DescriptionService
+																		.getSubnodeDescription(),
+														timeout : 1500
+													});
+												});
 							};
 
 							var updateNodeTitle = function() {
 								if ($scope.selectedNode.id !== 0) {
-									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
+									$scope.nodeTitle = "Selected "
+											+ DescriptionService
+													.getNodeDescription()
+											+ ": " + $scope.selectedNode.title;
 								} else {
-									$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription() + " selected";
+									$scope.nodeTitle = "Selected "
+											+ DescriptionService
+													.getNodeDescription()
+											+ ": no "
+											+ DescriptionService
+													.getNodeDescription()
+											+ " selected";
 								}
 							};
-							
+
 							var updateSubnodeTitle = function() {
 								if ($scope.selectedSubnode.id !== 0) {
-									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": " + $scope.selectedSubnode.title;
+									$scope.subnodeTitle = "Selected "
+											+ DescriptionService
+													.getSubnodeDescription()
+											+ ": "
+											+ $scope.selectedSubnode.title;
 								} else {
-									$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": no " + DescriptionService.getSubnodeDescription() + " selected";
+									$scope.subnodeTitle = "Selected "
+											+ DescriptionService
+													.getSubnodeDescription()
+											+ ": no "
+											+ DescriptionService
+													.getSubnodeDescription()
+											+ " selected";
 								}
 							};
 
@@ -377,7 +508,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							var changeWikiFields = function() {
 								$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
-								$("#wikiArea").val($scope.selectedNode.wikiContentPlain);
+								$("#wikiArea").val(
+										$scope.selectedNode.wikiContentPlain);
 							};
 
 							$scope.changeNode = function(id, name) {
@@ -404,10 +536,12 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 
 							$scope.saveWikiNodeEntry = function() {
 								if ($scope.selectedNode.id !== 0) {
-									$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
+									$scope.selectedNode.wikiContentPlain = $(
+											"#wikiArea").val();
 									switchNodeToRead();
 									setLoadingNode();
-									TreeService.updateNodeWiki(
+									TreeService
+											.updateNodeWiki(
 													{
 														entity1 : 'ktrees',
 														id1 : $routeParams.treeId,
@@ -419,10 +553,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														changeWikiFields(response);
 														noty({
 															type : 'success',
-															text : DescriptionService.getNodeDescription() + ' text edited successfully',
+															text : DescriptionService
+																	.getNodeDescription()
+																	+ ' text edited successfully',
 															timeout : 1500
 														});
-													}, function(error) {
+													},
+													function(error) {
 														changeWikiFields($scope.selectedNode);
 														noty({
 															type : 'alert',
@@ -460,7 +597,10 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting ' + DescriptionService.getNodeDescription() + 's',
+										text : 'error getting '
+												+ DescriptionService
+														.getNodeDescription()
+												+ 's',
 										timeout : 1500
 									});
 								});
@@ -473,20 +613,30 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							});
 
 							$scope.getSubnodes = function(resNodes) {
-								TreeService.getSubnodesFromTree({
-									entity1 : 'ktrees',
-									id1 : $routeParams.treeId
-								}, function(resSubnodes) {
-									myJsPlumb.drawExistingNodes(resNodes,
-											resSubnodes);
-									$scope.getLinks(resSubnodes);
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's', 
-										timeout : 1500
-									});
-								});
+								TreeService
+										.getSubnodesFromTree(
+												{
+													entity1 : 'ktrees',
+													id1 : $routeParams.treeId
+												},
+												function(resSubnodes) {
+													myJsPlumb
+															.drawExistingNodes(
+																	resNodes,
+																	resSubnodes);
+													$scope
+															.getLinks(resSubnodes);
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error getting '
+																+ DescriptionService
+																		.getSubnodeDescription()
+																+ 's',
+														timeout : 1500
+													});
+												});
 							};
 
 							$scope.getLinks = function(resSubnodes) {
@@ -519,10 +669,10 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									// successfully', timeout: 1500});
 								}, function(error) {
 									noty({
-									type : 'alert',
-									text : 'cannot update link',
-									timeout : 1500
-								});
+										type : 'alert',
+										text : 'cannot update link',
+										timeout : 1500
+									});
 								});
 							};
 
@@ -540,31 +690,39 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error adding ' + DescriptionService.getNodeDescription(),
+										text : 'error adding '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
 							};
 
 							$scope.addNodeCopy = function(node) {
-								TreeService.addNode({
-									entity1 : 'ktrees',
-									id1 : $routeParams.treeId
-								}, {
-									treeId : $routeParams.treeId,
-									title : node.text,
-									directoryId : 0
-								},
-								function(response) {
-									myJsTree.prepareForSetId(node,
-											response.id);
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error adding ' + DescriptionService.getNodeDescription(),
-										timeout : 1500
-									});
-								});
+								TreeService
+										.addNode(
+												{
+													entity1 : 'ktrees',
+													id1 : $routeParams.treeId
+												},
+												{
+													treeId : $routeParams.treeId,
+													title : node.text,
+													directoryId : 0
+												},
+												function(response) {
+													myJsTree.prepareForSetId(
+															node, response.id);
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error adding '
+																+ DescriptionService
+																		.getNodeDescription(),
+														timeout : 1500
+													});
+												});
 							};
 
 							$scope.deleteNode = function(nodeId) {
@@ -578,13 +736,17 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									myJsPlumb.detachNode(nodeId);
 									noty({
 										type : 'success',
-										text : DescriptionService.getNodeDescription() + ' deleted successfully',
+										text : DescriptionService
+												.getNodeDescription()
+												+ ' deleted successfully',
 										timeout : 1500
 									});
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot delete ' + DescriptionService.getNodeDescription(),
+										text : 'cannot delete '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -600,7 +762,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error getting ' + DescriptionService.getNodeDescription(),
+										text : 'error getting '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -619,7 +783,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error dropping ' + DescriptionService.getNodeDescription(),
+										text : 'error dropping '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -638,7 +804,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error undropping ' + DescriptionService.getNodeDescription(),
+										text : 'error undropping '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -660,7 +828,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'cannot rename ' + DescriptionService.getNodeDescription(),
+										text : 'cannot rename '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -679,7 +849,9 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(error) {
 									noty({
 										type : 'alert',
-										text : 'error moving ' + DescriptionService.getNodeDescription(),
+										text : 'error moving '
+												+ DescriptionService
+														.getNodeDescription(),
 										timeout : 1500
 									});
 								});
@@ -695,16 +867,16 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									sourceId : sourceId,
 									targetId : targetId
 								},
-								function(response) {
-									myJsPlumb.setLinkId(connection,
-											response.id);
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error adding link',
-										timeout : 1500
-									});
-								});
+										function(response) {
+											myJsPlumb.setLinkId(connection,
+													response.id);
+										}, function(error) {
+											noty({
+												type : 'alert',
+												text : 'error adding link',
+												timeout : 1500
+											});
+										});
 							};
 
 							$scope.deleteLink = function(linkId) {
@@ -737,33 +909,39 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									// noty({type: 'success', text : 'directory
 									// added successfully', timeout: 1500});
 								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error adding directory',
-										timeout : 1500
-									});
+									if (!$scope.showLockingNotification(error)) {
+										noty({
+											type : 'alert',
+											text : 'error adding directory',
+											timeout : 1500
+										});
+									}
 								});
 							};
 
 							$scope.addDirectoryCopy = function(node) {
-								TreeService.addDirectory({
-									entity1 : 'ktrees',
-									id1 : $routeParams.treeId
-								}, {
-									treeId : $routeParams.treeId,
-									title : node.text,
-									parentid : 0
-								},
-								function(response) {
-									myJsTree.prepareForSetId(node,
-											response.id);
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error adding directory copy',
-										timeout : 1500
-									});
-								});
+								TreeService
+										.addDirectory(
+												{
+													entity1 : 'ktrees',
+													id1 : $routeParams.treeId
+												},
+												{
+													treeId : $routeParams.treeId,
+													title : node.text,
+													parentid : 0
+												},
+												function(response) {
+													myJsTree.prepareForSetId(
+															node, response.id);
+												},
+												function(error) {
+													noty({
+														type : 'alert',
+														text : 'error adding directory copy',
+														timeout : 1500
+													});
+												});
 							};
 
 							$scope.renameDirectory = function(directoryId,
@@ -788,7 +966,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.deleteDirectory = function(directoryId) {
-								TreeService.deleteDirectory(
+								TreeService
+										.deleteDirectory(
 												{
 													entity1 : 'ktrees',
 													id1 : $routeParams.treeId
@@ -802,7 +981,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														text : 'directory deleted successfully',
 														timeout : 1500
 													});
-												}, function(error) {
+												},
+												function(error) {
 													noty({
 														type : 'alert',
 														text : 'error deleting directory',
@@ -937,7 +1117,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							};
 
 							$scope.editSubnodeTitle = function(data, id) {
-								if (data.length>45) {
+								if (data.length > 45) {
 									noty({
 										type : 'alert',
 										text : 'Please enter a text with less than 45 Characters',
@@ -945,42 +1125,57 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 									return "";
 								} else {
-									var subnode = $.grep($scope.subnodes, function(
-											t) {
-										return t.id === id;
-									})[0];
+									var subnode = $.grep($scope.subnodes,
+											function(t) {
+												return t.id === id;
+											})[0];
 									subnode.title = data;
-	
-									TreeService.renameSubnode( { entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
-											response) {
-											$scope.getSubnodesOfNode(response);
-											// noty({type: 'success', text :
-											// 'subnode renamed successfully',
-											// timeout: 1500});
-										}, function (error) {
-											noty({
-												type : 'alert',
-												text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
-												timeout : 1500
-											});
-										});
+
+									TreeService
+											.renameSubnode(
+													{
+														entity1 : 'ktrees',
+														id1 : $routeParams.treeId,
+														id2 : $scope.selectedNode.id,
+														id3 : id
+													},
+													subnode,
+													function(response) {
+														$scope
+																.getSubnodesOfNode(response);
+														// noty({type:
+														// 'success', text :
+														// 'subnode renamed
+														// successfully',
+														// timeout: 1500});
+													},
+													function(error) {
+														noty({
+															type : 'alert',
+															text : 'error renaming '
+																	+ DescriptionService
+																			.getSubnodeDescription(),
+															timeout : 1500
+														});
+													});
 								}
 							};
 
 							$scope.moveSubnodeUp = function(id) {
-								var subnode = $.grep($scope.subnodes, function(t) {
+								var subnode = $.grep($scope.subnodes, function(
+										t) {
 									return t.id === id;
 								})[0];
-								
+
 								subnode.position = subnode.position - 1;
-								
+
 								TreeService.updateSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : $scope.selectedNode.id,
 									id3 : subnode.id
 								}, subnode, function(response) {
-										$scope.getSubnodesOfNode();
+									$scope.getSubnodesOfNode();
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -995,16 +1190,16 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 										t) {
 									return t.id === id;
 								})[0];
-								
+
 								subnode.position = subnode.position + 1;
-								
+
 								TreeService.updateSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : $scope.selectedNode.id,
 									id3 : subnode.id
 								}, subnode, function(response) {
-										$scope.getSubnodesOfNode();
+									$scope.getSubnodesOfNode();
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -1013,6 +1208,6 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 									});
 								});
 							};
-							
+
 							updateSubnodeTitle();
 						} ]);
