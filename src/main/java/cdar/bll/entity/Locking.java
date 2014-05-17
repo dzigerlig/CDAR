@@ -2,7 +2,7 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
-import cdar.dal.PropertyHelper;
+import cdar.PropertyHelper;
 
 public class Locking {	
 	private int userId;
