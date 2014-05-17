@@ -10,6 +10,8 @@ import org.wikipedia.Wiki;
 import cdar.PropertyHelper;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
+import cdar.dal.exceptions.WikiLoginException;
+import cdar.dal.wiki.WikiRepositoryq;
 
 public class MediaWikiCreationModel extends Thread {
 	private int uid;
@@ -45,23 +47,23 @@ public class MediaWikiCreationModel extends Thread {
 		return wikiHelper;
 	}
 
-	public void createNewWikiEntry(String username, String password) {
-		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
+	public void createNewWikiEntry(String username, String password) throws WikiLoginException {
+		WikiRepositoryq wikiConnection = new WikiRepositoryq();
+		Wiki wiki = wikiConnection.getConnection(username, password);
 		try {
-			createEntry(wiki, username, password);
+			createEntry(wiki);
 		} catch (Exception e) {
 			try {
 				// trying again if it is the first time
-				createEntry(wiki, username, password);
+				createEntry(wiki);
 			} catch (LoginException | IOException e1) {
 				e1.printStackTrace();
 			}
 		}
 	}
 
-	private void createEntry(Wiki wiki, String username, String password)
+	private void createEntry(Wiki wiki)
 			throws IOException, FailedLoginException, LoginException {
-		wiki.login(username, password);
 		wiki.edit(getTitle(), getContent(), "");
 	}
 
