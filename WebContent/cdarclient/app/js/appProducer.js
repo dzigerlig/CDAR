@@ -6,107 +6,101 @@ function setReload(value) {
 	reload = value;
 }*/
 
-app
-		.controller(
-				"HomeProducerController",
-				[
-						'$scope',
-						'$location',
-						'TreeService',
-						'AuthenticationService',
-						'UserService',
-						'$modal',
-						function($scope, $location, TreeService,
-								AuthenticationService, UserService, $modal) {
-							$scope.knowledgeTrees = "";
-							$scope.newTreeName = "";
-							$scope.UserService = UserService;
+app.controller(
+		"HomeProducerController",
+		[
+		 '$scope',
+		 '$location',
+		 'TreeService',
+		 'AuthenticationService',
+		 'UserService',
+		 '$modal',
+		 function($scope, $location, TreeService,
+				 AuthenticationService, UserService, $modal) {
+			 $scope.knowledgeTrees = "";
+			 $scope.newTreeName = "";
+			 $scope.UserService = UserService;
+			 var reloadTrees = function() {
+				 TreeService.getTrees({
+					 entity1 : 'ktrees'
+				 }, function(response) {
+					 $scope.knowledgeTrees = response;
+				 }, function(error) {
+					 noty({
+						 type : 'alert',
+						 text : 'cannot get trees',
+						 timeout : 1500
+					 });
+				 });
+			 };
 
-							var reloadTrees = function() {
-								TreeService.getTrees({
-									entity1 : 'ktrees'
-								}, function(response) {
-									$scope.knowledgeTrees = response;
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'cannot get trees',
-										timeout : 1500
-									});
-								});
-							};
+			 reloadTrees();
 
-							reloadTrees();
+			 $scope.addNewTree = function() {
+				 if ($scope.newTreeName.length > 45) {
+					 noty({
+						 type : 'alert',
+						 text : 'Please enter a text with less than 45 Characters',
+						 timeout : 3000
+					 });
+				 } else {
+					 TreeService.addTree({
+						 entity1 : 'ktrees'
+					 }, {
+						 title : $scope.newTreeName
+					 }, function(response) {
+						 $scope.newTreeName = '';
+						 reloadTrees();
+					 }, function(error) {
+						 noty({
+							 type : 'alert',
+							 text : 'cannot add tree',
+							 timeout : 1500
+						 });
+					 });
+				 }
+			 };
+			 
+			 $scope.deleteTree = function(treeid) {
+				 $modal.open({
+					 templateUrl : 'templates/confirmation.html',
+					 backdrop : 'static',
+					 keyboard : false,
+					 resolve : {
+						 data : function() {
+							 return {
+								 title : 'Delete Tree',
+								 message : 'Do you really want to delete this Tree?'
+							 };
+						 }
+					 },
+					 controller : 'ConfirmationController'
+				 }).result.then(function(result) {
+					 TreeService.deleteTree(
+							 {
+								 entity1 : 'ktrees'
+							 },	{
+								 id : treeid
+							 },
+							 function(response) {
+								 reloadTrees();
+								 noty({
+									 type : 'success',
+									 text : 'knowledge tree deleted successfully',
+									 timeout : 1500
+								 });
+							 },
+							 function(error) {
+								 noty({
+									 type : 'alert',
+									 text : 'delete tree failed',
+									 timeout : 1500
+								 });
+							 });
+				 	});
+			 };
 
-							$scope.addNewTree = function() {
-								if ($scope.newTreeName.length > 45) {
-									noty({
-										type : 'alert',
-										text : 'Please enter a text with less than 45 Characters',
-										timeout : 3000
-									});
-								} else {
-									TreeService.addTree({
-										entity1 : 'ktrees'
-									}, {
-										title : $scope.newTreeName
-									}, function(response) {
-										$scope.newTreeName = '';
-										reloadTrees();
-									}, function(error) {
-										noty({
-											type : 'alert',
-											text : 'cannot add tree',
-											timeout : 1500
-										});
-									});
-								}
-							};
-
-							$scope.deleteTree = function(treeid) {
-								$modal
-										.open({
-											templateUrl : 'templates/confirmation.html',
-											backdrop : 'static',
-											keyboard : false,
-											resolve : {
-												data : function() {
-													return {
-														title : 'Delete Tree',
-														message : 'Do you really want to delete this Tree?'
-													};
-												}
-											},
-											controller : 'ConfirmationController'
-										}).result
-										.then(function(result) {
-											TreeService
-													.deleteTree(
-															{
-																entity1 : 'ktrees'
-															},
-															{
-																id : treeid
-															},
-															function(response) {
-																reloadTrees();
-																noty({
-																	type : 'success',
-																	text : 'knowledge tree deleted successfully',
-																	timeout : 1500
-																});
-															},
-															function(error) {
-																noty({
-																	type : 'alert',
-																	text : 'delete tree failed',
-																	timeout : 1500
-																});
-															});
-										});
-							};
-
-							$scope.saveKnowledgeTreeTitle = function(data, id) {
+			 $scope.saveKnowledgeTreeTitle = function(data, id) {
 								if (data.length > 45) {
 									noty({
 										type : 'alert',

@@ -11,20 +11,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.NodeLink;
-import cdar.bll.entity.User;
-import cdar.bll.manager.UserManager;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")
 public class KnowledgeNodeLinkController {
-	private NodeLinkManager lm = new NodeLinkManager();
+	private final boolean ISPRODUCER = true;
+	private LockingManager lm = new LockingManager();
+	private NodeLinkManager nlm = new NodeLinkManager();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLinks(@PathParam("ktreeid") int ktreeid) {
 		try {
-			return StatusHelper.getStatusOk(lm.getNodeLinks(ktreeid));
+			return StatusHelper.getStatusOk(nlm.getNodeLinks(ktreeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -32,9 +34,12 @@ public class KnowledgeNodeLinkController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNodeLink(NodeLink nodeLink) {
+	public Response addNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
 		try {
-			return StatusHelper.getStatusCreated(lm.addNodeLink(nodeLink));
+			lm.lock(ISPRODUCER, treeId, uid);
+			return StatusHelper.getStatusCreated(nlm.addNodeLink(nodeLink));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -43,11 +48,14 @@ public class KnowledgeNodeLinkController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNodeLink(NodeLink nodeLink) {
+	public Response deleteNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
 		try {
-			lm.deleteNodeLink(nodeLink.getId());
+			lm.lock(ISPRODUCER, treeId, uid);
+			nlm.deleteNodeLink(nodeLink.getId());
 			return StatusHelper.getStatusOk(null);
-		} catch (Exception e) {
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		}  catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -55,9 +63,12 @@ public class KnowledgeNodeLinkController {
 	@POST
 	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNodeLink(NodeLink nodeLink) {
-		try {
-			return StatusHelper.getStatusOk(lm.updateNodeLink(nodeLink));
+	public Response updateNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
+			return StatusHelper.getStatusOk(nlm.updateNodeLink(nodeLink));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -69,7 +80,7 @@ public class KnowledgeNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response drillUpLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.drillUp(uid,nodeId));
+			return StatusHelper.getStatusOk(nlm.drillUp(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -81,7 +92,7 @@ public class KnowledgeNodeLinkController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response drillDownLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(lm.drillDown(uid,nodeId));
+			return StatusHelper.getStatusOk(nlm.drillDown(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

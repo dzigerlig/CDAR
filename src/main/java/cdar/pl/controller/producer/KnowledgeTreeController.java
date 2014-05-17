@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
@@ -21,6 +23,8 @@ import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees")
 public class KnowledgeTreeController {
+	private final boolean ISPRODUCER = true;
+	private LockingManager lm = new LockingManager();
 	private TreeManager ktm = new TreeManager();
 
 	@GET
@@ -36,10 +40,13 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteTree(Tree tree) {
-		try {
+	public Response deleteTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Tree tree) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
 			ktm.deleteTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -47,9 +54,12 @@ public class KnowledgeTreeController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTree(Tree tree, @HeaderParam("uid") int uid) {
-		try {
+	public Response addKnowledgeTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Tree tree) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
 			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree));
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -69,12 +79,15 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateKnowledgeTree(@PathParam("ktreeid") int treeId,
+	public Response updateKnowledgeTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,
 			Tree tree) {
-		try {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
 			tree.setId(treeId);
 			return StatusHelper.getStatusOk(ktm.updateTree(tree));
-		} catch (Exception ex) {
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		}catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

@@ -17,6 +17,8 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.User;
 import cdar.bll.entity.WikiEntry;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.SubnodeManager;
@@ -27,8 +29,10 @@ import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class KnowledgeSubnodeController {
+	private final boolean ISPRODUCER = true;
+	private LockingManager lm = new LockingManager();
 	private SubnodeManager sm = new SubnodeManager();
-	private NodeLinkManager lm = new NodeLinkManager();
+	private NodeLinkManager nlm = new NodeLinkManager();
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -42,10 +46,13 @@ public class KnowledgeSubnodeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addSubnode(@HeaderParam ("uid") int uid, Subnode subnode) {
+	public Response addSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Subnode subnode) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusCreated(sm.addSubnode(uid, subnode));
-		} catch (Exception e) {
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		}catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -53,10 +60,13 @@ public class KnowledgeSubnodeController {
 	@POST
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateSubnode(@PathParam("subnodeid") int subnodeid,Subnode subnode) {
-		try {
+	public Response updateSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,@PathParam("subnodeid") int subnodeid,Subnode subnode) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
 			subnode.setId(subnodeid);
 			return StatusHelper.getStatusOk(sm.updateSubnode(subnode));
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -76,11 +86,14 @@ public class KnowledgeSubnodeController {
 	@POST
 	@Path("{subnodeid}/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameSubnode(Subnode subnode) {
-		try {
+	public Response renameSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Subnode subnode) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
 			sm.renameSubnode(subnode);
-			return StatusHelper.getStatusOk(new ChangesWrapper<NodeLink>(lm
+			return StatusHelper.getStatusOk(new ChangesWrapper<NodeLink>(nlm
 							.getNodeLinksBySubnode(subnode.getId()), "update"));
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -90,12 +103,15 @@ public class KnowledgeSubnodeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteSubnode(Subnode subnode) {
-		try {
-			List<NodeLink> nodelinks = lm.getNodeLinksBySubnode(subnode.getId());
+	public Response deleteSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Subnode subnode) {
+		try {			lm.lock(ISPRODUCER, treeId, uid);
+
+			List<NodeLink> nodelinks = nlm.getNodeLinksBySubnode(subnode.getId());
 			sm.deleteSubnode(subnode.getId());
 			return StatusHelper.getStatusOk(
 					new ChangesWrapper<NodeLink>(nodelinks, "delete"));
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -134,6 +150,8 @@ public class KnowledgeSubnodeController {
 		}
 	}
 	
+	
+	//TODO locking??
 	@POST
 	@Path("{subnodeid}/wiki")
 	@Consumes(MediaType.APPLICATION_JSON)

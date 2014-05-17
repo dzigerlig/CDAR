@@ -16,13 +16,18 @@ import org.glassfish.jersey.internal.util.PropertiesHelper;
 import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.WikiEntry;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")
 public class KnowledgeNodeController {
+	private final boolean ISPRODUCER = true;
 	private NodeManager nm = new NodeManager();
+	private LockingManager lm = new LockingManager();
+	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -36,14 +41,18 @@ public class KnowledgeNodeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNode(@HeaderParam("uid") int uid, Node node) {
+	public Response addNode(@PathParam("ktreeid") int treeId,@HeaderParam("uid") int uid, Node node) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
+
 			if (node.getTitle() == null) {
 				PropertyHelper propertyHelper = new PropertyHelper();
 				node.setTitle("new "+ propertyHelper.getProperty("NODE_DESCRIPTION"));
 			}
 			return StatusHelper.getStatusCreated(nm.addNode(uid, node));
-		} catch (Exception e) {
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		}  catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -62,10 +71,13 @@ public class KnowledgeNodeController {
 	@POST
 	@Path("{nodeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNode(@PathParam("nodeid") int nodeid, Node node) {
+	public Response updateNode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,@PathParam("nodeid") int nodeid, Node node) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			node.setId(nodeid);
 			return StatusHelper.getStatusOk(nm.updateNode(node));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -74,9 +86,12 @@ public class KnowledgeNodeController {
 	@POST
 	@Path("{nodeid}/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response renameNode (Node node) {
+	public Response renameNode (@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Node node) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusOk(nm.renameNode(node));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -85,10 +100,13 @@ public class KnowledgeNodeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNode(Node node) {
+	public Response deleteNode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Node node) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			nm.deleteNode(node.getId());
 			return StatusHelper.getStatusOk(null);
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -128,6 +146,8 @@ public class KnowledgeNodeController {
 		}
 	}
 	
+	
+	//TODO locking??
 	@POST
 	@Path("{nodeid}/wiki")
 	@Consumes(MediaType.APPLICATION_JSON)
