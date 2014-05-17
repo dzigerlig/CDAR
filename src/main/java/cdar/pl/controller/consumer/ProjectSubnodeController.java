@@ -37,9 +37,9 @@ public class ProjectSubnodeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addSubnode(ProjectSubnode subnode) {
+	public Response addSubnode(@PathParam("uid") int uid, ProjectSubnode subnode) {
 		try {
-			return StatusHelper.getStatusCreated(psm.addProjectSubnode(subnode));
+			return StatusHelper.getStatusCreated(psm.addProjectSubnode(uid, subnode));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}

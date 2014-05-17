@@ -6,6 +6,7 @@ import java.util.Set;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
+import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.exceptions.CreationException;
@@ -23,8 +24,26 @@ public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 	
-	public ProjectSubnode addProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectNodeException, CreationException {
-		return psr.createProjectSubnode(projectSubnode);
+	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectNodeException, CreationException, UnknownUserException, EntityException {
+		boolean createSubnode = true;
+		if(projectSubnode.getWikititle()!=null) {
+			createSubnode = false;
+		}
+		
+		projectSubnode = psr.createProjectSubnode(projectSubnode);
+		
+		if (createSubnode) {
+			String templateContent = null;
+			
+			if (templateContent == null) {
+				templateContent = "== CDAR SUBNODE ==";
+			}
+		
+			MediaWikiModel mwm = new MediaWikiModel();
+			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), templateContent);
+		}
+		
+		return projectSubnode;
 	}
 	
 	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(int projectTreeId) throws UnknownProjectTreeException, UnknownProjectNodeLinkException, EntityException {
