@@ -1,4 +1,4 @@
-package cdar.dal;
+package cdar.dal.helpers;
 
 public class DBTableHelper {
 	public static final String USER = "User";

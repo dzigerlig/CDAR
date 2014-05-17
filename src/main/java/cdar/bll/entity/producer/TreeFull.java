@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.WikiEntry;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
@@ -20,7 +20,7 @@ import cdar.dal.exceptions.UnknownUserException;
 public class TreeFull extends TreeSimple {
 	private Set<WikiEntry> wikiEntries;
 	
-	private MediaWikiModel mwm = new MediaWikiModel();
+	private MediaWikiManager mwm = new MediaWikiManager();
 	
 	public TreeFull() {}
 	

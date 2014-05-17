@@ -5,7 +5,7 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -34,7 +34,7 @@ public class SubnodeManager {
 				templateContent = "== CDAR SUBNODE ==";
 			}
 		
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			mwm.createWikiEntry(uid, subnode.getWikititle(), templateContent);
 		}
 		

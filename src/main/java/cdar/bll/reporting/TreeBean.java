@@ -10,7 +10,7 @@ import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TreeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
@@ -25,7 +25,7 @@ public class TreeBean extends ReportingBean {
 	private TreeManager tm = new TreeManager();
 	private NodeManager nm = new NodeManager();
 	private SubnodeManager sm = new SubnodeManager();
-	private MediaWikiModel mwm = new MediaWikiModel();
+	private MediaWikiManager mwm = new MediaWikiManager();
 	private NodeLinkManager nlm = new NodeLinkManager();
 
 

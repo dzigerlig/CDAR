@@ -23,7 +23,7 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.SubnodeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeRepository;
@@ -153,7 +153,7 @@ public class KnowledgeSubnodeController {
 	@Path("{subnodeid}/wiki")
 	public Response getKnowledgeSubnodeWikiEntry(@PathParam("subnodeid") int subnodeId) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm.getKnowledgeSubnodeWikiEntry(subnodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
@@ -168,7 +168,7 @@ public class KnowledgeSubnodeController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateKnowledgeSubnodeWikiEntry(@HeaderParam("uid") int uid, WikiEntry wikiEntry) {
 		try {
-			MediaWikiModel mwm = new MediaWikiModel();
+			MediaWikiManager mwm = new MediaWikiManager();
 			return StatusHelper.getStatusOk(mwm.saveKnowledgeSubnodeWikiEntry(uid, wikiEntry));
 		} catch (UnknownUserException | EntityException ex) {
 			return StatusHelper.getStatusBadRequest();

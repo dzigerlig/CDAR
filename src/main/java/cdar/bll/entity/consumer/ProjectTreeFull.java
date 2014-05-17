@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import cdar.bll.entity.WikiEntry;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
@@ -18,7 +18,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 public class ProjectTreeFull extends ProjectTreeSimple {
 	private Set<WikiEntry> wikiEntries;
 	
-	private MediaWikiModel mwm = new MediaWikiModel();
+	private MediaWikiManager mwm = new MediaWikiManager();
 	
 	public ProjectTreeFull() { }
 	

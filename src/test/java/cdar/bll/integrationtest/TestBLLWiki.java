@@ -14,7 +14,7 @@ import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.TreeManager;
-import cdar.bll.wiki.MediaWikiModel;
+import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLWiki {
@@ -23,7 +23,7 @@ public class TestBLLWiki {
 	private NodeManager nm = new NodeManager();
 	private DirectoryManager dm = new DirectoryManager();
 	
-	private MediaWikiModel mwm = new MediaWikiModel();
+	private MediaWikiManager mwm = new MediaWikiManager();
 	
 	private final String username = "BLLUsername";
 	private final String password = "BLLPassword";

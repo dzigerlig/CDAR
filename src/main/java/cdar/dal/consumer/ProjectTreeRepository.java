@@ -12,13 +12,13 @@ import java.util.List;
 
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.consumer.CreationTree;
-import cdar.dal.DBConnection;
-import cdar.dal.DBTableHelper;
-import cdar.dal.DateHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.DBConnection;
+import cdar.dal.helpers.DBTableHelper;
+import cdar.dal.helpers.DateHelper;
 
 public class ProjectTreeRepository {
 	public List<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
