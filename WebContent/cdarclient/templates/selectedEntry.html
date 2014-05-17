@@ -61,13 +61,25 @@
 						<tr>
 							<td colspan="2"></td>
 							<td colspan="3">
-								<form id="formAddTree" data-role="form"
+								<form data-role="form"
 									data-ng-submit="addNewSubnode(); newSubnodeName=DescriptionService.getSubnodeDescription()">
 									<div class="input-append">
 										<input class="form-horizontal" placeholder="subnode title"
 											required data-ng-model="newSubnodeName" />
 										<button class="btn btn-success" type="submit">Add
 											{{DescriptionService.getSubnodeDescription()}}</button>
+									</div>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="3">
+								<form data-role="form" data-ng-submit="addSubnodeByWikiTitle();">
+									<div class="input-append">
+										<input class="form-horizontal" placeholder="subnode title" required data-ng-model="newSubnodeWikiName" />
+										<input class="form-horizontal" placeholder="subnode wikititle" required data-ng-model="newSubnodeWikiTitle" />
+										<button class="btn btn-success" type="submit">Add {{DescriptionService.getSubnodeDescription()}}</button>
 									</div>
 								</form>
 							</td>

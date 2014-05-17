@@ -231,7 +231,9 @@ public class SubnodeRepository {
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					subnode.setId(generatedKeys.getInt(1));
-					subnode.setWikititle(String.format("SUBNODE_%d", subnode.getId()));
+					if (subnode.getWikititle()==null) {
+						subnode.setWikititle(String.format("SUBNODE_%d", subnode.getId()));
+					}
 				}
 			}
 		} catch (Exception ex) {

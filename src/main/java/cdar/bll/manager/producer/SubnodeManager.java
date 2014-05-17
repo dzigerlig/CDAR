@@ -5,6 +5,7 @@ import java.util.Set;
 
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
+import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -18,9 +19,26 @@ import cdar.dal.user.UserRepository;
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(Subnode subnode) throws EntityException, UnknownNodeException, CreationException   {
+	public Subnode addSubnode(int uid, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException   {
+		boolean createSubnode = true;
+		if (subnode.getWikititle()!=null) {
+			createSubnode = false;
+		}
 		subnode.setPosition(sr.getNextSubnodePosition(subnode.getNodeId()));
-		return sr.createSubnode(subnode);
+		subnode = sr.createSubnode(subnode);
+		
+		if (createSubnode) {
+			String templateContent = null;
+		
+			if (templateContent == null) {
+				templateContent = "== CDAR SUBNODE ==";
+			}
+		
+			MediaWikiModel mwm = new MediaWikiModel();
+			mwm.createWikiEntry(uid, subnode.getWikititle(), templateContent);
+		}
+		
+		return subnode;
 	}
 
 	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {

@@ -42,9 +42,9 @@ public class KnowledgeSubnodeController {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addSubnode(Subnode subnode) {
+	public Response addSubnode(@HeaderParam ("uid") int uid, Subnode subnode) {
 		try {
-			return StatusHelper.getStatusCreated(sm.addSubnode(subnode));
+			return StatusHelper.getStatusCreated(sm.addSubnode(uid, subnode));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
