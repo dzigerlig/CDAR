@@ -226,6 +226,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							// END SUBNODES //
 
 							$scope.addNewSubnode = function() {
+								var okwikititle = "SUBNODE_16";
 								if (this.newSubnodeName.length>45) {
 									noty({
 										type : 'alert',
@@ -239,7 +240,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 										id2 : $scope.selectedNode.id
 									}, {
 										nodeId : $scope.selectedNode.id,
-										title : this.newSubnodeName
+										title : this.newSubnodeName,
 									}, function(response) {
 										$scope.getSubnodesOfNode();
 									}, function(error) {
