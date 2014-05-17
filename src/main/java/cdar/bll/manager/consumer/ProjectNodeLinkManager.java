@@ -94,4 +94,16 @@ public class ProjectNodeLinkManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
+		return pnlr.getNodeLink(nodeLinkId);
+	}
+
+	public NodeLink updateNodeLink(NodeLink nodelink) throws EntityException, UnknownNodeLinkException {
+		NodeLink updatedNodeLink = pnlr.getNodeLink(nodelink.getId());
+		if (nodelink.getSubnodeId()!=0) {
+			updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());
+		}
+		return pnlr.updateNodeLink(updatedNodeLink);
+	}
 }

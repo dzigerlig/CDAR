@@ -272,4 +272,57 @@ throw new UnknownProjectTreeException();
 		}
 		return nodelinks;
 	}
+
+	public NodeLink getNodeLink(int nodeLinkId) throws EntityException, UnknownNodeLinkException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
+
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, nodeLinkId);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					NodeLink nodelink = new NodeLink();
+					nodelink.setId(result.getInt(1));
+					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					nodelink.setSourceId(result.getInt(4));
+					nodelink.setTargetId(result.getInt(5));
+					nodelink.setTreeId(result.getInt(6));
+					nodelink.setSubnodeId(result.getInt(7));
+					return nodelink;
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			throw new UnknownNodeLinkException();
+		}
+		throw new UnknownNodeLinkException();
+	}
+
+	public NodeLink updateNodeLink(NodeLink updatedNodeLink) throws UnknownNodeLinkException {
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",DBTableHelper.PROJECTNODELINK);
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
+			preparedStatement.setInt(2, updatedNodeLink.getSourceId());
+			preparedStatement.setInt(3, updatedNodeLink.getTargetId());
+			if (updatedNodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, updatedNodeLink.getSubnodeId());
+			} else {
+				preparedStatement.setNull(4, Types.INTEGER);
+			}
+			preparedStatement.setInt(5, updatedNodeLink.getTreeId());
+			preparedStatement.setInt(6, updatedNodeLink.getId());
+
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
+			throw new UnknownNodeLinkException();
+		}
+		return updatedNodeLink;
+	}
 }

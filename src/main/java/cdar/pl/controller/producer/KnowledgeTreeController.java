@@ -54,12 +54,10 @@ public class KnowledgeTreeController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addKnowledgeTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Tree tree) {
-		try {			lm.lock(ISPRODUCER, treeId, uid);
+	public Response addKnowledgeTree(@HeaderParam("uid") int uid, Tree tree) {
+		try {	
 
 			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree));
-		}catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

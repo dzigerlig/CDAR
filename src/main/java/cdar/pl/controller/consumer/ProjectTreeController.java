@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.CreationTree;
+import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.manager.consumer.ProjectTreeManager;
@@ -23,6 +25,8 @@ import cdar.pl.controller.UserController;
 
 @Path("ptrees")
 public class ProjectTreeController {
+	private final boolean ISPRODUCER = false;
+	private LockingManager lm = new LockingManager();
 	private ProjectTreeManager ptm = new ProjectTreeManager();
 
 	@GET
@@ -66,11 +70,15 @@ public class ProjectTreeController {
 	@POST
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateProjectTree(@PathParam("ptreeid") int treeId,
-			Tree tree) {
+	public Response updateProjectTree(@HeaderParam("uid") int uid,
+			@PathParam("ptreeid") int treeId, Tree tree) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			tree.setId(treeId);
 			return StatusHelper.getStatusOk(ptm.updateProjectTree(tree));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -79,10 +87,15 @@ public class ProjectTreeController {
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteTree(Tree tree) {
+	public Response deleteTree(@HeaderParam("uid") int uid,
+			@PathParam("ptreeid") int treeId, Tree tree) {
 		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			ptm.deleteProjectTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -126,8 +139,9 @@ public class ProjectTreeController {
 	@POST
 	@Path("{ptreeid}/users/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setUserRight(@PathParam("ptreeid") int treeId,@PathParam("uid") int userId,User user) {
-		try {	
+	public Response setUserRight(@PathParam("ptreeid") int treeId,
+			@PathParam("uid") int userId, User user) {
+		try {
 			user.setId(userId);
 			UserManager um = new UserManager();
 			um.setConsumerUserRight(treeId, user);
