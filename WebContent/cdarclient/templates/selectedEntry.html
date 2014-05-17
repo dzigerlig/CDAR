@@ -28,6 +28,20 @@
 					</div>
 				</tab>
 			</tabset>
+			<div>
+				<div class="col-md-2">switch wiki entry to</div>
+				<div class="col-md-10">
+					<form data-role="form"
+						data-ng-submit="updateWikiTitle(); updatedWikiTitle=''">
+						<div class="input-append">
+							<input class="form-horizontal" placeholder="wiki title"
+								required data-ng-model="updatedWikiTitle" />
+							<button class="btn btn-success" type="submit">Update
+								{{DescriptionService.getNodeDescription()}} Wiki-Title</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 		<div data-ng-show="selectedNode.id">
 		<h2>{{DescriptionService.getSubnodeDescription()}}:</h2>

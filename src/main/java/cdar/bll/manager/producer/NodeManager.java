@@ -102,6 +102,9 @@ public class NodeManager {
 		if (node.getTreeId()!=0) {
 			updatedNode.setTreeId(node.getTreeId());
 		}
+		if (node.getWikititle()!=null) {
+			updatedNode.setWikititle(node.getWikititle());
+		}
 		
 		return nr.updateNode(updatedNode);
 	}
