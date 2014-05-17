@@ -1,4 +1,4 @@
-package cdar;
+package cdar.dal;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -24,5 +24,4 @@ public class PropertyHelper {
 		}
 		return null;
 	}
-
 }

@@ -232,7 +232,7 @@ public class NodeRepository {
 	}
 
 	public Node updateNode(Node node) throws UnknownNodeException {
-		final String sqlNode = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ?  WHERE id = ?",DBTableHelper.NODE);
+		final String sqlNode = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ?, WIKITITLE = ?  WHERE id = ?",DBTableHelper.NODE);
 		final String sqlMapping = String.format("INSERT INTO %s (DID, KNID) VALUES (?, ?) ON DUPLICATE KEY UPDATE DID = ?", DBTableHelper.NODEMAPPING);
 
 		try (Connection connection = DBConnection.getConnection();
@@ -241,7 +241,10 @@ public class NodeRepository {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, node.getTitle());
 			preparedStatement.setInt(3, node.getDynamicTreeFlag());
-			preparedStatement.setInt(4, node.getId());
+			preparedStatement.setString(4, node.getWikititle());
+			preparedStatement.setInt(5, node.getId());
+			
+			System.out.println("wikititle: " + node.getWikititle());
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {

@@ -1,15 +1,11 @@
 package cdar.bll.entity;
-
-import java.io.InputStream;
-import java.util.Properties;
-
 import info.bliki.wiki.model.WikiModel;
 
 import org.wikipedia.Wiki;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
+import cdar.dal.PropertyHelper;
 import cdar.dal.exceptions.UnknownUserException;
 
 public class WikiEntry extends WikiEntity {
@@ -51,7 +47,7 @@ public class WikiEntry extends WikiEntity {
 		}
 	}
 
-	public WikiEntry(Subnode subnode) {
+	public WikiEntry(Subnode subnode)  {
 		super(subnode.getId(), subnode.getCreationTime(), subnode
 				.getLastModificationTime(), subnode.getTitle(), subnode
 				.getWikititle());
@@ -65,7 +61,7 @@ public class WikiEntry extends WikiEntity {
 		}
 	}
 
-	private void fillWikiContent() {
+	private void fillWikiContent()  {
 		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
 
 		try {

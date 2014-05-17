@@ -322,30 +322,53 @@ app
 										timeout : 3000
 									});
 								} else {
-									TreeService
-											.addSubnode(
-													{
-														entity1 : 'ktrees',
-														id1 : $scope.knowledgetree.id,
-														id2 : $scope.selectedNode.id
-													},
-													{
-														nodeId : $scope.selectedNode.id,
-														title : this.newSubnodeName
-													},
-													function(response) {
-														$scope
-																.getSubnodesOfNode();
-													},
-													function(error) {
-														noty({
-															type : 'alert',
-															text : 'cannot add '
-																	+ DescriptionService
-																			.getSubnodeDescription(),
-															timeout : 1500
-														});
-													});
+									TreeService.addSubnode({
+										entity1 : 'ktrees',
+										id1 : $scope.knowledgetree.id,
+										id2 : $scope.selectedNode.id
+									},	{
+										nodeId : $scope.selectedNode.id,
+										title : this.newSubnodeName
+									},	function(response) {
+										$scope.getSubnodesOfNode();
+									},	function(error) {
+										noty({
+											type : 'alert',
+											text : 'cannot add '+ DescriptionService.getSubnodeDescription(),
+											timeout : 1500
+										});
+									});
+								}
+							};
+							
+							$scope.newSubnodeWikiName = "";
+							$scope.newSubnodeWikiTitle = "";
+							
+							$scope.addSubnodeByWikiTitle = function() {
+								if (this.newSubnodeWikiName.length>45) {
+									noty({
+										type : 'alert',
+										text : 'Please enter a text with less than 45 Characters',
+										timeout : 3000
+									});
+								} else {
+									TreeService.addSubnode({
+										entity1 : 'ktrees',
+										id1 : $scope.knowledgetree.id,
+										id2 : $scope.selectedNode.id
+									}, {
+										nodeId : $scope.selectedNode.id,
+										title : this.newSubnodeWikiName,
+										wikititle : this.newSubnodeWikiTitle
+									}, function(response) {
+										$scope.getSubnodesOfNode();
+									}, function(error) {
+										noty({
+											type : 'alert',
+											text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
+											timeout : 1500
+										});
+									});
 								}
 							};
 

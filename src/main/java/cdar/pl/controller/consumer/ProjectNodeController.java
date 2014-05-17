@@ -10,11 +10,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.wiki.MediaWikiModel;
+import cdar.dal.PropertyHelper;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes")
