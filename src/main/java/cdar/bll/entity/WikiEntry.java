@@ -7,7 +7,7 @@ import cdar.PropertyHelper;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.UnknownUserException;
-import cdar.dal.wiki.WikiRepositoryq;
+import cdar.dal.wiki.WikiRepository;
 
 public class WikiEntry extends WikiEntity {
 	private int nodeId;
@@ -94,7 +94,7 @@ public class WikiEntry extends WikiEntity {
 	public WikiEntry saveEntry(String username, String password)
 			throws UnknownUserException {
 		try {
-			WikiRepositoryq wikiConnection = new WikiRepositoryq();
+			WikiRepository wikiConnection = new WikiRepository();
 			Wiki wiki = wikiConnection.getConnection(username, password);
 			wiki.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();

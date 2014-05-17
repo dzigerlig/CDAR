@@ -11,7 +11,7 @@ import cdar.PropertyHelper;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.WikiLoginException;
-import cdar.dal.wiki.WikiRepositoryq;
+import cdar.dal.wiki.WikiRepository;
 
 public class MediaWikiCreationModel extends Thread {
 	private int uid;
@@ -48,7 +48,7 @@ public class MediaWikiCreationModel extends Thread {
 	}
 
 	public void createNewWikiEntry(String username, String password) throws WikiLoginException {
-		WikiRepositoryq wikiConnection = new WikiRepositoryq();
+		WikiRepository wikiConnection = new WikiRepository();
 		Wiki wiki = wikiConnection.getConnection(username, password);
 		try {
 			createEntry(wiki);

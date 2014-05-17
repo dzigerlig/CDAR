@@ -8,7 +8,7 @@ import org.wikipedia.Wiki;
 import cdar.PropertyHelper;
 import cdar.dal.exceptions.WikiLoginException;
 
-public class WikiRepositoryq {
+public class WikiRepository {
 	private static Map<String, Wiki> connectionMap = new HashMap<String, Wiki>();
 
 	public Wiki getConnection(String username, String password) throws WikiLoginException {

@@ -19,8 +19,8 @@ import cdar.dal.exceptions.UsernameInvalidException;
 import cdar.dal.exceptions.WikiLoginException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
-import cdar.dal.wiki.WikiRepositoryq;
-import cdar.dal.wiki.WikiRepositoryq;
+import cdar.dal.wiki.WikiRepository;
+import cdar.dal.wiki.WikiRepository;
 
 public class UserManager {
 	private UserRepository userRepository = new UserRepository();
@@ -35,7 +35,7 @@ public class UserManager {
 
 		if (user.getPassword().equals(password)) {
 			try {
-				WikiRepositoryq wikiConnection = new WikiRepositoryq();
+				WikiRepository wikiConnection = new WikiRepository();
 				wikiConnection.getConnection(username, password);
 			} catch (WikiLoginException ex) {
 				System.out.println(ex.getMessage());
@@ -55,7 +55,7 @@ public class UserManager {
 		try {
 			if (createWikiUser) {
 				try {
-					WikiRepositoryq wikiConnection = new WikiRepositoryq();
+					WikiRepository wikiConnection = new WikiRepository();
 					wikiConnection.getConnection(user.getUsername(), user.getPassword());
 				} catch (WikiLoginException ex) {
 					WikiRegistrationManager wrm = new WikiRegistrationManager();
