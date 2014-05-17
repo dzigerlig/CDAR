@@ -10,10 +10,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeLinkManager;
+import cdar.dal.producer.NodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")
@@ -90,8 +92,16 @@ public class KnowledgeNodeLinkController {
 	// Changed
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
+	public Response drillDownLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int ktreeid,@PathParam("nodeid") int nodeId) {
 		try {
+			if (nodeId == 0) {
+				Node rootNode = new NodeRepository().getRoot(ktreeid);
+				if(rootNode==null)
+				{
+					return StatusHelper.getStatusOk(null);
+				}
+				nodeId = rootNode.getId();
+			}
 			return StatusHelper.getStatusOk(nlm.drillDown(uid,nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();

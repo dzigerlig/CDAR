@@ -606,7 +606,8 @@ app.controller("KnowledgeTreeController",
 								}, function(resNodes) {
 									myJsTree.directoryDataToArray(resDirectory,
 											resNodes);
-									$scope.getSubnodes(resNodes);
+									$scope.drillDownNode(0);
+									//$scope.getSubnodes(resNodes);
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -624,7 +625,7 @@ app.controller("KnowledgeTreeController",
 									timeout : 1500
 								});
 							});
-
+/*
 							$scope.getSubnodes = function(resNodes) {
 								TreeService
 										.getSubnodesFromTree(
@@ -667,7 +668,7 @@ app.controller("KnowledgeTreeController",
 										timeout : 1500
 									});
 								});
-							};
+							};*/
 
 							$scope.updateLink = function(linkId, subnodeid) {
 								TreeService.updateLink({
@@ -1040,7 +1041,9 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resNodes) {
-									$scope.drillUpSubnode(nodeid, resNodes);
+									if(resNodes.length){
+										$scope.drillUpSubnode(nodeid, resNodes);
+									}
 								}, function(error) {
 									noty({
 										type : 'alert',
@@ -1056,7 +1059,9 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resNodes) {
-									$scope.drillDownSubnode(nodeid, resNodes);
+									if(resNodes.length){
+										$scope.drillDownSubnode(nodeid, resNodes);
+									}
 								}, function(error) {
 									noty({
 										type : 'alert',

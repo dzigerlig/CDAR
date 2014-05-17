@@ -54,7 +54,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 function (resNodes) {
                     myJsTree.directoryDataToArray(resDirectory,
                         resNodes);
-                    $scope.getSubnodes(resNodes);
+					$scope.drillDownNode(0);
+                   // $scope.getSubnodes(resNodes);
                 }, function(error) {
                 	noty({
         				type : 'alert',
@@ -70,7 +71,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			});
         });
     };
-    $scope.getSubnodes = function (resNodes) {
+   /* $scope.getSubnodes = function (resNodes) {
         TreeService.getSubnodesFromTree({
             entity1: 'ptrees',
             id1: $routeParams.treeId
@@ -100,7 +101,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				timeout : 1500
 			});
         });
-    };
+    };*/
 
     $scope.updateLink = function(linkId, subnodeid) {
         TreeService.updateLink({
@@ -464,7 +465,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id2 : nodeid
 		}, function(resNodes) {
-			$scope.drillUpSubnode(nodeid, resNodes);
+			if(resNodes.length){
+				$scope.drillUpSubnode(nodeid, resNodes);
+			}
 		}, function(error) {
 			noty({
 				type : 'alert',
@@ -480,7 +483,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id2 : nodeid
 		}, function(resNodes) {
-			$scope.drillDownSubnode(nodeid, resNodes);
+			if(resNodes.length){
+				$scope.drillDownSubnode(nodeid, resNodes);
+			}
 		}, function(error) {
 			noty({
 				type : 'alert',

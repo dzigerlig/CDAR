@@ -143,4 +143,8 @@ public class NodeManager {
 		}
 		return nodes;
 	}
+
+	public Node getRoot(int ktreeid) throws EntityException, UnknownNodeException {
+		return nr.getRoot(ktreeid);
+	}
 }

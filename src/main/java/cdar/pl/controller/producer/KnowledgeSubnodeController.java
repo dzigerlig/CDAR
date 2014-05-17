@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
+import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.User;
@@ -25,6 +26,7 @@ import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.wiki.MediaWikiModel;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.producer.NodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
@@ -131,8 +133,16 @@ public class KnowledgeSubnodeController {
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownSubnode(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
+	public Response drillDownSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int ktreeid,@PathParam("nodeid") int nodeId) {
 		try {
+			if (nodeId == 0) {
+				Node rootNode = new NodeRepository().getRoot(ktreeid);
+				if(rootNode==null)
+				{
+					return StatusHelper.getStatusOk(null);
+				}
+				nodeId = rootNode.getId();
+			}
 			return StatusHelper.getStatusOk(sm.drillDown(uid, nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
