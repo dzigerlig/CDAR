@@ -20,7 +20,7 @@ import cdar.dal.user.UserRepository;
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(int uid, int treeId, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException   {
+	public Subnode addSubnode(int uid, int treeId, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException, UnknownTreeException   {
 		boolean createSubnode = true;
 		if (subnode.getWikititle()!=null) {
 			createSubnode = false;

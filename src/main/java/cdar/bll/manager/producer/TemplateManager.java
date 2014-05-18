@@ -69,7 +69,7 @@ public class TemplateManager {
 
 	public String getDefaultKnowledgeTemplateText(int ktrid) throws EntityException, UnknownTreeException   {
 		for (Template template : tr.getTemplates(ktrid)) {
-			if (template.getIsDefault() && !template.getDecisionMade()) {
+			if (template.getIsDefault() && !template.getDecisionMade() && !template.getIsSubnode()) {
 				return template.getTemplatetext();
 			}
 		}
@@ -78,7 +78,7 @@ public class TemplateManager {
 	
 	public String getDefaultProjectTemplateText(int ktrid) throws EntityException, UnknownTreeException {
 		for (Template template : tr.getTemplates(ktrid)) {
-			if (template.getIsDefault() && template.getDecisionMade()) {
+			if (template.getIsDefault() && template.getDecisionMade() && !template.getIsSubnode()) {
 				return template.getTemplatetext();
 			}
 		}
@@ -91,8 +91,12 @@ public class TemplateManager {
 		return tr.updateTemplate(renamedTemplate);
 	}
 
-	public String getDefaultSubnodeTemplateText(int treeId) {
-		// TODO Auto-generated method stub
+	public String getDefaultSubnodeTemplateText(int treeId) throws EntityException, UnknownTreeException {
+		for (Template template : tr.getTemplates(treeId)) {
+			if (template.getIsDefault() && !template.getDecisionMade() && template.getIsSubnode()) {
+				return template.getTemplatetext();
+			}
+		}
 		return null;
 	}
 }
