@@ -7,6 +7,7 @@ import cdar.PropertyHelper;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.wiki.WikiRepository;
 
 public class WikiEntry extends WikiEntity {
 	private int nodeId;
@@ -93,9 +94,9 @@ public class WikiEntry extends WikiEntity {
 	public WikiEntry saveEntry(String username, String password)
 			throws UnknownUserException {
 		try {
-			Wiki c = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
-			c.login(username, password);
-			c.edit(getWikititle(), getWikiContentPlain(), "");
+			WikiRepository wikiConnection = new WikiRepository();
+			Wiki wiki = wikiConnection.getConnection(username, password);
+			wiki.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();
 			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")), String.format("%s/index.php/${title}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")));
 			setWikiContentHtml(sb.toString());
