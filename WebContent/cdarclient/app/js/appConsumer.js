@@ -1,9 +1,8 @@
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService) {
+app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', '$modal', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService, $modal) {
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
-    $scope.DescriptionService = DescriptionService;
     $scope.DescriptionService = DescriptionService;
     $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
     $scope.defaultNodeName = DescriptionService.getNodeDescription();
@@ -845,31 +844,46 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.deleteSubnode = function(subnodeId) {
-		TreeService.deleteSubnode({
-			entity1 : 'ptrees',
-			id1 : $routeParams.treeId,
-			id2 : $scope.selectedNode.id
-		}, {
-			id : subnodeId
-		}, function(response) {
-			$scope.getSubnodesOfNode(response);
-			noty({
-				type : 'success',
-				text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
-				timeout : 1500
+		$modal.open({ 
+            templateUrl: 'templates/confirmation.html',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                data: function() { 
+                    return {
+                        title: 'Delete Comment',
+                        message: 'Do you really want to delete this ' + DescriptionService.getSubnodeDescription() 
+                    };
+                }
+                },
+                controller: 'ConfirmationController' 
+		}).result.then(function(result) {
+			TreeService.deleteSubnode({
+				entity1 : 'ptrees',
+				id1 : $routeParams.treeId,
+				id2 : $scope.selectedNode.id
+			}, {
+				id : subnodeId
+			}, function(response) {
+				$scope.getSubnodesOfNode(response);
+				noty({
+					type : 'success',
+					text : DescriptionService.getSubnodeDescription() + ' deleted successfully',
+					timeout : 1500
+				});
+	            if ($scope.selectedSubnode.id === subnodeId) {
+	                $scope.selectedSubnode.id = 0;
+	                updateSubnodeTitle();
+	            }
+			}, function(error) {
+				 if (!$scope.showLockingNotification(error)) {
+					 noty({
+						 type : 'alert',
+						 text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
+						 timeout : 1500
+					 });
+				 }
 			});
-            if ($scope.selectedSubnode.id === subnodeId) {
-                $scope.selectedSubnode.id = 0;
-                updateSubnodeTitle();
-            }
-		}, function(error) {
-			 if (!$scope.showLockingNotification(error)) {
-				 noty({
-					 type : 'alert',
-					 text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
-					 timeout : 1500
-				 });
-			 }
 		});
 	};
 	
