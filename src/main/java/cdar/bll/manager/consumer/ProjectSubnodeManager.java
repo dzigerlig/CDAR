@@ -34,15 +34,11 @@ public class ProjectSubnodeManager {
 		projectSubnode = psr.createProjectSubnode(projectSubnode);
 		
 		if (createSubnode) {
-			String templateContent = null;
-			
-			if (templateContent == null) {
-				PropertyHelper propertyHelper = new PropertyHelper();
-				String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
-			}
+			PropertyHelper propertyHelper = new PropertyHelper();
+			String content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 		
 			MediaWikiManager mwm = new MediaWikiManager();
-			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), templateContent);
+			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content);
 		}
 		
 		return projectSubnode;

@@ -52,16 +52,10 @@ public class ProjectNodeManager {
 		projectNode = pnr.createProjectNode(projectNode);
 		
 		if (createSubnode) {
-			TemplateManager tm = new TemplateManager();
-			String templateContent = tm.getDefaultKnowledgeTemplateText(projectNode.getTreeId());
-			
-			if (templateContent == null) {
-				PropertyHelper propertyHelper = new PropertyHelper();
-				templateContent = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
-			}
-			
+			PropertyHelper propertyHelper = new PropertyHelper();
+			String content = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
 			MediaWikiManager mwm = new MediaWikiManager();
-			mwm.createWikiEntry(uid, projectNode.getWikititle(), templateContent);
+			mwm.createWikiEntry(uid, projectNode.getWikititle(), content);
 		}
 		return projectNode;
 	}

@@ -20,7 +20,7 @@ import cdar.dal.user.UserRepository;
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
 
-	public Subnode addSubnode(int uid, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException   {
+	public Subnode addSubnode(int uid, int treeId, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException   {
 		boolean createSubnode = true;
 		if (subnode.getWikititle()!=null) {
 			createSubnode = false;
@@ -29,7 +29,8 @@ public class SubnodeManager {
 		subnode = sr.createSubnode(subnode);
 		
 		if (createSubnode) {
-			String templateContent = null;
+			TemplateManager tm = new TemplateManager();
+			String templateContent = tm.getDefaultSubnodeTemplateText(treeId);
 		
 			if (templateContent == null) {
 				PropertyHelper propertyHelper = new PropertyHelper();

@@ -90,4 +90,9 @@ public class TemplateManager {
 		renamedTemplate.setTitle(template.getTitle());
 		return tr.updateTemplate(renamedTemplate);
 	}
+
+	public String getDefaultSubnodeTemplateText(int treeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
