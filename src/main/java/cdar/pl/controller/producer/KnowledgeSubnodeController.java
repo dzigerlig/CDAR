@@ -51,7 +51,7 @@ public class KnowledgeSubnodeController {
 	public Response addSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Subnode subnode) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-			return StatusHelper.getStatusCreated(sm.addSubnode(uid, subnode));
+			return StatusHelper.getStatusCreated(sm.addSubnode(uid, treeId, subnode));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
 		}catch (Exception e) {
