@@ -13,6 +13,7 @@ public class Template extends BasicEntity {
 	private String templatetexthtml;
 	private boolean isDefault = false;
 	private boolean decisionMade = false;
+	private boolean isSubnode = false;
 	
 	public Template() {
 		
@@ -81,5 +82,13 @@ public class Template extends BasicEntity {
 
 	public void setDecisionMade(boolean decisionMade) {
 		this.decisionMade = decisionMade;
+	}
+	
+	public boolean getIsSubnode() {
+		return isSubnode;
+	}
+	
+	public void setIsSubnode(boolean isSubnode) {
+		this.isSubnode = isSubnode;
 	}
 }

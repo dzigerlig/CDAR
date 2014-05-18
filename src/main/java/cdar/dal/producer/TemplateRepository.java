@@ -20,7 +20,7 @@ import cdar.dal.helpers.DateHelper;
 
 public class TemplateRepository {
 	public List<Template> getTemplates(int treeId) throws EntityException, UnknownTreeException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE FROM %s WHERE KTRID = ?",DBTableHelper.TEMPLATE);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE, ISSUBNODE FROM %s WHERE KTRID = ?",DBTableHelper.TEMPLATE);
 
 		List<Template> templates = new ArrayList<Template>();
 
@@ -40,6 +40,7 @@ public class TemplateRepository {
 					template.setTemplatetext(result.getString(5));
 					template.setIsDefault(result.getInt(6) == 1);
 					template.setDecisionMade(result.getInt(7) == 1);
+					template.setIsSubnode(result.getInt(8) == 1);
 					templates.add(template);
 				}
 			} catch (ParseException e) {
@@ -52,13 +53,12 @@ public class TemplateRepository {
 	}
 
 	public Template getTemplate(int templateId) throws UnknownTemplateException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE, ISSUBNODE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setInt(1, templateId);
-			
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -71,6 +71,7 @@ public class TemplateRepository {
 					template.setTemplatetext(result.getString(5));
 					template.setIsDefault(result.getInt(7) == 1);
 					template.setDecisionMade(result.getInt(8) == 1);
+					template.setIsSubnode(result.getInt(9) == 1);
 					return template;
 				}
 			} catch (ParseException e) {
@@ -83,7 +84,7 @@ public class TemplateRepository {
 	}
 	
 	public Template createTemplate(Template template) throws UnknownTemplateException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.TEMPLATE);
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE, ISSUBNODE) VALUES (?, ?, ?, ?, ?, ?, ?)",DBTableHelper.TEMPLATE);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -103,6 +104,12 @@ public class TemplateRepository {
 			} else {
 				preparedStatement.setInt(6, 0);
 			}
+			
+			if (template.getIsSubnode()) {
+				preparedStatement.setInt(7, 1);
+			} else {
+				preparedStatement.setInt(7, 0);
+			}
 
 			preparedStatement.executeUpdate();
 
@@ -118,7 +125,7 @@ public class TemplateRepository {
 	}
 	
 	public Template updateTemplate(Template template) throws UnknownTemplateException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ? WHERE id = ?",DBTableHelper.TEMPLATE);
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ?, ISSUBNODE = ? WHERE id = ?",DBTableHelper.TEMPLATE);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
 			preparedStatement.setString(2, template.getTitle());
@@ -133,7 +140,12 @@ public class TemplateRepository {
 			} else {
 				preparedStatement.setInt(5, 0);
 			}
-			preparedStatement.setInt(6, template.getId());
+			if (template.getIsSubnode()) {
+				preparedStatement.setInt(6, 1);
+			} else {
+				preparedStatement.setInt(6, 0);
+			}
+			preparedStatement.setInt(7, template.getId());
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			throw new UnknownTemplateException();
