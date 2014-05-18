@@ -45,11 +45,9 @@ public class ProjectNodeController {
 
 			if (projectNode.getTitle() == null) {
 				PropertyHelper propertyHelper = new PropertyHelper();
-				projectNode.setTitle("new "
-						+ propertyHelper.getProperty("NODE_DESCRIPTION"));
+				projectNode.setTitle(String.format("new %s", propertyHelper.getProperty("NODE_DESCRIPTION")));
 			}
-			return StatusHelper.getStatusCreated(pnm
-					.addProjectNode(projectNode));
+			return StatusHelper.getStatusCreated(pnm.addProjectNode(uid, projectNode));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));

@@ -3,6 +3,7 @@ package cdar.bll.manager.producer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
 import cdar.bll.wiki.MediaWikiManager;
@@ -31,7 +32,8 @@ public class SubnodeManager {
 			String templateContent = null;
 		
 			if (templateContent == null) {
-				templateContent = "== CDAR SUBNODE ==";
+				PropertyHelper propertyHelper = new PropertyHelper();
+				String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 			}
 		
 			MediaWikiManager mwm = new MediaWikiManager();

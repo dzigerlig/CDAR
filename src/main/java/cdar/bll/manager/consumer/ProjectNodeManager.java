@@ -3,6 +3,7 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
@@ -36,13 +37,33 @@ public class ProjectNodeManager {
 		return pnr.getProjectNode(projectNodeId);
 	}
 
-	public ProjectNode addProjectNode(ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException {
+	public ProjectNode addProjectNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException, UnknownUserException, UnknownTreeException {
+		boolean createSubnode = true;
+		if(projectNode.getWikititle()!=null) {
+			createSubnode = false;
+		}
+		
 		if (projectNode.getDirectoryId() == 0) {
 			ProjectDirectoryRepository dr = new ProjectDirectoryRepository();
 			int rootDirectoryId = dr.getDirectories(projectNode.getTreeId()).get(0).getId();
 			projectNode.setDirectoryId(rootDirectoryId);
 		}
-		return pnr.createProjectNode(projectNode);
+		
+		projectNode = pnr.createProjectNode(projectNode);
+		
+		if (createSubnode) {
+			TemplateManager tm = new TemplateManager();
+			String templateContent = tm.getDefaultKnowledgeTemplateText(projectNode.getTreeId());
+			
+			if (templateContent == null) {
+				PropertyHelper propertyHelper = new PropertyHelper();
+				templateContent = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
+			}
+			
+			MediaWikiManager mwm = new MediaWikiManager();
+			mwm.createWikiEntry(uid, projectNode.getWikititle(), templateContent);
+		}
+		return projectNode;
 	}
 
 	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {

@@ -3,6 +3,7 @@ package cdar.bll.manager.producer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.MediaWikiManager;
@@ -42,12 +43,15 @@ public class NodeManager {
 			node.setDirectoryId(rootDirectoryId);
 		}
 
+		node = nr.createNode(node);
+		
 		TemplateManager tm = new TemplateManager();
 		String templateContent = tm.getDefaultKnowledgeTemplateText(node.getTreeId());
-		node = nr.createNode(node);
-
+		
+		
 		if (templateContent == null) {
-			templateContent = "== CDAR ==";
+			PropertyHelper propertyHelper = new PropertyHelper();
+			templateContent = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
 		}
 		
 		MediaWikiManager mwm = new MediaWikiManager();
