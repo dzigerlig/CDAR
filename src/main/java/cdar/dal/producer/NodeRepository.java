@@ -274,8 +274,6 @@ public class NodeRepository {
 			preparedStatement.setString(4, node.getWikititle());
 			preparedStatement.setInt(5, node.getId());
 
-			System.out.println("wikititle: " + node.getWikititle());
-
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
 			throw new UnknownNodeException();

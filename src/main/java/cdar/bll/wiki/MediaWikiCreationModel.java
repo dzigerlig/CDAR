@@ -19,8 +19,6 @@ public class MediaWikiCreationModel extends Thread {
 	private String content;
 	
 	private WikiEntryConcurrentHelper wikiHelper;
-	private PropertyHelper propertyHelper = new PropertyHelper();
-	
 
 	public MediaWikiCreationModel(int uid, String title, String content, WikiEntryConcurrentHelper wikiHelper) {
 		super();
@@ -29,7 +27,6 @@ public class MediaWikiCreationModel extends Thread {
 		setContent(content);
 		setUid(uid);
 	}
-
 
 	public String getTitle() {
 		return title;
