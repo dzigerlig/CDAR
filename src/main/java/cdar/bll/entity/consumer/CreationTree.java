@@ -21,7 +21,7 @@ public class CreationTree extends Tree {
 		return copyTreeId;
 	}
 
-	public void setCopyTreeId(int copyTreeid) {
-		this.copyTreeId = copyTreeid;
+	public void setCopyTreeId(int copyTreeId) {
+		this.copyTreeId = copyTreeId;
 	}
 }

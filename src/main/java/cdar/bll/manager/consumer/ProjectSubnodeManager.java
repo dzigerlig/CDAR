@@ -20,6 +20,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
+import cdar.pl.controller.StatusHelper;
 
 public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -223,9 +224,17 @@ public class ProjectSubnodeManager {
 		return subnodes;
 	}
 
-	public Set<ProjectSubnode> drillDown(int uid, int nodeId)
+	public Set<ProjectSubnode> drillDown(int uid, int treeId, int nodeId)
 			throws UnknownProjectNodeLinkException, EntityException,
-			UnknownUserException {
+			UnknownUserException, UnknownNodeException {
+		if (nodeId == 0) {
+			ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
+			if (rootNode == null) {
+				return null;
+			}
+			nodeId = rootNode.getId();
+		}
+		
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
 		for (ProjectSubnode subnode : psr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);

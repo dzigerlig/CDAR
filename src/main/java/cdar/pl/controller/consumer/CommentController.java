@@ -39,7 +39,6 @@ public class CommentController {
 			Comment comment) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			comment.setUserId(uid);
 			comment.setNodeId(nodeId);
 			return StatusHelper.getStatusCreated(cm.addComment(comment));
@@ -71,7 +70,6 @@ public class CommentController {
 			@PathParam("commentid") int commentId, Comment comment) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			comment.setId(commentId);
 			return StatusHelper.getStatusOk(cm.updateComment(comment));
 		} catch (LockingException e) {
@@ -89,7 +87,6 @@ public class CommentController {
 			@PathParam("ptreeid") int treeId, Comment comment) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			cm.deleteComment(comment.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {

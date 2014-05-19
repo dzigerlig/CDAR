@@ -3,6 +3,7 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.Directory;
 import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.exceptions.CreationException;
@@ -30,6 +31,10 @@ public class ProjectDirectoryManager {
 
 	public Directory addDirectory(Directory directory) throws CreationException
 	{ 
+		if (directory.getTitle() == null) {
+			PropertyHelper propertyHelper = new PropertyHelper();
+			directory.setTitle(propertyHelper.getProperty("DIRECTORY_DESCRIPTION"));
+		}
 		return pdr.createDirectory(directory);
 	}
 

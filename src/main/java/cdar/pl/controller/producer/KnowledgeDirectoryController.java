@@ -34,12 +34,9 @@ public class KnowledgeDirectoryController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Directory directory) {
+	public Response addDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Directory directory) {
 		try{
 			lm.lock(ISPRODUCER, treeId, uid);
-			if (directory.getTitle() == null) {
-				directory.setTitle("new folder");
-			}
 			return StatusHelper.getStatusCreated(dm.addDirectory(directory));
 		}catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
@@ -52,7 +49,7 @@ public class KnowledgeDirectoryController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Directory directory) {
+	public Response deleteDirectory(@HeaderParam("uid") int uid, @PathParam("ktreeid") int treeId, Directory directory) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			dm.deleteDirectory(directory.getId());
@@ -67,7 +64,7 @@ public class KnowledgeDirectoryController {
 	@POST
 	@Path("{directoryid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,@PathParam("directoryid") int directoryId,
+	public Response updateDirectory(@HeaderParam("uid") int uid, @PathParam("ktreeid") int treeId, @PathParam("directoryid") int directoryId,
 			Directory directory) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);

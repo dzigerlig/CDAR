@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.wikipedia.Wiki;
 
 import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;

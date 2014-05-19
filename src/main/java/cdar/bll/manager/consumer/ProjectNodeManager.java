@@ -19,6 +19,7 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.user.UserRepository;
+import cdar.pl.controller.StatusHelper;
 
 public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -41,6 +42,12 @@ public class ProjectNodeManager {
 		boolean createSubnode = true;
 		if(projectNode.getWikititle()!=null) {
 			createSubnode = false;
+		}
+		
+		if (projectNode.getTitle() == null) {
+			PropertyHelper propertyHelper = new PropertyHelper();
+			projectNode.setTitle(String.format("new %s",
+					propertyHelper.getProperty("NODE_DESCRIPTION")));
 		}
 		
 		if (projectNode.getDirectoryId() == 0) {
@@ -114,7 +121,15 @@ public class ProjectNodeManager {
 		}
 		return nodes;
 	}
-	public Set<ProjectNode> drillDown(int uid, int nodeId) throws EntityException, UnknownProjectNodeException, UnknownUserException {
+	public Set<ProjectNode> drillDown(int uid, int treeId, int nodeId) throws EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException {
+		if (nodeId == 0) {
+			ProjectNode rootNode = getRoot(treeId);
+			if (rootNode == null) {
+				return null;
+			}
+			nodeId = rootNode.getId();
+		}
+		
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getNode(nodeId));
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);

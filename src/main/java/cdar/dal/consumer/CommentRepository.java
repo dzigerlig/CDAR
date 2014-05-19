@@ -20,7 +20,7 @@ import cdar.dal.helpers.DateHelper;
 
 public class CommentRepository {
 
-	public List<Comment> getComments(int kpnid) throws EntityException {
+	public List<Comment> getComments(int nodeId) throws EntityException {
 		String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.UID WHERE KPNID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		List<Comment> usercomments = new ArrayList<Comment>();
@@ -28,7 +28,7 @@ public class CommentRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, kpnid);
+			preparedStatement.setInt(1, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -36,7 +36,7 @@ public class CommentRepository {
 					usercomment.setId(result.getInt(1));
 					usercomment.setCreationTime(DateHelper.getDate(result.getString(2)));
 					usercomment.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					usercomment.setNodeId(kpnid);
+					usercomment.setNodeId(nodeId);
 					usercomment.setUserId(result.getInt(4));
 					usercomment.setComment(result.getString(5));
 					usercomment.setUsername(result.getString(6));
@@ -51,13 +51,13 @@ public class CommentRepository {
 		return usercomments;
 	}
 	
-	public Comment getComment(int id) throws UnknownCommentException, EntityException {
+	public Comment getComment(int commentId) throws UnknownCommentException, EntityException {
 		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.ID WHERE ID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, commentId);
 			
 
 			try (ResultSet result = preparedStatement.executeQuery()) {

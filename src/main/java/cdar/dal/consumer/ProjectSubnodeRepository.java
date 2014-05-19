@@ -23,14 +23,14 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
 public class ProjectSubnodeRepository {
-	public List<ProjectSubnode> getSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
+	public List<ProjectSubnode> getSubnodes(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
 
 		List<ProjectSubnode> projectsubnodes = new ArrayList<ProjectSubnode>();
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)){
-			preparedStatement.setInt(1, kpnid);
+			preparedStatement.setInt(1, nodeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					ProjectSubnode projectSubnode = new ProjectSubnode();
@@ -42,7 +42,7 @@ public class ProjectSubnodeRepository {
 					projectSubnode.setPosition(result.getInt(6));
 					projectSubnode.setStatus(result.getInt(7));
 					projectSubnode.setInheritedTreeId(result.getInt(8));
-					projectSubnode.setNodeId(kpnid);
+					projectSubnode.setNodeId(nodeId);
 					projectsubnodes.add(projectSubnode);
 				}
 			} catch (ParseException ex) {

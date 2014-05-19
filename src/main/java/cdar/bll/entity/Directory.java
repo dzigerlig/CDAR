@@ -13,10 +13,10 @@ public class Directory extends BasicEntity implements Comparable<Directory> {
 	}
 
 	public Directory(int id, Date creationTime, Date lastModificationTime,
-			int parentid,int ktrid, String title) {
+			int parentId, int treeId, String title) {
 		super(id, creationTime, lastModificationTime);
-		setParentId(parentid);
-		setTreeId(ktrid);
+		setParentId(parentId);
+		setTreeId(treeId);
 		setTitle(title);
 	}
 

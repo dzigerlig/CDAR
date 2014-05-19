@@ -3,7 +3,6 @@ package cdar.bll.wiki;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -20,11 +19,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import cdar.dal.exceptions.UsernameInvalidException;
+import cdar.PropertyHelper;
 import cdar.dal.exceptions.WikiCreateUserException;
 
 public class WikiRegistrationManager {
-	private final String URL = "http://152.96.56.36/mediawiki/api.php/?";
+	private String URL = null;
+	
+	public WikiRegistrationManager() {
+		PropertyHelper propertyHelper = new PropertyHelper();
+		URL = String.format("%s/api.php/?", propertyHelper.getProperty("MEDIAWIKI_CONNECTION"));
+	}
 
 	public boolean createUser(String username, String password)
 			throws WikiCreateUserException {

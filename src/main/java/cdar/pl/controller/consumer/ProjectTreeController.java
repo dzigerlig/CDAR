@@ -59,10 +59,10 @@ public class ProjectTreeController {
 	@GET
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProjectTreeById(@PathParam("ptreeid") int ptreeid,
+	public Response getProjectTreeById(@PathParam("ptreeid") int treeId,
 			@HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusOk(ptm.getTree(ptreeid));
+			return StatusHelper.getStatusOk(ptm.getTree(treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

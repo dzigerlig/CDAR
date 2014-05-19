@@ -20,9 +20,9 @@ public class Template extends BasicEntity {
 	}
 
 	public Template(int id, Date creationTime, Date lastModificationTime,
-			String title, String templatetext, int treeid, boolean isDefault, boolean decisionMade) {
+			String title, String templatetext, int treeId, boolean isDefault, boolean decisionMade) {
 		super(id, creationTime, lastModificationTime);
-		setTreeId(treeid);
+		setTreeId(treeId);
 		setTitle(title);
 		setTemplatetext(templatetext);
 		setIsDefault(isDefault);

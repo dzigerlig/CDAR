@@ -13,8 +13,8 @@ public class ProjectNode extends Node {
 	}
 
 	public ProjectNode(int id, Date creationDate, Date lastModificationDate,
-			String title, String wikititle, int treeid, int dynamicTreeFlag, int did, int nodeStatus) {
-		super(id, creationDate, lastModificationDate, title, wikititle, treeid, dynamicTreeFlag, did);
+			String title, String wikititle, int treeId, int dynamicTreeFlag, int directoryId, int nodeStatus) {
+		super(id, creationDate, lastModificationDate, title, wikititle, treeId, dynamicTreeFlag, directoryId);
 		setStatus(nodeStatus);
 	}
 

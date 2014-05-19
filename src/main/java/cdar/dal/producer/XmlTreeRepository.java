@@ -50,12 +50,12 @@ public class XmlTreeRepository {
 		return xmlTrees;
 	}
 
-	public TreeXml getXmlTree(int id) throws UnknownXmlTreeException, EntityException {
+	public TreeXml getXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
 				.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, xmlTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					TreeXml xmlTree = new TreeXml();

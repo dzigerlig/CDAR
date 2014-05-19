@@ -42,12 +42,8 @@ public class ProjectNodeController {
 			@HeaderParam("uid") int uid, ProjectNode projectNode) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
-			if (projectNode.getTitle() == null) {
-				PropertyHelper propertyHelper = new PropertyHelper();
-				projectNode.setTitle(String.format("new %s", propertyHelper.getProperty("NODE_DESCRIPTION")));
-			}
-			return StatusHelper.getStatusCreated(pnm.addProjectNode(uid, projectNode));
+			return StatusHelper.getStatusCreated(pnm.addProjectNode(uid,
+					projectNode));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
@@ -75,7 +71,6 @@ public class ProjectNodeController {
 			ProjectNode node) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			node.setId(nodeId);
 			return StatusHelper.getStatusOk(pnm.updateProjectNode(uid, node));
 		} catch (LockingException e) {
@@ -99,7 +94,6 @@ public class ProjectNodeController {
 		}
 	}
 
-	// TODO locking??
 	@POST
 	@Path("{nodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -120,7 +114,6 @@ public class ProjectNodeController {
 	public Response drillUpNode(@HeaderParam("uid") int uid,
 			@PathParam("nodeid") int nodeId) {
 		try {
-
 			return StatusHelper.getStatusOk(pnm.drillUp(uid, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
@@ -133,14 +126,7 @@ public class ProjectNodeController {
 	public Response drillDownNode(@HeaderParam("uid") int uid,
 			@PathParam("ptreeid") int treeId, @PathParam("nodeid") int nodeId) {
 		try {
-			if (nodeId == 0) {
-				ProjectNode rootNode = pnm.getRoot(treeId);
-				if (rootNode == null) {
-					return StatusHelper.getStatusOk(null);
-				}
-				nodeId = rootNode.getId();
-			}
-			return StatusHelper.getStatusOk(pnm.drillDown(uid, nodeId));
+			return StatusHelper.getStatusOk(pnm.drillDown(uid, treeId, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -153,7 +139,6 @@ public class ProjectNodeController {
 			@HeaderParam("uid") int uid, ProjectNode projectNode) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			return StatusHelper.getStatusOk(pnm.renameNode(projectNode));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
@@ -170,7 +155,6 @@ public class ProjectNodeController {
 			@HeaderParam("uid") int uid, ProjectNode projectNode) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			pnm.deleteProjectNode(projectNode.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {

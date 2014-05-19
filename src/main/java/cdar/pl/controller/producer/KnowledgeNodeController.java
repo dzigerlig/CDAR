@@ -43,12 +43,6 @@ public class KnowledgeNodeController {
 			@HeaderParam("uid") int uid, Node node) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
-			if (node.getTitle() == null) {
-				PropertyHelper propertyHelper = new PropertyHelper();
-				node.setTitle("new "
-						+ propertyHelper.getProperty("NODE_DESCRIPTION"));
-			}
 			return StatusHelper.getStatusCreated(nm.addNode(uid, node));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
@@ -61,9 +55,9 @@ public class KnowledgeNodeController {
 	@GET
 	@Path("{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getNode(@PathParam("nodeid") int nodeid) {
+	public Response getNode(@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(nm.getNode(nodeid));
+			return StatusHelper.getStatusOk(nm.getNode(nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -73,11 +67,11 @@ public class KnowledgeNodeController {
 	@Path("{nodeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateNode(@HeaderParam("uid") int uid,
-			@PathParam("ktreeid") int treeId, @PathParam("nodeid") int nodeid,
+			@PathParam("ktreeid") int treeId, @PathParam("nodeid") int nodeId,
 			Node node) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-			node.setId(nodeid);
+			node.setId(nodeId);
 			return StatusHelper.getStatusOk(nm.updateNode(node));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
@@ -136,17 +130,9 @@ public class KnowledgeNodeController {
 	@Path("{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response drillDownNode(@HeaderParam("uid") int uid,
-			@PathParam("ktreeid") int ktreeid, @PathParam("nodeid") int nodeId) {
+			@PathParam("ktreeid") int treeId, @PathParam("nodeid") int nodeId) {
 		try {
-			if (nodeId == 0) {
-				Node rootNode = nm.getRoot(ktreeid);
-				if(rootNode==null)
-				{
-					return StatusHelper.getStatusOk(null);
-				}
-				nodeId = rootNode.getId();
-			}
-			return StatusHelper.getStatusOk(nm.drillDown(uid, nodeId));
+			return StatusHelper.getStatusOk(nm.drillDown(uid, treeId, nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -165,7 +151,6 @@ public class KnowledgeNodeController {
 		}
 	}
 
-	// TODO locking??
 	@POST
 	@Path("{nodeid}/wiki")
 	@Consumes(MediaType.APPLICATION_JSON)

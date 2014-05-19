@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -13,7 +14,9 @@ import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeLinkRepository;
+import cdar.dal.producer.NodeRepository;
 import cdar.dal.user.UserRepository;
+import cdar.pl.controller.StatusHelper;
 
 public class NodeLinkManager {
 	private NodeLinkRepository nlr = new NodeLinkRepository();
@@ -65,7 +68,15 @@ public class NodeLinkManager {
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 	
-	public Set<NodeLink> drillDown(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
+	public Set<NodeLink> drillDown(int uid, int treeId, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
+		if (nodeId == 0) {
+			Node rootNode = new NodeRepository().getRoot(treeId);
+			if (rootNode == null) {
+				return null;
+			}
+			nodeId = rootNode.getId();
+		}
+		
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}

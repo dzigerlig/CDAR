@@ -16,6 +16,7 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.producer.SubnodeRepository;
 import cdar.dal.user.UserRepository;
+import cdar.pl.controller.StatusHelper;
 
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
@@ -171,7 +172,14 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
-	public Set<Subnode> drillDown(int uid, int nodeId) throws EntityException, UnknownNodeException, UnknownUserException  {
+	public Set<Subnode> drillDown(int uid, int treeId, int nodeId) throws EntityException, UnknownNodeException, UnknownUserException  {
+		if (nodeId == 0) {
+			Node rootNode = new NodeRepository().getRoot(treeId);
+			if (rootNode == null) {
+				return null;
+			}
+			nodeId = rootNode.getId();
+		}
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);

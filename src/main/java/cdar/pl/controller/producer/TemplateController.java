@@ -34,7 +34,7 @@ public class TemplateController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Template template) {
+	public Response addTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusCreated(tm
@@ -50,11 +50,11 @@ public class TemplateController {
 	@GET
 	@Path("{templateid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTemplate(@PathParam("ktreeid") int ktreeid,
-			@PathParam("templateid") int templateid) {
+	public Response getTemplate(@PathParam("ktreeid") int treeId,
+			@PathParam("templateid") int templateId) {
 		try {
 			return StatusHelper
-					.getStatusOk(tm.getKnowledgeTemplate(templateid));
+					.getStatusOk(tm.getKnowledgeTemplate(templateId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -63,11 +63,11 @@ public class TemplateController {
 	@POST
 	@Path("{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,@PathParam("templateid") int templateid,
+	public Response updateTemplate(@HeaderParam("uid") int uid, @PathParam("ktreeid") int treeId, @PathParam("templateid") int templateId,
 			Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-			template.setId(templateid);
+			template.setId(templateId);
 			return StatusHelper.getStatusOk(tm.updateTemplate(template));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
@@ -80,7 +80,7 @@ public class TemplateController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Template template) {
+	public Response deleteTemplate(@HeaderParam("uid") int uid, @PathParam("ktreeid") int treeId, Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			tm.deleteTemplate(template.getId());

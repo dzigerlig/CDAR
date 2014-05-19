@@ -1,6 +1,5 @@
 package cdar.pl.controller;
 
-
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -14,9 +13,6 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
-import cdar.bll.manager.importexport.ConsumerImportExportManager;
-import cdar.dal.exceptions.EntityException;
-import cdar.dal.exceptions.UnknownXmlTreeException;
 
 @Path("users")
 public class UserController {
@@ -31,8 +27,7 @@ public class UserController {
 				user.setPassword("");
 				user.setAccesstoken("");
 			}
-			return Response
-					.ok(userList, MediaType.APPLICATION_JSON)
+			return Response.ok(userList, MediaType.APPLICATION_JSON)
 					.build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.NO_CONTENT).build();

@@ -1,5 +1,6 @@
 package cdar.bll.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import cdar.PropertyHelper;
@@ -16,10 +17,10 @@ public class Locking {
 
 	public Locking(int userId, int treeId, boolean isProducer) {
 		super();
-		this.userId = userId;
-		this.treeId = treeId;
-		this.isProducer = isProducer;
-		this.lockingTime = new Date();
+		setUserId(userId);
+		setTreeId(treeId);
+		setProducer(isProducer);
+		setLockingTime(lockingTime = new Date());
 		renewLockingTime();
 	}
 
@@ -56,20 +57,16 @@ public class Locking {
 		this.lockingTime = lockingTime;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void renewLockingTime() {
 		PropertyHelper property = new PropertyHelper();
-		Date d = new Date();
-		d.setHours(d.getHours()
-				+ Integer.valueOf(property.getProperty("LOCKING_HOUR")));
-		d.setMinutes(d.getMinutes()
-				+ Integer.valueOf(property.getProperty("LOCKING_MINUTE")));
-		setLockingTime(d);
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(new Date());
+	    calendar.add(Calendar.HOUR_OF_DAY, Integer.valueOf(property.getProperty("LOCKING_HOUR")));
+	    calendar.add(Calendar.MINUTE, Integer.valueOf(property.getProperty("LOCKING_MINUTE")));
+		setLockingTime(calendar.getTime());
 	}
-	
 
 	public boolean isExpired() {
 		return getLockingTime().before(new Date());
 	}
-
 }

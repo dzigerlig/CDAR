@@ -26,9 +26,9 @@ public class KnowledgeNodeLinkController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLinks(@PathParam("ktreeid") int ktreeid) {
+	public Response getLinks(@PathParam("ktreeid") int treeId) {
 		try {
-			return StatusHelper.getStatusOk(nlm.getNodeLinks(ktreeid));
+			return StatusHelper.getStatusOk(nlm.getNodeLinks(treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -36,12 +36,14 @@ public class KnowledgeNodeLinkController {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
+	public Response addNodeLink(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, NodeLink nodeLink) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusCreated(nlm.addNodeLink(nodeLink));
 		} catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -50,14 +52,16 @@ public class KnowledgeNodeLinkController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
+	public Response deleteNodeLink(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, NodeLink nodeLink) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			nlm.deleteNodeLink(nodeLink.getId());
 			return StatusHelper.getStatusOk(null);
-		}catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
-		}  catch (Exception e) {
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
+		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -65,44 +69,38 @@ public class KnowledgeNodeLinkController {
 	@POST
 	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNodeLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,NodeLink nodeLink) {
-		try {			lm.lock(ISPRODUCER, treeId, uid);
-
+	public Response updateNodeLink(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, NodeLink nodeLink) {
+		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusOk(nlm.updateNodeLink(nodeLink));
 		} catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
 	@GET
-	// Changed
 	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillUpLink(@HeaderParam("uid") int uid,@PathParam("nodeid") int nodeId) {
+	public Response drillUpLink(@HeaderParam("uid") int uid,
+			@PathParam("nodeid") int nodeId) {
 		try {
-			return StatusHelper.getStatusOk(nlm.drillUp(uid,nodeId));
+			return StatusHelper.getStatusOk(nlm.drillUp(uid, nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
 
 	@GET
-	// Changed
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response drillDownLink(@HeaderParam("uid") int uid,@PathParam("ktreeid") int ktreeid,@PathParam("nodeid") int nodeId) {
+	public Response drillDownLink(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, @PathParam("nodeid") int nodeId) {
 		try {
-			if (nodeId == 0) {
-				Node rootNode = new NodeRepository().getRoot(ktreeid);
-				if(rootNode==null)
-				{
-					return StatusHelper.getStatusOk(null);
-				}
-				nodeId = rootNode.getId();
-			}
-			return StatusHelper.getStatusOk(nlm.drillDown(uid,nodeId));
+			return StatusHelper.getStatusOk(nlm.drillDown(uid, treeId, nodeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

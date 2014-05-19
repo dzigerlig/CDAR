@@ -40,7 +40,6 @@ public class ProjectNodeLinkController {
 			@PathParam("ptreeid") int treeId, NodeLink projectNodeLink) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			return StatusHelper.getStatusCreated(pnlm
 					.addProjectNodeLink(projectNodeLink));
 		} catch (LockingException e) {
@@ -58,7 +57,6 @@ public class ProjectNodeLinkController {
 			@PathParam("ptreeid") int treeId, NodeLink nodeLink) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			return StatusHelper.getStatusOk(pnlm.updateNodeLink(nodeLink));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
@@ -86,14 +84,7 @@ public class ProjectNodeLinkController {
 	public Response drillDownNodeLink(@HeaderParam("uid") int uid,@PathParam("ptreeid") int treeId,
 			@PathParam("nodeid") int nodeId) {
 		try {
-			if (nodeId == 0) {
-				ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
-				if (rootNode == null) {
-					return StatusHelper.getStatusOk(null);
-				}
-				nodeId = rootNode.getId();
-			}
-			return StatusHelper.getStatusOk(pnlm.drillDown(uid, nodeId));
+			return StatusHelper.getStatusOk(pnlm.drillDown(uid, treeId, nodeId));
 		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -106,7 +97,6 @@ public class ProjectNodeLinkController {
 			@PathParam("ptreeid") int treeId, NodeLink nodeLink) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			pnlm.deleteProjectNodeLink(nodeLink.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {

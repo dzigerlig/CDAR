@@ -21,9 +21,7 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
 public class UserRepository {
-
 	public List<User> getUsers() throws EntityException {
-
 		final String sql = String
 				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s",
 						DBTableHelper.USER);
@@ -50,7 +48,7 @@ public class UserRepository {
 		return users;
 	}
 
-	public User getUser(int id) throws UnknownUserException, EntityException {
+	public User getUser(int userId) throws UnknownUserException, EntityException {
 		User user = new User();
 		final String sql = String
 				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s WHERE ID = ?",
@@ -59,7 +57,7 @@ public class UserRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, userId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					user.setId(result.getInt(1));

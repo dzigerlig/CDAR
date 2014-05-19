@@ -43,8 +43,8 @@ public class MediaWikiManager {
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 
-	public WikiEntry saveProjectNodeWikiEntry(int userid, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
-		User user = um.getUser(userid);
+	public WikiEntry saveProjectNodeWikiEntry(int userId, WikiEntry wikiEntry) throws UnknownUserException, EntityException {
+		User user = um.getUser(userId);
 		return wikiEntry.saveEntry(user.getUsername(), user.getPassword());
 	}
 

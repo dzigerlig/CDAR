@@ -127,15 +127,15 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 	
-		public List<NodeLink> getSiblingNodeLinks(int nodeid) throws UnknownTreeException, EntityException {
+		public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
 		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, nodeid);
-			preparedStatement.setInt(2, nodeid);
+			preparedStatement.setInt(1, nodeId);
+			preparedStatement.setInt(2, nodeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {

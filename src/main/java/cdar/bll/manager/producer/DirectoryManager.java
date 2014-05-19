@@ -1,9 +1,9 @@
 package cdar.bll.manager.producer;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.PropertyHelper;
 import cdar.bll.entity.Directory;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
@@ -31,6 +31,10 @@ public class DirectoryManager {
 
 	public Directory addDirectory(Directory directory) throws UnknownDirectoryException
 	{ 
+		if (directory.getTitle() == null) {
+			PropertyHelper propertyHelper = new PropertyHelper();
+			directory.setTitle(propertyHelper.getProperty("DIRECTORY_DESCRIPTION"));
+		}
 		return dr.createDirectory(directory);
 	}
 

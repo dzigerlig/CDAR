@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
@@ -14,14 +16,15 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
+import cdar.pl.controller.StatusHelper;
 
 public class ProjectNodeLinkManager {
 	private NodeLinkRepository pnlr = new NodeLinkRepository();
 
-	public Set<NodeLink> getProjectNodeLinks(int projecttreeid) throws UnknownProjectTreeException, EntityException {
+	public Set<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		Set<NodeLink> projectNodeLinks = new HashSet<NodeLink>();
 		
-		for (NodeLink projectNodeLink : pnlr.getNodeLinks(projecttreeid)) {
+		for (NodeLink projectNodeLink : pnlr.getNodeLinks(projectTreeId)) {
 			projectNodeLinks.add(projectNodeLink);
 		}
 		
@@ -62,7 +65,15 @@ public class ProjectNodeLinkManager {
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 	
-	public Set<NodeLink> drillDown(int uid, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
+	public Set<NodeLink> drillDown(int uid, int treeId, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
+		if (nodeId == 0) {
+			ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
+			if (rootNode == null) {
+				return null;
+			}
+			nodeId = rootNode.getId();
+		}
+		
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}

@@ -41,13 +41,16 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Tree tree) {
-		try {			lm.lock(ISPRODUCER, treeId, uid);
+	public Response deleteTree(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, Tree tree) {
+		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 
 			ktm.deleteTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
-		}catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -56,8 +59,7 @@ public class KnowledgeTreeController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(@HeaderParam("uid") int uid, Tree tree) {
-		try {	
-
+		try {
 			return StatusHelper.getStatusCreated(ktm.addTree(uid, tree));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
@@ -67,9 +69,9 @@ public class KnowledgeTreeController {
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getKnowledgeTreeById(@PathParam("ktreeid") int ktreeid) {
+	public Response getKnowledgeTreeById(@PathParam("ktreeid") int treeId) {
 		try {
-			return StatusHelper.getStatusOk(ktm.getTree(ktreeid));
+			return StatusHelper.getStatusOk(ktm.getTree(treeId));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -78,15 +80,16 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateKnowledgeTree(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,
-			Tree tree) {
-		try {			lm.lock(ISPRODUCER, treeId, uid);
-
+	public Response updateKnowledgeTree(@HeaderParam("uid") int uid,
+			@PathParam("ktreeid") int treeId, Tree tree) {
+		try {
+			lm.lock(ISPRODUCER, treeId, uid);
 			tree.setId(treeId);
 			return StatusHelper.getStatusOk(ktm.updateTree(tree));
 		} catch (LockingException e) {
-			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
-		}catch (Exception ex) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
+		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
@@ -102,7 +105,7 @@ public class KnowledgeTreeController {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
-	
+
 	@GET
 	@Path("{ktreeid}/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -128,8 +131,9 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("{ktreeid}/users/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setUserRight(@PathParam("ktreeid") int treeId,@PathParam("uid") int userId,User user) {
-		try {	
+	public Response setUserRight(@PathParam("ktreeid") int treeId,
+			@PathParam("uid") int userId, User user) {
+		try {
 			user.setId(userId);
 			UserManager um = new UserManager();
 			um.setProducerUserRight(treeId, user);

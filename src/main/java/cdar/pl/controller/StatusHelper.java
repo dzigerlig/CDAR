@@ -20,12 +20,11 @@ public class StatusHelper<T> {
 		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 	
-	
 	public static Response getStatusConflict() {
 		return Response.status(Response.Status.CONFLICT).build();
 	}
 	
-	public static <T>Response getStatusConflict(T t) {
+	public static <T> Response getStatusConflict(T t) {
 		return Response.status(Response.Status.CONFLICT).entity(t).build();
 	}
 }

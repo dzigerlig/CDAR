@@ -9,19 +9,34 @@ public class PropertyHelper {
 	private ClassLoader loader;
 
 	public PropertyHelper() {
-		super();
-		loader = Thread.currentThread().getContextClassLoader();
-		prop = new Properties();
+		setLoader(Thread.currentThread().getContextClassLoader());
+		setProp(new Properties());
 	}
 
 	public String getProperty(String name) {
-		try (InputStream resourceStream = loader
+		try (InputStream resourceStream = getLoader()
 				.getResourceAsStream(RESOURCENAME)) {
-			prop.load(resourceStream);
-			return prop.getProperty(name);
+			getProp().load(resourceStream);
+			return getProp().getProperty(name);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	public Properties getProp() {
+		return prop;
+	}
+
+	public void setProp(Properties prop) {
+		this.prop = prop;
+	}
+
+	public ClassLoader getLoader() {
+		return loader;
+	}
+
+	public void setLoader(ClassLoader loader) {
+		this.loader = loader;
 	}
 }
