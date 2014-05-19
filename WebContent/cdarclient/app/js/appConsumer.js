@@ -26,8 +26,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				timeout : 5000
 			});
 			return true;
-		 } else
-		return false;
+		 } else {
+			 return false;
+		 }
 	 };
 
     var reloadTree = function () {

@@ -37,7 +37,6 @@ public class TemplateController {
 	public Response addTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			return StatusHelper.getStatusCreated(tm
 					.addKnowledgeTemplate(template));
 		} catch (LockingException e) {
@@ -68,7 +67,6 @@ public class TemplateController {
 			Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			template.setId(templateid);
 			return StatusHelper.getStatusOk(tm.updateTemplate(template));
 		} catch (LockingException e) {
@@ -85,7 +83,6 @@ public class TemplateController {
 	public Response deleteTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,Template template) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			tm.deleteTemplate(template.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {

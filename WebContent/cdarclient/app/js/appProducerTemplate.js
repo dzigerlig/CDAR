@@ -4,8 +4,8 @@ app.controller("TemplatesController", [
 		'TreeService',
 		'AuthenticationService',
 		'UserService',
-		'$route', '$modal',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $modal) {
+		'$route', '$modal', 'DescriptionService',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $modal, DescriptionService) {
 			$scope.knowledgetree = "";
 			$scope.templates = "";
 			$scope.selectedTemplate = "";
@@ -15,6 +15,10 @@ app.controller("TemplatesController", [
 			
 			$scope.updateTemplateId = "";
 			$scope.updateTemplateTitle = "";
+			
+			$scope.DescriptionService = DescriptionService;
+			
+			$scope.newProducerSubnodeTemplateName = "";
 			
 			$scope.UserService = UserService;
 
@@ -117,12 +121,15 @@ app.controller("TemplatesController", [
 			
 			reloadTemplates();
 
-			$scope.addNewTemplate = function(decisionMade) {
+			$scope.addNewTemplate = function(decisionMade, isSubnode) {
 				var templateName;
 				if (decisionMade) {
 					templateName = $scope.newConsumerTemplateName;
 				} else {
 					templateName = $scope.newProducerTemplateName;
+				}
+				if (isSubnode) {
+					templateName = $scope.newProducerSubnodeTemplateName;
 				}
 				
 				if (templateName.length>45) {
@@ -138,13 +145,17 @@ app.controller("TemplatesController", [
 					}, {
 						treeId : $routeParams.treeId,
 						title : templateName,
-						decisionMade : decisionMade
+						decisionMade : decisionMade,
+						isSubnode : isSubnode
 					}, function(response) {
 						reloadTemplates();
 						if(decisionMade) {
 							$scope.newConsumerTemplateName = '';
 						} else {
 							$scope.newProducerTemplateName = '';
+						}
+						if (isSubnode) {
+							$scope.newProducerSubnodeTemplateName = '';
 						}
 						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
 					}, function(error) {

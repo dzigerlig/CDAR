@@ -30,6 +30,11 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
+						<h2>{{DescriptionService.getNodeDescription()}} Templates:</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
 							<table class="table table-bordered table-striped table-condensed table-hover">
 								<thead>
 									<tr>
@@ -41,7 +46,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr data-ng-repeat="template in templates | filter : { decisionMade : false } | orderBy:'id':false">
+									<tr data-ng-repeat="template in templates | filter : { decisionMade : false, isSubnode : false } | orderBy:'id':false">
 										<td>{{$index+1}}</td>
 										<td><a data-ng-click="changeTemplate(template.id)"
 											href="">{{template.title}}</a></td>
@@ -56,10 +61,58 @@
 									<tr>
 										<td></td>
 										<td>
-											<form id="formTemplates" data-role="form" data-ng-submit="addNewTemplate(false)">
+											<form data-role="form" data-ng-submit="addNewTemplate(false, false)">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="template name"
 														required autofocus data-ng-model="newProducerTemplateName" />
+													<button class="btn btn-success" type="submit">Add
+														template</button>
+												</div>
+											</form>
+										</td>
+										<td colspan="3"></td>
+									</tr>
+								</tbody>
+							</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h2>{{DescriptionService.getSubnodeDescription()}} Templates:</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+							<table class="table table-bordered table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th class="col-md-1">#</th>
+										<th class="col-md-3">Name</th>
+										<th class="col-md-3">Edit title</th>
+										<th class="col-md-3">Default</th>
+										<th class="col-md-2">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-ng-repeat="template in templates | filter : { decisionMade : false, isSubnode : true } | orderBy:'id':false">
+										<td>{{$index+1}}</td>
+										<td><a data-ng-click="changeTemplate(template.id)"
+											href="">{{template.title}}</a></td>
+										<td>
+											<a href="#" editable-text="template.title" onbeforesave="editTemplateTitle($data, template.id)">edit title</a>
+										</td>
+										<td><a data-ng-click="setDefaultTemplate(template.id)"
+											href=""> {{template.isDefault}} </a></td>
+										<td><a data-ng-click="deleteTemplate(template.id)"
+											href="">Delete Template</a></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<form data-role="form" data-ng-submit="addNewTemplate(false, true)">
+												<div class="input-append">
+													<input class="form-horizontal" placeholder="template name"
+														required autofocus data-ng-model="newProducerSubnodeTemplateName" />
 													<button class="btn btn-success" type="submit">Add
 														template</button>
 												</div>
@@ -89,7 +142,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr data-ng-repeat="template in templates | filter : { decisionMade : true } | orderBy:'id':false">
+									<tr data-ng-repeat="template in templates | filter : { decisionMade : true, isSubnode : false } | orderBy:'id':false">
 										<td>{{$index+1}}</td>
 										<td><a data-ng-click="changeTemplate(template.id)"
 											href="">{{template.title}}</a></td>
@@ -104,7 +157,7 @@
 									<tr>
 										<td></td>
 										<td>
-											<form id="formTemplates" data-role="form" data-ng-submit="addNewTemplate(true)">
+											<form data-role="form" data-ng-submit="addNewTemplate(true, false)">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="template name"
 														required autofocus data-ng-model="newConsumerTemplateName" />
