@@ -159,10 +159,10 @@ app.controller("KnowledgeTreeController",
 		 'AuthenticationService',
 		 'UserService',
 		 '$route',
-		 'DescriptionService',
+		 'DescriptionService', '$modal',
 		 function($scope, $routeParams, TreeService,
 				 AuthenticationService, UserService, $route,
-				 DescriptionService) {
+				 DescriptionService, $modal) {
 						// Workaround draw links not correct
 							/*
 							 * if (getReload()) { setReload(false);
@@ -425,43 +425,58 @@ app.controller("KnowledgeTreeController",
 							};
 
 							$scope.deleteSubnode = function(subnodeId) {
-								TreeService
-										.deleteSubnode(
-												{
-													entity1 : 'ktrees',
-													id1 : $routeParams.treeId,
-													id2 : $scope.selectedNode.id
-												},
-												{
-													id : subnodeId
-												},
-												function(response) {
-													$scope
-															.getSubnodesOfNode(response);
-													noty({
-														type : 'success',
-														text : DescriptionService
-																.getSubnodeDescription()
-																+ ' deleted successfully',
-														timeout : 1500
-													});
-													if ($scope.selectedSubnode.id === subnodeId) {
-														$scope.selectedSubnode.id = 0;
-														updateSubnodeTitle();
-													}
-												},
-												function(error) {
-													if (!$scope.showLockingNotification(error)) {
-
-													noty({
-														type : 'alert',
-														text : 'error deleting '
-																+ DescriptionService
-																		.getSubnodeDescription(),
-														timeout : 1500
-													});
-													}
+								$modal.open({ 
+						            templateUrl: 'templates/confirmation.html',
+						            backdrop: 'static',
+						            keyboard: false,
+						            resolve: {
+						                data: function() { 
+						                    return {
+						                        title: 'Delete S' + DescriptionService.getSubnodeDescription(),
+						                        message: 'Do you really want to delete this ' + DescriptionService.getSubnodeDescription() 
+						                    };
+						                }
+						                },
+						                controller: 'ConfirmationController' 
+								}).result.then(function(result) {
+									TreeService
+									.deleteSubnode(
+											{
+												entity1 : 'ktrees',
+												id1 : $routeParams.treeId,
+												id2 : $scope.selectedNode.id
+											},
+											{
+												id : subnodeId
+											},
+											function(response) {
+												$scope
+														.getSubnodesOfNode(response);
+												noty({
+													type : 'success',
+													text : DescriptionService
+															.getSubnodeDescription()
+															+ ' deleted successfully',
+													timeout : 1500
 												});
+												if ($scope.selectedSubnode.id === subnodeId) {
+													$scope.selectedSubnode.id = 0;
+													updateSubnodeTitle();
+												}
+											},
+											function(error) {
+												if (!$scope.showLockingNotification(error)) {
+
+												noty({
+													type : 'alert',
+													text : 'error deleting '
+															+ DescriptionService
+																	.getSubnodeDescription(),
+													timeout : 1500
+												});
+												}
+											});
+								});
 							};
 
 							var updateNodeTitle = function() {

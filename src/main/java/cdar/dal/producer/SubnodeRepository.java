@@ -174,18 +174,6 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
-	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException {
-		int position = 0;
-
-		for (Subnode subnode : getSubnodes(nodeId)) {
-			if (subnode.getPosition() > position) {
-				position = subnode.getPosition();
-			}
-		}
-
-		return ++position;
-	}
-
 	public List<Subnode> getSubnodesByTree(int treeId) throws UnknownTreeException {
 		final String sql = String.format("SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM %s AS SUBNODE JOIN %s AS NODE ON NODE.ID = SUBNODE.KNID WHERE NODE.KTRID = ?",DBTableHelper.SUBNODE,DBTableHelper.NODE);
 

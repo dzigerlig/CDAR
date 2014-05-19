@@ -78,7 +78,6 @@ public class ProjectSubnodeController {
 			@PathParam("subnodeid") int subnodeId, ProjectSubnode subnode) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-
 			subnode.setId(subnodeId);
 			return StatusHelper.getStatusOk(psm.updateProjectSubnode(subnode));
 		} catch (LockingException e) {

@@ -852,7 +852,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             resolve: {
                 data: function() { 
                     return {
-                        title: 'Delete Comment',
+                        title: 'Delete ' + DescriptionService.getSubnodeDescription(),
                         message: 'Do you really want to delete this ' + DescriptionService.getSubnodeDescription() 
                     };
                 }

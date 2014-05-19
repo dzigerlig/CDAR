@@ -25,7 +25,7 @@ public class SubnodeManager {
 		if (subnode.getWikititle()!=null) {
 			createSubnode = false;
 		}
-		subnode.setPosition(sr.getNextSubnodePosition(subnode.getNodeId()));
+		subnode.setPosition(getNextSubnodePosition(subnode.getNodeId()));
 		subnode = sr.createSubnode(subnode);
 		
 		if (createSubnode) {
@@ -42,6 +42,18 @@ public class SubnodeManager {
 		}
 		
 		return subnode;
+	}
+	
+	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException {
+		int position = 0;
+
+		for (Subnode subnode : getSubnodesFromNode(nodeId)) {
+			if (subnode.getPosition() > position) {
+				position = subnode.getPosition();
+			}
+		}
+
+		return ++position;
 	}
 
 	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {
@@ -83,7 +95,6 @@ public class SubnodeManager {
 			int oldPosition = updatedSubnode.getPosition();
 			int newPosition = subnode.getPosition();
 			updatedSubnode.setPosition(subnode.getPosition());
-			
 			changeOtherSubnodePositions(subnode, oldPosition, newPosition);
 		}
 
@@ -115,18 +126,27 @@ public class SubnodeManager {
 		}
 	}
 
-	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
+	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException, EntityException, UnknownNodeException {
+		changeSubnodePositionOnDelete(subnodeId);
 		sr.deleteSubnode(subnodeId);
+	}
+
+	private void changeSubnodePositionOnDelete(int subnodeId) throws UnknownSubnodeException, EntityException,
+			UnknownNodeException {
+		Subnode delSubnode = getSubnode(subnodeId);
+		
+		for (Subnode subnode : getSubnodesFromNode(delSubnode.getNodeId())) {
+			if (subnode.getPosition() > delSubnode.getPosition()) {
+				subnode.setPosition(subnode.getPosition()-1);
+				sr.updateSubnode(subnode);
+			}
+		}
 	}
 
 	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException {
 		Subnode renamedSubnode = sr.getSubnode(subnode.getId());
 		renamedSubnode.setTitle(subnode.getTitle());
 		return sr.updateSubnode(renamedSubnode);
-	}
-
-	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException   {
-		return sr.getNextSubnodePosition(nodeId);
 	}
 
 	public Set<Subnode> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeException, UnknownUserException {
