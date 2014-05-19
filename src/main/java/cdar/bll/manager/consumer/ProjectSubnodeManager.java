@@ -39,8 +39,7 @@ public class ProjectSubnodeManager {
 
 		if (createSubnode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
-			String content = String.format("== %S ==",
-					propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+			String content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 
 			MediaWikiManager mwm = new MediaWikiManager();
 			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content);

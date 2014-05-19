@@ -21,9 +21,8 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
-import cdar.dal.interfaces.ISubnodeRepository;
 
-public class ProjectSubnodeRepository implements ISubnodeRepository<ProjectSubnode> {
+public class ProjectSubnodeRepository {
 	public List<ProjectSubnode> getSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
 
@@ -264,7 +263,6 @@ public class ProjectSubnodeRepository implements ISubnodeRepository<ProjectSubno
 		return subnodes;
 	}
 
-	@Override
 	public List<ProjectSubnode> getSubnodesByTree(int treeId)
 			throws UnknownTreeException {
 		// TODO Auto-generated method stub

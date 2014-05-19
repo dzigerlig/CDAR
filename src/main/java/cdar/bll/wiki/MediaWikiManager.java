@@ -60,9 +60,7 @@ public class MediaWikiManager {
 	
 	public void createWikiEntry(int userId, String title, String content) throws UnknownUserException, EntityException {
 		WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
-		
 		wikiHelper.addWikiEntry(title, content);
-
 		MediaWikiCreationModel mwm = new MediaWikiCreationModel(userId, title, content, wikiHelper);
 		mwm.start();
 	}

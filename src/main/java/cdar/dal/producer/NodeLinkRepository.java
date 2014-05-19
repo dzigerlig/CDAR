@@ -179,7 +179,6 @@ public class NodeLinkRepository implements INodeLinkRepository {
 	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM %s WHERE ID = ?",DBTableHelper.NODELINK);
 
-
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {

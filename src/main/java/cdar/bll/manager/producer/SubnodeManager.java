@@ -34,7 +34,7 @@ public class SubnodeManager {
 		
 			if (templateContent == null) {
 				PropertyHelper propertyHelper = new PropertyHelper();
-				String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+				templateContent = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 			}
 		
 			MediaWikiManager mwm = new MediaWikiManager();

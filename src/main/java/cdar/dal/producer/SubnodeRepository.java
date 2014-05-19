@@ -19,9 +19,8 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
-import cdar.dal.interfaces.ISubnodeRepository;
 
-public class SubnodeRepository implements ISubnodeRepository<Subnode> {
+public class SubnodeRepository {
 	public List<Subnode> getSubnodes(int nodeId) throws EntityException, UnknownNodeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM %s WHERE KNID = ?",DBTableHelper.SUBNODE);
 

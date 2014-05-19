@@ -20,9 +20,8 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
-import cdar.dal.interfaces.INodeRepository;
 
-public class ProjectNodeRepository implements INodeRepository<ProjectNode> {
+public class ProjectNodeRepository {
 	public List<ProjectNode> getNodes(int projectTreeId)
 			throws UnknownProjectTreeException, EntityException {
 		final String sql = String

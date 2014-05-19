@@ -18,10 +18,8 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
-import cdar.dal.interfaces.INodeLinkRepository;
-import cdar.dal.interfaces.INodeRepository;
 
-public class NodeRepository implements INodeRepository<Node> {
+public class NodeRepository {
 	public List<Node> getNodes(int treeId) throws EntityException,
 			UnknownTreeException {
 		final String sql = String
