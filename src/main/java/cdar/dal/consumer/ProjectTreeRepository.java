@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import cdar.bll.entity.Tree;
-import cdar.bll.entity.consumer.CreationTree;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
@@ -19,9 +18,10 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
+import cdar.dal.interfaces.ITreeRepository;
 
-public class ProjectTreeRepository {
-	public List<Tree> getProjectTrees(int uid) throws UnknownUserException, EntityException {
+public class ProjectTreeRepository implements ITreeRepository<Tree> {
+	public List<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;
 		if (uid==0) {
 			sql = String.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM %s",DBTableHelper.PROJECTTREE);
@@ -52,7 +52,7 @@ public class ProjectTreeRepository {
 		return projectTrees;
 	}
 	
-	public Tree getProjectTree(int projectTreeId) throws UnknownProjectTreeException, EntityException {
+	public Tree getTree(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = String.format("SELECT UID,ID,CREATION_TIME,LAST_MODIFICATION_TIME,TITLE FROM %s AS TREE JOIN %s AS MAPPING ON MAPPING.kptid = TREE.id WHERE ID = ?",DBTableHelper.PROJECTTREE,DBTableHelper.PROJECTTREEMAPPING);
 
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
@@ -77,7 +77,7 @@ public class ProjectTreeRepository {
 		throw new UnknownProjectTreeException();
 	}
 	
-	public Tree createProjectTree(Tree projectTree) throws CreationException, EntityException  {
+	public Tree createTree(Tree projectTree) throws CreationException, EntityException  {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE) VALUES (?, ?)",DBTableHelper.PROJECTTREE);
 		final String sql2 = String.format("INSERT INTO %s (uid, kptid) VALUES (?, ?)",DBTableHelper.PROJECTTREEMAPPING);
 
@@ -108,7 +108,7 @@ public class ProjectTreeRepository {
 		return projectTree;
 	}
 	
-	public Tree updateProjectTree(Tree projectTree) throws UnknownProjectTreeException {
+	public Tree updateTree(Tree projectTree) throws UnknownProjectTreeException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",DBTableHelper.PROJECTTREE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -124,7 +124,7 @@ public class ProjectTreeRepository {
 		return projectTree;
 	}
 	
-	public void deleteProjectTree(int projectTreeId) throws UnknownProjectTreeException {
+	public void deleteTree(int projectTreeId) throws UnknownProjectTreeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTTREE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

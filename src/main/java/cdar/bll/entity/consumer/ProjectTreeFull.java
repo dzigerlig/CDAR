@@ -13,6 +13,7 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 @XmlRootElement
 public class ProjectTreeFull extends ProjectTreeSimple {
@@ -22,7 +23,7 @@ public class ProjectTreeFull extends ProjectTreeSimple {
 	
 	public ProjectTreeFull() { }
 	
-	public ProjectTreeFull(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+	public ProjectTreeFull(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException {
 		super(treeId);
 		fillWikiEntries();
 	}

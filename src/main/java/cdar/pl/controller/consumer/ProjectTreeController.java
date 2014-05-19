@@ -12,14 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.UserManager;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.pl.controller.StatusHelper;
 import cdar.pl.controller.UserController;
 
@@ -27,13 +28,13 @@ import cdar.pl.controller.UserController;
 public class ProjectTreeController {
 	private final boolean ISPRODUCER = false;
 	private LockingManager lm = new LockingManager();
-	private ProjectTreeManager ptm = new ProjectTreeManager();
+	private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProjectTreesByUid(@HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusOk(ptm.getProjectTrees(uid));
+			return StatusHelper.getStatusOk(ptm.getTrees(uid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -46,7 +47,7 @@ public class ProjectTreeController {
 		try {
 			int knowledgeTreeId = tree.getCopyTreeId();
 			tree.setUserId(uid);
-			Tree newTree = ptm.addProjectTree(tree);
+			Tree newTree = ptm.addTree(uid, tree);
 			ptm.addKnowledgeTreeToProjectTree(knowledgeTreeId, newTree.getId());
 			return StatusHelper.getStatusCreated(newTree);
 		} catch (Exception e) {
@@ -61,7 +62,7 @@ public class ProjectTreeController {
 	public Response getProjectTreeById(@PathParam("ptreeid") int ptreeid,
 			@HeaderParam("uid") int uid) {
 		try {
-			return StatusHelper.getStatusOk(ptm.getProjectTree(ptreeid));
+			return StatusHelper.getStatusOk(ptm.getTree(ptreeid));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
@@ -75,7 +76,7 @@ public class ProjectTreeController {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			tree.setId(treeId);
-			return StatusHelper.getStatusOk(ptm.updateProjectTree(tree));
+			return StatusHelper.getStatusOk(ptm.updateTree(tree));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
@@ -91,7 +92,7 @@ public class ProjectTreeController {
 			@PathParam("ptreeid") int treeId, Tree tree) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-			ptm.deleteProjectTree(tree.getId());
+			ptm.deleteTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,

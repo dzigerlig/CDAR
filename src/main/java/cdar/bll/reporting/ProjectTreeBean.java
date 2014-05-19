@@ -3,33 +3,35 @@ package cdar.bll.reporting;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 public class ProjectTreeBean extends ReportingBean {
 	public ProjectTreeBean() throws Exception {
 		super();
 	}
 	
-	private ProjectTreeManager ptm = new ProjectTreeManager();
+	private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 	private ProjectNodeManager pnm = new ProjectNodeManager();
 	private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 	private MediaWikiManager mwm = new MediaWikiManager();
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 	
-	public String getTreeTitle() throws UnknownProjectTreeException, EntityException {
-		return ptm.getProjectTree(getTreeId()).getTitle();
+	public String getTreeTitle() throws UnknownProjectTreeException, EntityException, UnknownTreeException {
+		return ptm.getTree(getTreeId()).getTitle();
 	}
 	
 	public Set<ProjectNode> getNodes() throws UnknownProjectTreeException, EntityException {

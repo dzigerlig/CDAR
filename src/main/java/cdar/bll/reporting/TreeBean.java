@@ -3,16 +3,18 @@ package cdar.bll.reporting;
 import java.util.HashSet;
 import java.util.Set;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
-import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 
@@ -22,14 +24,14 @@ public class TreeBean extends ReportingBean {
 		super();
 	}
 
-	private TreeManager tm = new TreeManager();
+	private TreeManager tm = new TreeManager(UserRole.PRODUCER);
 	private NodeManager nm = new NodeManager();
 	private SubnodeManager sm = new SubnodeManager();
 	private MediaWikiManager mwm = new MediaWikiManager();
 	private NodeLinkManager nlm = new NodeLinkManager();
 
 
-	public String getTreeTitle() throws UnknownTreeException {
+	public String getTreeTitle() throws UnknownTreeException, UnknownProjectTreeException, EntityException {
 		return tm.getTree(getTreeId()).getTitle();
 	}
 

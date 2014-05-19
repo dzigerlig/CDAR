@@ -6,10 +6,10 @@ import java.util.List;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.wikipedia.Wiki;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.bll.manager.consumer.ProjectTreeManager;
-import cdar.bll.manager.producer.TreeManager;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.wiki.WikiRegistrationManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
@@ -19,7 +19,6 @@ import cdar.dal.exceptions.UsernameInvalidException;
 import cdar.dal.exceptions.WikiLoginException;
 import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
-import cdar.dal.wiki.WikiRepository;
 import cdar.dal.wiki.WikiRepository;
 
 public class UserManager {
@@ -71,15 +70,15 @@ public class UserManager {
 
 	public void deleteUser(int userId) throws UnknownUserException,
 			EntityException, UnknownTreeException, UnknownProjectTreeException {
-		TreeManager tm = new TreeManager();
-		ProjectTreeManager ptm = new ProjectTreeManager();
+		TreeManager tm = new TreeManager(UserRole.PRODUCER);
+		TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 
 		for (Tree tree : tm.getTrees(userId)) {
 			tm.deleteTree(tree.getId());
 		}
 
-		for (Tree projectTree : ptm.getProjectTrees(userId)) {
-			ptm.deleteProjectTree(projectTree.getId());
+		for (Tree projectTree : ptm.getTrees(userId)) {
+			ptm.deleteTree(projectTree.getId());
 		}
 
 		userRepository.deleteUser(userId);

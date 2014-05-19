@@ -59,7 +59,7 @@ public class ProducerImportExportManager {
 		return xmlTrees;
 	}
 	
-	private String getTreeSimpleXmlString(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException {
+	private String getTreeSimpleXmlString(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException {
 		TreeSimple ts = new TreeSimple(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(TreeSimple.class).createMarshaller();
@@ -73,7 +73,7 @@ public class ProducerImportExportManager {
 		return null;
 	}
 	
-	private String getTreeFullXmlString(int treeId) throws EntityException, UnknownNodeException, UnknownUserException, UnknownTreeException, UnknownSubnodeException {
+	private String getTreeFullXmlString(int treeId) throws EntityException, UnknownNodeException, UnknownUserException, UnknownTreeException, UnknownSubnodeException, UnknownProjectTreeException {
 		TreeFull tf = new TreeFull(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(TreeFull.class).createMarshaller();
@@ -113,7 +113,7 @@ public class ProducerImportExportManager {
 		return null;
 	}
 	
-	public TreeXml addXmlTreeSimple(int uid, int treeId, String title, String xmlString) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException, UnknownXmlTreeException {
+	public TreeXml addXmlTreeSimple(int uid, int treeId, String title, String xmlString) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException, UnknownXmlTreeException, UnknownProjectTreeException {
 		xmlString = xmlString==null ? getTreeSimpleXmlString(treeId) : xmlString;
 		TreeXml xmlTree = new TreeXml();
 		xmlTree.setTitle(title);

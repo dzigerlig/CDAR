@@ -12,6 +12,7 @@ import cdar.bll.entity.WikiEntry;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
@@ -24,7 +25,7 @@ public class TreeFull extends TreeSimple {
 	
 	public TreeFull() {}
 	
-	public TreeFull(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownSubnodeException {
+	public TreeFull(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownSubnodeException, UnknownProjectTreeException {
 		super(treeId);
 		fillWikiEntries();
 	}

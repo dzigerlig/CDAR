@@ -61,7 +61,7 @@ public class ConsumerImportExportManager {
 		return xmlTrees;
 	}
 	
-	private String getTreeSimpleXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException {
+	private String getTreeSimpleXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException {
 		ProjectTreeSimple pts = new ProjectTreeSimple(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(ProjectTreeSimple.class).createMarshaller();
@@ -75,7 +75,7 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
-	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException {
 		ProjectTreeFull pts = new ProjectTreeFull(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(ProjectTreeFull.class).createMarshaller();
@@ -352,7 +352,7 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	public TreeXml addXmlTreeFull(int uid, int treeId, String title, String xmlString) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException {
+	public TreeXml addXmlTreeFull(int uid, int treeId, String title, String xmlString) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException {
 		xmlString = xmlString==null ? getTreeFullXmlString(treeId) : xmlString;
 		TreeXml xmlTree = new TreeXml();
 		xmlTree.setTitle(title);

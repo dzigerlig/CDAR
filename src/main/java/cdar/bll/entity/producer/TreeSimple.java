@@ -5,19 +5,21 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TemplateManager;
-import cdar.bll.manager.producer.TreeManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
+import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
@@ -30,7 +32,7 @@ public class TreeSimple {
 	private Set<Directory> directories;
 	private Set<Template> templates;
 	
-	private TreeManager trm = new TreeManager();
+	private TreeManager trm = new TreeManager(UserRole.PRODUCER);
 	private NodeManager nm = new NodeManager();
 	private SubnodeManager sm = new SubnodeManager();
 	private NodeLinkManager nlm = new NodeLinkManager();
@@ -39,7 +41,7 @@ public class TreeSimple {
 	
 	public TreeSimple() {}
 	
-	public TreeSimple(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException {
+	public TreeSimple(int treeId) throws UnknownTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException {
 		System.out.println("treeid: " + treeId);
 		setTree(trm.getTree(treeId));
 		setNodes(nm.getNodes(treeId));

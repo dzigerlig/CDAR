@@ -5,18 +5,20 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.bll.manager.consumer.ProjectTreeManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownTreeException;
 
 @XmlRootElement
 public class ProjectTreeSimple {
@@ -27,7 +29,7 @@ public class ProjectTreeSimple {
 		private Set<Directory> directories;
 		private Set<Comment> comments;
 		
-		private ProjectTreeManager ptm = new ProjectTreeManager();
+		private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 		private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		private ProjectNodeManager pnm = new ProjectNodeManager();
 		private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
@@ -36,8 +38,8 @@ public class ProjectTreeSimple {
 		
 		public ProjectTreeSimple() {}
 		
-		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException {
-			setTree(ptm.getProjectTree(treeId));
+		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException {
+			setTree(ptm.getTree(treeId));
 			setProjectNodes(pnm.getProjectNodes(treeId));
 			setLinks(pnlm.getProjectNodeLinks(treeId));
 			setDirectories(pdm.getDirectories(treeId));
