@@ -13,8 +13,7 @@ import cdar.dal.producer.TemplateRepository;
 public class TemplateManager {
 	private TemplateRepository tr = new TemplateRepository();
 
-	public Set<Template> getKnowledgeTemplates(int ktreeId)
-			throws EntityException, UnknownTreeException {
+	public Set<Template> getKnowledgeTemplates(int ktreeId) throws EntityException, UnknownTreeException {
 		Set<Template> templates = new HashSet<Template>();
 		for (Template template : tr.getTemplates(ktreeId)) {
 			templates.add(template);
@@ -67,19 +66,16 @@ public class TemplateManager {
 			for (Template template : tr.getTemplates(treeId)) {
 				if (srcTemplate.getDecisionMade()) {
 					if (template.getDecisionMade()) {
-						template.setIsDefault(template.getId() == templateId);
-						tr.updateTemplate(template);
+						updateTemplateDefaultSetting(templateId, template);
 					}
 				} else {
 					if (srcTemplate.getIsSubnode()) {
 						if (template.getIsSubnode()) {
-							template.setIsDefault(template.getId() == templateId);
-							tr.updateTemplate(template);
+							updateTemplateDefaultSetting(templateId, template);
 						}
 					} else {
 						if (!(template.getIsSubnode() || template.getDecisionMade())) {
-							template.setIsDefault(template.getId() == templateId);
-							tr.updateTemplate(template);
+							updateTemplateDefaultSetting(templateId, template);
 						}
 						
 					}
@@ -87,6 +83,11 @@ public class TemplateManager {
 			}
 		}
 		return getKnowledgeTemplates(treeId);
+	}
+
+	private void updateTemplateDefaultSetting(int templateId, Template template) throws UnknownTemplateException {
+		template.setIsDefault(template.getId() == templateId);
+		tr.updateTemplate(template);
 	}
 
 	public String getDefaultKnowledgeTemplateText(int ktrid)
