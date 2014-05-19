@@ -17,12 +17,14 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
+import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
+import cdar.dal.interfaces.ISubnodeRepository;
 
-public class ProjectSubnodeRepository {
-	public List<ProjectSubnode> getProjectSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
+public class ProjectSubnodeRepository implements ISubnodeRepository<ProjectSubnode> {
+	public List<ProjectSubnode> getSubnodes(int kpnid) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
 
 		List<ProjectSubnode> projectsubnodes = new ArrayList<ProjectSubnode>();
@@ -53,7 +55,7 @@ public class ProjectSubnodeRepository {
 		return projectsubnodes;
 	}
 	
-	public ProjectSubnode getProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
+	public ProjectSubnode getSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
 
 
@@ -84,7 +86,7 @@ public class ProjectSubnodeRepository {
 		throw new UnknownProjectSubnodeException();
 	}
 	
-	public ProjectSubnode createProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
+	public ProjectSubnode createSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTSUBNODE);
 		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.PROJECTSUBNODE);
 		
@@ -126,7 +128,7 @@ public class ProjectSubnodeRepository {
 		return projectSubnode;
 	}
 	
-	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException {
+	public ProjectSubnode updateSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, WIKITITLE = ?, POSITION = ?, SUBNODESTATUS = ? WHERE id = ?",DBTableHelper.PROJECTSUBNODE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -146,7 +148,7 @@ public class ProjectSubnodeRepository {
 		return projectSubnode;
 	}
 	
-	public void deleteProjectSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
+	public void deleteSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -160,7 +162,7 @@ public class ProjectSubnodeRepository {
 		}
 	}
 	
-	public List<ProjectSubnode> getParentSubnode(int nodeId) throws EntityException {
+	public List<ProjectSubnode> getParentSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KPNID) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID;",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 
 		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
@@ -193,7 +195,7 @@ public class ProjectSubnodeRepository {
 		return subnodes;
 	}
 
-	public List<ProjectSubnode> getSiblingSubnode(int nodeId) throws EntityException {
+	public List<ProjectSubnode> getSiblingSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE  ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID", DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
 
@@ -226,7 +228,7 @@ public class ProjectSubnodeRepository {
 		return subnodes;
 	}
 	
-	public List<ProjectSubnode> getFollowerSubnode(int nodeId) throws EntityException {
+	public List<ProjectSubnode> getFollowerSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM"
 				+ " ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB,"
 				+ " %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID) AS NODES,"
@@ -260,5 +262,12 @@ public class ProjectSubnodeRepository {
 			System.out.println(e.getMessage());
 		}
 		return subnodes;
+	}
+
+	@Override
+	public List<ProjectSubnode> getSubnodesByTree(int treeId)
+			throws UnknownTreeException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

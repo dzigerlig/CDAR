@@ -18,9 +18,10 @@ import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
+import cdar.dal.interfaces.IDirectoryRepository;
 
-public class ProjectDirectoryRepository {
-	public List<Directory> getDirectories(int treeid) throws EntityException {
+public class ProjectDirectoryRepository implements IDirectoryRepository {
+	public List<Directory> getDirectories(int treeId) throws EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM %s WHERE PTREEID = ?",DBTableHelper.PROJECTDIRECTORY);
 
 		List<Directory> directories = new ArrayList<Directory>();
@@ -28,11 +29,11 @@ public class ProjectDirectoryRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, treeid);
+			preparedStatement.setInt(1, treeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
 					Directory directory = new Directory();
-					directory.setTreeId(treeid);
+					directory.setTreeId(treeId);
 					directory.setId(result.getInt(1));
 					directory.setCreationTime(DateHelper.getDate(result.getString(2)));
 					directory.setLastModificationTime(DateHelper.getDate(result.getString(3)));
@@ -49,13 +50,13 @@ public class ProjectDirectoryRepository {
 		return directories;
 	}
 
-	public Directory getDirectory(int id) throws UnknownDirectoryException {
+	public Directory getDirectory(int directoryId) throws UnknownDirectoryException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = ?",DBTableHelper.PROJECTDIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, directoryId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {

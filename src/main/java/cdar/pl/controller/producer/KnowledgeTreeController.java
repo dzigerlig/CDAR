@@ -17,8 +17,8 @@ import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
+import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.UserManager;
-import cdar.bll.manager.both.TreeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.pl.controller.StatusHelper;
 

@@ -21,7 +21,7 @@ public class ProjectNodeLinkManager {
 	public Set<NodeLink> getProjectNodeLinks(int projecttreeid) throws UnknownProjectTreeException, EntityException {
 		Set<NodeLink> projectNodeLinks = new HashSet<NodeLink>();
 		
-		for (NodeLink projectNodeLink : pnlr.getProjectNodeLinks(projecttreeid)) {
+		for (NodeLink projectNodeLink : pnlr.getNodeLinks(projecttreeid)) {
 			projectNodeLinks.add(projectNodeLink);
 		}
 		
@@ -29,11 +29,11 @@ public class ProjectNodeLinkManager {
 	}
 
 	public NodeLink addProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
-		return pnlr.createProjectNodeLink(projectNodeLink);
+		return pnlr.createNodeLink(projectNodeLink);
 	}
 	
-	public NodeLink updateLink(NodeLink nodeLink) throws UnknownProjectNodeLinkException, EntityException {
-		NodeLink updatedProjectNodeLink = pnlr.getProjectNodeLink(nodeLink.getId());
+	public NodeLink updateLink(NodeLink nodeLink) throws UnknownProjectNodeLinkException, EntityException, UnknownNodeLinkException {
+		NodeLink updatedProjectNodeLink = pnlr.getNodeLink(nodeLink.getId());
 		if (nodeLink.getTreeId()!=0) {
 			updatedProjectNodeLink.setTreeId(nodeLink.getTreeId());
 		}
@@ -46,15 +46,15 @@ public class ProjectNodeLinkManager {
 		if (nodeLink.getTargetId()!=0) {
 			updatedProjectNodeLink.setTargetId(nodeLink.getTargetId());
 		}
-		return pnlr.updateProjectNodeLink(updatedProjectNodeLink);
+		return pnlr.updateNodeLink(updatedProjectNodeLink);
 	}
 	
-	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException, EntityException {
-		return pnlr.getProjectNodeLink(projectNodeLinkId);
+	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException, EntityException, UnknownNodeLinkException {
+		return pnlr.getNodeLink(projectNodeLinkId);
 	}
 	
 	public void deleteProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
-		pnlr.deleteProjectNodeLink(projectNodeLinkId);
+		pnlr.deleteNodeLink(projectNodeLinkId);
 	}
 
 	public Set<NodeLink> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException, UnknownUserException {

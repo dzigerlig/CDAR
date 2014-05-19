@@ -141,8 +141,8 @@ public class ConsumerImportExportManager {
 		CommentManager cm = new CommentManager();
 		
 		try {
-			for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
-				pnr.deleteProjectNode(projectNode.getId());
+			for (ProjectNode projectNode : pnr.getNodes(projectTreeId)) {
+				pnr.deleteNode(projectNode.getId());
 			}
 	
 			for (Directory directory : pdm.getDirectories(projectTreeId)) {
@@ -216,7 +216,7 @@ public class ConsumerImportExportManager {
 				newNode.setTitle(node.getTitle());
 				newNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
 				newNode.setStatus(node.getStatus());
-				newNode = pnr.createProjectNode(newNode);
+				newNode = pnr.createNode(newNode);
 				nodeMapping.put(node.getId(), newNode.getId());
 				nodeWikiMapping.put(node.getId(), newNode.getWikititle());
 			}
@@ -232,7 +232,7 @@ public class ConsumerImportExportManager {
 				newProjectSubnode.setTitle(subnode.getTitle());
 				newProjectSubnode.setNodeId(nodeMapping.get(subnode.getNodeId()));
 				newProjectSubnode.setStatus(subnode.getStatus());
-				newProjectSubnode = psr.createProjectSubnode(newProjectSubnode);
+				newProjectSubnode = psr.createSubnode(newProjectSubnode);
 				subnodeMapping.put(subnode.getId(), newProjectSubnode.getId());
 				subnodeWikiMapping.put(subnode.getId(), newProjectSubnode.getWikititle());
 			}
@@ -249,7 +249,7 @@ public class ConsumerImportExportManager {
 				if (nodeLink.getSubnodeId() != 0) {
 					newNodeLink.setSubnodeId(subnodeMapping.get(nodeLink.getSubnodeId()));
 				}
-				pnlr.createProjectNodeLink(newNodeLink);
+				pnlr.createNodeLink(newNodeLink);
 			}
 		}
 		
@@ -315,7 +315,7 @@ public class ConsumerImportExportManager {
 				newNode.setWikititle(node.getWikititle());
 				newNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
 				newNode.setStatus(node.getStatus());
-				newNode = pnr.createProjectNode(newNode);
+				newNode = pnr.createNode(newNode);
 				nodeMapping.put(node.getId(), newNode.getId());
 			}
 		}
@@ -331,7 +331,7 @@ public class ConsumerImportExportManager {
 				newProjectSubnode.setWikititle(subnode.getWikititle());
 				newProjectSubnode.setNodeId(nodeMapping.get(subnode.getNodeId()));
 				newProjectSubnode.setStatus(subnode.getStatus());
-				newProjectSubnode = psr.createProjectSubnode(newProjectSubnode);
+				newProjectSubnode = psr.createSubnode(newProjectSubnode);
 				subnodeMapping.put(subnode.getId(), newProjectSubnode.getId());
 			}
 		}
@@ -347,7 +347,7 @@ public class ConsumerImportExportManager {
 				if (nodeLink.getSubnodeId() != 0) {
 					newNodeLink.setSubnodeId(subnodeMapping.get(nodeLink.getSubnodeId()));
 				}
-				pnlr.createProjectNodeLink(newNodeLink);
+				pnlr.createNodeLink(newNodeLink);
 			}
 		}
 	}

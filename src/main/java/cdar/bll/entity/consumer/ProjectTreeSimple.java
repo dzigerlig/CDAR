@@ -9,7 +9,7 @@ import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Tree;
-import cdar.bll.manager.both.TreeManager;
+import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;

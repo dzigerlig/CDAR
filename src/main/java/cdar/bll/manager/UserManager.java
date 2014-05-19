@@ -9,7 +9,6 @@ import org.wikipedia.Wiki;
 import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
-import cdar.bll.manager.both.TreeManager;
 import cdar.bll.wiki.WikiRegistrationManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;

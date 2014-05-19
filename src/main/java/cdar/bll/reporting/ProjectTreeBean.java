@@ -7,7 +7,7 @@ import cdar.bll.UserRole;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
-import cdar.bll.manager.both.TreeManager;
+import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;

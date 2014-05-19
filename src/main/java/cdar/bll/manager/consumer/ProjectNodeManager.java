@@ -26,7 +26,7 @@ public class ProjectNodeManager {
 	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		Set<ProjectNode> projectNodes = new HashSet<ProjectNode>();
 		
-		for (ProjectNode projectNode : pnr.getProjectNodes(ptreeId)) {
+		for (ProjectNode projectNode : pnr.getNodes(ptreeId)) {
 			projectNodes.add(projectNode);
 		} 
 		
@@ -34,7 +34,7 @@ public class ProjectNodeManager {
 	}
 	
 	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException, EntityException {
-		return pnr.getProjectNode(projectNodeId);
+		return pnr.getNode(projectNodeId);
 	}
 
 	public ProjectNode addProjectNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException, UnknownUserException, UnknownTreeException {
@@ -49,7 +49,7 @@ public class ProjectNodeManager {
 			projectNode.setDirectoryId(rootDirectoryId);
 		}
 		
-		projectNode = pnr.createProjectNode(projectNode);
+		projectNode = pnr.createNode(projectNode);
 		
 		if (createSubnode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
@@ -61,11 +61,11 @@ public class ProjectNodeManager {
 	}
 
 	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
-		pnr.deleteProjectNode(projectNodeId);
+		pnr.deleteNode(projectNodeId);
 	}
 
 	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException, UnknownNodeException {
-		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
+		ProjectNode updatedProjectNode = pnr.getNode(projectNode.getId());
 		
 		if (projectNode.getTreeId()!=0) {
 			updatedProjectNode.setTreeId(projectNode.getTreeId());
@@ -93,13 +93,13 @@ public class ProjectNodeManager {
 			}
 		}
 		
-		return pnr.updateProjectNode(updatedProjectNode);
+		return pnr.updateNode(updatedProjectNode);
 	}
 
 
 	public Set<ProjectNode> drillUp(int uid, int nodeId) throws UnknownProjectNodeException, EntityException, UnknownUserException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
-		nodes.add(pnr.getProjectNode(nodeId));
+		nodes.add(pnr.getNode(nodeId));
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 	private Set<ProjectNode> recursiveDrillUp(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
@@ -116,7 +116,7 @@ public class ProjectNodeManager {
 	}
 	public Set<ProjectNode> drillDown(int uid, int nodeId) throws EntityException, UnknownProjectNodeException, UnknownUserException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
-		nodes.add(pnr.getProjectNode(nodeId));
+		nodes.add(pnr.getNode(nodeId));
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 
@@ -131,9 +131,9 @@ public class ProjectNodeManager {
 	}
 
 	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownNodeException {
-		ProjectNode updatedProjectNode = pnr.getProjectNode(projectNode.getId());
+		ProjectNode updatedProjectNode = pnr.getNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
-		return pnr.updateProjectNode(updatedProjectNode);
+		return pnr.updateNode(updatedProjectNode);
 	}
 
 	public ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {

@@ -18,8 +18,10 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
+import cdar.dal.interfaces.INodeLinkRepository;
+import cdar.dal.interfaces.INodeRepository;
 
-public class NodeRepository {
+public class NodeRepository implements INodeRepository<Node> {
 	public List<Node> getNodes(int treeId) throws EntityException,
 			UnknownTreeException {
 		final String sql = String
@@ -311,7 +313,7 @@ public class NodeRepository {
 		}
 	}
 
-	public Node getRoot(int ktreeid) throws EntityException,
+	public Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 
 		final String sql = String
@@ -322,7 +324,7 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, ktreeid);
+			preparedStatement.setInt(1, treeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -338,7 +340,7 @@ public class NodeRepository {
 					node.setDirectoryId(result.getInt(8));
 					return node;
 				}
-				return getMinNode(ktreeid);
+				return getMinNode(treeId);
 			} catch (ParseException e) {
 				throw new EntityException();
 			}
@@ -347,7 +349,7 @@ public class NodeRepository {
 		}
 	}
 
-	public Node getMinNode(int ktreeid) throws EntityException,
+	public Node getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
 
 		final String sql = String
@@ -358,7 +360,7 @@ public class NodeRepository {
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, ktreeid);
+			preparedStatement.setInt(1, treeId);
 
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				if (result.wasNull()) {

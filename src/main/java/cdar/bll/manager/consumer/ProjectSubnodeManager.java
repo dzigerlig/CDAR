@@ -35,7 +35,7 @@ public class ProjectSubnodeManager {
 
 		projectSubnode.setPosition(getNextSubnodePosition(projectSubnode
 				.getNodeId()));
-		projectSubnode = psr.createProjectSubnode(projectSubnode);
+		projectSubnode = psr.createSubnode(projectSubnode);
 
 		if (createSubnode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
@@ -67,9 +67,9 @@ public class ProjectSubnodeManager {
 			UnknownProjectNodeLinkException, EntityException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 
-		for (ProjectNode projectNode : pnr.getProjectNodes(projectTreeId)) {
+		for (ProjectNode projectNode : pnr.getNodes(projectTreeId)) {
 			for (ProjectSubnode projectSubnode : psr
-					.getProjectSubnodes(projectNode.getId())) {
+					.getSubnodes(projectNode.getId())) {
 				projectSubnodes.add(projectSubnode);
 			}
 		}
@@ -83,7 +83,7 @@ public class ProjectSubnodeManager {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 
 		for (ProjectSubnode projectSubnode : psr
-				.getProjectSubnodes(projectNodeId)) {
+				.getSubnodes(projectNodeId)) {
 			projectSubnodes.add(projectSubnode);
 		}
 
@@ -92,14 +92,14 @@ public class ProjectSubnodeManager {
 
 	public ProjectSubnode getProjectSubnode(int projectSubnodeId)
 			throws UnknownProjectSubnodeException, EntityException {
-		return psr.getProjectSubnode(projectSubnodeId);
+		return psr.getSubnode(projectSubnodeId);
 	}
 
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode)
 			throws UnknownProjectSubnodeException,
 			UnknownProjectNodeLinkException, EntityException {
 		ProjectSubnode updatedProjectSubnode = psr
-				.getProjectSubnode(projectSubnode.getId());
+				.getSubnode(projectSubnode.getId());
 		if (projectSubnode.getNodeId() != 0) {
 			updatedProjectSubnode.setNodeId(projectSubnode.getNodeId());
 		}
@@ -116,21 +116,21 @@ public class ProjectSubnodeManager {
 		if (projectSubnode.getStatus() != 0) {
 			updatedProjectSubnode.setStatus(projectSubnode.getStatus());
 		}
-		return psr.updateProjectSubnode(updatedProjectSubnode);
+		return psr.updateSubnode(updatedProjectSubnode);
 	}
 
 	private void changeOtherProjectSubnodePositions(Subnode projectSubnode,
 			int oldPosition, int newPosition)
 			throws UnknownProjectNodeLinkException, EntityException {
 		for (ProjectSubnode otherProjectSubnode : psr
-				.getProjectSubnodes(projectSubnode.getNodeId())) {
+				.getSubnodes(projectSubnode.getNodeId())) {
 			if (otherProjectSubnode.getId() != projectSubnode.getId()) {
 				if (oldPosition < newPosition) {
 					if (otherProjectSubnode.getPosition() > oldPosition
 							&& otherProjectSubnode.getPosition() <= newPosition) {
 						otherProjectSubnode.setPosition(projectSubnode
 								.getPosition() - 1);
-						psr.updateProjectSubnode(otherProjectSubnode);
+						psr.updateSubnode(otherProjectSubnode);
 					}
 				}
 
@@ -139,7 +139,7 @@ public class ProjectSubnodeManager {
 							&& otherProjectSubnode.getPosition() < oldPosition) {
 						otherProjectSubnode.setPosition(projectSubnode
 								.getPosition() + 1);
-						psr.updateProjectSubnode(otherProjectSubnode);
+						psr.updateSubnode(otherProjectSubnode);
 					}
 				}
 			}
@@ -163,15 +163,15 @@ public class ProjectSubnodeManager {
 			int position) throws UnknownProjectNodeLinkException,
 			EntityException {
 		for (ProjectSubnode projectSubnode : psr
-				.getProjectSubnodes(projectNodeId)) {
+				.getSubnodes(projectNodeId)) {
 			if (projectSubnode.getId() == id) {
 				projectSubnode.setPosition(position);
-				psr.updateProjectSubnode(projectSubnode);
+				psr.updateSubnode(projectSubnode);
 			} else {
 				if (projectSubnode.getPosition() >= position) {
 					projectSubnode
 							.setPosition(projectSubnode.getPosition() + 1);
-					psr.updateProjectSubnode(projectSubnode);
+					psr.updateSubnode(projectSubnode);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ public class ProjectSubnodeManager {
 			throws UnknownProjectSubnodeException,
 			UnknownProjectNodeLinkException, EntityException {
 		changeSubnodePositionOnDelete(projectSubnodeId);
-		psr.deleteProjectSubnode(projectSubnodeId);
+		psr.deleteSubnode(projectSubnodeId);
 	}
 
 	private void changeSubnodePositionOnDelete(int subnodeId)
@@ -193,7 +193,7 @@ public class ProjectSubnodeManager {
 				.getNodeId())) {
 			if (projectSubnode.getPosition() > delSubnode.getPosition()) {
 				projectSubnode.setPosition(projectSubnode.getPosition() - 1);
-				psr.updateProjectSubnode(projectSubnode);
+				psr.updateSubnode(projectSubnode);
 			}
 		}
 	}
@@ -202,7 +202,7 @@ public class ProjectSubnodeManager {
 			throws UnknownProjectNodeLinkException, EntityException,
 			UnknownUserException {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
-		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
+		for (ProjectSubnode subnode : psr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid)
@@ -212,10 +212,10 @@ public class ProjectSubnodeManager {
 	private Set<ProjectSubnode> recursiveDrillUp(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
-			for (ProjectSubnode subnode : psr.getSiblingSubnode(nodeId)) {
+			for (ProjectSubnode subnode : psr.getSiblingSubnodes(nodeId)) {
 				subnodes.add(subnode);
 			}
-			for (ProjectSubnode subnode : psr.getParentSubnode(nodeId)) {
+			for (ProjectSubnode subnode : psr.getParentSubnodes(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveDrillUp(subnode.getNodeId(), quantity - 1,
 						subnodes);
@@ -228,7 +228,7 @@ public class ProjectSubnodeManager {
 			throws UnknownProjectNodeLinkException, EntityException,
 			UnknownUserException {
 		Set<ProjectSubnode> subnodes = new HashSet<ProjectSubnode>();
-		for (ProjectSubnode subnode : psr.getProjectSubnodes(nodeId)) {
+		for (ProjectSubnode subnode : psr.getSubnodes(nodeId)) {
 			subnodes.add(subnode);
 		}
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid)
@@ -238,7 +238,7 @@ public class ProjectSubnodeManager {
 	private Set<ProjectSubnode> recursiveDrillDown(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
-			for (ProjectSubnode subnode : psr.getFollowerSubnode(nodeId)) {
+			for (ProjectSubnode subnode : psr.getFollowerSubnodes(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveDrillDown(subnode.getNodeId(),
 						quantity - 1, subnodes);
@@ -248,8 +248,8 @@ public class ProjectSubnodeManager {
 	}
 
 	public ProjectSubnode renameSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectSubnodeException, EntityException {
-		ProjectSubnode renamedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
+		ProjectSubnode renamedProjectSubnode = psr.getSubnode(projectSubnode.getId());
 		renamedProjectSubnode.setTitle(projectSubnode.getTitle());
-		return psr.updateProjectSubnode(renamedProjectSubnode);
+		return psr.updateSubnode(renamedProjectSubnode);
 	}
 }

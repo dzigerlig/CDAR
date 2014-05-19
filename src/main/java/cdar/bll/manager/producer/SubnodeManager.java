@@ -160,10 +160,10 @@ public class SubnodeManager {
 	private Set<Subnode> recursiveDrillUp(int nodeId, int quantity,
 			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {
-			for (Subnode subnode : sr.getSiblingSubnode(nodeId)) {
+			for (Subnode subnode : sr.getSiblingSubnodes(nodeId)) {
 				subnodes.add(subnode);
 			}
-			for (Subnode subnode : sr.getParentSubnode(nodeId)) {
+			for (Subnode subnode : sr.getParentSubnodes(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveDrillUp(subnode.getNodeId(), quantity - 1, subnodes);
 			}
@@ -182,7 +182,7 @@ public class SubnodeManager {
 	private Set<Subnode> recursiveDrillDown(int nodeId, int quantity,
 			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {
-			for (Subnode subnode : sr.getFollowerSubnode(nodeId)) {
+			for (Subnode subnode : sr.getFollowerSubnodes(nodeId)) {
 				subnodes.add(subnode);
 				subnodes = recursiveDrillDown(subnode.getNodeId(), quantity - 1, subnodes);
 			}

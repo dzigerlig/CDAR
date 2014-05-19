@@ -20,7 +20,7 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.ITreeRepository;
 
-public class TreeRepository implements ITreeRepository<Tree> {
+public class TreeRepository implements ITreeRepository {
 
 	public List<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;

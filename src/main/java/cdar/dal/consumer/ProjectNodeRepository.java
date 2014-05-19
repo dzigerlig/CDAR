@@ -20,9 +20,10 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
+import cdar.dal.interfaces.INodeRepository;
 
-public class ProjectNodeRepository {
-	public List<ProjectNode> getProjectNodes(int projectTreeId)
+public class ProjectNodeRepository implements INodeRepository<ProjectNode> {
+	public List<ProjectNode> getNodes(int projectTreeId)
 			throws UnknownProjectTreeException, EntityException {
 		final String sql = String
 				.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.INHERITEDTREEID, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.KPTID = ? AND PNODE.ID = MAPPING.KPNID",
@@ -59,7 +60,7 @@ public class ProjectNodeRepository {
 		return projectNodes;
 	}
 
-	public ProjectNode getProjectNode(int projectNodeId)
+	public ProjectNode getNode(int projectNodeId)
 			throws UnknownProjectNodeException, EntityException {
 		final String sql = String
 				.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, PNODE.INHERITEDTREEID, MAPPING.PDID FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.ID = ? AND PNODE.ID = MAPPING.KPNID",
@@ -96,7 +97,7 @@ public class ProjectNodeRepository {
 		throw new UnknownProjectNodeException();
 	}
 
-	public ProjectNode createProjectNode(ProjectNode projectNode)
+	public ProjectNode createNode(ProjectNode projectNode)
 			throws UnknownProjectTreeException, CreationException {
 		final String sqlProjectNode = String
 				.format("INSERT INTO %s (CREATION_TIME, TITLE, KPTID, WIKITITLE, DYNAMICTREEFLAG, NODESTATUS, INHERITEDTREEID) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -162,7 +163,7 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 
-	public ProjectNode updateProjectNode(ProjectNode projectNode)
+	public ProjectNode updateNode(ProjectNode projectNode)
 			throws UnknownProjectNodeException, UnknownNodeException {
 		final String sql = String
 				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG =?, NODESTATUS = ?, WIKITITLE = ?  WHERE id = ?",
@@ -200,7 +201,7 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 
-	public void deleteProjectNode(int projectNodeId)
+	public void deleteNode(int projectNodeId)
 			throws UnknownProjectNodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",
 				DBTableHelper.PROJECTNODE);
@@ -377,7 +378,6 @@ public class ProjectNodeRepository {
 
 	public ProjectNode getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
-
 		final String sql = String
 				.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, PNODE.INHERITEDTREEID, MAPPING.PDID  FROM %S AS PNODE, %s AS MAPPING WHERE PNODE.ID = (SELECT MIN(ID) FROM %s AS INNERNODE WHERE INNERNODE.DYNAMICTREEFLAG = 1 AND INNERNODE.KPTID = ?) AND PNODE.ID = MAPPING.KPNID",
 						DBTableHelper.PROJECTNODE, DBTableHelper.PROJECTNODEMAPPING,
