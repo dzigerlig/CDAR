@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.Subnode;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
@@ -84,6 +85,22 @@ public class ProjectSubnodeController {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
 		} catch (Exception ex) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	@POST
+	@Path("{subnodeid}/rename")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response renameSubnode(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId,ProjectSubnode projectSubnode) {
+		try {
+			ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
+			lm.lock(ISPRODUCER, treeId, uid);
+			psm.renameSubnode(projectSubnode);
+			return StatusHelper.getStatusOk(new ChangesWrapper<NodeLink>(pnlm.getProjectNodeLinksBySubnode(projectSubnode.getId()), "update"));
+		}catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER, treeId));
+		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

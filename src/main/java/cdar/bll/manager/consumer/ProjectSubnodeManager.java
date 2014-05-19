@@ -246,4 +246,10 @@ public class ProjectSubnodeManager {
 		}
 		return subnodes;
 	}
+
+	public ProjectSubnode renameSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectSubnodeException, EntityException {
+		ProjectSubnode renamedProjectSubnode = psr.getProjectSubnode(projectSubnode.getId());
+		renamedProjectSubnode.setTitle(projectSubnode.getTitle());
+		return psr.updateProjectSubnode(renamedProjectSubnode);
+	}
 }
