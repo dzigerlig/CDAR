@@ -331,6 +331,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, {
             id : linkId
         }, function(response) {
+			myJsPlumb.removeLink('link'+linkId);
             // noty({type: 'success', text : 'link
             // deleted successfully', timeout: 1500});
         }, function(error) {
