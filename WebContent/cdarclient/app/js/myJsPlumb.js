@@ -11,7 +11,7 @@ var myJsPlumb = (function() {
 
 	// private Methods
 	function buildContent() {
-        //jsPlumb.reset(); bööse
+        //jsPlumb.reset(); bï¿½ï¿½se
 		jsPlumb.deleteEveryEndpoint();
 		$("#jsplumb-container").empty();
 		var container = $("#jsplumb-container");
@@ -357,6 +357,18 @@ var myJsPlumb = (function() {
 		scope.deleteLink(id.replace(LINK, ""));
 	}
 
+    function detachNode(id) {
+        var node = $('#' + NODE + id);
+        if (node.size() !== 0) {
+            var connections = getConnections(node);
+            jQuery.each(connections, function() {
+                scope.deleteLink(this.id.replace(LINK, ""));
+            });
+            scope.undropNode(node[0].id.replace(NODE, ""));
+            myJsPlumb.removeNode(node);
+        }
+    }
+
 	// public Methods
 	return {
 		initialize : function() {
@@ -487,7 +499,7 @@ var myJsPlumb = (function() {
 		removeSelected : function() {
 			if (selectedElement !== null) {
 				if (selectedElement.indexOf(NODE) > -1) {
-					myJsPlumb.detachNode(selectedElement.replace(NODE, ""));
+					detachNode(selectedElement.replace(NODE, ""));
 				} else {
 					removeLink(selectedElement);
 				}
@@ -499,21 +511,15 @@ var myJsPlumb = (function() {
 				});
 			}
 		},
-
-		detachNode : function(id) {
-			var newState = $('#' + NODE + id);
-			if (newState.size() !== 0) {
-				var connections = getConnections(newState);
-				jQuery.each(connections, function() {
-					scope.deleteLink(this.id.replace(LINK, ""));
-				});
-				scope.undropNode(newState[0].id.replace(NODE, ""));
-				jsPlumb.detachAllConnections($(newState));
-				jsPlumb.removeAllEndpoints($(newState));
-				$(newState).remove();
+		
+		removeNode: function(node){
+			if (node.size() !== 0) {
+				jsPlumb.detachAllConnections($(node));
+				jsPlumb.removeAllEndpoints($(node));
+				$(node).remove();
 			}
 		},
-
+		
 		makeNodeHierarchy : function(data, resSubNodes) {
 			$("#dot-src").empty();
 			var map = {};

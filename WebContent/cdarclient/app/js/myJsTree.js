@@ -82,17 +82,6 @@ var myJsTree = (function () {
         $('#jstree').on("delete_node.jstree", function (e, data) {
             scope.selectedNodeId = 0;
             scope.selectednodename = "";
-            var node = data.node;
-            var id = data.node.id;
-            id = id.replace(DIRECTORY, "");
-            if (node.type === 'default') {
-                scope.deleteDirectory(id);
-                if (node.children_d.length) {
-                    deleteSubnodes(data);
-                }
-            } else {
-                scope.deleteNode(id.replace(NODE, ""));
-            }
         });
 
         $('#jstree').on("create_node.jstree", function (e, data) {
@@ -160,17 +149,16 @@ var myJsTree = (function () {
     	});
     }
 
-    function deleteSubnodes(data) {
-        data.node.children_d.forEach(function (nodeId) {
-            var node = data.instance._model.data[nodeId];
+    function deleteChildNodes(data) {
+        data.children_d.forEach(function (nodeId) {
+        	node = $('#jstree').jstree(true).get_node(nodeId);
             nodeId = nodeId.replace(DIRECTORY, "");
             if (node.type === 'default') {
-                scope.deleteDirectory(nodeId);
+               scope.deleteDirectory(nodeId);
             } else {
-                myJsPlumb.detachNode(nodeId.replace(NODE, ""));
-                scope.deleteNode(nodeId.replace(NODE, ""));
+               //myJsPlumb.detachNode(nodeId.replace(NODE, ""));
+               scope.deleteNode(nodeId.replace(NODE, ""));
             }
-
         });
     }
 
@@ -202,6 +190,23 @@ var myJsTree = (function () {
         copiedId = [];
         editedCopies = 0;
         quantitiyOfCopies = 0;
+    }
+    
+    function deleteElement(title){
+    	var id = title.replace(DIRECTORY, "");
+    	if(id.indexOf("node")>=0)
+    	{
+    		scope.deleteNode(id.replace(NODE, ""));
+    	}
+    	else
+    	{
+    		var data = $("#jstree").jstree('get_node', $('#'+title));
+    		console.log('asdf');
+    		scope.deleteDirectory(id);
+            if (data.children_d.length) {
+                deleteChildNodes(data);
+            }
+    	}
     }
 
 // public Methods
@@ -245,6 +250,10 @@ var myJsTree = (function () {
                 noty({type: 'success', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
                 return false;
             }
+            if (sel.length>1) {
+            	noty({type: 'success', text: 'Please select just one '+ scope.defaultDirectoryName+' or one '+ scope.defaultNodeName, timeout: 5000});
+            	return false;
+            }
             sel = sel[0];
             ref.edit(sel);
         },
@@ -261,7 +270,8 @@ var myJsTree = (function () {
 
             var selected = sel.slice(0);
             selected.forEach(function (name) {
-                ref.delete_node(name);
+            	deleteElement(name);
+                //ref.delete_node(name);
             });
         },
 

@@ -757,14 +757,15 @@ app.controller("KnowledgeTreeController",
 							};
 
 							$scope.deleteNode = function(nodeId) {
-								myJsPlumb.detachNode(nodeId);
+								//myJsPlumb.detachNode(nodeId);
 								TreeService.deleteNode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId
 								}, {
 									id : nodeId
 								}, function(response) {
-									myJsPlumb.detachNode(nodeId);
+									$('#jstree').jstree(true).delete_node('directorynode'+nodeId);
+									myJsPlumb.removeNode($('#node'+nodeId));
 									noty({
 										type : 'success',
 										text : DescriptionService
@@ -1013,6 +1014,7 @@ app.controller("KnowledgeTreeController",
 													id : directoryId
 												},
 												function(response) {
+													$('#jstree').jstree(true).delete_node('directory'+directoryId);
 													noty({
 														type : 'success',
 														text : 'directory deleted successfully',
@@ -1020,6 +1022,7 @@ app.controller("KnowledgeTreeController",
 													});
 												},
 												function(error) {
+													console.log('error');
 													if (!$scope.showLockingNotification(error)) {
 
 													noty({
