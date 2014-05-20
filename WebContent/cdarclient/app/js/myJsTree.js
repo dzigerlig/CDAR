@@ -5,6 +5,7 @@ var myJsTree = (function () {
     var copiedId = [];
     var quantitiyOfCopies = 0;
     var editedCopies = 0;
+    var lastRenamed;
 
     var mouseOverJsTreeFlag = false;
     var eleme = $("#jstree-container");
@@ -62,18 +63,19 @@ var myJsTree = (function () {
 
         $('#jstree').on(
             "rename_node.jstree",
-            function (e, data) {
-                if (data.text === "") {
+            function (e, data) {        	
+                if (data.text === ""||lastRenamed!==undefined&&data.text===lastRenamed.old&&data.old===lastRenamed.text) {
                     return false;
                 }
+                lastRenamed=data;
                 var id = data.node.id;
                 id = id.replace(DIRECTORY, "");
                 if (data.node.type !== 'default') {
                     id = id.replace(NODE, "");
-                    scope.renameNode(id, data.text, data.node.parent.replace(
+                   scope.renameNode(id, data, data.node.parent.replace(
                         DIRECTORY, ""));
                 } else {
-                    scope.renameDirectory(id, data.text);
+                    scope.renameDirectory(id, data);
                 }
             });
 
@@ -123,11 +125,11 @@ var myJsTree = (function () {
                 "types": {
 
                     "#": {
-                        "icon": "http://jstree.com/tree.png",
+                        "icon": "../cdarclient/app/img/tree.png",
                         "valid_children": [ "default" ]
                     },
                     "root": {
-                        "icon": "http://jstree.com/tree.png",
+                        "icon": "../cdarclient/app/img/tree.png",
                         "valid_children": [ "default" ]
                     },
                     "default": {
@@ -138,7 +140,7 @@ var myJsTree = (function () {
                         "valid_children": []
                     }
                 },
-                "plugins": [ "contextmenu", "dnd", "search", "sort", "types",
+                "plugins": ["dnd", "search", "sort", "types",
                     "themes" ]
             });
         $("#jstree").jstree("open_node", $("#" + rootid));

@@ -843,20 +843,21 @@ app.controller("KnowledgeTreeController",
 								});
 							};
 
-							$scope.renameNode = function(id, newTitle, did) {
+							$scope.renameNode = function(id, data, did) {
 								TreeService.renameNode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : id
 								}, {
 									id : id,
-									title : newTitle,
+									title : data.text,
 									directoryId : did
 								}, function(response) {
-									myJsPlumb.renameNode(id, newTitle);
+									myJsPlumb.renameNode(id, data.text);
 									// noty({type: 'success', text : 'node
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
+						        	$("#jstree").jstree('rename_node', [$('#directorynode'+id) , data.old] );
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'alert',
@@ -979,18 +980,20 @@ app.controller("KnowledgeTreeController",
 							};
 
 							$scope.renameDirectory = function(directoryId,
-									newTitle) {
+									data) {
 								TreeService.updateDirectory({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : directoryId
 								}, {
 									id : directoryId,
-									title : newTitle
+									title : data.text
 								}, function(response) {
 									// noty({type: 'success', text : 'directory
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
+						        	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
+
 									if (!$scope.showLockingNotification(error)) {
 									noty({
 										type : 'alert',
