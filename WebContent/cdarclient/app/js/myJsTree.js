@@ -263,7 +263,7 @@ var myJsTree = (function () {
                 return false;
             }
             if (ref._model.data[sel[0]].parent === '#') {
-                noty({type: 'success', text: "You can't delete a root "+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'error', text: "You can't delete a root "+scope.defaultDirectoryName, timeout: 5000});
                 return false;
             }
 

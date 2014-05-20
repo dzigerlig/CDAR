@@ -832,6 +832,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId,
 									dynamicTreeFlag : 0
 								}, function(response) {
+						            myJsPlumb.removeNode($('#' + NODE + nodeId));
 									// todo
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
@@ -1216,15 +1217,15 @@ app.controller("KnowledgeTreeController",
 										t) {
 									return t.id === id;
 								})[0];
-
-								subnode.position = subnode.position - 1;
-
+								var subnodeClone = jQuery.extend({}, subnode);
+								subnodeClone.position=subnodeClone.position-1;
 								TreeService.updateSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : $scope.selectedNode.id,
-									id3 : subnode.id
-								}, subnode, function(response) {
+									id3 : subnodeClone.id
+								}, subnodeClone, function(response) {
+									subnode.position = subnode.position - 1;
 									$scope.getSubnodesOfNode();
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
@@ -1242,15 +1243,16 @@ app.controller("KnowledgeTreeController",
 										t) {
 									return t.id === id;
 								})[0];
-
-								subnode.position = subnode.position + 1;
-
+								var subnodeClone = jQuery.extend({}, subnode);
+								subnodeClone.position=subnodeClone.position+1;
 								TreeService.updateSubnode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId,
 									id2 : $scope.selectedNode.id,
-									id3 : subnode.id
-								}, subnode, function(response) {
+									id3 : subnodeClone.id
+								}, subnodeClone, function(response) {
+									subnode.position = subnode.position + 1;
+
 									$scope.getSubnodesOfNode();
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
