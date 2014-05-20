@@ -267,7 +267,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'node
             // renamed successfully', timeout: 1500});
         }, function(error) {
-        	$("#jstree").jstree('rename_node', [$('#directorynode'+id) , data.old] );
+        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
     			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'alert',
@@ -401,8 +401,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             // noty({type: 'success', text : 'directory
             // renamed successfully', timeout: 1500});
         }, function(error) {
-        	$("#jstree").jstree('rename_node', [$('#directory'+directoryId) , data.old] );
-
+        	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'alert',
