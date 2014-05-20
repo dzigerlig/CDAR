@@ -156,7 +156,6 @@ var myJsTree = (function () {
             if (node.type === 'default') {
                scope.deleteDirectory(nodeId);
             } else {
-               //myJsPlumb.detachNode(nodeId.replace(NODE, ""));
                scope.deleteNode(nodeId.replace(NODE, ""));
             }
         });
