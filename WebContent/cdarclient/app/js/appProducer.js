@@ -764,6 +764,7 @@ app.controller("KnowledgeTreeController",
 								}, {
 									id : nodeId
 								}, function(response) {
+									$('#jstree').jstree(true).delete_node('directorynode'+nodeId);
 									myJsPlumb.detachNode(nodeId);
 									noty({
 										type : 'success',
@@ -1013,6 +1014,7 @@ app.controller("KnowledgeTreeController",
 													id : directoryId
 												},
 												function(response) {
+													$('#jstree').jstree(true).delete_node('directory'+directoryId);
 													noty({
 														type : 'success',
 														text : 'directory deleted successfully',
@@ -1020,6 +1022,7 @@ app.controller("KnowledgeTreeController",
 													});
 												},
 												function(error) {
+													console.log('error');
 													if (!$scope.showLockingNotification(error)) {
 
 													noty({

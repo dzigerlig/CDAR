@@ -178,6 +178,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, {
             id : nodeId
         }, function(response) {
+        	$('#jstree').jstree(true).delete_node('directorynode'+nodeId);
             myJsPlumb.detachNode(nodeId);
             noty({
                 type : 'success',
@@ -422,6 +423,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 id : directoryId
             },
             function(response) {
+				$('#jstree').jstree(true).delete_node('directory'+directoryId);
                 noty({
                     type : 'success',
                     text : 'directory deleted successfully',
