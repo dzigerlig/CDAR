@@ -359,7 +359,6 @@ var myJsPlumb = (function() {
                 scope.deleteLink(this.id.replace(LINK, ""));
             });
             scope.undropNode(node[0].id.replace(NODE, ""));
-            myJsPlumb.removeNode(node);
         }
     }
 
