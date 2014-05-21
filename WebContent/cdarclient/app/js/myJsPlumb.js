@@ -511,6 +511,10 @@ var myJsPlumb = (function() {
 		
 		removeNode: function(node){
 			if (node.size() !== 0) {
+				var connections = getConnections(node);
+				jQuery.each(connections, function(object) {
+						jsPlumb.detach(this);
+				});
 				console.log('remove Node');
 				jsPlumb.detachAllConnections($(node));
 				jsPlumb.removeAllEndpoints($(node));
