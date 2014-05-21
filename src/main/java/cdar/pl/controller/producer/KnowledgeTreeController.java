@@ -41,16 +41,14 @@ public class KnowledgeTreeController {
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteTree(@HeaderParam("uid") int uid,
-			@PathParam("ktreeid") int treeId, Tree tree) {
+	public Response deleteTree(@HeaderParam("uid") int uid,Tree tree) {
 		try {
-			lm.lock(ISPRODUCER, treeId, uid);
-
+			lm.lock(ISPRODUCER, tree.getId(), uid);
 			ktm.deleteTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
-					treeId));
+					tree.getId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}

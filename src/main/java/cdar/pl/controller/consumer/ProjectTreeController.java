@@ -88,15 +88,14 @@ public class ProjectTreeController {
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteTree(@HeaderParam("uid") int uid,
-			@PathParam("ptreeid") int treeId, Tree tree) {
+	public Response deleteTree(@HeaderParam("uid") int uid,Tree tree) {
 		try {
-			lm.lock(ISPRODUCER, treeId, uid);
+			lm.lock(ISPRODUCER, tree.getId(), uid);
 			ptm.deleteTree(tree.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
-					treeId));
+					tree.getId()));
 		} catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
