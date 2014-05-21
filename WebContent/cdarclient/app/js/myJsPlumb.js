@@ -2,7 +2,7 @@ var myJsPlumb = (function() {
 
 	var lastConnectionID = -1;
 	var scope;
-	var isInizialized = false;
+	var isInitialized = false;
 	var NODE = 'node';
 	var LINK = 'link';
 	var SUBNODE = 'subnode';
@@ -11,7 +11,7 @@ var myJsPlumb = (function() {
 
 	// private Methods
 	function buildContent() {
-        //jsPlumb.reset(); b��se
+        //jsPlumb.reset(); b������se
 		jsPlumb.deleteEveryEndpoint();
 		$("#jsplumb-container").empty();
 		var container = $("#jsplumb-container");
@@ -226,13 +226,16 @@ var myJsPlumb = (function() {
 
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
-			if (!isInizialized) {
+			if (!isInitialized) {
+				console.log("not initialized");
 				myJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
 				bindClickConnection(info);
 			} else {
+				console.log("initialized");
 				scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
 						info.targetId.replace(NODE, ""), info.connection);
+				console.log("show popup");
 				showSubnodePopup(info);
 				bindClickConnection(info);
 			}
@@ -258,6 +261,7 @@ var myJsPlumb = (function() {
 	}
 
 	function showSubnodePopup(info) {
+		console.log(info);
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
 		if (info.connection.source.data(SUBNODE).subnode) {
@@ -368,6 +372,7 @@ var myJsPlumb = (function() {
 			scope = angular.element(document.getElementById("wrapper")).scope();
 			setDefaultSettings();
 			registerLinkTemplate();
+			buildContent();
 			makePopupEvents();
 			bindNewConnection();
 			$('html').click(function() {
@@ -379,6 +384,7 @@ var myJsPlumb = (function() {
 		},
 
 		addHTMLNode : function(response, e) {
+			isInitialized = true;
 			var newState = $('<div>').attr('id', NODE + response.id).addClass(
 					'w').data(SUBNODE, {
 				subnode : null
@@ -417,11 +423,9 @@ var myJsPlumb = (function() {
 		},
 
 		drawExistingNodes : function(data, resSubnodes) {
-			console.log('draw existing nodes');
-			buildContent();
 			makePopupEvents();
 
-            isInizialized = false;
+			isInitialized = false;
 			selectedElement = null;
 			var map = {};
 			jQuery.each(resSubnodes, function(object) {
@@ -539,7 +543,7 @@ var myJsPlumb = (function() {
 			});
 			direction += "}";
 			$('#dot-src').val(direction);
-			isInizialized = true;
+			isInitialized = true;
 		},
 
 		setLinkId : function(connection, id) {
