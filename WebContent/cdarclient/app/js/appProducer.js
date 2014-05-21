@@ -174,7 +174,7 @@ app.controller("KnowledgeTreeController",
 			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
 			 $scope.defaultNodeName = DescriptionService.getNodeDescription();		
 			 $scope.defaultLinkName = 'all '+ DescriptionService.getSubnodeDescription() + 's';
-			 myJsPlumb.initialize();
+		//	 myJsPlumb.initialize();
 			 $scope.treeId = $routeParams.treeId;
 			 $scope.UserService = UserService;
 			 $scope.knowledgetree = "";
@@ -622,7 +622,7 @@ app.controller("KnowledgeTreeController",
 								}, function(resNodes) {
 									myJsTree.directoryDataToArray(resDirectory,
 											resNodes);
-									$scope.drillDownNode(0);
+									//$scope.drillDownNode(0);
 									//$scope.getSubnodes(resNodes);
 								}, function(error) {
 									noty({
