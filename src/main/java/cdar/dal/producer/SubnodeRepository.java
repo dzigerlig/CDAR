@@ -174,35 +174,6 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
-	public List<Subnode> getSubnodesByTree(int treeId) throws UnknownTreeException {
-		final String sql = String.format("SELECT SUBNODE.ID, SUBNODE.CREATION_TIME, SUBNODE.LAST_MODIFICATION_TIME, SUBNODE.KNID, SUBNODE.TITLE, SUBNODE.WIKITITLE, POSITION FROM %s AS SUBNODE JOIN %s AS NODE ON NODE.ID = SUBNODE.KNID WHERE NODE.KTRID = ?",DBTableHelper.SUBNODE,DBTableHelper.NODE);
-
-		List<Subnode> subnodes = new ArrayList<Subnode>();
-
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, treeId);
-
-			try (ResultSet result = preparedStatement.executeQuery()) {
-				while (result.next()) {
-					Subnode subnode = new Subnode();
-					subnode.setId(result.getInt(1));
-					subnode.setCreationTime(result.getDate(2));
-					subnode.setLastModificationTime(result.getDate(3));
-					subnode.setNodeId(result.getInt(4));
-					subnode.setTitle(result.getString(5));
-					subnode.setWikititle(result.getString(6));
-					subnode.setPosition(result.getInt(7));
-					subnodes.add(subnode);
-				}
-			}
-		} catch (SQLException e) {
-			throw new UnknownTreeException();
-		}
-		return subnodes;
-	}
-	
 	public Subnode createSubnode(Subnode subnode) throws UnknownNodeException, CreationException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KNID, TITLE, POSITION) VALUES (?, ?, ?, ?)",DBTableHelper.SUBNODE);
 		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.SUBNODE);
