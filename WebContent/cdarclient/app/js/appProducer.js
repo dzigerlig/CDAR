@@ -833,7 +833,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId,
 									dynamicTreeFlag : 0
 								}, function(response) {
-						            myJsPlumb.removeNode($('#' + NODE + nodeId));
+						            myJsPlumb.removeNode($('#node' + nodeId));
 									// todo
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
