@@ -586,10 +586,9 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	            t) {
 	            return t.id === id;
 	        })[0];
-	        var subnodeClone = jQuery.extend({}, subnode);
-			subnodeClone.title=data;
+	        subnode.title=data;
 	
-	        TreeService.renameSubnode( { entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnodeClone, function(
+	        TreeService.renameSubnode( { entity1 : 'ptrees', id1 : $routeParams.treeId, id2 : $scope.selectedNode.id, id3 : id },subnode, function(
 	            response) {
 	        	subnode.title = data;
 	            $scope.getSubnodesOfNode(response);

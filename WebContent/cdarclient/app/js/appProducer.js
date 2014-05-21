@@ -363,6 +363,7 @@ app.controller("KnowledgeTreeController",
 								setLoadingSubnode();
 								$scope.selectedSubnode.id = subnodeid;
 								$scope.selectedSubnode.title = name;
+								console.log('changesubnode');
 								TreeService.getSubnodeWiki({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
@@ -1178,8 +1179,7 @@ app.controller("KnowledgeTreeController",
 											function(t) {
 												return t.id === id;
 											})[0];
-									var subnodeClone = jQuery.extend({}, subnode);
-									subnodeClone.title=data;
+									subnode.title=data;
 
 									TreeService
 											.renameSubnode(
@@ -1189,7 +1189,7 @@ app.controller("KnowledgeTreeController",
 														id2 : $scope.selectedNode.id,
 														id3 : id
 													},
-													subnodeClone,
+													subnode,
 													function(response) {
 														subnode.title = data;
 														$scope
@@ -1210,7 +1210,9 @@ app.controller("KnowledgeTreeController",
 																			.getSubnodeDescription(),
 															timeout : 1500
 														});}
-													});
+														return "";
+													}
+													);
 								}
 							};
 
