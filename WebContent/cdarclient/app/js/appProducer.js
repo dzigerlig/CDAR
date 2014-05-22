@@ -1,10 +1,10 @@
-/*var reload = false;
+var reload = false;
 function getReload() {
 	return reload;
 }
 function setReload(value) {
 	reload = value;
-}*/
+}
 
 app.controller(
 		"HomeProducerController",
@@ -163,12 +163,14 @@ app.controller("KnowledgeTreeController",
 		 function($scope, $routeParams, TreeService,
 				 AuthenticationService, UserService, $route,
 				 DescriptionService, $modal) {
-						// Workaround draw links not correct
-							/*
-							 * if (getReload()) { setReload(false);
-							 * location.reload(); } setReload(true);
-							 */
-							//
+			 
+			 //Workaround jstree not selectable
+			 if (getReload()) { 
+				 setReload(false);
+				 location.reload(); 
+			 } 
+			 setReload(true);							 
+			 //
 			 $scope.isProducer = true;
 			 $scope.DescriptionService = DescriptionService;
 			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();

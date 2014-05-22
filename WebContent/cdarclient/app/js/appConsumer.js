@@ -1,4 +1,19 @@
+var reload = false;
+function getReload() {
+	return reload;
+}
+function setReload(value) {
+	reload = value;
+}
+
 app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', '$modal', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService, $modal) {
+	//Workaround jstree not selectable
+	if (getReload()) { 
+		setReload(false);
+		location.reload(); 
+	} 
+	setReload(true);							 
+	//
 	$scope.isProducer = false;
 	myJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
