@@ -620,14 +620,29 @@ var myJsPlumb = (function() {
 		},
 
 		drillDownButton : function() {
-			if (selectedElement.indexOf(NODE) > -1) {
+			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
 				scope.drillDownNode(selectedElement.replace(NODE, ""));
+			}
+			else
+			{
+				noty({
+					type : 'information',
+					text : 'Please select a node',
+					timeout : 5000
+				});
 			}
 		},
 
 		drillUpButton : function() {
-			if (selectedElement.indexOf(NODE) > -1) {
+			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
 				scope.drillUpNode(selectedElement.replace(NODE, ""));
+			}
+			else{
+				noty({
+					type : 'information',
+					text : 'Please select a node',
+					timeout : 5000
+				});
 			}
 		}
 
