@@ -17,11 +17,11 @@ var myJsTree = (function () {
             mouseOverJsTreeFlag = false;
         });
 
-    $('html').click(function () {
+    /*$('html').click(function () {
         if (!mouseOverJsTreeFlag) {
             $("#jstree").jstree("deselect_all");
         }
-    });
+    });*/
 
 
     $(function () {
@@ -201,7 +201,13 @@ var myJsTree = (function () {
         quantitiyOfCopies = 0;
     }
     
-    function deleteElement(title){    	
+    function deleteElement(selected){    
+    	
+        
+        
+  
+    	
+    	
     	scope.modal.open({
     		templateUrl : 'templates/confirmation.html',
     		backdrop : 'static',
@@ -210,25 +216,27 @@ var myJsTree = (function () {
     			data : function() {
     				return {
     					title : 'Delete '+scope.defaultDirectoryName,
-    					message : 'Do you really want to delete this '+scope.defaultDirectoryName+'?'
+    					message : 'Do you really want to delete selected '+scope.defaultDirectoryName+'s or '+scope.defaultNodeName+'s ?'
     				};
     			}
     		},
     		controller : 'ConfirmationController'
     	}).result.then(function(result) {	
-    		var id = title.replace(DIRECTORY, "");
-    		if(id.indexOf("node")>=0)	
-    		{
-    			scope.deleteNode(id.replace(NODE, ""));
-    		}
-    		else
-    		{
-    			var data = $("#jstree").jstree('get_node', $('#'+title));
-    			scope.deleteDirectory(id);
-    			if (data.children_d.length) {
-    				deleteChildNodes(data);
-    			}
-    		}
+    	      selected.forEach(function (name) {    	       
+    	    	  var id = name.replace(DIRECTORY, "");
+    	    	  if(id.indexOf("node")>=0)	
+    	    	  {
+    	    		  scope.deleteNode(id.replace(NODE, ""));
+    	    	  }
+    	    	  else
+    	    	  {
+    	    		  var data = $("#jstree").jstree('get_node', $('#'+title));
+    	    		  scope.deleteDirectory(id);
+    	    		  if (data.children_d.length) {
+    	    			  deleteChildNodes(data);
+    	    		  }
+    	    	  } 
+    		});
     	});          
     }
  	
@@ -296,10 +304,8 @@ var myJsTree = (function () {
             }
 
             var selected = sel.slice(0);
-            selected.forEach(function (name) {
-            	deleteElement(name);
-                //ref.delete_node(name);
-            });
+            
+            deleteElement(selected);
         },
 
         directoryDataToArray: function (resDirectory, resNodes) {
