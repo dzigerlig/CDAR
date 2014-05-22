@@ -51,7 +51,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             $scope.projecttree = response;
         }, function(error) {
         	noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting tree',
 				timeout : 1500
 			});
@@ -73,14 +73,14 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                    // $scope.getSubnodes(resNodes);
                 }, function(error) {
                 	noty({
-        				type : 'alert',
+        				type : 'error',
         				text : 'error getting ' + DescriptionService.getNodeDescription() + 's',
         				timeout : 1500
         			});
                 });
         }, function(error) {
         	noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting directories',
 				timeout : 1500
 			});
@@ -132,7 +132,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'cannot update link',
 					 timeout : 1500
 				 });
@@ -154,7 +154,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error adding ' + DescriptionService.getNodeDescription(),
 					 timeout : 1500
 				 });
@@ -177,7 +177,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             }, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error adding ' + DescriptionService.getNodeDescription(),
 						 timeout : 1500
 					 });
@@ -203,7 +203,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-                	type : 'alert',
+                	type : 'error',
                 	text : 'cannot delete ' + DescriptionService.getNodeDescription(),
                 	timeout : 1500
             	});
@@ -220,7 +220,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             myDragDrop.setMovedNode(node);
         }, function(error) {
             noty({
-                type : 'alert',
+                type : 'error',
                 text : 'error getting ' + DescriptionService.getNodeDescription(),
                 timeout : 1500
             });
@@ -240,7 +240,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error dropping ' + DescriptionService.getNodeDescription(),
 					 timeout : 1500
 				 });
@@ -262,7 +262,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error undropping ' + DescriptionService.getNodeDescription(),
 					 timeout : 1500
 				 });
@@ -287,7 +287,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
     			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'cannot rename ' + DescriptionService.getNodeDescription(),
 					 timeout : 1500
 				 });
@@ -308,7 +308,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error moving ' + DescriptionService.getNodeDescription(),
 					 timeout : 1500
 				 });
@@ -332,7 +332,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             }, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error adding link',
 						 timeout : 1500
 					 });
@@ -353,7 +353,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'cannot delete link',
 					 timeout : 1500
 				 });
@@ -375,7 +375,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error adding directory',
 					 timeout : 1500
 				 });
@@ -398,7 +398,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             }, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error adding directory copy',
 						 timeout : 1500
 					 });
@@ -422,7 +422,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error renaming directory',
 					 timeout : 1500
 				 });
@@ -449,7 +449,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             }, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error deleting directory',
 						 timeout : 1500
 					 });
@@ -472,7 +472,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'error moving directory',
 					 timeout : 1500
 				 });
@@ -491,7 +491,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot drill up',
 				timeout : 1500
 			});
@@ -509,7 +509,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot drill down',
 				timeout : 1500
 			});
@@ -527,7 +527,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.drillUpLink(nodeid, resSubnodes);
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot drill up',
 				timeout : 1500
 			});
@@ -545,7 +545,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.drillDownLink(nodeid, resSubnodes);
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot drill down',
 				timeout : 1500
 			});
@@ -563,7 +563,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			w_launch();
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot drill up',
 				timeout : 1500
 			});
@@ -581,7 +581,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			w_launch();
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'v',
 				text : 'cannot drill down',
 				timeout : 1500
 			});
@@ -591,7 +591,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.editSubnodeTitle = function(data, id) {
     	if (data.length>45) {
     		noty({
-    			type : 'alert',
+    			type : 'warning',
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
@@ -613,7 +613,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	        }, function (error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
 						 timeout : 1500
 					 });
@@ -627,7 +627,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.saveProjectTreeTitle = function(title) {
     	if (title.length>45) {
     		noty({
-    			type : 'alert',
+    			type : 'warning',
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
@@ -639,7 +639,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, $scope.projecttree, function(response) { }, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error while saving tree title',
 						 timeout : 1500
 					 });
@@ -695,7 +695,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.subnodes = response;
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
 				timeout : 1500
 			});
@@ -724,14 +724,14 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				changeWikiFields();
 			}, function(error) {
 				noty({
-					type : 'alert',
+					type : 'error',
 					text : 'error getting wiki entry',
 					timeout : 1500
 				});
 			});
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting ' + DescriptionService.getNodeDescription(),
 				timeout : 1500
 			});
@@ -768,7 +768,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 							}, function(error) {
 								changeWikiFields($scope.selectedNodeWiki);
 								noty({
-									type : 'alert',
+									type : 'error',
 									text : 'cannot edit wiki text',
 									timeout : 1500
 								});
@@ -779,7 +779,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.addNewSubnode = function() {
 		if (this.newSubnodeName.length>45) {
 			noty({
-				type : 'alert',
+				type : 'warning',
 				text : 'Please enter a text with less than 45 Characters',
 				timeout : 3000
 			});
@@ -796,7 +796,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
 						 timeout : 1500
 					 });
@@ -811,7 +811,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.addSubnodeByWikiTitle = function() {
 		if (this.newSubnodeWikiName.length>45) {
 			noty({
-				type : 'alert',
+				type : 'warning',
 				text : 'Please enter a text with less than 45 Characters',
 				timeout : 3000
 			});
@@ -829,7 +829,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(error) {
 				 if (!$scope.showLockingNotification(error)) {	
 					 noty({
-						 type : 'alert',
+						 type : 'erro',
 						 text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
 						 timeout : 1500
 					 });
@@ -859,7 +859,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					identity, changes);
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's', 
 				timeout : 1500
 			});
@@ -901,7 +901,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'error deleting ' + DescriptionService.getSubnodeDescription(),
 						 timeout : 1500
 					 });
@@ -925,7 +925,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			changeWikiFieldsSubnode();
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'error getting wiki entry',
 				timeout : 1500
 			});
@@ -961,7 +961,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 							}, function(error) {
 								 if (!$scope.showLockingNotification(error)) {
 									 noty({
-										 type : 'alert',
+										 type : 'error',
 										 text : 'cannot edit wiki text',
 										 timeout : 1500
 									 });
@@ -994,7 +994,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'cannot update ' + DescriptionService.getNodeDescription() + ' status',
 						 timeout : 1500
 					 });
@@ -1019,7 +1019,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'cannot drill up',
 					 timeout : 1500
 				 });
@@ -1047,7 +1047,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(error) {
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
-					 type : 'alert',
+					 type : 'error',
 					 text : 'cannot drill down',
 					timeout : 1500
 				 });
@@ -1064,7 +1064,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			$scope.comments = response;
 		}, function(error) {
 			noty({
-				type : 'alert',
+				type : 'error',
 				text : 'cannot get comments',
 				timeout : 1500
 			});
@@ -1077,7 +1077,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.addComment = function() {
 		if (this.newCommentText.length>200) {
 			noty({
-				type : 'alert',
+				type : 'warning',
 				text : 'Please enter a comment with less than 200 Characters',
 				timeout : 3000
 			});
@@ -1091,7 +1091,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'cannot add comment',
 						 timeout : 1500
 					 });
@@ -1124,7 +1124,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function (error) {
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'cannot delete comment',
 						 timeout : 1500
 					 });

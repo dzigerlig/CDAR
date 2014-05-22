@@ -502,7 +502,7 @@ var myJsPlumb = (function() {
 				}
 			} else {
 				noty({
-					type : 'alert',
+					type : 'information',
 					text : 'Please select a node or a connection',
 					timeout : 5000
 				});
