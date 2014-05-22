@@ -34,6 +34,7 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.interfaces.IDirectoryRepository;
 import cdar.dal.interfaces.ITreeRepository;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.TreeRepository;
@@ -42,7 +43,7 @@ import cdar.dal.user.UserRepository;
 public class TreeManager {
 	private ITreeRepository treeRepository;
 	private UserRole userRole;
-	
+
 	public TreeManager(UserRole userRole) {
 		setUserRole(userRole);
 		if (getUserRole() == UserRole.CONSUMER) {
@@ -51,23 +52,25 @@ public class TreeManager {
 			treeRepository = new TreeRepository();
 		}
 	}
-	
-	public Set<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
+
+	public Set<Tree> getTrees(int uid) throws UnknownUserException,
+			EntityException {
 		Set<Tree> trees = new HashSet<Tree>();
 		for (Tree tree : treeRepository.getTrees(uid)) {
 			trees.add(tree);
 		}
 		return trees;
-	} 
+	}
 
-	public Tree addTree(int uid, Tree tree) throws UnknownUserException, EntityException, CreationException, UnknownDirectoryException {
+	public Tree addTree(int uid, Tree tree) throws UnknownUserException,
+			EntityException, CreationException, UnknownDirectoryException {
 		User user = new UserRepository().getUser(uid);
 		tree.setUserId(user.getId());
 		tree = treeRepository.createTree(tree);
 		Directory directory = new Directory();
 		directory.setTreeId(tree.getId());
 		directory.setTitle(tree.getTitle());
-		if (getUserRole() == UserRole.CONSUMER) { 
+		if (getUserRole() == UserRole.CONSUMER) {
 			ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
 			pdr.createDirectory(directory);
 		} else {
@@ -76,7 +79,7 @@ public class TreeManager {
 		}
 		return tree;
 	}
-	
+
 	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId)
 			throws EntityException, UnknownUserException, CreationException,
 			UnknownTreeException, UnknownProjectTreeException,
@@ -114,8 +117,7 @@ public class TreeManager {
 				directoryMapping.put(directory.getId(),
 						projectDirectory.getId());
 			} else {
-				directoryMapping.put(directory.getId(),
-						rootDirectory.getId());
+				directoryMapping.put(directory.getId(), rootDirectory.getId());
 			}
 
 		}
@@ -140,37 +142,44 @@ public class TreeManager {
 			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
 			projectSubnode.setPosition(subnode.getPosition());
 			projectSubnode.setInheritedTreeId(ktreeId);
-			projectSubnode= psr.createSubnode(projectSubnode);
+			projectSubnode = psr.createSubnode(projectSubnode);
 			subnodeMapping.put(subnode.getId(), projectSubnode.getId());
 		}
 
 		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
 			NodeLink projectNodeLink = new NodeLink();
-			projectNodeLink.setSourceId(linkMapping.get(nodelink.getSourceId()));
-			projectNodeLink.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			if (nodelink.getSubnodeId()!=0) {
-				projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink.getSubnodeId()));
+			projectNodeLink
+					.setSourceId(linkMapping.get(nodelink.getSourceId()));
+			projectNodeLink
+					.setTargetId(linkMapping.get(nodelink.getTargetId()));
+			if (nodelink.getSubnodeId() != 0) {
+				projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink
+						.getSubnodeId()));
 			}
 			projectNodeLink.setTreeId(ptreeId);
 			pnlr.createNodeLink(projectNodeLink);
 		}
 	}
 
-	public void deleteTree(int ktreeId) throws UnknownTreeException, UnknownProjectTreeException {
+	public void deleteTree(int ktreeId) throws UnknownTreeException,
+			UnknownProjectTreeException {
 		treeRepository.deleteTree(ktreeId);
 	}
 
-	public Tree getTree(int treeId) throws UnknownTreeException, UnknownProjectTreeException, EntityException {
+	public Tree getTree(int treeId) throws UnknownTreeException,
+			UnknownProjectTreeException, EntityException {
 		return treeRepository.getTree(treeId);
 	}
 
-	public Tree updateTree(Tree tree) throws UnknownTreeException, UnknownProjectTreeException, EntityException  {
+	public Tree updateTree(Tree tree) throws UnknownTreeException,
+			UnknownProjectTreeException, EntityException,
+			UnknownDirectoryException {
 		Tree updatedTree = treeRepository.getTree(tree.getId());
 
-		if (tree.getTitle()!=null) {
+		if (tree.getTitle() != null) {
+			updateDirectory(tree);
 			updatedTree.setTitle(tree.getTitle());
 		}
-
 		return treeRepository.updateTree(updatedTree);
 	}
 
@@ -181,4 +190,19 @@ public class TreeManager {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
+
+	private void updateDirectory(Tree tree) throws EntityException,
+			UnknownDirectoryException {
+		IDirectoryRepository directoryRepository;
+		Directory directory;
+		if (getUserRole() == UserRole.CONSUMER) {
+			directoryRepository = new ProjectDirectoryRepository();
+		} else {
+			directoryRepository = new DirectoryRepository();
+		}
+		directory = directoryRepository.getRootDirectory(tree.getId());
+		directory.setTitle(tree.getTitle());
+		directoryRepository.updateDirectory(directory);
+	}
+
 }

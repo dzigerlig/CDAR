@@ -277,8 +277,11 @@ var myJsTree = (function () {
             else  if (sel.length>1) {
             	noty({type: 'information', text: 'Please select just one '+ scope.defaultDirectoryName+' or one '+ scope.defaultNodeName, timeout: 5000});
             	return false;
-            }           
+            }               
             sel = sel[0];
+            if($("#jstree").jstree('get_node', $('#'+sel)).parent==='#'){
+            	 noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});            	return false;
+            }
             ref.edit(sel);
         },
         delete: function () {

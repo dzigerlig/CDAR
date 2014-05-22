@@ -14,4 +14,5 @@ public interface IDirectoryRepository {
 	public Directory createDirectory(Directory directory) throws UnknownDirectoryException, CreationException;
 	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException;
 	public void deleteDirectory(int directoryId) throws UnknownDirectoryException;
+	public Directory getRootDirectory(int treeid) throws EntityException, UnknownDirectoryException;
 }

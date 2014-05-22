@@ -141,4 +141,34 @@ public class ProjectDirectoryRepository implements IDirectoryRepository {
 			throw new UnknownDirectoryException();
 		}
 	}
+
+	@Override
+	public Directory getRootDirectory(int treeid) throws EntityException,
+			UnknownDirectoryException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM DIRECTORY WHERE  PTREEID = ?)",DBTableHelper.PROJECTDIRECTORY);
+
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql)) {
+			preparedStatement.setInt(1, treeid);
+
+			try (ResultSet result = preparedStatement.executeQuery()) {
+				while (result.next()) {
+					Directory directory = new Directory();
+					directory.setId(result.getInt(1));
+					directory.setCreationTime(DateHelper.getDate(result.getString(2)));
+					directory.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					directory.setParentId(result.getInt(4));
+					directory.setTreeId(result.getInt(5));
+					directory.setTitle(result.getString(6));
+					return directory;
+				}
+			} catch (ParseException e) {
+				throw new EntityException();
+			}
+		} catch (SQLException ex) {
+			throw new UnknownDirectoryException();
+		}
+		throw new UnknownDirectoryException();
+	}
 }
