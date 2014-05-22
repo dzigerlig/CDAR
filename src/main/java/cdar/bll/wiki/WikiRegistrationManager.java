@@ -59,6 +59,7 @@ public class WikiRegistrationManager {
 			
 			return userRequest(username, password, token, cookie);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			throw new WikiCreateUserException();
 		}
 	}

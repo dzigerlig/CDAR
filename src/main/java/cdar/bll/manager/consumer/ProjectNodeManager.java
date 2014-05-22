@@ -86,6 +86,10 @@ public class ProjectNodeManager {
 			updatedProjectNode.setDirectoryId(projectNode.getDirectoryId());
 		}
 		
+		if (projectNode.getWikititle()!=null) {
+			updatedProjectNode.setWikititle(projectNode.getWikititle());
+		}
+		
 		updatedProjectNode.setDynamicTreeFlag(projectNode.getDynamicTreeFlag());
 		
 		
