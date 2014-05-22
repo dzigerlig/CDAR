@@ -39,7 +39,7 @@ app.controller(
 					 $scope.knowledgeTrees = response;
 				 }, function(error) {
 					 noty({
-						 type : 'alert',
+						 type : 'error',
 						 text : 'cannot get trees',
 						 timeout : 1500
 					 });
@@ -51,7 +51,7 @@ app.controller(
 			 $scope.addNewTree = function() {
 				 if ($scope.newTreeName.length > 45) {
 					 noty({
-						 type : 'alert',
+						 type : 'warning',
 						 text : 'Please enter a text with less than 45 Characters',
 						 timeout : 3000
 					 });
@@ -65,7 +65,7 @@ app.controller(
 						 reloadTrees();
 					 }, function(error) {
 						 noty({
-							 type : 'alert',
+							 type : 'error',
 							 text : 'cannot add tree',
 							 timeout : 1500
 						 });
@@ -105,7 +105,7 @@ app.controller(
 							 function(error) {
 								 if (!$scope.showLockingNotification(error)) {
 									 noty({
-										 type : 'alert',
+										 type : 'error',
 										 text : 'delete tree failed',
 										 timeout : 1500
 									 })
@@ -117,7 +117,7 @@ app.controller(
 			 $scope.saveKnowledgeTreeTitle = function(data, id) {
 				 if (data.length > 45) {
 					 noty({
-						 type : 'alert',
+						 type : 'warning',
 						 text : 'Please enter a text with less than 45 Characters',
 						 timeout : 3000
 					 });
@@ -141,7 +141,7 @@ app.controller(
 									if (!$scope.showLockingNotification(error)) {
 										tree.title = oldTitle;
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error while saving tree title',
 											timeout : 1500
 										});
@@ -172,6 +172,7 @@ app.controller("KnowledgeTreeController",
 			 setReload(true);							 
 			 //
 			 $scope.isProducer = true;
+			 $scope.modal = $modal;
 			 $scope.DescriptionService = DescriptionService;
 			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
 			 $scope.defaultNodeName = DescriptionService.getNodeDescription();		
@@ -224,7 +225,7 @@ app.controller("KnowledgeTreeController",
 			$scope.saveKnowledgeTreeTitle = function(title) {
 				if (title.length > 45) {
 					noty({
-						type : 'alert',
+						type : 'warning',
 						text : 'Please enter a text with less than 45 Characters',
 						timeout : 3000
 					});
@@ -240,7 +241,7 @@ app.controller("KnowledgeTreeController",
 						if (!$scope.showLockingNotification(error)) {
 
 						noty({
-							type : 'alert',
+							type : 'error',
 							text : 'error while saving tree title',
 							timeout : 1500
 						});
@@ -261,7 +262,7 @@ app.controller("KnowledgeTreeController",
 						},
 						function(error) {
 							noty({
-								type : 'alert',
+								type : 'error',
 								text : 'error getting ' + DescriptionService.getSubnodeDescription()	+ 's',
 								timeout : 1500
 							});
@@ -290,7 +291,7 @@ app.controller("KnowledgeTreeController",
 						},
 						function(error) {
 							noty({
-								type : 'alert',
+								type : 'error',
 								text : 'error getting '	+ DescriptionService.getSubnodeDescription()	+ 's',
 								timeout : 1500
 							});
@@ -302,7 +303,7 @@ app.controller("KnowledgeTreeController",
 				$scope.addNewSubnode = function() {
 					if (this.newSubnodeName.length > 45) {
 									noty({
-										type : 'alert',
+										type : 'warning',
 										text : 'Please enter a text with less than 45 Characters',
 										timeout : 3000
 									});
@@ -319,7 +320,7 @@ app.controller("KnowledgeTreeController",
 									},	function(error) {
 										if (!$scope.showLockingNotification(error)) {
 											noty({
-												type : 'alert',
+												type : 'error',
 												text : 'cannot add '+ DescriptionService.getSubnodeDescription(),
 												timeout : 1500
 											});
@@ -334,7 +335,7 @@ app.controller("KnowledgeTreeController",
 							$scope.addSubnodeByWikiTitle = function() {
 								if (this.newSubnodeWikiName.length>45) {
 									noty({
-										type : 'alert',
+										type : 'warning',
 										text : 'Please enter a text with less than 45 Characters',
 										timeout : 3000
 									});
@@ -352,7 +353,7 @@ app.controller("KnowledgeTreeController",
 									}, function(error) {
 										if (!$scope.showLockingNotification(error)) {
 											noty({
-												type : 'alert',
+												type : 'error',
 												text : 'cannot add ' + DescriptionService.getSubnodeDescription(),
 												timeout : 1500
 											});
@@ -377,7 +378,7 @@ app.controller("KnowledgeTreeController",
 									changeWikiFieldsSubnode();
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error getting wiki entry',
 										timeout : 1500
 									});
@@ -419,7 +420,7 @@ app.controller("KnowledgeTreeController",
 													},
 													function(error) {
 														noty({
-															type : 'alert',
+															type : 'error',
 															text : 'cannot edit wiki text',
 															timeout : 1500
 														});
@@ -471,7 +472,7 @@ app.controller("KnowledgeTreeController",
 												if (!$scope.showLockingNotification(error)) {
 
 												noty({
-													type : 'alert',
+													type : 'error',
 													text : 'error deleting '
 															+ DescriptionService
 																	.getSubnodeDescription(),
@@ -558,7 +559,7 @@ app.controller("KnowledgeTreeController",
 									changeWikiFields();
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error getting wiki entry',
 										timeout : 1500
 									});
@@ -593,7 +594,7 @@ app.controller("KnowledgeTreeController",
 													function(error) {
 														changeWikiFields($scope.selectedNode);
 														noty({
-															type : 'alert',
+															type : 'error',
 															text : 'cannot edit wiki text',
 															timeout : 1500
 														});
@@ -608,7 +609,7 @@ app.controller("KnowledgeTreeController",
 								$scope.knowledgetree = response;
 							}, function(error) {
 								noty({
-									type : 'alert',
+									type : 'error',
 									text : 'error getting tree',
 									timeout : 1500
 								});
@@ -628,7 +629,7 @@ app.controller("KnowledgeTreeController",
 									//$scope.getSubnodes(resNodes);
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error getting '
 												+ DescriptionService
 														.getNodeDescription()
@@ -638,7 +639,7 @@ app.controller("KnowledgeTreeController",
 								});
 							}, function(error) {
 								noty({
-									type : 'alert',
+									type : 'error',
 									text : 'error getting directories',
 									timeout : 1500
 								});
@@ -702,7 +703,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'cannot update link',
 											timeout : 1500
 										});
@@ -724,7 +725,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error adding '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -751,7 +752,7 @@ app.controller("KnowledgeTreeController",
 												function(error) {
 													if (!$scope.showLockingNotification(error)) {
 														noty({
-															type : 'alert',
+															type : 'error',
 															text : 'error adding '	+ DescriptionService.getNodeDescription(),
 															timeout : 1500
 														});
@@ -779,7 +780,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'cannot delete '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -796,7 +797,7 @@ app.controller("KnowledgeTreeController",
 									myDragDrop.setMovedNode(node);
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error getting '
 												+ DescriptionService
 														.getNodeDescription(),
@@ -818,7 +819,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error dropping '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -840,7 +841,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error undropping '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -865,7 +866,7 @@ app.controller("KnowledgeTreeController",
 						        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'cannot rename '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -886,7 +887,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error moving '	+ DescriptionService.getNodeDescription(),
 											timeout : 1500
 										});
@@ -910,7 +911,7 @@ app.controller("KnowledgeTreeController",
 										}, function(error) {
 											if (!$scope.showLockingNotification(error)) {
 												noty({
-													type : 'alert',
+													type : 'error',
 													text : 'error adding link',
 													timeout : 1500
 												});
@@ -931,7 +932,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'cannot delete link',
 											timeout : 1500
 										});
@@ -953,7 +954,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {
 									if (!$scope.showLockingNotification(error)) {
 										noty({
-											type : 'alert',
+											type : 'error',
 											text : 'error adding directory',
 											timeout : 1500
 										});
@@ -977,7 +978,7 @@ app.controller("KnowledgeTreeController",
 										function(error) {
 											if (!$scope.showLockingNotification(error)) {
 												noty({
-													type : 'alert',
+													type : 'error',
 													text : 'error adding directory copy',
 													timeout : 1500
 												});
@@ -1001,7 +1002,7 @@ app.controller("KnowledgeTreeController",
 						        	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
 									if (!$scope.showLockingNotification(error)) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error renaming directory',
 										timeout : 1500
 									});}
@@ -1031,7 +1032,7 @@ app.controller("KnowledgeTreeController",
 													if (!$scope.showLockingNotification(error)) {
 
 													noty({
-														type : 'alert',
+														type : 'error',
 														text : 'error deleting directory',
 														timeout : 1500
 													});}
@@ -1053,7 +1054,7 @@ app.controller("KnowledgeTreeController",
 								}, function(error) {									
 									if (!$scope.showLockingNotification(error)) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'error moving directory',
 										timeout : 1500
 									});}
@@ -1071,7 +1072,7 @@ app.controller("KnowledgeTreeController",
 									}
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill up',
 										timeout : 1500
 									});
@@ -1089,7 +1090,7 @@ app.controller("KnowledgeTreeController",
 									}
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill down',
 										timeout : 1500
 									});
@@ -1107,7 +1108,7 @@ app.controller("KnowledgeTreeController",
 									$scope.drillUpLink(nodeid, resSubnodes);
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill up',
 										timeout : 1500
 									});
@@ -1125,7 +1126,7 @@ app.controller("KnowledgeTreeController",
 									$scope.drillDownLink(nodeid, resSubnodes);
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill down',
 										timeout : 1500
 									});
@@ -1143,7 +1144,7 @@ app.controller("KnowledgeTreeController",
 									w_launch();
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill up',
 										timeout : 1500
 									});
@@ -1161,7 +1162,7 @@ app.controller("KnowledgeTreeController",
 									w_launch();
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill down',
 										timeout : 1500
 									});
@@ -1171,7 +1172,7 @@ app.controller("KnowledgeTreeController",
 							$scope.editSubnodeTitle = function(data, id) {
 								if (data.length > 45) {
 									noty({
-										type : 'alert',
+										type : 'warning',
 										text : 'Please enter a text with less than 45 Characters',
 										timeout : 3000
 									});
@@ -1206,7 +1207,7 @@ app.controller("KnowledgeTreeController",
 														if (!$scope.showLockingNotification(error)) {
 
 														noty({
-															type : 'alert',
+															type : 'error',
 															text : 'error renaming '
 																	+ DescriptionService
 																			.getSubnodeDescription(),
@@ -1237,7 +1238,7 @@ app.controller("KnowledgeTreeController",
 									if (!$scope.showLockingNotification(error)) {
 
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill up',
 										timeout : 1500
 									});}
@@ -1264,7 +1265,7 @@ app.controller("KnowledgeTreeController",
 									if (!$scope.showLockingNotification(error)) {
 
 									noty({
-										type : 'alert',
+										type : 'error',
 										text : 'cannot drill down',
 										timeout : 1500
 									});}

@@ -65,8 +65,18 @@ var myJsTree = (function () {
             "rename_node.jstree",
             function (e, data) {        	
                 if (data.text === ""||lastRenamed!==undefined&&data.text===lastRenamed.old&&data.old===lastRenamed.text) {
-                    return false;
+                   return false;
                 }
+                else  if (data.text.length > 45) {
+					 noty({
+						 type : 'warning',
+						 text : 'Please enter a text with less than 45 Characters',
+						 timeout : 3000
+					 });
+			        	$("#jstree").jstree('rename_node', $('#'+data.node.id) , data.old);
+
+					 return false;
+				}
                 lastRenamed=data;
                 var id = data.node.id;
                 id = id.replace(DIRECTORY, "");
@@ -191,29 +201,44 @@ var myJsTree = (function () {
         quantitiyOfCopies = 0;
     }
     
-    function deleteElement(title){
-    	var id = title.replace(DIRECTORY, "");
-    	if(id.indexOf("node")>=0)
-    	{
-    		scope.deleteNode(id.replace(NODE, ""));
-    	}
-    	else
-    	{
-    		var data = $("#jstree").jstree('get_node', $('#'+title));
-    		console.log('asdf');
-    		scope.deleteDirectory(id);
-            if (data.children_d.length) {
-                deleteChildNodes(data);
-            }
-    	}
+    function deleteElement(title){    	
+    	scope.modal.open({
+    		templateUrl : 'templates/confirmation.html',
+    		backdrop : 'static',
+    		keyboard : false,
+    		resolve : {
+    			data : function() {
+    				return {
+    					title : 'Delete '+scope.defaultDirectoryName,
+    					message : 'Do you really want to delete this '+scope.defaultDirectoryName+'?'
+    				};
+    			}
+    		},
+    		controller : 'ConfirmationController'
+    	}).result.then(function(result) {	
+    		var id = title.replace(DIRECTORY, "");
+    		if(id.indexOf("node")>=0)	
+    		{
+    			scope.deleteNode(id.replace(NODE, ""));
+    		}
+    		else
+    		{
+    			var data = $("#jstree").jstree('get_node', $('#'+title));
+    			scope.deleteDirectory(id);
+    			if (data.children_d.length) {
+    				deleteChildNodes(data);
+    			}
+    		}
+    	});          
     }
+ 	
 
 // public Methods
     return{
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== "default") {
-                noty({type: 'success', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
                 return false;
             } else {
                 scope.addNode(sel[0].replace(DIRECTORY, ""));
@@ -223,7 +248,7 @@ var myJsTree = (function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1
                 || ref._model.data[sel].type !== "default" && ref._model.data[sel].type !== "root") {
-                noty({type: 'success', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
                 return false;
             } else {
                 scope.addDirectory(sel[0].replace(DIRECTORY, ""));
@@ -233,7 +258,7 @@ var myJsTree = (function () {
         	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
         	if (!sel.length || sel.length > 1
         			|| ref._model.data[sel].type === "default" || ref._model.data[sel].type === "root") {
-        		noty({type: 'success', text: 'Please select a '+ scope.defaultNodeName, timeout: 5000});
+        		noty({type: 'information', text: 'Please select a '+ scope.defaultNodeName, timeout: 5000});
         		return false;
         	} else {
         		var nodeId = sel[0];
@@ -246,24 +271,24 @@ var myJsTree = (function () {
         rename: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
-                noty({type: 'success', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
                 return false;
             }
-            if (sel.length>1) {
-            	noty({type: 'success', text: 'Please select just one '+ scope.defaultDirectoryName+' or one '+ scope.defaultNodeName, timeout: 5000});
+            else  if (sel.length>1) {
+            	noty({type: 'information', text: 'Please select just one '+ scope.defaultDirectoryName+' or one '+ scope.defaultNodeName, timeout: 5000});
             	return false;
-            }
+            }           
             sel = sel[0];
             ref.edit(sel);
         },
         delete: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
-                noty({type: 'success', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
                 return false;
             }
             if (ref._model.data[sel[0]].parent === '#') {
-                noty({type: 'error', text: "You can't delete a root "+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'warning', text: "You can't delete a root "+scope.defaultDirectoryName, timeout: 5000});
                 return false;
             }
 
