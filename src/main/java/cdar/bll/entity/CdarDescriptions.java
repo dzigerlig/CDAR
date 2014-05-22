@@ -7,6 +7,7 @@ public class CdarDescriptions {
 	private String nodeDescription;
 	private String subnodeDescription;
 	private String wikiUrl;
+	private String expandedLevel;
 
 	public CdarDescriptions() throws Exception {
 		getPropertyValue();
@@ -18,6 +19,7 @@ public class CdarDescriptions {
 		setNodeDescription(propertyHelper.getProperty("NODE_DESCRIPTION"));
 		setSubnodeDescription(propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 		setWikiUrl(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("MEDIAWIKI_PAGEURL"));
+		setExpandedLevel(propertyHelper.getProperty("EXPANDING_LEVEL"));
 	}
 	
 	public String getDirectoryDescription() {
@@ -54,5 +56,13 @@ public class CdarDescriptions {
 		} else {
 			this.wikiUrl = String.format("http://%s/%s/", domain, page);
 		}
+	}
+
+	public String getExpandedLevel() {
+		return expandedLevel;
+	}
+
+	public void setExpandedLevel(String expandedLevel) {
+		this.expandedLevel = expandedLevel;
 	}
 }

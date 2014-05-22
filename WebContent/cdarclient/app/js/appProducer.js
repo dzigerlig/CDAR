@@ -174,6 +174,7 @@ app.controller("KnowledgeTreeController",
 			 $scope.isProducer = true;
 			 $scope.modal = $modal;
 			 $scope.DescriptionService = DescriptionService;
+			   $scope.expandLevel = DescriptionService.getExpandedLevel();
 			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
 			 $scope.defaultNodeName = DescriptionService.getNodeDescription();		
 			 $scope.defaultLinkName = 'all '+ DescriptionService.getSubnodeDescription() + 's';

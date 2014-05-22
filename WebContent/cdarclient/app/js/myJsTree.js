@@ -145,15 +145,15 @@ var myJsTree = (function () {
         $("#jstree").jstree("open_node", $("#" + rootid));
         
         var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
-        openRecursiv(3,children);
+        openRecursiv(scope.expandLevel,children);
 
     }
     
     function openRecursiv(val,children){
     	$.each( children, function( key, value ) {
-    		$("#jstree").jstree("open_node", value);
     		if(val>=1)
 			{
+        		$("#jstree").jstree("open_node", value);
     			openRecursiv(--val, $("#jstree").jstree("get_children_dom", value));
 			}
     	});

@@ -495,6 +495,7 @@ app.service('DescriptionService', [
 				$cookieStore.put('cdarSubnodeDescription',
 						response.subnodeDescription);
 				$cookieStore.put('cdarWikiUrl', response.wikiUrl);
+				$cookieStore.put('cdarExpandedLevel', response.expandedLevel);
 			});
 
 			this.getDirectoryDescription = function() {
@@ -510,6 +511,10 @@ app.service('DescriptionService', [
 
 			this.getWikiUrl = function() {
 				return $cookieStore.get('cdarWikiUrl');
+			};
+
+			this.getExpandedLevel = function() {
+				return $cookieStore.get('cdarExpandedLevel');
 			};
 		} ]);
 

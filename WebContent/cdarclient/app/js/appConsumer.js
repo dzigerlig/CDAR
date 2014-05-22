@@ -20,6 +20,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
     $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
+    $scope.expandLevel = DescriptionService.getExpandedLevel();
     $scope.defaultNodeName = DescriptionService.getNodeDescription();
     $scope.defaultLinkName = 'all ' +DescriptionService.getSubnodeDescription()+'s';
     $scope.projecttree = "";

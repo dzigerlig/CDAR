@@ -114,7 +114,6 @@ var myJsPlumb = (function() {
 	}
 
 	function connectNodes(stateSource, stateTarget, id, subnode) {
-		console.log('connecting nodes');
 		var label = scope.defaultLinkName;
 		if (subnode !== undefined) {
 			label = subnode.title;
@@ -227,15 +226,12 @@ var myJsPlumb = (function() {
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
 			if (!isInitialized) {
-				console.log("not initialized");
 				myJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
 				bindClickConnection(info);
 			} else {
-				console.log("initialized");
 				scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
 						info.targetId.replace(NODE, ""), info.connection);
-				console.log("show popup");
 				showSubnodePopup(info);
 				bindClickConnection(info);
 			}
@@ -261,7 +257,6 @@ var myJsPlumb = (function() {
 	}
 
 	function showSubnodePopup(info) {
-		console.log(info);
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
 		if (info.connection.source.data(SUBNODE).subnode) {
@@ -515,7 +510,6 @@ var myJsPlumb = (function() {
 				jQuery.each(connections, function(object) {
 						jsPlumb.detach(this);
 				});
-				console.log('remove Node');
 				jsPlumb.detachAllConnections($(node));
 				jsPlumb.removeAllEndpoints($(node));
 				$(node).remove();
