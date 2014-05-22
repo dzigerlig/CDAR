@@ -186,6 +186,24 @@ app.controller("KnowledgeTreeController",
 					 id : 0,
 					 title : ""
 			 };
+			 $scope.updatedWikiTitle = "";
+
+			 $scope.updateWikiTitle = function() {
+			 	$scope.selectedNode.wikititle = this.updatedWikiTitle;
+			 	TreeService.updateNode({
+			 		entity1 : 'ktrees',
+			 		id1 : $routeParams.treeId,
+			 		id2 : $scope.selectedNode.id
+			 	}, $scope.selectedNode, function(response) {
+			 		$scope.changeNode(response.id, response.title);
+			 	}, function(error) {
+			 		noty({
+			 			type : 'alert',
+			 			text : 'cannot edit wiki title',
+			 			timeout : 1500
+			 		});
+			 	});
+			 };
 			 
 			 $scope.showLockingNotification = function(error) {
 				 if (error.status === 409) {

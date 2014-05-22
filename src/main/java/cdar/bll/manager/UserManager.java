@@ -55,6 +55,7 @@ public class UserManager {
 					WikiRepository wikiConnection = new WikiRepository();
 					wikiConnection.getConnection(user.getUsername(), user.getPassword());
 				} catch (WikiLoginException ex) {
+					ex.printStackTrace();
 					WikiRegistrationManager wrm = new WikiRegistrationManager();
 					wrm.createUser(user.getUsername(), user.getPassword());
 				}
