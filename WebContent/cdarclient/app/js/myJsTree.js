@@ -142,11 +142,11 @@ var myJsTree = (function () {
                 "plugins": ["dnd", "search", "sort", "types",
                     "themes" ]
             });
-        if(scope.expandLevel>0){
+        if(scope.DescriptionService.getExpandedLevel()>0){
         	$("#jstree").jstree("open_node", $("#" + rootid));
         
         	var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
-        	openRecursiv(scope.expandLevel-1,children);	
+        	openRecursiv(scope.DescriptionService.getExpandedLevel()-1,children);	
         }
     }
     
@@ -216,8 +216,8 @@ var myJsTree = (function () {
     		resolve : {
     			data : function() {
     				return {
-    					title : 'Delete '+scope.defaultDirectoryName,
-    					message : 'Do you really want to delete selected '+scope.defaultDirectoryName+'s or '+scope.defaultNodeName+'s ?'
+    					title : 'Delete '+scope.DescriptionService.getDirectoryDescription(),
+    					message : 'Do you really want to delete selected '+scope.DescriptionService.getDirectoryDescription()+'s or '+scope.DescriptionService.getNodeDescription()+'s ?'
     				};
     			}
     		},
@@ -247,7 +247,7 @@ var myJsTree = (function () {
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== "default") {
-                noty({type: 'information', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             } else {
                 scope.addNode(sel[0].replace(DIRECTORY, ""));
@@ -257,7 +257,7 @@ var myJsTree = (function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1
                 || ref._model.data[sel].type !== "default" && ref._model.data[sel].type !== "root") {
-                noty({type: 'information', text: 'Please select a '+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             } else {
                 scope.addDirectory(sel[0].replace(DIRECTORY, ""));
@@ -267,7 +267,7 @@ var myJsTree = (function () {
         	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
         	if (!sel.length || sel.length > 1
         			|| ref._model.data[sel].type === "default" || ref._model.data[sel].type === "root") {
-        		noty({type: 'information', text: 'Please select a '+ scope.defaultNodeName, timeout: 5000});
+        		noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});
         		return false;
         	} else {
         		var nodeId = sel[0];
@@ -280,27 +280,27 @@ var myJsTree = (function () {
         rename: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
-                noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getDirectoryDescription()+' or a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});
                 return false;
             }
             else  if (sel.length>1) {
-            	noty({type: 'information', text: 'Please select just one '+ scope.defaultDirectoryName+' or one '+ scope.defaultNodeName, timeout: 5000});
+            	noty({type: 'information', text: 'Please select just one '+ scope.DescriptionService.getDirectoryDescription()+' or one '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});
             	return false;
             }               
             sel = sel[0];
             if($("#jstree").jstree('get_node', $('#'+sel)).parent==='#'){
-            	 noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});            	return false;
+            	 noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getDirectoryDescription()+' or a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});            	return false;
             }
             ref.edit(sel);
         },
         delete: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
-                noty({type: 'information', text: 'Please select a '+ scope.defaultDirectoryName+' or a '+ scope.defaultNodeName, timeout: 5000});
+                noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getDirectoryDescription()+' or a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});
                 return false;
             }
             if (ref._model.data[sel[0]].parent === '#') {
-                noty({type: 'warning', text: "You can't delete a root "+scope.defaultDirectoryName, timeout: 5000});
+                noty({type: 'warning', text: "You can't delete a root "+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             }
 
@@ -347,7 +347,7 @@ var myJsTree = (function () {
             sel = ref.create_node(sel, {
                 "type": "file",
                 "id": DIRECTORY + NODE + response.id,
-                "text": 'new '+scope.defaultNodeName
+                "text": 'new '+scope.DescriptionService.getNodeDescription()
             });
             if (sel) {
                 ref.edit(sel);
@@ -361,7 +361,7 @@ var myJsTree = (function () {
             sel = sel[0];
             sel = ref.create_node(sel, {
                 "type": "default",
-                'text': 'new '+scope.defaultDirectoryName,
+                'text': 'new '+scope.DescriptionService.getDirectoryDescription(),
                 "id": DIRECTORY + response.id
             });
             if (sel) {

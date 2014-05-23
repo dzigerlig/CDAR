@@ -121,7 +121,7 @@ var myJsPlumb = (function() {
 
 	function connectNodes(stateSource, stateTarget, id, subnode) {
 		console.log('connecting nodes');
-		var label = scope.defaultLinkName;
+		var label = 'all '+ scope.DescriptionService.getSubnodeDescription() + 's';
 		if (subnode !== undefined) {
 			label = subnode.title;
 		}
@@ -276,7 +276,7 @@ var myJsPlumb = (function() {
 				buildPopupContent(this.id, this.title);
 			});
 		}
-		buildPopupContent(-1, scope.defaultLinkName);
+		buildPopupContent(-1, 'all '+ scope.DescriptionService.getSubnodeDescription() + 's');
 	}
 
 	function buildPopupContent(id, title) {

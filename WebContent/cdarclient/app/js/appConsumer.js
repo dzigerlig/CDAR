@@ -19,10 +19,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
-    $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
-    $scope.expandLevel = DescriptionService.getExpandedLevel();
-    $scope.defaultNodeName = DescriptionService.getNodeDescription();
-    $scope.defaultLinkName = 'all ' +DescriptionService.getSubnodeDescription()+'s';
     $scope.projecttree = "";
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
@@ -31,7 +27,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.selectedNodeWiki = "";
 	$scope.selectedSubnode = { id : 0, title : "" };
 	$scope.subnodes = "";
-	$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 	$scope.subnodeHtmlText = "";
 	$scope.updatedWikiTitle = "";
 
