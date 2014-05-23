@@ -101,7 +101,7 @@ app.config(function ($routeProvider,$httpProvider) {
 });
 
 
-app.run(function ($rootScope, $location, editableOptions, UserService) {
+app.run(function ($rootScope, $location, editableOptions, UserService, DescriptionService) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!UserService.isLoggedIn() && next.needsLogin) {
             $location.url("/login");

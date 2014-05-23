@@ -142,19 +142,20 @@ var myJsTree = (function () {
                 "plugins": ["dnd", "search", "sort", "types",
                     "themes" ]
             });
-        $("#jstree").jstree("open_node", $("#" + rootid));
+        if(scope.expandLevel>0){
+        	$("#jstree").jstree("open_node", $("#" + rootid));
         
-        var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
-        openRecursiv(scope.expandLevel,children);
-
+        	var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
+        	openRecursiv(scope.expandLevel-1,children);	
+        }
     }
     
     function openRecursiv(val,children){
-    	$.each( children, function( key, value ) {
+    	$.each(children, function( index, value ) {
     		if(val>=1)
 			{
-        		$("#jstree").jstree("open_node", value);
-    			openRecursiv(--val, $("#jstree").jstree("get_children_dom", value));
+        		$("#jstree").jstree("open_node",(value.id));
+    			openRecursiv(val-1, $("#jstree").jstree("get_children_dom", value.id));
 			}
     	});
     }
