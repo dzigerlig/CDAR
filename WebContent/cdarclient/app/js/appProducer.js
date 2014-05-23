@@ -174,10 +174,6 @@ app.controller("KnowledgeTreeController",
 			 $scope.isProducer = true;
 			 $scope.modal = $modal;
 			 $scope.DescriptionService = DescriptionService;
-			 $scope.expandLevel = DescriptionService.getExpandedLevel();
-			 $scope.defaultDirectoryName = DescriptionService.getDirectoryDescription();
-			 $scope.defaultNodeName = DescriptionService.getNodeDescription();		
-			 $scope.defaultLinkName = 'all '+ DescriptionService.getSubnodeDescription() + 's';
 			 myJsPlumb.initialize();
 			 $scope.treeId = $routeParams.treeId;
 			 $scope.UserService = UserService;
@@ -225,7 +221,6 @@ app.controller("KnowledgeTreeController",
 					title : ""
 			};
 			
-			$scope.newSubnodeName = DescriptionService.getSubnodeDescription();
 			$scope.subnodeHtmlText = "";
 			$scope.nodeitle = "";
 			$scope.wikiHtmlText = "";
