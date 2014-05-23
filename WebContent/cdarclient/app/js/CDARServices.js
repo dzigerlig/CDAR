@@ -480,43 +480,44 @@ app.factory('AuthenticationService', [ '$log', '$resource', '$location',
 			);
 		} ]);
 
+
 app.service('DescriptionService', [
-		'$resource',
-		'$cookieStore',
-		function($resource, $cookieStore) {
-			
-			var descriptionResource = $resource('../webapi/descriptions');
+                                   '$resource',
+                                   function($resource) {
+                                      var cdarDescriptions = {};
+                                        //initialize local variables on startup of service
+                                        var descriptionResource = $resource('../webapi/descriptions');
+                                        descriptionResource.get().$promise.then(function(response) {
+                                         cdarDescriptions.directory = response.directoryDescription;
+                                         cdarDescriptions.node = response.nodeDescription;
+                                         cdarDescriptions.subnode = response.subnodeDescription;
+                                         cdarDescriptions.wikiurl = response.wikiUrl;
+                                         cdarDescriptions.expandedLevel= response.expandedLevel;
+                                     });
+                                        
+                                        cdarDescriptions.getDirectoryDescription = function() {
+                                      return cdarDescriptions.directory;
+                                     };
+                                     cdarDescriptions.getNodeDescription = function() {
+                                      return cdarDescriptions.node;
+                                     };
 
-			descriptionResource.get().$promise.then(function(response) {
-				$cookieStore.put('cdarDirectoryDescription',
-						response.directoryDescription);
-				$cookieStore.put('cdarNodeDescription',
-						response.nodeDescription);
-				$cookieStore.put('cdarSubnodeDescription',
-						response.subnodeDescription);
-				$cookieStore.put('cdarWikiUrl', response.wikiUrl);
-				$cookieStore.put('cdarExpandedLevel', response.expandedLevel);
-			});
+                                     cdarDescriptions.getSubnodeDescription = function() {
+                                      return cdarDescriptions.subnode;
+                                     };
 
-			this.getDirectoryDescription = function() {
-				return $cookieStore.get('cdarDirectoryDescription');
-			};
-			this.getNodeDescription = function() {
-				return $cookieStore.get('cdarNodeDescription');
-			};
+                                     cdarDescriptions.getWikiUrl = function() {
+                                      return cdarDescriptions.wikiurl;
+                                     };
+                                     
+                                     cdarDescriptions.getExpandedLevel = function() {
+                         				return cdarDescriptions.expandedLevel;
+                         			};
+                                         
+                                        return cdarDescriptions;
+                                   } ]);
 
-			this.getSubnodeDescription = function() {
-				return $cookieStore.get('cdarSubnodeDescription');
-			};
 
-			this.getWikiUrl = function() {
-				return $cookieStore.get('cdarWikiUrl');
-			};
-
-			this.getExpandedLevel = function() {
-				return $cookieStore.get('cdarExpandedLevel');
-			};
-		} ]);
 
 app.factory('UserService', [ '$location', '$cookieStore',
 		function($location, $cookieStore) {
