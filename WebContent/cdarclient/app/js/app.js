@@ -110,5 +110,5 @@ app.run(function ($rootScope, $location, editableOptions, UserService) {
     });
     
     editableOptions.theme = 'bs3';
-    CDAR.setCustomHeader(UserService.getUserId(),UserService.getAccesstoken());
+    CDAR.setCustomHeader(UserService.getUserId(), UserService.getAccesstoken());
 });
