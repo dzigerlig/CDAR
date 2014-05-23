@@ -54,6 +54,10 @@ var myJsPlumb = (function() {
 						'change',
 						'.radio_item',
 						function(element) {
+							element.stopPropagation();
+							element.stopImmediatePropagation();
+							element.originalEvent.stopImmediatePropagation();
+							console.log(element);
 							var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
 							jQuery.each(connections, function(object) {
 								if (this.id === lastConnectionID) {
@@ -69,6 +73,8 @@ var myJsPlumb = (function() {
 									$('[id^=popup-box-]').hide();
 								}
 							});
+							element.stopPropagation();
+
 						});
 	}
 
@@ -375,8 +381,8 @@ var myJsPlumb = (function() {
 			buildContent();
 			makePopupEvents();
 			bindNewConnection();
-			$('html').click(function() {
-				if ($('[id^=popup-box-]').is(':visible')) {
+			$('html').click(function(e) {		
+				if ((e.target.type!=='radio')&&$('[id^=popup-box-]').is(':visible')) {
 					myJsPlumb.removeLink(lastConnectionID);
 					$('[id^=popup-box-]').hide();
 				}

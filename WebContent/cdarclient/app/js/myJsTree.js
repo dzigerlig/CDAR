@@ -231,7 +231,7 @@ var myJsTree = (function () {
     	    	  }
     	    	  else
     	    	  {
-    	    		  var data = $("#jstree").jstree('get_node', $('#'+title));
+    	    		  var data = $("#jstree").jstree('get_node', $('#'+name));
     	    		  scope.deleteDirectory(id);
     	    		  if (data.children_d.length) {
     	    			  deleteChildNodes(data);
