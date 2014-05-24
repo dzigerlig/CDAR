@@ -429,6 +429,7 @@ var myJsPlumb = (function() {
 		},
 
 		drawExistingNodes : function(data, resSubnodes) {
+			buildContent();
 			makePopupEvents();
 
 			isInitialized = false;
