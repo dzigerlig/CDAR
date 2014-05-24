@@ -8,6 +8,7 @@ var myJsPlumb = (function() {
 	var SUBNODE = 'subnode';
 	var STATUS = 'status';
 	var selectedElement = null;
+	var newLinkFired=true;
 
 	// private Methods
 	function buildContent() {
@@ -54,10 +55,6 @@ var myJsPlumb = (function() {
 						'change',
 						'.radio_item',
 						function(element) {
-							element.stopPropagation();
-							element.stopImmediatePropagation();
-							element.originalEvent.stopImmediatePropagation();
-							console.log(element);
 							var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
 							jQuery.each(connections, function(object) {
 								if (this.id === lastConnectionID) {
@@ -244,9 +241,37 @@ var myJsPlumb = (function() {
 				console.log("show popup");
 				showSubnodePopup(info);
 				bindClickConnection(info);
+				newLinkFired=true;
 			}
 
 		});
+	}
+	
+	function bindDropConnection(info)
+	{
+		jsPlumb.bind("beforeDrop", function(connection) {
+			console.log("beforeDrop");
+			if(!isInitialized);
+			else if(newLinkFired)
+				{newLinkFired=false;}
+			else 
+				{noty({
+					  text: 'An error has occurred. You have to reload!', 
+					  buttons: [
+					    {addClass: 'btn btn-primary', text: 'Reload', onClick: function($noty) {
+					    	location.reload();
+					        $noty.close();
+					      }
+					    },
+					    {addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+					        $noty.close();
+					        noty({text: 'Your changes may not be stored correctly', type: 'error'});
+					      }
+					    }
+					  ]
+					});}
+			return !newLinkFired ;
+        });
 	}
 
 	function bindClickConnection(info) {
@@ -267,7 +292,6 @@ var myJsPlumb = (function() {
 	}
 
 	function showSubnodePopup(info) {
-		console.log(info);
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
 		if (info.connection.source.data(SUBNODE).subnode) {
@@ -384,9 +408,10 @@ var myJsPlumb = (function() {
 			buildContent();
 			makePopupEvents();
 			bindNewConnection();
+			bindDropConnection()
 			$('html').click(function(e) {		
 				if ((e.target.type!=='radio')&&$('[id^=popup-box-]').is(':visible')) {
-					myJsPlumb.removeLink(lastConnectionID);
+					prepareRemoveLink(lastConnectionID);
 					$('[id^=popup-box-]').hide();
 				}
 			});
@@ -436,6 +461,8 @@ var myJsPlumb = (function() {
 			makePopupEvents();
 
 			isInitialized = false;
+			newLinkFired=true;
+
 			selectedElement = null;
 			var map = {};
 			jQuery.each(resSubnodes, function(object) {
@@ -525,7 +552,6 @@ var myJsPlumb = (function() {
 				jQuery.each(connections, function(object) {
 						jsPlumb.detach(this);
 				});
-				console.log('remove Node');
 				jsPlumb.detachAllConnections($(node));
 				jsPlumb.removeAllEndpoints($(node));
 				$(node).remove();
