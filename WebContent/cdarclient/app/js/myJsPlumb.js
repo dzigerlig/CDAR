@@ -339,19 +339,22 @@ var myJsPlumb = (function() {
 		var state;
 		switch (status) {
 		case 1:
-			state = "undecided.png";
+			state = "open.png";
 			break;
 		case 2:
-			state = "accepted.png";
+			state = "decided.png";
 			break;
 		case 3:
-			state = "declined.png";
+			state = "accepted.png";
 			break;
 		case 4:
-			state = "revoked.png";
+			state = "rejected.png";
+			break;
+		case 5:
+			state = "closed.png";
 			break;
 		default:
-			state = "undecided.png";
+			state = "open.png";
 			break;
 		}
 		return 'app/img/' + state;

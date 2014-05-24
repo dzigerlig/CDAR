@@ -985,15 +985,16 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	};
 	
 	$scope.statuses = [
-	                   {value: 1, text: 'undecided', show: false},
-	                   {value: 2, text: 'accepted', show: true},
-	                   {value: 3, text: 'declined', show: true},
-                       {value: 4, text: 'revoked', show: true}
+	                   {value: 1, text: 'open', show: false},
+	                   {value: 2, text: 'decided', show: true},
+	                   {value: 3, text: 'accepted', show: true},
+                       {value: 4, text: 'rejected', show: true},
+	                   {value: 5, text: 'closed', show: true}
                       ]; 
 	
 	$scope.showStatus = function() {
 		var selected = $filter('filter')($scope.statuses, {value: $scope.selectedNode.status});
-		return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'undecided';
+		return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'open';
 	};
 
 	$scope.updateNodeStatus = function(status) {
