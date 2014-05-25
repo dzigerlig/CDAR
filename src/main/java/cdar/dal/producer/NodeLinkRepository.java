@@ -79,13 +79,14 @@ public class NodeLinkRepository implements INodeLinkRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 			throw new UnknownNodeLinkException();
 		}
 		return nodelinks;
 	}
 
 	public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
-		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID)=LINK.SOURCEID AND LINK.TARGETID <> ?", DBTableHelper.NODELINK,DBTableHelper.NODELINK);
+		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID) AND LINK.TARGETID <> ?", DBTableHelper.NODELINK,DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -110,6 +111,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 			throw new UnknownTreeException();
 		}
 		return nodelinks;
@@ -140,6 +142,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
 			throw new UnknownNodeException();
 		}
 		return nodelinks;
