@@ -30,7 +30,6 @@ public class TreeBean extends ReportingBean {
 	private MediaWikiManager mwm = new MediaWikiManager();
 	private NodeLinkManager nlm = new NodeLinkManager();
 
-
 	public String getTreeTitle() throws UnknownTreeException, UnknownProjectTreeException, EntityException {
 		return tm.getTree(getTreeId()).getTitle();
 	}

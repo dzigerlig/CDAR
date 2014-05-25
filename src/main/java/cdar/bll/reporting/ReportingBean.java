@@ -3,6 +3,8 @@ package cdar.bll.reporting;
 import java.util.Date;
 
 import cdar.bll.entity.CdarDescriptions;
+import cdar.bll.entity.User;
+import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
@@ -17,6 +19,15 @@ public class ReportingBean {
 	public ReportingBean() throws Exception {
 		setCreationTime(new Date());
 		setCdarDescriptions(new CdarDescriptions());
+	}
+	
+	public void checkCredentials(int uid, String accesstoken) throws Exception {
+		UserManager um = new UserManager();
+		User user = um.getUser(uid);
+
+		if (!user.getAccesstoken().equals(accesstoken)) {
+			throw new UnknownUserException();
+		}
 	}
 
 	public int getTreeId() {
