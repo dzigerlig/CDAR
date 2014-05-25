@@ -19,8 +19,8 @@
 			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-2">
-						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">back to knowledgetree</a></div>
-						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">back to projecttree</a></div>
+						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">Back To Knowledge Tree</a></div>
+						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">Back To Project Tree</a></div>
 					</div>
 				</div>
 				
@@ -34,7 +34,7 @@
 						<input class="btn form-horizontal" type="file" id="file" name="file"/>
 					</div>
 					<div class="col-md-3">
-						<button class="btn btn-success col-md-3" ng-click="add()">Add</button>
+						<button class="btn btn-success col-md-3" ng-click="add()">Add Export</button>
 					</div>
 				</div>
 				
@@ -63,7 +63,7 @@
 										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
 										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
-										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
+										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete Simple Export</a></td>
 									</tr>
 									<tr>
 										<td colspan="2"></td>
@@ -105,7 +105,7 @@
 										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
 										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
-										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete XmlTree</a></td>
+										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete Full Export</a></td>
 									</tr>
 									<tr>
 										<td colspan="2"></td>
@@ -113,7 +113,7 @@
 											<form id="formTreeXml" data-role="form" data-ng-submit="addNewFullXmlTree()">
 												<div class="input-append">
 													<input class="form-horizontal" placeholder="export name" required autofocus data-ng-model="newFullTreeName" />
-													<button class="btn btn-success" type="submit">Create new Full Export</button>
+													<button class="btn btn-success" type="submit">Create Full Export</button>
 												</div>
 											</form>
 										</td>
@@ -132,12 +132,12 @@
  
          <div class="modal-header">
            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-           <h4 class="modal-title" id="modalLabel">Import XML Tree: {{importTitle}}</h4>
+           <h4 class="modal-title" id="modalLabel">Import Tree: {{importTitle}}</h4>
          </div>
          <div class="modal-body">
 	         <div class="panel panel-default">
 				  <div class="panel-body">
-				    Do you want to overwrite your existing tree?
+				    Do you want to overwrite your existing Tree?
 				  </div>
 				</div>
  	        <div class="alert alert-warning">If the selected export data is corrupted, your current tree may be gone forever!</div>

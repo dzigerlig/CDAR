@@ -9,9 +9,9 @@
 				</div>
 			</div>
 			<tabset justified="false" class="well" data-ng-show="selectedNode.id" type="pills">
-				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
+				<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedNode.wikititle}}" target="_blank"><h4>Open WikiPage in New Window</h4></a></div>
 				<tab heading="{{nodetabs[0].title}}" id="nodewikiread" active="nodetabs[0].active">
-					<p data-ng-bind-html="wikiHtmlText" class="wikientry-cdar">no wiki entry selected</p>
+					<p data-ng-bind-html="wikiHtmlText" class="wikientry-cdar">No Wiki Entry Selected</p>
 				</tab>
 				<tab heading="{{nodetabs[1].title}}" id="wikiwrite" active="nodetabs[1].active">
 					<div class="row">
@@ -29,7 +29,7 @@
 				</tab>
 			</tabset>
 			<div data-ng-show="selectedNode.id">
-				<div class="col-md-2">switch wiki entry to</div>
+				<div class="col-md-2">Switch Wiki Page to</div>
 				<div class="col-md-10">
 					<form data-role="form"
 						data-ng-submit="updateWikiTitle(); updatedWikiTitle=''">
@@ -54,7 +54,7 @@
 								<th class="col-md-1">#</th>
 								<th class="col-md-1">Position</th>
 								<th class="col-md-6">{{DescriptionService.getSubnodeDescription()}} Name</th>
-								<th class="col-md-2">Edit {{DescriptionService.getSubnodeDescription()}} title</th>
+								<th class="col-md-2">Edit {{DescriptionService.getSubnodeDescription()}} Title</th>
 								<th class="col-md-2">Delete {{DescriptionService.getSubnodeDescription()}}</th>
 							</tr>
 						</thead>
@@ -67,7 +67,7 @@
 									src="app/img/arrow_down.png" alt="move option down" /></a></td>
 							<td><a
 								data-ng-click="changeSubnode(subnode.id, subnode.title)" href="">{{subnode.title}}</a></td>
-							<td><a href="#" editable-text="subnode.title" onbeforesave="editSubnodeTitle($data, subnode.id)">edit title</a>
+							<td><a href="#" editable-text="subnode.title" onbeforesave="editSubnodeTitle($data, subnode.id)">Edit Title</a>
 							</td>
 							<td><a data-ng-click="deleteSubnode(subnode.id)" href="">Delete
 									{{DescriptionService.getSubnodeDescription()}}</a></td>
@@ -105,7 +105,7 @@
 				</div>
 				<div class="col-md-12"><h3>{{subnodeTitle}}</h3></div>
 				<tabset justified="false" class="well" data-ng-show="selectedSubnode.id" type="pills">
-					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open WikiPage in new window</h4></a></div>
+					<div class="col-md-12"><a href="{{DescriptionService.getWikiUrl() + selectedSubnode.wikititle}}" target="_blank"><h4>Open Wiki Page in New Window</h4></a></div>
 					<tab heading="{{subnodetabs[0].title}}" active="subnodetabs[0].active" id="wikiread">
 						<p data-ng-bind-html="subnodeHtmlText" class="wikientry-cdar">no wiki entry selected</p>
 					</tab>
@@ -117,7 +117,7 @@
 										<textarea id="wikiSubnodeArea" name="wikiSubnodeArea" cols="80" rows="30"></textarea>
 									</div>
 									<div class="col-md-2 wikientry-cdar">
-										<button class="btn btn-lg btn-success btn-block col-md-2" type="submit">save</button>
+										<button class="btn btn-lg btn-success btn-block col-md-2" type="submit">Save</button>
 									</div>
 								</form>
 							</div>
@@ -146,7 +146,7 @@
 							<td>{{comment.username}}</td>
 							<td>{{comment.comment}}</td>
 							<td data-ng-show="UserService.getUserId()===comment.userId"><a data-ng-click="deleteComment(comment.id)" href="">Delete Comment</a></td>
-							<td data-ng-show="UserService.getUserId()!==comment.userId">you can only delete your own comments</td>
+							<td data-ng-show="UserService.getUserId()!==comment.userId">You can only delete your own Comments</td>
 						</tr>
 						<tr>
 							<td colspan="2"></td>

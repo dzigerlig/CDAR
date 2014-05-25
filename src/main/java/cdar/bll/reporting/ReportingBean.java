@@ -15,6 +15,7 @@ public class ReportingBean {
 	private int treeId;
 	private Date creationTime;
 	private CdarDescriptions cdarDescriptions;
+	private String username;
 	
 	public ReportingBean() throws Exception {
 		setCreationTime(new Date());
@@ -28,6 +29,8 @@ public class ReportingBean {
 		if (!user.getAccesstoken().equals(accesstoken)) {
 			throw new UnknownUserException();
 		}
+		
+		setUsername(user.getUsername());
 	}
 
 	public int getTreeId() {
@@ -54,5 +57,13 @@ public class ReportingBean {
 
 	public void setCdarDescriptions(CdarDescriptions cdarDescriptions) {
 		this.cdarDescriptions = cdarDescriptions;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

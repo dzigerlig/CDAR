@@ -9,14 +9,14 @@
 							<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
 							Collaborative Decision Management and Architectural Refactoring (CDAR) Tool
 						</h3>
-						<h3>Access Rights for Projecttree: {{tree.title}}</h3>
+						<h3>Access Rights for Project Tree: {{tree.title}}</h3>
 					</div>
 					<div data-ng-show="UserService.getIsProducer()==='true'" class="col-md-9">
 						<h3>
 							<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
 							Collaborative Decision Management and Architectural Refactoring (CDAR) Tool
 						</h3>
-						<h3>Access Rights for Knowledgetree: {{tree.title}}</h3>
+						<h3>Access Rights for Knowledge Tree: {{tree.title}}</h3>
 					</div>
 					<div ng-include src="'templates/heading.html'"></div>
 				</div>
@@ -25,9 +25,9 @@
 				<div class="row">
 					<div class="col-md-2">
 						<a class="btn btn-md btn-primary btn-block"
-							data-ng-show="UserService.getIsProducer()=='false'" href="#/projecttree/{{treeId}}">back to projecttree</a>
+							data-ng-show="UserService.getIsProducer()=='false'" href="#/projecttree/{{treeId}}">Back To Project Tree</a>
 							<a class="btn btn-md btn-primary btn-block"
-							data-ng-show="UserService.getIsProducer()=='true'" href="#/knowledgetree/{{treeId}}">back to knowledgetree</a>
+							data-ng-show="UserService.getIsProducer()=='true'" href="#/knowledgetree/{{treeId}}">Back To Knowledge Tree</a>
 					</div>
 				</div>
 				<div class="row">
@@ -42,14 +42,14 @@
 									<tr>
 										<th class="col-md-1">#</th>
 										<th class="col-md-1">Name</th>
-										<th class="col-md-2">Delete access right</th>
+										<th class="col-md-2">Delete Access Right</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr data-ng-repeat="user in users | filter : { treeaccess : true }">
 										<td>{{$index+1}}</td>
 										<td>{{user.username}}</td>
-										<td data-ng-show="UserService.getUserId()===user.id">You can not delete your access rights</td>
+										<td data-ng-show="UserService.getUserId()===user.id">You can not delete your own Access Right</td>
 										<td data-ng-show="UserService.getUserId()!==user.id"><a data-ng-click="removeAccessRight(user.id)" href="">Delete</a></td>
 									</tr>
 										<tr>
@@ -57,12 +57,12 @@
 											<td colspan="2">
 												<form id="formAddUsers" data-role="form" data-ng-submit="addAccessRight()">
 													<select class="form-horizontal" id="UserList" data-ng-model="selectedUserId">
-														<option style="display:none" value="">select a user</option>
+														<option style="display:none" value="">Select a User</option>
 														<option
 															data-ng-repeat="user in users| filter : { treeaccess : false }"
 															value="{{user.id}}">{{user.username}}</option>
 													</select>
-													<button class="btn btn-success" type="submit">Add user</button>
+													<button class="btn btn-success" type="submit">Add User</button>
 												</form>
 											</td>
 									</tr>
