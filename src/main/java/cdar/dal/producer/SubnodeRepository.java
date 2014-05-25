@@ -107,13 +107,12 @@ public class SubnodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-		}
+			System.out.println(ex.getMessage());		}
 		return subnodes;
 	}
 
 	public List<Subnode> getSiblingSubnodes(int nodeId) throws EntityException {
-		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
+		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM ( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE LINK.SOURCEID IN ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 		List<Subnode> subnodes = new ArrayList<Subnode>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -138,8 +137,7 @@ public class SubnodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+			System.out.println(e.getMessage());		}
 		return subnodes;
 	}
 	
@@ -169,8 +167,7 @@ public class SubnodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+			System.out.println(e.getMessage());		}
 		return subnodes;
 	}
 

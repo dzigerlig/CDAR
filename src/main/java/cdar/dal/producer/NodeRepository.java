@@ -92,7 +92,10 @@ public class NodeRepository {
 
 	public List<Node> getSiblingNode(int nodeId) throws EntityException {
 		final String sql = String
-				.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT * FROM %s AS LINK WHERE (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)=LINK.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?",
+				.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM"
+						+ " (SELECT * FROM %s AS LINK WHERE "
+						+ "LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)) AS SUB, %s AS NODE, %s AS MAPPING "
+						+ "WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?",
 						DBTableHelper.NODELINK, DBTableHelper.NODELINK,
 						DBTableHelper.NODE, DBTableHelper.NODEMAPPING);
 
@@ -122,6 +125,8 @@ public class NodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
+			System.out.println("getSiblings");
+
 			System.out.println(ex.getMessage());
 		}
 		return nodes;
@@ -159,6 +164,7 @@ public class NodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException e) {
+			System.out.println("getParentNode");
 			System.out.println(e.getMessage());
 		}
 		return nodes;
@@ -195,6 +201,7 @@ public class NodeRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException e) {
+			System.out.println("getFollowerNode");
 			System.out.println(e.getMessage());
 		}
 		return nodes;
