@@ -136,13 +136,15 @@
 						<thead>
 							<tr>
 								<th class="col-md-1">#</th>
+								<th class="col-md-1">Date</th>
 								<th class="col-md-1">Username</th>
-								<th class="col-md-8">Comment</th>
+								<th class="col-md-7">Comment</th>
 								<th class="col-md-2">Delete Comment</th>
 							</tr>
 						</thead>
 						<tr data-ng-repeat="comment in comments | orderBy:'id':false">
 							<td>{{$index+1}}</td>
+							<td>{{comment.creationTime}}</td>
 							<td>{{comment.username}}</td>
 							<td>{{comment.comment}}</td>
 							<td data-ng-show="UserService.getUserId()===comment.userId"><a data-ng-click="deleteComment(comment.id)" href="">Delete Comment</a></td>
