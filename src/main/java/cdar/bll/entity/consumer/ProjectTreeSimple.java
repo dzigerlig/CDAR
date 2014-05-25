@@ -9,9 +9,9 @@ import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.consumer.CommentManager;
-import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
@@ -19,6 +19,7 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
+import cdar.dal.exceptions.UnknownUserException;
 
 @XmlRootElement
 public class ProjectTreeSimple {
@@ -33,12 +34,12 @@ public class ProjectTreeSimple {
 		private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		private ProjectNodeManager pnm = new ProjectNodeManager();
 		private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
-		private ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+		private DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		private CommentManager cm = new CommentManager();
 		
 		public ProjectTreeSimple() {}
 		
-		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException {
+		public ProjectTreeSimple(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException, UnknownUserException {
 			setTree(ptm.getTree(treeId));
 			setProjectNodes(pnm.getProjectNodes(treeId));
 			setLinks(pnlm.getProjectNodeLinks(treeId));

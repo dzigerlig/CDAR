@@ -10,17 +10,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
-import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/directories")
 public class ProjectDirectoryController {
 	private final boolean ISPRODUCER = false;
 	private LockingManager lm = new LockingManager();
-	private ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+	DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

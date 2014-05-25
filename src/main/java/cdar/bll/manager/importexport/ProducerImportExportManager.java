@@ -16,6 +16,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
@@ -25,7 +26,7 @@ import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.producer.Template;
 import cdar.bll.entity.producer.TreeFull;
 import cdar.bll.entity.producer.TreeSimple;
-import cdar.bll.manager.producer.DirectoryManager;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.CreationException;
@@ -173,7 +174,7 @@ public class ProducerImportExportManager {
 
 	private void setFullXmlTree(TreeXml treeXml) throws CreationException, UnknownUserException, EntityException, UnknownTreeException, UnknownDirectoryException, UnknownNodeException {
 		TreeFull treeFull = getTreeFull(treeXml.getXmlString());
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		
 		List<Directory> directoryList = new ArrayList<Directory>(treeFull.getDirectories());
 
@@ -274,7 +275,7 @@ public class ProducerImportExportManager {
 
 	private void setSimpleXmlTree(TreeXml treeXml) throws CreationException, EntityException, UnknownTreeException, UnknownUserException, UnknownDirectoryException, UnknownNodeException {
 		TreeSimple treeSimple = getTreeSimple(treeXml.getXmlString());
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		List<Directory> directoryList = new ArrayList<Directory>(treeSimple.getDirectories());
 
 		Collections.sort(directoryList, new Comparator<Directory>() {

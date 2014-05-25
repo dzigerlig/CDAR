@@ -16,6 +16,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.TreeXml;
@@ -25,8 +26,8 @@ import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.entity.consumer.ProjectTreeFull;
 import cdar.bll.entity.consumer.ProjectTreeSimple;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.consumer.CommentManager;
-import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.consumer.ProjectNodeLinkRepository;
@@ -61,7 +62,7 @@ public class ConsumerImportExportManager {
 		return xmlTrees;
 	}
 	
-	private String getTreeSimpleXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException {
+	private String getTreeSimpleXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException, UnknownUserException {
 		ProjectTreeSimple pts = new ProjectTreeSimple(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(ProjectTreeSimple.class).createMarshaller();
@@ -75,7 +76,7 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
-	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException {
+	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException, UnknownUserException {
 		ProjectTreeFull pts = new ProjectTreeFull(treeId);
 		try {
 			final Marshaller m = JAXBContext.newInstance(ProjectTreeFull.class).createMarshaller();
@@ -137,7 +138,7 @@ public class ConsumerImportExportManager {
 
 	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
-		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		CommentManager cm = new CommentManager();
 		
 		try {
@@ -173,9 +174,9 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	private void setFullXmlTree(TreeXml treeXml) throws CreationException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownUserException, EntityException {
+	private void setFullXmlTree(TreeXml treeXml) throws CreationException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownUserException, EntityException, UnknownDirectoryException {
 		ProjectTreeFull projectTreeFull = getProjectTreeFull(treeXml.getXmlString());
-		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		
 		List<Directory> directoryList = new ArrayList<Directory>(projectTreeFull.getDirectories());
 
@@ -274,9 +275,9 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException, EntityException {
+	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException, EntityException, UnknownUserException, UnknownDirectoryException {
 		ProjectTreeSimple projectTreeSimple = getProjectTreeSimple(treeXml.getXmlString());
-		ProjectDirectoryManager pdm = new ProjectDirectoryManager();
+		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		List<Directory> directoryList = new ArrayList<Directory>(projectTreeSimple.getDirectories());
 
 		Collections.sort(directoryList, new Comparator<Directory>() {
@@ -352,7 +353,7 @@ public class ConsumerImportExportManager {
 		}
 	}
 
-	public TreeXml addXmlTreeFull(int uid, int treeId, String title, String xmlString) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException {
+	public TreeXml addXmlTreeFull(int uid, int treeId, String title, String xmlString) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException, UnknownUserException {
 		xmlString = xmlString==null ? getTreeFullXmlString(treeId) : xmlString;
 		TreeXml xmlTree = new TreeXml();
 		xmlTree.setTitle(title);

@@ -10,17 +10,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.exceptions.LockingException;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
-import cdar.bll.manager.producer.DirectoryManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
 public class KnowledgeDirectoryController {
 	private final boolean ISPRODUCER = true;
 	private LockingManager lm = new LockingManager();
-	private DirectoryManager dm = new DirectoryManager();
+	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
