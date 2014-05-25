@@ -79,10 +79,12 @@ public class ProjectTreeBean extends ReportingBean {
 	
 	public String getNodeStatus(int status) {
 		switch (status) {
-			case 2: return "accepted";
-			case 3: return "declined";
-			case 4: return "revoked";
-			default: return "undecided";
+		case 1:
+			case 2: return "made";
+			case 3: return "approved";
+			case 4: return "closed";
+			case 5: return "rejected";
+			default: return "open";
 		}
 	}
 }
