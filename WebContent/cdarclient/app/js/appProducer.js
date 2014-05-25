@@ -380,7 +380,6 @@ app.controller("KnowledgeTreeController",
 								setLoadingSubnode();
 								$scope.selectedSubnode.id = subnodeid;
 								$scope.selectedSubnode.title = name;
-								console.log('changesubnode');
 								TreeService.getSubnodeWiki({
 									entity1 : 'ktrees',
 									id1 : $scope.knowledgetree.id,
@@ -1042,9 +1041,7 @@ app.controller("KnowledgeTreeController",
 													});
 												},
 												function(error) {
-													console.log('error');
 													if (!$scope.showLockingNotification(error)) {
-
 													noty({
 														type : 'error',
 														text : 'error deleting directory',

@@ -117,7 +117,6 @@ var myJsPlumb = (function() {
 	}
 
 	function connectNodes(stateSource, stateTarget, id, subnode) {
-		console.log('connecting nodes');
 		var label = 'all '+ scope.DescriptionService.getSubnodeDescription() + 's';
 		if (subnode !== undefined) {
 			label = subnode.title;
@@ -230,15 +229,12 @@ var myJsPlumb = (function() {
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
 			if (!isInitialized) {
-				console.log("not initialized");
 				myJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
 				bindClickConnection(info);
 			} else {
-				console.log("initialized");
 				scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
 						info.targetId.replace(NODE, ""), info.connection);
-				console.log("show popup");
 				showSubnodePopup(info);
 				bindClickConnection(info);
 				newLinkFired=true;
