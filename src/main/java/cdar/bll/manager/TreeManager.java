@@ -21,7 +21,7 @@ import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
-import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
@@ -91,7 +91,7 @@ public class TreeManager {
 		NodeLinkManager nlm = new NodeLinkManager();
 		DirectoryManager dm = new DirectoryManager();
 		ProjectDirectoryRepository pdr = new ProjectDirectoryRepository();
-		NodeLinkRepository pnlr = new NodeLinkRepository();
+		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 		Directory rootDirectory = new Directory();

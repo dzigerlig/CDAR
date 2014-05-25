@@ -29,7 +29,7 @@ import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectDirectoryManager;
 import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
-import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.consumer.ProjectSubnodeRepository;
 import cdar.dal.consumer.ProjectTreeXmlRepository;
@@ -238,7 +238,7 @@ public class ConsumerImportExportManager {
 			}
 		}
 		
-		NodeLinkRepository pnlr = new NodeLinkRepository();
+		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 
 		if (projectTreeFull.getLinks() != null) {
 			for (NodeLink nodeLink : projectTreeFull.getLinks()) {
@@ -336,7 +336,7 @@ public class ConsumerImportExportManager {
 			}
 		}
 		
-		NodeLinkRepository pnlr = new NodeLinkRepository();
+		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 		
 		if (projectTreeSimple.getLinks() != null) {
 			for (NodeLink nodeLink : projectTreeSimple.getLinks()) {

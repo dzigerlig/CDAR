@@ -6,7 +6,7 @@ import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.consumer.ProjectNode;
-import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -19,7 +19,7 @@ import cdar.dal.user.UserRepository;
 import cdar.pl.controller.StatusHelper;
 
 public class ProjectNodeLinkManager {
-	private NodeLinkRepository pnlr = new NodeLinkRepository();
+	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 
 	public Set<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		Set<NodeLink> projectNodeLinks = new HashSet<NodeLink>();

@@ -24,7 +24,7 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.INodeLinkRepository;
 
-public class NodeLinkRepository implements INodeLinkRepository {
+public class ProjectNodeLinkRepository implements INodeLinkRepository {
 	public List<NodeLink> getNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM %s WHERE KPTID = ?",DBTableHelper.PROJECTNODELINK);
 
