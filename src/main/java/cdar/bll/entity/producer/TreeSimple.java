@@ -11,8 +11,8 @@ import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
+import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.TreeManager;
-import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
@@ -36,7 +36,7 @@ public class TreeSimple {
 	private NodeManager nm = new NodeManager();
 	private SubnodeManager sm = new SubnodeManager();
 	private NodeLinkManager nlm = new NodeLinkManager();
-	private DirectoryManager dm = new DirectoryManager();
+	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 	private TemplateManager tm = new TemplateManager();
 	
 	public TreeSimple() {}

@@ -1,25 +1,27 @@
 package cdar.bll.manager.consumer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.consumer.ProjectNode;
-import cdar.dal.consumer.NodeLinkRepository;
+import cdar.dal.consumer.ProjectNodeLinkRepository;
 import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
+import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
 import cdar.pl.controller.StatusHelper;
 
 public class ProjectNodeLinkManager {
-	private NodeLinkRepository pnlr = new NodeLinkRepository();
+	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 
 	public Set<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		Set<NodeLink> projectNodeLinks = new HashSet<NodeLink>();
@@ -101,9 +103,14 @@ public class ProjectNodeLinkManager {
 		return links;
 	}
 
-	public List<NodeLink> getProjectNodeLinksBySubnode(int subnodeId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<NodeLink> getProjectNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
+		List<NodeLink> nodeLinks = new ArrayList<NodeLink>();
+
+		for (NodeLink nodeLink : pnlr.getNodeLinksBySubnode(subnodeId)) {
+			nodeLinks.add(nodeLink);
+		}
+		
+		return nodeLinks;
 	}
 	
 	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
