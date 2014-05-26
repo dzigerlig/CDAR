@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
-import cdar.pl.helpers.StatusHelper;
 
 @Path("users")
 public class UserController {

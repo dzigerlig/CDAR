@@ -16,7 +16,7 @@ import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiManager;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")
 public class NodeController {

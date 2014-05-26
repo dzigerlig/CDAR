@@ -14,7 +14,7 @@ import cdar.bll.entity.NodeLink;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/links")
 public class ProjectNodeLinkController {
