@@ -18,7 +18,7 @@ import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 public class ProjectNodeLinkManager {
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();

@@ -21,8 +21,8 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
-import cdar.pl.controller.StatusHelper;
 import cdar.pl.controller.UserController;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ptrees")
 public class ProjectTreeController {

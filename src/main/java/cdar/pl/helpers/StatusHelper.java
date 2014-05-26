@@ -1,4 +1,4 @@
-package cdar.pl.controller;
+package cdar.pl.helpers;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

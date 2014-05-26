@@ -27,7 +27,7 @@ import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeRepository;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class SubnodeController {

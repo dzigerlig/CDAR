@@ -20,7 +20,7 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.SubnodeManager;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees")
 public class TreeController {

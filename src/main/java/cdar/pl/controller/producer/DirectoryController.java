@@ -15,7 +15,7 @@ import cdar.bll.entity.UserRole;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/directories")
 public class DirectoryController {

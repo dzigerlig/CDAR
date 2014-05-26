@@ -15,7 +15,7 @@ import cdar.bll.entity.TreeXml;
 import cdar.bll.manager.importexport.ProducerImportExportManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/exports")
 public class TreeImportExportController {

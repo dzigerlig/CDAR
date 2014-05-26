@@ -16,7 +16,7 @@ import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.dal.producer.NodeRepository;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")
 public class NodeLinkController {

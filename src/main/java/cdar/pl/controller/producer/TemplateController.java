@@ -14,7 +14,7 @@ import cdar.bll.entity.producer.Template;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.TemplateManager;
-import cdar.pl.controller.StatusHelper;
+import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/templates")
 public class TemplateController {
