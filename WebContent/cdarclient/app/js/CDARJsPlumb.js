@@ -136,9 +136,9 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
-	function appendElements(title, connect, newState, option) {
+	function appendElements(title, connect, newState, subnode) {
 		newState.append(title);
-		newState.append(option);
+		newState.append(subnode);
 		newState.append(connect);
 		$('#jsplumb-container').append(newState);
 	}
@@ -149,7 +149,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
-	function showSubnodesEvent(newState) {
+	function toggleSubnode(newState) {
 		newState.dblclick(function(e) {
 			$('#' + newState[0].id + ' .option').toggle();
 			jsPlumb.repaintEverything();
@@ -192,7 +192,6 @@ var CDARJsPlumb = (function() {
 					});
 				}
 			} else {
-				// JSHINT: Connections is already defined?
 				var connections = jsPlumb.getConnections();
 				jQuery.each(connections, function(object) {
 					if (selectedElement === this.id) {
@@ -236,7 +235,6 @@ var CDARJsPlumb = (function() {
 				bindClickConnection(info);
 				newLinkFired=true;
 			}
-
 		});
 	}
 	
@@ -297,8 +295,7 @@ var CDARJsPlumb = (function() {
 				"<input type=\"radio\" id=\"" + SUBNODE + id
 						+ "\" name=\"option\" class=\"radio_item\" value=\""
 						+ title + "\">" + title + "<br>");
-	}
-	;
+	};
 
 	function registerLinkTemplate() {
 		jsPlumb.registerConnectionType("change", {
@@ -406,7 +403,7 @@ var CDARJsPlumb = (function() {
 			});
 		},
 
-		addHTMLNode : function(response, e) {
+		drawNewNode : function(response, e) {
 			isInitialized = true;
 			var newState = $('<div>').attr('id', NODE + response.id).addClass(
 					'w').data(SUBNODE, {
@@ -437,7 +434,7 @@ var CDARJsPlumb = (function() {
 			drillDownEvent(downtree, newState);
 			drillUpEvent(uptree, newState);
 			makeNodesDraggable(newState);
-			showSubnodesEvent(newState);
+			toggleSubnode(newState);
 			clickNodeEvent(newState);
 			makeTarget(newState);
 			makeSource(connect, newState);
@@ -509,7 +506,7 @@ var CDARJsPlumb = (function() {
 					drillUpEvent(uptree, newState);
 					makeNodesDraggable(newState);
 
-					showSubnodesEvent(newState);
+					toggleSubnode(newState);
 					clickNodeEvent(newState);
 
 					makeTarget(newState);

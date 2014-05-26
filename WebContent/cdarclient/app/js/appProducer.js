@@ -794,7 +794,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId,
 									dynamicTreeFlag : 1
 								}, function(response) {
-									CDARJsPlumb.addHTMLNode(response, e);
+									CDARJsPlumb.drawNewNode(response, e);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {

@@ -139,16 +139,16 @@ var CDARJsTree = (function () {
         	$("#jstree").jstree("open_node", $("#" + rootid));
         
         	var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
-        	openRecursiv(scope.DescriptionService.getExpandedLevel()-1,children);	
+        	openDirectories(scope.DescriptionService.getExpandedLevel()-1,children);
         }
     }
     
-    function openRecursiv(val,children){
+    function openDirectories(val,children){
     	$.each(children, function( index, value ) {
     		if(val>=1)
 			{
         		$("#jstree").jstree("open_node",(value.id));
-    			openRecursiv(val-1, $("#jstree").jstree("get_children_dom", value.id));
+    			openDirectories(val-1, $("#jstree").jstree("get_children_dom", value.id));
 			}
     	});
     }
@@ -195,13 +195,7 @@ var CDARJsTree = (function () {
         quantitiyOfCopies = 0;
     }
     
-    function deleteElement(selected){    
-    	
-        
-        
-  
-    	
-    	
+    function deleteElement(selected){
     	scope.modal.open({
     		templateUrl : 'templates/confirmation.html',
     		backdrop : 'static',
