@@ -48,27 +48,27 @@
 					</tr>
 				</thead>
 					<tr>
-						<td><strong>parent(s)</strong></td>
+						<td><strong>predecessor</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(true, node.getId())}" var="nodeLink">
 									<li><a href="#${tree.getNode(nodeLink.getSourceId()).getWikititle()}">${tree.getNode(nodeLink.getSourceId()).getTitle()}</a> <c:if test="${nodeLink.getSubnodeId()!=0}">(from ${tree.getCdarDescriptions().getSubnodeDescription()}: <a href="#${tree.getSubnode(nodeLink.getSubnodeId()).getWikititle()}">${tree.getSubnode(nodeLink.getSubnodeId()).getTitle()}</a>)</c:if></li>
 								</c:forEach>
 								<c:if test="${tree.getNodeLinks(true, node.getId()).size()==0}">
-									<li>no forthcoming ${tree.getCdarDescriptions().getNodeDescription()}s</li>
+									<li>no predecessor</li>
 								</c:if>
 							</ul>
 						</td>
 					</tr>
 					<tr>
-						<td><strong>child(s)</strong></td>
+						<td><strong>successor</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(false, node.getId())}" var="nodeLink">
 									<li><a href="#${tree.getNode(nodeLink.getTargetId()).getWikititle()}">${tree.getNode(nodeLink.getTargetId()).getTitle()}</a> <c:if test="${nodeLink.getSubnodeId()!=0}">(by ${tree.getCdarDescriptions().getSubnodeDescription()}: <a href="#${tree.getSubnode(nodeLink.getSubnodeId()).getWikititle()}">${tree.getSubnode(nodeLink.getSubnodeId()).getTitle()}</a>)</c:if>
 								</c:forEach>
 								<c:if test="${tree.getNodeLinks(false, node.getId()).size()==0}">
-									<li>no upcoming ${tree.getCdarDescriptions().getNodeDescription()}s</li>
+									<li>no successor</li>
 								</c:if>
 							</ul>
 						</td>
@@ -83,6 +83,26 @@
 						<td><strong><%= tree.getCdarDescriptions().getNodeDescription() %> Status:</strong></td>
 						<td>
 							${ tree.getNodeStatus(node.getStatus()) }
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Comments:</strong></td>
+						<td>
+							<table class="table table-bordered table-striped table-condensed table-hover">
+								<thead>
+									<tr>
+										<th class="col-md-2">Username</th>
+										<th class="col-md-2">Date</th>
+										<th class="col-md-8">Comment</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<td>username</td>
+									<td>date</td>
+									<td>comment</td>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				<tbody>
