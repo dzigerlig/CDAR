@@ -39,6 +39,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, $scope.selectedNode, function(response) {
 			$scope.changeNode(response.id, response.title);
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'alert',
 				text : 'cannot edit wiki title',
@@ -64,13 +65,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         TreeService.getTree({entity1: 'ptrees', id1: $routeParams.treeId}, function (response) {
             $scope.projecttree = response;
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
         	noty({
 				type : 'error',
 				text : 'error getting tree',
 				timeout : 1500
 			});
         });
-
 
         TreeService.getDirectories({
             entity1: 'ptrees',
@@ -86,6 +87,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					$scope.drillDownNode(0);
                    // $scope.getSubnodes(resNodes);
                 }, function(error) {
+                	UserService.checkResponseUnauthorized(error);
                 	noty({
         				type : 'error',
         				text : 'error getting ' + DescriptionService.getNodeDescription() + 's',
@@ -93,6 +95,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         			});
                 });
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
         	noty({
 				type : 'error',
 				text : 'error getting directories',
@@ -100,38 +103,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			});
         });
     };
-   /* $scope.getSubnodes = function (resNodes) {
-        TreeService.getSubnodesFromTree({
-            entity1: 'ptrees',
-            id1: $routeParams.treeId
-        }, function (resSubnodes) {
-            myJsPlumb.drawExistingNodes(resNodes, resSubnodes);
-            $scope.getLinks(resSubnodes);
-        }, function(error) {
-        	noty({
-				type : 'alert',
-				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
-				timeout : 1500
-			});
-        });
-    };
-
-    $scope.getLinks = function (resSubnodes) {
-        TreeService.getLinks({
-            entity1: 'ptrees',
-            id1: $routeParams.treeId
-        }, function (response) {
-            myJsPlumb.makeNodeHierarchy(response, resSubnodes);
-            w_launch();
-        }, function(error) {
-        	noty({
-				type : 'alert',
-				text : 'error getting links',
-				timeout : 1500
-			});
-        });
-    };*/
-
+ 
     $scope.updateLink = function(linkId, subnodeid) {
         TreeService.updateLink({
             entity1 : 'ptrees',
@@ -141,9 +113,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : linkId,
             subnodeId : subnodeid
         }, function(response) {
-            // noty({type: 'success', text : 'link added
-            // successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -163,9 +134,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             directoryId : did
         }, function(response) {
             myJsTree.drawNewNode(response);
-            // noty({type: 'success', text : 'node added
-            // successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -189,6 +159,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
+            	UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -200,7 +171,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     };
 
     $scope.deleteNode = function(nodeId) {
-        //myJsPlumb.detachNode(nodeId);
         TreeService.deleteNode({
             entity1 : 'ptrees',
             id1 : $routeParams.treeId
@@ -215,6 +185,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 timeout : 1500
             });
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
                 	type : 'error',
@@ -233,6 +204,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(node) {
             myDragDrop.setMovedNode(node);
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
             noty({
                 type : 'error',
                 text : 'error getting ' + DescriptionService.getNodeDescription(),
@@ -252,6 +224,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(response) {
             myJsPlumb.addHTMLNode(response, e);
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -274,6 +247,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             myJsPlumb.removeNode($('#node' + nodeId));
             // todo
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -295,9 +269,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             directoryId : did
         }, function(response) {
             myJsPlumb.renameNode(id, data.text);
-            // noty({type: 'success', text : 'node
-            // renamed successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
         	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
     			 if (!$scope.showLockingNotification(error)) {
 				 noty({
@@ -318,8 +291,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : id,
             directoryId : newParentId
         }, function(response) {
-            // todo
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -344,6 +317,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsPlumb.setLinkId(connection,
                     response.id);
             }, function(error) {
+            	UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -362,9 +336,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : linkId
         }, function(response) {
 			myJsPlumb.removeLink('link'+linkId);
-            // noty({type: 'success', text : 'link
-            // deleted successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -384,9 +357,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             parentId : parentid
         }, function(response) {
             myJsTree.drawNewDirectory(response);
-            // noty({type: 'success', text : 'directory
-            // added successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -410,6 +382,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 myJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
+            	UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -430,9 +403,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : directoryId,
             title : data.text
         }, function(response) {
-            // noty({type: 'success', text : 'directory
-            // renamed successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
         	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
@@ -461,6 +433,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     timeout : 1500
                 });
             }, function(error) {
+            	UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -481,9 +454,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : directoryId,
             parentId : newParentId
         }, function(response) {
-            // noty({type: 'success', text : 'directory
-            // moved successfully', timeout: 1500});
         }, function(error) {
+        	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -504,6 +476,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				$scope.drillUpSubnode(nodeid, resNodes);
 			}
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot drill up',
@@ -522,6 +495,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				$scope.drillDownSubnode(nodeid, resNodes);
 			}
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot drill down',
@@ -540,6 +514,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					resSubnodes);
 			$scope.drillUpLink(nodeid, resSubnodes);
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot drill up',
@@ -558,6 +533,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					resSubnodes);
 			$scope.drillDownLink(nodeid, resSubnodes);
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot drill down',
@@ -576,6 +552,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					resSubnodes);
 			w_launch();
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot drill up',
@@ -594,6 +571,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 					resSubnodes);
 			w_launch();
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'v',
 				text : 'cannot drill down',
@@ -621,10 +599,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	            response) {
 	        	subnode.title = data;
 	            $scope.getSubnodesOfNode(response);
-	            // noty({type: 'success', text :
-	            // 'subnode renamed successfully',
-	            // timeout: 1500});
 	        }, function (error) {
+	        	UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -651,6 +627,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				entity1 : 'ptrees',
 				id1 : $scope.projecttree.id
 			}, $scope.projecttree, function(response) { }, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -708,6 +685,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(response) {
 			$scope.subnodes = response;
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's',
@@ -737,6 +715,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				$scope.selectedNodeWiki = response;
 				changeWikiFields();
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				noty({
 					type : 'error',
 					text : 'error getting wiki entry',
@@ -744,6 +723,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				});
 			});
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'error getting ' + DescriptionService.getNodeDescription(),
@@ -780,6 +760,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 									timeout : 1500
 								});
 							}, function(error) {
+								UserService.checkResponseUnauthorized(error);
 								changeWikiFields($scope.selectedNodeWiki);
 								noty({
 									type : 'error',
@@ -808,6 +789,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(response) {
 				$scope.getSubnodesOfNode();
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -841,6 +823,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, function(response) {
 				$scope.getSubnodesOfNode();
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {	
 					 noty({
 						 type : 'erro',
@@ -872,6 +855,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			myJsPlumb.updateSubnodesOfNode(response,
 					identity, changes);
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'error getting ' + DescriptionService.getSubnodeDescription() + 's', 
@@ -913,6 +897,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	                updateSubnodeTitle();
 	            }
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -938,6 +923,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			updateSubnodeTitle();
 			changeWikiFieldsSubnode();
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'error getting wiki entry',
@@ -973,6 +959,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 									timeout : 1500
 								});
 							}, function(error) {
+								UserService.checkResponseUnauthorized(error);
 								 if (!$scope.showLockingNotification(error)) {
 									 noty({
 										 type : 'error',
@@ -1007,6 +994,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 				$scope.selectedNode = response;
 				$scope.changeNode(response.id);
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -1032,6 +1020,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			subnode.position = subnode.position - 1;
 				$scope.getSubnodesOfNode();
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -1060,6 +1049,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 
 				$scope.getSubnodesOfNode();
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -1078,6 +1068,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(response) {
 			$scope.comments = response;
 		}, function(error) {
+			UserService.checkResponseUnauthorized(error);
 			noty({
 				type : 'error',
 				text : 'cannot get comments',
@@ -1104,6 +1095,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, {nodeid : $scope.selectedNode.id, comment : this.newCommentText}, function(response) {
 				getComments();
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',
@@ -1137,6 +1129,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			}, {id : commentId}, function(response) {
 				getComments();
 			}, function (error) {
+				UserService.checkResponseUnauthorized(error);
 				 if (!$scope.showLockingNotification(error)) {
 					 noty({
 						 type : 'error',

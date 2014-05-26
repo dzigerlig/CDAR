@@ -38,6 +38,7 @@ app.controller(
 				 }, function(response) {
 					 $scope.knowledgeTrees = response;
 				 }, function(error) {
+					 UserService.checkResponseUnauthorized(error);
 					 noty({
 						 type : 'error',
 						 text : 'cannot get trees',
@@ -64,6 +65,7 @@ app.controller(
 						 $scope.newTreeName = '';
 						 reloadTrees();
 					 }, function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						 noty({
 							 type : 'error',
 							 text : 'cannot add tree',
@@ -103,6 +105,7 @@ app.controller(
 								 });
 							 },
 							 function(error) {
+								 UserService.checkResponseUnauthorized(error);
 								 if (!$scope.showLockingNotification(error)) {
 									 noty({
 										 type : 'error',
@@ -138,6 +141,7 @@ app.controller(
 							 function(response) {
 							 },
 							 function(error) {
+								 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										tree.title = oldTitle;
 										noty({
@@ -194,6 +198,7 @@ app.controller("KnowledgeTreeController",
 			 	}, $scope.selectedNode, function(response) {
 			 		$scope.changeNode(response.id, response.title);
 			 	}, function(error) {
+					 UserService.checkResponseUnauthorized(error);
 			 		noty({
 			 			type : 'alert',
 			 			text : 'cannot edit wiki title',
@@ -252,8 +257,8 @@ app.controller("KnowledgeTreeController",
 					$scope.knowledgetree,	function(response) {
 					},
 					function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						if (!$scope.showLockingNotification(error)) {
-
 						noty({
 							type : 'error',
 							text : 'error while saving tree title',
@@ -275,6 +280,7 @@ app.controller("KnowledgeTreeController",
 							$scope.subnodes = response;
 						},
 						function(error) {
+							 UserService.checkResponseUnauthorized(error);
 							noty({
 								type : 'error',
 								text : 'error getting ' + DescriptionService.getSubnodeDescription()	+ 's',
@@ -304,6 +310,7 @@ app.controller("KnowledgeTreeController",
 							myJsPlumb.updateSubnodesOfNode(	response,	identity,	changes);
 						},
 						function(error) {
+							 UserService.checkResponseUnauthorized(error);
 							noty({
 								type : 'error',
 								text : 'error getting '	+ DescriptionService.getSubnodeDescription()	+ 's',
@@ -332,6 +339,7 @@ app.controller("KnowledgeTreeController",
 									},	function(response) {
 										$scope.getSubnodesOfNode();
 									},	function(error) {
+										 UserService.checkResponseUnauthorized(error);
 										if (!$scope.showLockingNotification(error)) {
 											noty({
 												type : 'error',
@@ -365,6 +373,7 @@ app.controller("KnowledgeTreeController",
 									}, function(response) {
 										$scope.getSubnodesOfNode();
 									}, function(error) {
+										 UserService.checkResponseUnauthorized(error);
 										if (!$scope.showLockingNotification(error)) {
 											noty({
 												type : 'error',
@@ -390,6 +399,7 @@ app.controller("KnowledgeTreeController",
 									updateSubnodeTitle();
 									changeWikiFieldsSubnode();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'error getting wiki entry',
@@ -432,6 +442,7 @@ app.controller("KnowledgeTreeController",
 														});
 													},
 													function(error) {
+														 UserService.checkResponseUnauthorized(error);
 														noty({
 															type : 'error',
 															text : 'cannot edit wiki text',
@@ -449,7 +460,7 @@ app.controller("KnowledgeTreeController",
 						            resolve: {
 						                data: function() { 
 						                    return {
-						                        title: 'Delete S' + DescriptionService.getSubnodeDescription(),
+						                        title: 'Delete ' + DescriptionService.getSubnodeDescription(),
 						                        message: 'Do you really want to delete this ' + DescriptionService.getSubnodeDescription() 
 						                    };
 						                }
@@ -482,8 +493,8 @@ app.controller("KnowledgeTreeController",
 												}
 											},
 											function(error) {
+												 UserService.checkResponseUnauthorized(error);
 												if (!$scope.showLockingNotification(error)) {
-
 												noty({
 													type : 'error',
 													text : 'error deleting '
@@ -571,6 +582,7 @@ app.controller("KnowledgeTreeController",
 									getSubnodes();
 									changeWikiFields();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'error getting wiki entry',
@@ -605,6 +617,7 @@ app.controller("KnowledgeTreeController",
 														});
 													},
 													function(error) {
+														 UserService.checkResponseUnauthorized(error);
 														changeWikiFields($scope.selectedNode);
 														noty({
 															type : 'error',
@@ -621,6 +634,7 @@ app.controller("KnowledgeTreeController",
 							}, function(response) {
 								$scope.knowledgetree = response;
 							}, function(error) {
+								 UserService.checkResponseUnauthorized(error);
 								noty({
 									type : 'error',
 									text : 'error getting tree',
@@ -639,8 +653,8 @@ app.controller("KnowledgeTreeController",
 									myJsTree.directoryDataToArray(resDirectory,
 											resNodes);
 									$scope.drillDownNode(0);
-									//$scope.getSubnodes(resNodes);
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'error getting '
@@ -651,6 +665,7 @@ app.controller("KnowledgeTreeController",
 									});
 								});
 							}, function(error) {
+								 UserService.checkResponseUnauthorized(error);
 								noty({
 									type : 'error',
 									text : 'error getting directories',
@@ -711,9 +726,8 @@ app.controller("KnowledgeTreeController",
 									id : linkId,
 									subnodeId : subnodeid
 								}, function(response) {
-									// noty({type: 'success', text : 'link added
-									// successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -736,6 +750,7 @@ app.controller("KnowledgeTreeController",
 									// noty({type: 'success', text : 'node added
 									// successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -763,6 +778,7 @@ app.controller("KnowledgeTreeController",
 															node, response.id);
 												},
 												function(error) {
+													 UserService.checkResponseUnauthorized(error);
 													if (!$scope.showLockingNotification(error)) {
 														noty({
 															type : 'error',
@@ -791,6 +807,7 @@ app.controller("KnowledgeTreeController",
 										timeout : 1500
 									});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -809,6 +826,7 @@ app.controller("KnowledgeTreeController",
 								}, function(node) {
 									myDragDrop.setMovedNode(node);
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'error getting '
@@ -830,6 +848,7 @@ app.controller("KnowledgeTreeController",
 								}, function(response) {
 									myJsPlumb.addHTMLNode(response, e);
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -852,6 +871,7 @@ app.controller("KnowledgeTreeController",
 						            myJsPlumb.removeNode($('#node' + nodeId));
 									// todo
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -876,6 +896,7 @@ app.controller("KnowledgeTreeController",
 									// noty({type: 'success', text : 'node
 									// renamed successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 						        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
@@ -896,8 +917,8 @@ app.controller("KnowledgeTreeController",
 									id : id,
 									directoryId : newParentId
 								}, function(response) {
-									// todo
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -922,6 +943,7 @@ app.controller("KnowledgeTreeController",
 											myJsPlumb.setLinkId(connection,
 													response.id);
 										}, function(error) {
+											 UserService.checkResponseUnauthorized(error);
 											if (!$scope.showLockingNotification(error)) {
 												noty({
 													type : 'error',
@@ -940,9 +962,8 @@ app.controller("KnowledgeTreeController",
 									id : linkId
 								}, function(response) {
 									myJsPlumb.removeLink('link'+linkId);
-									// noty({type: 'success', text : 'link
-									// deleted successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -962,9 +983,8 @@ app.controller("KnowledgeTreeController",
 									parentId : parentid
 								}, function(response) {
 									myJsTree.drawNewDirectory(response);
-									// noty({type: 'success', text : 'directory
-									// added successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 										noty({
 											type : 'error',
@@ -989,6 +1009,7 @@ app.controller("KnowledgeTreeController",
 											myJsTree.prepareForSetId(node, response.id);
 										},
 										function(error) {
+											 UserService.checkResponseUnauthorized(error);
 											if (!$scope.showLockingNotification(error)) {
 												noty({
 													type : 'error',
@@ -1009,9 +1030,8 @@ app.controller("KnowledgeTreeController",
 									id : directoryId,
 									title : data.text
 								}, function(response) {
-									// noty({type: 'success', text : 'directory
-									// renamed successfully', timeout: 1500});
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 						        	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
 									if (!$scope.showLockingNotification(error)) {
 									noty({
@@ -1041,6 +1061,7 @@ app.controller("KnowledgeTreeController",
 													});
 												},
 												function(error) {
+													 UserService.checkResponseUnauthorized(error);
 													if (!$scope.showLockingNotification(error)) {
 													noty({
 														type : 'error',
@@ -1060,9 +1081,8 @@ app.controller("KnowledgeTreeController",
 									id : directoryId,
 									parentId : newParentId
 								}, function(response) {
-									// noty({type: 'success', text : 'directory
-									// moved successfully', timeout: 1500});
-								}, function(error) {									
+								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);									
 									if (!$scope.showLockingNotification(error)) {
 									noty({
 										type : 'error',
@@ -1082,6 +1102,7 @@ app.controller("KnowledgeTreeController",
 										$scope.drillUpSubnode(nodeid, resNodes);
 									}
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill up',
@@ -1100,6 +1121,7 @@ app.controller("KnowledgeTreeController",
 										$scope.drillDownSubnode(nodeid, resNodes);
 									}
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill down',
@@ -1118,6 +1140,7 @@ app.controller("KnowledgeTreeController",
 											resSubnodes);
 									$scope.drillUpLink(nodeid, resSubnodes);
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill up',
@@ -1136,6 +1159,7 @@ app.controller("KnowledgeTreeController",
 											resSubnodes);
 									$scope.drillDownLink(nodeid, resSubnodes);
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill down',
@@ -1154,6 +1178,7 @@ app.controller("KnowledgeTreeController",
 											resSubnodes);
 									w_launch();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill up',
@@ -1172,6 +1197,7 @@ app.controller("KnowledgeTreeController",
 											resSubnodes);
 									w_launch();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									noty({
 										type : 'error',
 										text : 'cannot drill down',
@@ -1215,6 +1241,7 @@ app.controller("KnowledgeTreeController",
 														// timeout: 1500});
 													},
 													function(error) {
+														 UserService.checkResponseUnauthorized(error);
 														if (!$scope.showLockingNotification(error)) {
 
 														noty({
@@ -1246,8 +1273,8 @@ app.controller("KnowledgeTreeController",
 									subnode.position = subnode.position - 1;
 									$scope.getSubnodesOfNode();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
-
 									noty({
 										type : 'error',
 										text : 'cannot drill up',
@@ -1270,9 +1297,9 @@ app.controller("KnowledgeTreeController",
 									id3 : subnodeClone.id
 								}, subnodeClone, function(response) {
 									subnode.position = subnode.position + 1;
-
 									$scope.getSubnodesOfNode();
 								}, function(error) {
+									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
 
 									noty({
@@ -1282,6 +1309,5 @@ app.controller("KnowledgeTreeController",
 									});}
 								});
 							};
-
 							updateSubnodeTitle();
 						} ]);

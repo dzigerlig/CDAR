@@ -13,6 +13,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
         TreeService.getTrees({entity1: 'ptrees'}, function (response) {
             $scope.projectTrees = response;
         }, function (error) {
+        	UserService.checkResponseUnauthorized(error);
         	noty({
 				type : 'alert',
 				text : 'error getting trees',
@@ -36,6 +37,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 		            $scope.newTreeName = '';
 		            reloadTrees();
 		        }, function (error) {
+		        	UserService.checkResponseUnauthorized(error);
 		        	noty({
 						type : 'alert',
 						text : 'error while adding tree',
@@ -64,6 +66,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	    	TreeService.deleteTree({ entity1: 'ptrees' }, { id: treeid }, function (response) {
 	            reloadTrees();
 	        }, function (error) {
+	        	UserService.checkResponseUnauthorized(error);
 	        	noty({
 					type : 'alert',
 					text : 'cannot delete tree',
@@ -93,6 +96,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	    		entity1 : 'ptrees',
 	    		id1 : tree.id
 	    	}, tree, function(response) {}, function(error) {
+	    		UserService.checkResponseUnauthorized(error);
 	    		 reloadTrees();
 				noty({
 					type : 'alert',

@@ -156,7 +156,7 @@ app.controller("AccountController",
 							}, function(error) {
 								noty({
 									type : 'warning',
-									text : "failed to change",
+									text : "failed to change drill hierarchy",
 									timeout : 3500
 								});
 							});

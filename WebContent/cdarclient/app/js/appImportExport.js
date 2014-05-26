@@ -21,6 +21,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			}, function(response) {
 				$scope.tree = response;
 			}, function(error) {
+				UserService.checkResponseUnauthorized(error);
 				noty({
 					type : 'alert',
 					text : 'cannot get projecttree',
@@ -35,6 +36,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}, function(response) {
 					$scope.xmlTrees = response;
 				}, function(error) {
+					UserService.checkResponseUnauthorized(error);
 					noty({
 						type : 'alert',
 						text : 'cannot get xml trees',
@@ -64,6 +66,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 					}, { id : xmlTreeId}, function(response) {
 						reloadXmlTrees();
 					}, function (error) {
+						UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot delete tree',
@@ -92,6 +95,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 							id1 : $routeParams.treeId,
 							id2 : treeId
 						}, xmltree, function(response) { }, function(error) {
+							UserService.checkResponseUnauthorized(error);
 							noty({
 								type : 'alert',
 								text : 'error while saving title',
@@ -133,6 +137,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 						$location.path('/projecttree/' + $routeParams.treeId);
 					}
 				}, function(error) {
+					UserService.checkResponseUnauthorized(error);
 					noty({
 						type : 'alert',
 						text : "Couldn't import :'" + $scope.importTitle + "'successfully",
@@ -164,6 +169,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 						});
 						$scope.newSimpleTreeName = "";
 					}, function(error) {
+						UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot add tree',
@@ -196,6 +202,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 						});
 						$scope.newFullTreeName = "";
 					}, function(error) {
+						UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot add tree',

@@ -555,6 +555,11 @@ app.factory('UserService', [ '$location', '$cookieStore',
 				setIsProducer : function(val) {
 					$cookieStore.put('cdarProducer', val);
 				},
+				checkResponseUnauthorized : function(error) {
+					if (error.status === 401) {
+						$location.path('/login');
+					}
+				},
 				removeCookies : function() {
 					CDAR.setCustomHeader('none', 'no-token');
 					$cookieStore.remove('cdarUsername');

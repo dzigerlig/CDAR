@@ -42,6 +42,7 @@ app.controller("TemplatesController", [
 				}, function(response) {
 					$scope.templates = response;
 				}, function(error) {
+					 UserService.checkResponseUnauthorized(error);
 					noty({
 						type : 'alert',
 						text : 'cannot reload templates',
@@ -56,6 +57,7 @@ app.controller("TemplatesController", [
 				TreeService.updateTemplate({entity1 : 'ktrees', id1 : $routeParams.treeId, id2 : template.id}, template, function(response) {
 					reloadTemplates();
 				}, function(error) {
+					 UserService.checkResponseUnauthorized(error);
 					noty({
 						type : 'alert',
 						text : 'cannot set default template',
@@ -86,6 +88,7 @@ app.controller("TemplatesController", [
 						}
 						noty({type: 'success', text : 'template deleted successfully', timeout: 1500});
 					}, function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot delete template',
@@ -110,6 +113,7 @@ app.controller("TemplatesController", [
 						reloadTemplates();
 						noty({type: 'success', text : 'template renamed successfully', timeout: 1500});
 					}, function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot edit template title',
@@ -159,6 +163,7 @@ app.controller("TemplatesController", [
 						}
 						noty({type: 'success', text : 'template "'+ templateName + '" added successfully', timeout: 1500});
 					}, function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot add new template',
@@ -178,6 +183,7 @@ app.controller("TemplatesController", [
 				}, function(response) {
 					changeTemplateFields(response);
 				}, function(error) {
+					 UserService.checkResponseUnauthorized(error);
 					noty({
 						type : 'alert',
 						text : 'cannot change template',
@@ -209,7 +215,8 @@ app.controller("TemplatesController", [
 					}, $scope.selectedTemplate, function(response) {
 						changeTemplateFields(response);
 						noty({type: 'success', text : 'template text edited successfully', timeout: 1500});
-					}, function(response) {
+					}, function(error) {
+						 UserService.checkResponseUnauthorized(error);
 						noty({
 							type : 'alert',
 							text : 'cannot save template',
