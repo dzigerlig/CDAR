@@ -17,13 +17,6 @@ var myJsTree = (function () {
             mouseOverJsTreeFlag = false;
         });
 
-    /*$('html').click(function () {
-        if (!mouseOverJsTreeFlag) {
-            $("#jstree").jstree("deselect_all");
-        }
-    });*/
-
-
     $(function () {
         $('#jstree').jstree('get_selected');
 
