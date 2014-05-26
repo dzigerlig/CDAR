@@ -43,8 +43,8 @@
 			<table class="table table-bordered table-striped table-condensed table-hover" style="margin-top: 20px">
 				<thead>
 					<tr>
-						<th class="col-md-3">Description</th>
-						<th class="col-md-9">Content</th>
+						<th class="col-md-2">Description</th>
+						<th class="col-md-10">Content</th>
 					</tr>
 				</thead>
 					<tr>
