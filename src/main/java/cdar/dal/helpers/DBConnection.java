@@ -4,8 +4,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import cdar.PropertyHelper;
-
 public class DBConnection {
 	public static Connection getConnection() {
 		Connection connection = null;

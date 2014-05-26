@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.entity.UserRole;
 import cdar.bll.wiki.WikiRegistrationManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectTreeException;

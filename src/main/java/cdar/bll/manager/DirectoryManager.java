@@ -3,14 +3,14 @@ package cdar.bll.manager;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.PropertyHelper;
-import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
+import cdar.bll.entity.UserRole;
 import cdar.dal.consumer.ProjectDirectoryRepository;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.interfaces.IDirectoryRepository;
 import cdar.dal.producer.DirectoryRepository;
 

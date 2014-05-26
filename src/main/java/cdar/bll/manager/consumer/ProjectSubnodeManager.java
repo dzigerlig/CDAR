@@ -3,7 +3,6 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
@@ -19,6 +18,7 @@ import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.user.UserRepository;
 import cdar.pl.controller.StatusHelper;
 

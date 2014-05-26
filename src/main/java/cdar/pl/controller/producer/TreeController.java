@@ -12,9 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.entity.UserRole;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.TreeManager;
@@ -23,7 +23,7 @@ import cdar.bll.manager.producer.SubnodeManager;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees")
-public class KnowledgeTreeController {
+public class TreeController {
 	private final boolean ISPRODUCER = true;
 	private LockingManager lm = new LockingManager();
 	private TreeManager ktm = new TreeManager(UserRole.PRODUCER);

@@ -3,8 +3,8 @@ package cdar.bll.reporting;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.NodeLink;
+import cdar.bll.entity.UserRole;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.TreeManager;

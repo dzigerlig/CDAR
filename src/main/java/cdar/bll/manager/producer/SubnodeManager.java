@@ -3,7 +3,6 @@ package cdar.bll.manager.producer;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Subnode;
 import cdar.bll.wiki.MediaWikiManager;
@@ -13,6 +12,7 @@ import cdar.dal.exceptions.UnknownNodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.producer.SubnodeRepository;
 import cdar.dal.user.UserRepository;

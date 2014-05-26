@@ -3,10 +3,10 @@ package cdar.bll.reporting;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
+import cdar.bll.entity.UserRole;
 import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;

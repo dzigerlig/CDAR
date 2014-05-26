@@ -16,10 +16,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.TreeXml;
+import cdar.bll.entity.UserRole;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;

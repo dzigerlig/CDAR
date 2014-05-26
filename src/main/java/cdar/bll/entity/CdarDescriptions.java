@@ -1,6 +1,6 @@
 package cdar.bll.entity;
 
-import cdar.PropertyHelper;
+import cdar.dal.helpers.PropertyHelper;
 
 public class CdarDescriptions {
 	private String directoryDescription;

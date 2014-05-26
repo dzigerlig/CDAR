@@ -19,7 +19,7 @@ import cdar.dal.producer.NodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")
-public class KnowledgeNodeLinkController {
+public class NodeLinkController {
 	private final boolean ISPRODUCER = true;
 	private LockingManager lm = new LockingManager();
 	private NodeLinkManager nlm = new NodeLinkManager();

@@ -7,10 +7,10 @@ import javax.security.auth.login.LoginException;
 
 import org.wikipedia.Wiki;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.WikiLoginException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.wiki.WikiRepository;
 
 public class MediaWikiCreationModel extends Thread {

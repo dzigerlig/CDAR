@@ -3,10 +3,10 @@ import info.bliki.wiki.model.WikiModel;
 
 import org.wikipedia.Wiki;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.wiki.WikiRepository;
 
 public class WikiEntry extends WikiEntity {

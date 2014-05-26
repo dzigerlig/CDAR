@@ -5,12 +5,12 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
+import cdar.bll.entity.UserRole;
 import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.producer.NodeLinkManager;

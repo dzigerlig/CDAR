@@ -3,7 +3,6 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.PropertyHelper;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
@@ -17,6 +16,7 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.user.UserRepository;
 import cdar.pl.controller.StatusHelper;

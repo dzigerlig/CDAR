@@ -24,11 +24,11 @@ import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.producer.Template;
 import cdar.pl.controller.UserController;
-import cdar.pl.controller.producer.KnowledgeDirectoryController;
-import cdar.pl.controller.producer.KnowledgeNodeController;
-import cdar.pl.controller.producer.KnowledgeNodeLinkController;
-import cdar.pl.controller.producer.KnowledgeSubnodeController;
-import cdar.pl.controller.producer.KnowledgeTreeController;
+import cdar.pl.controller.producer.DirectoryController;
+import cdar.pl.controller.producer.NodeController;
+import cdar.pl.controller.producer.NodeLinkController;
+import cdar.pl.controller.producer.SubnodeController;
+import cdar.pl.controller.producer.TreeController;
 import cdar.pl.controller.producer.TemplateController;
 
 public class TestKnowledgeTreeController extends JerseyTest {
@@ -45,11 +45,11 @@ public class TestKnowledgeTreeController extends JerseyTest {
 
 	@Override
 	protected Application configure() {
-		return new ResourceConfig(KnowledgeTreeController.class,
-				UserController.class, KnowledgeNodeController.class,
-				TemplateController.class, KnowledgeDirectoryController.class,
-				KnowledgeNodeLinkController.class,
-				KnowledgeSubnodeController.class);
+		return new ResourceConfig(TreeController.class,
+				UserController.class, NodeController.class,
+				TemplateController.class, DirectoryController.class,
+				NodeLinkController.class,
+				SubnodeController.class);
 	}
 
 	/*

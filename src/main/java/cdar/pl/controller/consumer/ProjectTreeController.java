@@ -12,9 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.entity.UserRole;
 import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;

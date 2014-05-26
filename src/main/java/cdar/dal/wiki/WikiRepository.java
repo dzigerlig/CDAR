@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.wikipedia.Wiki;
 
-import cdar.PropertyHelper;
 import cdar.dal.exceptions.WikiLoginException;
+import cdar.dal.helpers.PropertyHelper;
 
 public class WikiRepository {
 	private static Map<String, Wiki> connectionMap = new HashMap<String, Wiki>();

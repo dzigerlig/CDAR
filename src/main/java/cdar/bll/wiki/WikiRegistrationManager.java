@@ -19,8 +19,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import cdar.PropertyHelper;
 import cdar.dal.exceptions.WikiCreateUserException;
+import cdar.dal.helpers.PropertyHelper;
 
 public class WikiRegistrationManager {
 	private String URL = null;

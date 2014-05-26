@@ -10,8 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.UserRole;
 import cdar.bll.entity.Directory;
+import cdar.bll.entity.UserRole;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;

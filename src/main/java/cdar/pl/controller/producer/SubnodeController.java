@@ -30,7 +30,7 @@ import cdar.dal.producer.NodeRepository;
 import cdar.pl.controller.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
-public class KnowledgeSubnodeController {
+public class SubnodeController {
 	private final boolean ISPRODUCER = true;
 	private LockingManager lm = new LockingManager();
 	private SubnodeManager sm = new SubnodeManager();
