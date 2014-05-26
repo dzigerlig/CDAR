@@ -1,4 +1,4 @@
-var myDragDrop = (function () {
+var CDARDragDrop = (function () {
     var DIRECTORY = 'directory';
     var NODE = 'node';
     var movedNode = null;
@@ -43,7 +43,7 @@ var myDragDrop = (function () {
                     id = id.replace(DIRECTORY, "");
                     scope.dropNode(data.event, id);
                 }
-                myDragDrop.setMovedNode(null);
+                CDARDragDrop.setMovedNode(null);
             }
         });
 

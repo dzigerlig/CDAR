@@ -15,7 +15,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	setReload(true);							 
 	$scope.isProducer = false;
 	 $scope.modal = $modal;
-	myJsPlumb.initialize();
+	CDARJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     $scope.DescriptionService = DescriptionService;
@@ -82,7 +82,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     id1: $routeParams.treeId
                 },
                 function (resNodes) {
-                    myJsTree.directoryDataToArray(resDirectory,
+                    CDARJsTree.directoryDataToArray(resDirectory,
                         resNodes);
 					$scope.drillDownNode(0);
                 }, function(error) {
@@ -132,7 +132,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             treeId : $routeParams.treeId,
             directoryId : did
         }, function(response) {
-            myJsTree.drawNewNode(response);
+            CDARJsTree.drawNewNode(response);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
@@ -155,7 +155,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 directoryId : 0
             },
             function(response) {
-                myJsTree.prepareForSetId(node,
+                CDARJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
             	UserService.checkResponseUnauthorized(error);
@@ -177,7 +177,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : nodeId
         }, function(response) {
         	$('#jstree').jstree(true).delete_node('directorynode'+nodeId);
-            myJsPlumb.removeNode($('#node'+nodeId));
+            CDARJsPlumb.removeNode($('#node'+nodeId));
             noty({
                 type : 'success',
                 text : DescriptionService.getNodeDescription() + ' deleted successfully',
@@ -201,7 +201,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id1 : $routeParams.treeId,
             id2 : nodeId
         }, function(node) {
-            myDragDrop.setMovedNode(node);
+            CDARDragDrop.setMovedNode(node);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
             noty({
@@ -221,7 +221,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : nodeId,
             dynamicTreeFlag : 1
         }, function(response) {
-            myJsPlumb.addHTMLNode(response, e);
+            CDARJsPlumb.addHTMLNode(response, e);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
@@ -243,7 +243,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             id : nodeId,
             dynamicTreeFlag : 0
         }, function(response) {
-            myJsPlumb.removeNode($('#node' + nodeId));
+            CDARJsPlumb.removeNode($('#node' + nodeId));
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
@@ -266,7 +266,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             title : data.text,
             directoryId : did
         }, function(response) {
-            myJsPlumb.renameNode(id, data.text);
+            CDARJsPlumb.renameNode(id, data.text);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
         	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
@@ -312,7 +312,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 targetId : targetId
             },
             function(response) {
-                myJsPlumb.setLinkId(connection,
+                CDARJsPlumb.setLinkId(connection,
                     response.id);
             }, function(error) {
             	UserService.checkResponseUnauthorized(error);
@@ -333,7 +333,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, {
             id : linkId
         }, function(response) {
-			myJsPlumb.removeLink('link'+linkId);
+			CDARJsPlumb.removeLink('link'+linkId);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
@@ -354,7 +354,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             treeId : $routeParams.treeId,
             parentId : parentid
         }, function(response) {
-            myJsTree.drawNewDirectory(response);
+            CDARJsTree.drawNewDirectory(response);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
@@ -377,7 +377,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                 parentid : 0
             },
             function(response) {
-                myJsTree.prepareForSetId(node,
+                CDARJsTree.prepareForSetId(node,
                     response.id);
             }, function(error) {
             	UserService.checkResponseUnauthorized(error);
@@ -508,7 +508,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id2 : nodeid
 		}, function(resSubnodes) {
-			myJsPlumb.drawExistingNodes(resNodes,
+			CDARJsPlumb.drawExistingNodes(resNodes,
 					resSubnodes);
 			$scope.drillUpLink(nodeid, resSubnodes);
 		}, function(error) {
@@ -527,7 +527,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id2 : nodeid
 		}, function(resSubnodes) {
-			myJsPlumb.drawExistingNodes(resNodes,
+			CDARJsPlumb.drawExistingNodes(resNodes,
 					resSubnodes);
 			$scope.drillDownLink(nodeid, resSubnodes);
 		}, function(error) {
@@ -546,7 +546,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id3 : nodeid
 		}, function(resLinks) {
-			myJsPlumb.makeNodeHierarchy(resLinks,
+			CDARJsPlumb.makeNodeHierarchy(resLinks,
 					resSubnodes);
 			w_launch();
 		}, function(error) {
@@ -565,7 +565,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id1 : $routeParams.treeId,
 			id3 : nodeid
 		}, function(resLinks) {
-			myJsPlumb.makeNodeHierarchy(resLinks,
+			CDARJsPlumb.makeNodeHierarchy(resLinks,
 					resSubnodes);
 			w_launch();
 		}, function(error) {
@@ -850,7 +850,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			id2 : identity
 		}, function(response) {
 			$scope.subnodes = response;
-			myJsPlumb.updateSubnodesOfNode(response,
+			CDARJsPlumb.updateSubnodesOfNode(response,
 					identity, changes);
 		}, function(error) {
 			UserService.checkResponseUnauthorized(error);
@@ -985,7 +985,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.updateNodeStatus = function(status) {
 		var oldStatus = $scope.selectedNode.status;
 		$scope.selectedNode.status = status;
-		myJsPlumb.setStatusImage($scope.selectedNode);
+		CDARJsPlumb.setStatusImage($scope.selectedNode);
 		TreeService.updateNode({entity1:'ptrees',
 			id1 : $scope.projecttree.id,
 			id2 : $scope.selectedNode.id}, $scope.selectedNode, function(response) {

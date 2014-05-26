@@ -1,4 +1,4 @@
-var myJsPlumb = (function() {
+var CDARJsPlumb = (function() {
 
 	var lastConnectionID = -1;
 	var scope;
@@ -226,7 +226,7 @@ var myJsPlumb = (function() {
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
 			if (!isInitialized) {
-				myJsPlumb.setLinkId(info.connection, info.connection
+				CDARJsPlumb.setLinkId(info.connection, info.connection
 						.getParameter("id"));
 				bindClickConnection(info);
 			} else {

@@ -1,4 +1,4 @@
-var myJsTree = (function () {
+var CDARJsTree = (function () {
     var DIRECTORY = 'directory';
     var NODE = 'node';
     var scope = angular.element(document.getElementById("wrapper")).scope();
