@@ -74,7 +74,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><strong>Wiki Entry</strong>
+						<td><strong>Wiki Page</strong>
 						<td>
 							${ tree.getNodeWikiEntryHtml(node.getId()) }
 						</td>
