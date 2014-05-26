@@ -21,6 +21,14 @@ public class CdarDescriptions {
 		setWikiUrl(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("MEDIAWIKI_PAGEURL"));
 		setExpandedLevel(propertyHelper.getProperty("EXPANDING_LEVEL"));
 	}
+
+	private void setWikiUrl(String domain, String page) {
+		if (domain.contains("http://")) {
+			this.wikiUrl = String.format("%s/%s/", domain, page);
+		} else {
+			this.wikiUrl = String.format("http://%s/%s/", domain, page);
+		}
+	}
 	
 	public String getDirectoryDescription() {
 		return directoryDescription;
@@ -50,13 +58,6 @@ public class CdarDescriptions {
 		return wikiUrl;
 	}
 
-	public void setWikiUrl(String domain, String page) {
-		if (domain.contains("http://")) {
-			this.wikiUrl = String.format("%s/%s/", domain, page);
-		} else {
-			this.wikiUrl = String.format("http://%s/%s/", domain, page);
-		}
-	}
 
 	public String getExpandedLevel() {
 		return expandedLevel;

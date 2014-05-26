@@ -13,20 +13,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
-import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.Subnode;
-import cdar.bll.entity.User;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
-import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
-import cdar.dal.producer.NodeRepository;
 import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")

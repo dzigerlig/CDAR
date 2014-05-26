@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.Directory;
-import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;

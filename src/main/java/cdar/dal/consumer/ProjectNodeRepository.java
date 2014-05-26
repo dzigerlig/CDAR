@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
@@ -375,7 +374,7 @@ public class ProjectNodeRepository {
 
 	}
 
-	public ProjectNode getMinNode(int treeId) throws EntityException,
+	private ProjectNode getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
 		final String sql = String
 				.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, PNODE.INHERITEDTREEID, MAPPING.PDID  FROM %S AS PNODE, %s AS MAPPING WHERE PNODE.ID = (SELECT MIN(ID) FROM %s AS INNERNODE WHERE INNERNODE.DYNAMICTREEFLAG = 1 AND INNERNODE.KPTID = ?) AND PNODE.ID = MAPPING.KPNID",

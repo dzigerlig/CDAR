@@ -10,15 +10,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.internal.util.PropertiesHelper;
-
 import cdar.bll.entity.Node;
 import cdar.bll.entity.WikiEntry;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiManager;
-import cdar.dal.helpers.PropertyHelper;
 import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/nodes")

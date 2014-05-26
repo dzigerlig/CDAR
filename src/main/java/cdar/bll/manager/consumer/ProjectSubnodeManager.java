@@ -16,11 +16,9 @@ import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
-import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
 
 public class ProjectSubnodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -49,7 +47,7 @@ public class ProjectSubnodeManager {
 		return projectSubnode;
 	}
 
-	public int getNextSubnodePosition(int nodeId)
+	private int getNextSubnodePosition(int nodeId)
 			throws UnknownProjectNodeLinkException, EntityException {
 		int position = 0;
 
@@ -141,37 +139,6 @@ public class ProjectSubnodeManager {
 								.getPosition() + 1);
 						psr.updateSubnode(otherProjectSubnode);
 					}
-				}
-			}
-		}
-	}
-
-	public int getNextProjectSubnodePosition(int projectNodeId)
-			throws UnknownProjectNodeLinkException, EntityException {
-		int position = 0;
-
-		for (ProjectSubnode projectSubnode : getProjectSubnodesFromProjectNode(projectNodeId)) {
-			if (projectSubnode.getPosition() > position) {
-				position = projectSubnode.getPosition();
-			}
-		}
-
-		return ++position;
-	}
-
-	public void changeProjectSubnodePosition(int projectNodeId, int id,
-			int position) throws UnknownProjectNodeLinkException,
-			EntityException {
-		for (ProjectSubnode projectSubnode : psr
-				.getSubnodes(projectNodeId)) {
-			if (projectSubnode.getId() == id) {
-				projectSubnode.setPosition(position);
-				psr.updateSubnode(projectSubnode);
-			} else {
-				if (projectSubnode.getPosition() >= position) {
-					projectSubnode
-							.setPosition(projectSubnode.getPosition() + 1);
-					psr.updateSubnode(projectSubnode);
 				}
 			}
 		}

@@ -3,7 +3,6 @@ package cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
-import cdar.bll.entity.Node;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.bll.wiki.MediaWikiManager;
@@ -17,9 +16,7 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.helpers.PropertyHelper;
-import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
 
 public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
@@ -155,7 +152,7 @@ public class ProjectNodeManager {
 		return pnr.updateNode(updatedProjectNode);
 	}
 
-	public ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
+	private ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
 		return pnr.getRoot(treeId);
 	}
 }

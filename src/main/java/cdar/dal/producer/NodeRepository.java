@@ -352,7 +352,7 @@ public class NodeRepository {
 		}
 	}
 
-	public Node getMinNode(int treeId) throws EntityException,
+	private Node getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
 
 		final String sql = String

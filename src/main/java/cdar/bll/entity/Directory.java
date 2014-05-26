@@ -1,7 +1,5 @@
 package cdar.bll.entity;
 
-import java.util.Date;
-
 public class Directory extends BasicEntity implements Comparable<Directory> {
 	private int parentId;
 	private int treeId;
@@ -10,14 +8,6 @@ public class Directory extends BasicEntity implements Comparable<Directory> {
 
 	public Directory() {
 		super();
-	}
-
-	public Directory(int id, Date creationTime, Date lastModificationTime,
-			int parentId, int treeId, String title) {
-		super(id, creationTime, lastModificationTime);
-		setParentId(parentId);
-		setTreeId(treeId);
-		setTitle(title);
 	}
 
 	public int getParentId() {

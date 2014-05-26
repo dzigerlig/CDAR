@@ -10,12 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.entity.Node;
 import cdar.bll.entity.NodeLink;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeLinkManager;
-import cdar.dal.producer.NodeRepository;
 import cdar.pl.helpers.StatusHelper;
 
 @Path("ktrees/{ktreeid}/links")

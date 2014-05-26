@@ -90,7 +90,7 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
-	public ProjectTreeSimple getProjectTreeSimple(String xmlString) {
+	private ProjectTreeSimple getProjectTreeSimple(String xmlString) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ProjectTreeSimple.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -136,7 +136,7 @@ public class ConsumerImportExportManager {
 	}
 
 
-	public void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
+	private void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		CommentManager cm = new CommentManager();

@@ -16,7 +16,6 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.producer.NodeLinkRepository;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
 
 public class NodeLinkManager {
 	private NodeLinkRepository nlr = new NodeLinkRepository();

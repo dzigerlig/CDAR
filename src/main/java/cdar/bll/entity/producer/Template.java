@@ -2,8 +2,6 @@ package cdar.bll.entity.producer;
 
 import info.bliki.wiki.model.WikiModel;
 
-import java.util.Date;
-
 import cdar.bll.entity.BasicEntity;
 
 public class Template extends BasicEntity {
@@ -17,20 +15,6 @@ public class Template extends BasicEntity {
 	
 	public Template() {
 		
-	}
-
-	public Template(int id, Date creationTime, Date lastModificationTime,
-			String title, String templatetext, int treeId, boolean isDefault, boolean decisionMade) {
-		super(id, creationTime, lastModificationTime);
-		setTreeId(treeId);
-		setTitle(title);
-		setTemplatetext(templatetext);
-		setIsDefault(isDefault);
-		setDecisionMade(decisionMade);
-	}
-
-	public Template(int id) {
-		setId(id);
 	}
 
 	public int getTreeId() {

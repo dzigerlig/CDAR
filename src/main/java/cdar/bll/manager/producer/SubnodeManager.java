@@ -16,7 +16,6 @@ import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.producer.SubnodeRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
 
 public class SubnodeManager {
 	private SubnodeRepository sr = new SubnodeRepository();
@@ -45,7 +44,7 @@ public class SubnodeManager {
 		return subnode;
 	}
 	
-	public int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException {
+	private int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException {
 		int position = 0;
 
 		for (Subnode subnode : getSubnodesFromNode(nodeId)) {

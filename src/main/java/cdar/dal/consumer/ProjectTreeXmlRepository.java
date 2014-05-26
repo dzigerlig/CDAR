@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.Tree;
 import cdar.bll.entity.TreeXml;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownEntityException;
-import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.helpers.DBConnection;

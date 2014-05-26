@@ -10,14 +10,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cdar.bll.entity.Subnode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownProjectNodeException;
 import cdar.dal.exceptions.UnknownProjectNodeLinkException;
 import cdar.dal.exceptions.UnknownProjectSubnodeException;
-import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
@@ -258,11 +256,5 @@ public class ProjectSubnodeRepository {
 			System.out.println(e.getMessage());
 		}
 		return subnodes;
-	}
-
-	public List<ProjectSubnode> getSubnodesByTree(int treeId)
-			throws UnknownTreeException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -4,9 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cdar.bll.entity.Node;
-import cdar.bll.wiki.MediaWikiCreationModel;
 import cdar.bll.wiki.MediaWikiManager;
-import cdar.bll.wiki.WikiEntryConcurrentHelper;
 import cdar.dal.exceptions.CreationException;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -16,7 +14,6 @@ import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
 
 public class NodeManager {
 	private NodeRepository nr = new NodeRepository();
@@ -72,37 +69,12 @@ public class NodeManager {
 		return node;
 	}
 
-	public Node dropNode(int nodeId) throws UnknownNodeException, EntityException {
-		Node node = getNode(nodeId);
-		node.setDynamicTreeFlag(1);
-		return nr.updateNode(node);
-	}
-
 	public Node renameNode(Node node) throws UnknownNodeException,
 			EntityException {
 		Node renamedNode = nr.getNode(node.getId());
 		renamedNode.setTitle(node.getTitle());
 		renamedNode.setDirectoryId(node.getDirectoryId());
 		return nr.updateNode(renamedNode);
-	}
-
-	public Node undropNode(int nodeId) throws UnknownNodeException, EntityException {
-		Node node = getNode(nodeId);
-		node.setDynamicTreeFlag(0);
-		return nr.updateNode(node);
-	}
-
-	public Node moveNode(Node node) throws UnknownNodeException,
-			EntityException {
-		Node movedNode = getNode(node.getId());
-		movedNode.setDirectoryId(node.getDirectoryId());
-		return nr.updateNode(movedNode);
-
-		// TODO
-		// kpdc.moveKnowledgeNode(nodemapping.getKnid(), nodemapping.getDid());
-		// KnowledgeNodeDao node =
-		// kpdc.getKnowledgeNodeById(nodemapping.getKnid());
-		// return new Node(node);
 	}
 
 	public Node updateNode(Node node) throws UnknownNodeException,
@@ -177,7 +149,7 @@ public class NodeManager {
 		return nodes;
 	}
 
-	public Node getRoot(int treeId) throws EntityException,
+	private Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 		return nr.getRoot(treeId);
 	}

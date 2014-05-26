@@ -1,7 +1,5 @@
 package cdar.bll.entity;
 
-import java.util.Date;
-
 public class User extends BasicEntity {
 	private String username;
 	private String password;
@@ -11,18 +9,6 @@ public class User extends BasicEntity {
 
 	public User() {
 
-	}
-
-	public User(int id, Date creationTime, Date lastModificationTime,
-			String username, String password, String accessToken) {
-		super(id, creationTime, lastModificationTime);
-		setUsername(username);
-		setPassword(password);
-		setAccesstoken(accessToken);
-	}
-
-	public User(int id) {
-		super(id);
 	}
 
 	public User(String username, String password) {

@@ -1,7 +1,5 @@
 package cdar.bll.entity;
 
-import java.util.Date;
-
 public class TreeXml extends BasicEntity {
 	private int userId;
 	private int treeId;
@@ -11,13 +9,6 @@ public class TreeXml extends BasicEntity {
 	
 	public TreeXml() {
 		super();
-	}
-	
-	public TreeXml(int id, Date creationDate, Date lastModification, int userId, int treeId, String xmlString) {
-		super(id, creationDate, lastModification);
-		setUserId(userId);
-		setTreeId(treeId);
-		setXmlString(xmlString);
 	}
 
 	public int getUserId() {

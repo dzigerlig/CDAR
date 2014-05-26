@@ -50,12 +50,6 @@ public class DirectoryManager {
 		return directoryRepository.createDirectory(directory);
 	}
 
-	public Directory renameDirectory(Directory directory) throws UnknownDirectoryException, EntityException {
-		Directory updatedDirectory = getDirectory(directory.getId());
-		updatedDirectory.setTitle(directory.getTitle());
-		return directoryRepository.updateDirectory(updatedDirectory);
-	}
-	
 	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException, EntityException {
 		Directory updatedDirectory = directoryRepository.getDirectory(directory.getId());
 		if (directory.getParentId()!=0) {
@@ -65,11 +59,5 @@ public class DirectoryManager {
 			updatedDirectory.setTitle(directory.getTitle());
 		}
 		return directoryRepository.updateDirectory(updatedDirectory);
-	}
-
-	public Directory moveDirectory(Directory directory) throws UnknownDirectoryException, EntityException {
-		Directory movedDirectory = directoryRepository.getDirectory(directory.getId());
-		movedDirectory.setParentId(directory.getParentId());
-		return directoryRepository.updateDirectory(movedDirectory);
 	}
 }

@@ -14,16 +14,13 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.ChangesWrapper;
 import cdar.bll.entity.NodeLink;
-import cdar.bll.entity.Subnode;
 import cdar.bll.entity.WikiEntry;
-import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.wiki.MediaWikiManager;
-import cdar.dal.consumer.ProjectNodeRepository;
 import cdar.pl.helpers.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")

@@ -1,7 +1,5 @@
 package cdar.bll.entity;
 
-import java.util.Date;
-
 public class NodeLink extends BasicEntity {
 	private int sourceId;
 	private int targetId;
@@ -10,15 +8,6 @@ public class NodeLink extends BasicEntity {
 	
 	public NodeLink() {
 		super();
-	}
-	
-	public NodeLink(int id, Date creationDate, Date lastModification,
-			int sourceId, int targetId, int subnodeId, int treeId) {
-		super(id, creationDate, lastModification);
-		setSourceId(sourceId);
-		setTargetId(targetId);
-		setSubnodeId(subnodeId);
-		setTreeId(treeId);
 	}
 	
 	public int getSourceId() {

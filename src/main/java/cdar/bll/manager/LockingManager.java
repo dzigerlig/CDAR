@@ -5,8 +5,6 @@ import java.util.Map;
 
 import cdar.bll.entity.Locking;
 import cdar.bll.exceptions.LockingException;
-import cdar.dal.exceptions.EntityException;
-import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
 
 public class LockingManager {

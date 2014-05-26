@@ -11,9 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import cdar.bll.entity.Tree;
 import cdar.bll.entity.TreeXml;
-import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.manager.importexport.ConsumerImportExportManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;

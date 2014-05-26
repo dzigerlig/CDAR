@@ -88,7 +88,7 @@ public class ProducerImportExportManager {
 		return null;
 	}
 	
-	public TreeSimple getTreeSimple(String xmlString) {
+	private TreeSimple getTreeSimple(String xmlString) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(TreeSimple.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -134,7 +134,7 @@ public class ProducerImportExportManager {
 	}
 
 
-	public void cleanTree(int treeId) {
+	private void cleanTree(int treeId) {
 		NodeRepository nr = new NodeRepository();
 		DirectoryRepository dr = new DirectoryRepository();
 		TemplateRepository tr = new TemplateRepository();

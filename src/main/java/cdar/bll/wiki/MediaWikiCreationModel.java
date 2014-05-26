@@ -10,7 +10,6 @@ import org.wikipedia.Wiki;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.WikiLoginException;
-import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.wiki.WikiRepository;
 
 public class MediaWikiCreationModel extends Thread {
@@ -44,7 +43,7 @@ public class MediaWikiCreationModel extends Thread {
 		return wikiHelper;
 	}
 
-	public void createNewWikiEntry(String username, String password) throws WikiLoginException {
+	private void createNewWikiEntry(String username, String password) throws WikiLoginException {
 		WikiRepository wikiConnection = new WikiRepository();
 		Wiki wiki = wikiConnection.getConnection(username, password);
 		try {
