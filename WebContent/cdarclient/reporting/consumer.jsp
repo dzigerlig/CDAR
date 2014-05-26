@@ -48,27 +48,27 @@
 					</tr>
 				</thead>
 					<tr>
-						<td><strong>predecessor</strong></td>
+						<td><strong>Predecessor</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(true, node.getId())}" var="nodeLink">
 									<li><a href="#${tree.getNode(nodeLink.getSourceId()).getWikititle()}">${tree.getNode(nodeLink.getSourceId()).getTitle()}</a> <c:if test="${nodeLink.getSubnodeId()!=0}">(from ${tree.getCdarDescriptions().getSubnodeDescription()}: <a href="#${tree.getSubnode(nodeLink.getSubnodeId()).getWikititle()}">${tree.getSubnode(nodeLink.getSubnodeId()).getTitle()}</a>)</c:if></li>
 								</c:forEach>
 								<c:if test="${tree.getNodeLinks(true, node.getId()).size()==0}">
-									<li>no predecessor</li>
+									<li>No Predecessor</li>
 								</c:if>
 							</ul>
 						</td>
 					</tr>
 					<tr>
-						<td><strong>successor</strong></td>
+						<td><strong>Successor</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(false, node.getId())}" var="nodeLink">
 									<li><a href="#${tree.getNode(nodeLink.getTargetId()).getWikititle()}">${tree.getNode(nodeLink.getTargetId()).getTitle()}</a> <c:if test="${nodeLink.getSubnodeId()!=0}">(by ${tree.getCdarDescriptions().getSubnodeDescription()}: <a href="#${tree.getSubnode(nodeLink.getSubnodeId()).getWikititle()}">${tree.getSubnode(nodeLink.getSubnodeId()).getTitle()}</a>)</c:if>
 								</c:forEach>
 								<c:if test="${tree.getNodeLinks(false, node.getId()).size()==0}">
-									<li>no successor</li>
+									<li>No Successor</li>
 								</c:if>
 							</ul>
 						</td>
