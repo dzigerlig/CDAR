@@ -14,7 +14,7 @@ import cdar.bll.entity.consumer.Comment;
 import cdar.bll.exceptions.LockingException;
 import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.CommentManager;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/comments")
 public class CommentController {

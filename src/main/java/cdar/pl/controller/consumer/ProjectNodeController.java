@@ -18,7 +18,7 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.helpers.PropertyHelper;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes")
 public class ProjectNodeController {

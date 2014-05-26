@@ -16,7 +16,7 @@ import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.NodeRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 public class NodeManager {
 	private NodeRepository nr = new NodeRepository();

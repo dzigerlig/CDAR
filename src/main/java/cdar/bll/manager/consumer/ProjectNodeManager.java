@@ -19,7 +19,7 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.user.UserRepository;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 public class ProjectNodeManager {
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();

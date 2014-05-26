@@ -24,7 +24,7 @@ import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.consumer.ProjectNodeRepository;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
 public class ProjectSubnodeController {

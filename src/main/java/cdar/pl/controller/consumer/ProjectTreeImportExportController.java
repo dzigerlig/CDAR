@@ -17,7 +17,7 @@ import cdar.bll.entity.consumer.CreationTree;
 import cdar.bll.manager.importexport.ConsumerImportExportManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
-import cdar.pl.helpers.StatusHelper;
+import cdar.pl.controller.StatusHelper;
 
 @Path("ptrees/{treeid}/exports")
 public class ProjectTreeImportExportController {
