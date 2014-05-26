@@ -7,7 +7,6 @@ app
 							return $resource(
 									'../webapi/:entity1/:id1/:entity2/:id2/:entity3/:id3/:action',
 									{}, {
-										// TREES
 										'getTrees' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -55,7 +54,6 @@ app
 												entity2 : 'users',
 											}
 										},
-										// SIMPLEEXPORT
 										'getExports' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -94,8 +92,6 @@ app
 												action : 'delete'
 											}
 										},
-
-										// DIRECTORIES
 										'getDirectories' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -134,7 +130,6 @@ app
 												action : 'delete'
 											}
 										},
-										// NODES
 										'getNodes' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -215,7 +210,6 @@ app
 												action : 'drilldown'
 											}
 										},
-										// SUBNODES
 										'getSubnodes' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -314,7 +308,6 @@ app
 												action : 'rename'
 											}
 										},
-										// LINKS
 										'getLinks' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -366,7 +359,6 @@ app
 												action : 'drillup'
 											}
 										},
-										// Templates
 										'getTemplates' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',
@@ -406,7 +398,6 @@ app
 												action : 'delete'
 											}
 										},
-										// Comments
 										'getComments' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',

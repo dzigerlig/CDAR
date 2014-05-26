@@ -12,7 +12,6 @@ var myJsPlumb = (function() {
 
 	// private Methods
 	function buildContent() {
-        //jsPlumb.reset(); b������se
 		jsPlumb.deleteEveryEndpoint();
 		$("#jsplumb-container").empty();
 		var container = $("#jsplumb-container");
@@ -163,7 +162,6 @@ var myJsPlumb = (function() {
 					'#' + newState[0].id + ' .title').text());
 
 			resetSelectDesign();
-			// $(newState).css('background-color', '#beebff');
 			newState.addClass("selectednode");
 
 			var connections = getConnections(newState);
@@ -184,7 +182,6 @@ var myJsPlumb = (function() {
 			if (selectedElement.indexOf(NODE) > -1) {
 				if ($("#" + selectedElement).size() !== 0) {
 					var newState = $('#' + selectedElement);
-					// newState.css('background-color', 'inherit');
 					newState.removeClass("selectednode");
 					var connections = getConnections(newState);
 					jQuery.each(connections, function(object) {
@@ -271,11 +268,7 @@ var myJsPlumb = (function() {
 	}
 
 	function bindClickConnection(info) {
-
 		info.connection.bind("click", function(c) {
-
-			// e.stopPropagation();
-
 			resetSelectDesign();
 			var label = info.connection.getOverlay("label").getLabel();
 
@@ -635,7 +628,6 @@ var myJsPlumb = (function() {
 									linkTitle);
 						}
 					});
-					//
 					jQuery.each(allSourceConnection,
 							function(object) {
 								if (map[this.id.replace(LINK, "")]) {

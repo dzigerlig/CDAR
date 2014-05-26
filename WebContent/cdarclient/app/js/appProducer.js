@@ -174,7 +174,6 @@ app.controller("KnowledgeTreeController",
 				 location.reload(); 
 			 } 
 			 setReload(true);							 
-			 //
 			 $scope.isProducer = true;
 			 $scope.modal = $modal;
 			 $scope.DescriptionService = DescriptionService;
@@ -219,7 +218,6 @@ app.controller("KnowledgeTreeController",
 				return false;
 			 };
 
-			 // SUBNODES //
 			$scope.subnodes = "";
 			$scope.selectedSubnode = {
 					id : 0,
@@ -240,7 +238,6 @@ app.controller("KnowledgeTreeController",
 				title : "WRITE"
 		} ];
 
-			// TREE TITLE
 			$scope.saveKnowledgeTreeTitle = function(title) {
 				if (title.length > 45) {
 					noty({
@@ -319,8 +316,6 @@ app.controller("KnowledgeTreeController",
 						});
 				};
 				
-				// END SUBNODES //
-	
 				$scope.addNewSubnode = function() {
 					if (this.newSubnodeName.length > 45) {
 									noty({
@@ -672,50 +667,6 @@ app.controller("KnowledgeTreeController",
 									timeout : 1500
 								});
 							});
-/*
-							$scope.getSubnodes = function(resNodes) {
-								TreeService
-										.getSubnodesFromTree(
-												{
-													entity1 : 'ktrees',
-													id1 : $routeParams.treeId
-												},
-												function(resSubnodes) {
-													myJsPlumb
-															.drawExistingNodes(
-																	resNodes,
-																	resSubnodes);
-													$scope
-															.getLinks(resSubnodes);
-												},
-												function(error) {
-													noty({
-														type : 'alert',
-														text : 'error getting '
-																+ DescriptionService
-																		.getSubnodeDescription()
-																+ 's',
-														timeout : 1500
-													});
-												});
-							};
-
-							$scope.getLinks = function(resSubnodes) {
-								TreeService.getLinks({
-									entity1 : 'ktrees',
-									id1 : $routeParams.treeId
-								}, function(response) {
-									myJsPlumb.makeNodeHierarchy(response,
-											resSubnodes);
-									w_launch();
-								}, function(error) {
-									noty({
-										type : 'alert',
-										text : 'error getting links',
-										timeout : 1500
-									});
-								});
-							};*/
 
 							$scope.updateLink = function(linkId, subnodeid) {
 								TreeService.updateLink({
@@ -747,8 +698,6 @@ app.controller("KnowledgeTreeController",
 									directoryId : did
 								}, function(response) {
 									myJsTree.drawNewNode(response);
-									// noty({type: 'success', text : 'node added
-									// successfully', timeout: 1500});
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -790,7 +739,6 @@ app.controller("KnowledgeTreeController",
 							};
 
 							$scope.deleteNode = function(nodeId) {
-								//myJsPlumb.detachNode(nodeId);
 								TreeService.deleteNode({
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId
@@ -869,7 +817,6 @@ app.controller("KnowledgeTreeController",
 									dynamicTreeFlag : 0
 								}, function(response) {
 						            myJsPlumb.removeNode($('#node' + nodeId));
-									// todo
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -893,8 +840,6 @@ app.controller("KnowledgeTreeController",
 									directoryId : did
 								}, function(response) {
 									myJsPlumb.renameNode(id, data.text);
-									// noty({type: 'success', text : 'node
-									// renamed successfully', timeout: 1500});
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 						        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
@@ -1234,11 +1179,6 @@ app.controller("KnowledgeTreeController",
 														subnode.title = data;
 														$scope
 																.getSubnodesOfNode(response);
-														// noty({type:
-														// 'success', text :
-														// 'subnode renamed
-														// successfully',
-														// timeout: 1500});
 													},
 													function(error) {
 														 UserService.checkResponseUnauthorized(error);

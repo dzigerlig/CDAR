@@ -13,7 +13,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		location.reload(); 
 	} 
 	setReload(true);							 
-	//
 	$scope.isProducer = false;
 	 $scope.modal = $modal;
 	myJsPlumb.initialize();
@@ -86,7 +85,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
                     myJsTree.directoryDataToArray(resDirectory,
                         resNodes);
 					$scope.drillDownNode(0);
-                   // $scope.getSubnodes(resNodes);
                 }, function(error) {
                 	UserService.checkResponseUnauthorized(error);
                 	noty({
@@ -246,7 +244,6 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             dynamicTreeFlag : 0
         }, function(response) {
             myJsPlumb.removeNode($('#node' + nodeId));
-            // todo
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
 			 if (!$scope.showLockingNotification(error)) {
