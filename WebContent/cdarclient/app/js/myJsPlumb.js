@@ -504,6 +504,7 @@ var myJsPlumb = (function() {
 						});
 						option.append(list);
 					}
+					
 					drillDownEvent(downtree, newState);
 					drillUpEvent(uptree, newState);
 					makeNodesDraggable(newState);
@@ -515,6 +516,8 @@ var myJsPlumb = (function() {
 					makeSource(connect, newState);
 
 					appendElements(title, connect, newState, option);
+					scope.getSubnodesOfNode(this.id);
+
 
 				}
 			});
