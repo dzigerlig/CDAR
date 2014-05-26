@@ -45,7 +45,7 @@ public class BasicEntity {
 	
 	/**
 	 * 
-	 * @return current id value
+	 * @return current id value as int
 	 */
 	public int getId() {
 		return id;
