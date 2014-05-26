@@ -15,6 +15,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	setReload(true);							 
 	//
 	$scope.isProducer = false;
+	 $scope.modal = $modal;
 	myJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
