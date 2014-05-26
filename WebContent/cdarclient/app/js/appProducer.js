@@ -177,7 +177,7 @@ app.controller("KnowledgeTreeController",
 			 $scope.isProducer = true;
 			 $scope.modal = $modal;
 			 $scope.DescriptionService = DescriptionService;
-			 myJsPlumb.initialize();
+			 CDARJsPlumb.initialize();
 			 $scope.treeId = $routeParams.treeId;
 			 $scope.UserService = UserService;
 			 $scope.knowledgetree = "";
@@ -304,7 +304,7 @@ app.controller("KnowledgeTreeController",
 						},
 						function(response) {
 							$scope.subnodes = response;
-							myJsPlumb.updateSubnodesOfNode(	response,	identity,	changes);
+							CDARJsPlumb.updateSubnodesOfNode(	response,	identity,	changes);
 						},
 						function(error) {
 							 UserService.checkResponseUnauthorized(error);
@@ -645,7 +645,7 @@ app.controller("KnowledgeTreeController",
 									entity1 : 'ktrees',
 									id1 : $routeParams.treeId
 								}, function(resNodes) {
-									myJsTree.directoryDataToArray(resDirectory,
+									CDARJsTree.directoryDataToArray(resDirectory,
 											resNodes);
 									$scope.drillDownNode(0);
 								}, function(error) {
@@ -697,7 +697,7 @@ app.controller("KnowledgeTreeController",
 									treeId : $routeParams.treeId,
 									directoryId : did
 								}, function(response) {
-									myJsTree.drawNewNode(response);
+									CDARJsTree.drawNewNode(response);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -723,7 +723,7 @@ app.controller("KnowledgeTreeController",
 													directoryId : 0
 												},
 												function(response) {
-													myJsTree.prepareForSetId(
+													CDARJsTree.prepareForSetId(
 															node, response.id);
 												},
 												function(error) {
@@ -746,7 +746,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId
 								}, function(response) {
 									$('#jstree').jstree(true).delete_node('directorynode'+nodeId);
-									myJsPlumb.removeNode($('#node'+nodeId));
+									CDARJsPlumb.removeNode($('#node'+nodeId));
 									noty({
 										type : 'success',
 										text : DescriptionService
@@ -772,7 +772,7 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id2 : nodeId
 								}, function(node) {
-									myDragDrop.setMovedNode(node);
+									CDARDragDrop.setMovedNode(node);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									noty({
@@ -794,7 +794,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId,
 									dynamicTreeFlag : 1
 								}, function(response) {
-									myJsPlumb.addHTMLNode(response, e);
+									CDARJsPlumb.addHTMLNode(response, e);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -816,7 +816,7 @@ app.controller("KnowledgeTreeController",
 									id : nodeId,
 									dynamicTreeFlag : 0
 								}, function(response) {
-						            myJsPlumb.removeNode($('#node' + nodeId));
+						            CDARJsPlumb.removeNode($('#node' + nodeId));
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -839,7 +839,7 @@ app.controller("KnowledgeTreeController",
 									title : data.text,
 									directoryId : did
 								}, function(response) {
-									myJsPlumb.renameNode(id, data.text);
+									CDARJsPlumb.renameNode(id, data.text);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 						        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
@@ -885,7 +885,7 @@ app.controller("KnowledgeTreeController",
 									targetId : targetId
 								},
 										function(response) {
-											myJsPlumb.setLinkId(connection,
+											CDARJsPlumb.setLinkId(connection,
 													response.id);
 										}, function(error) {
 											 UserService.checkResponseUnauthorized(error);
@@ -906,7 +906,7 @@ app.controller("KnowledgeTreeController",
 								}, {
 									id : linkId
 								}, function(response) {
-									myJsPlumb.removeLink('link'+linkId);
+									CDARJsPlumb.removeLink('link'+linkId);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -927,7 +927,7 @@ app.controller("KnowledgeTreeController",
 									treeId : $routeParams.treeId,
 									parentId : parentid
 								}, function(response) {
-									myJsTree.drawNewDirectory(response);
+									CDARJsTree.drawNewDirectory(response);
 								}, function(error) {
 									 UserService.checkResponseUnauthorized(error);
 									if (!$scope.showLockingNotification(error)) {
@@ -951,7 +951,7 @@ app.controller("KnowledgeTreeController",
 											parentid : 0
 										},
 										function(response) {
-											myJsTree.prepareForSetId(node, response.id);
+											CDARJsTree.prepareForSetId(node, response.id);
 										},
 										function(error) {
 											 UserService.checkResponseUnauthorized(error);
@@ -1081,7 +1081,7 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resSubnodes) {
-									myJsPlumb.drawExistingNodes(resNodes,
+									CDARJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
 									$scope.drillUpLink(nodeid, resSubnodes);
 								}, function(error) {
@@ -1100,7 +1100,7 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id2 : nodeid
 								}, function(resSubnodes) {
-									myJsPlumb.drawExistingNodes(resNodes,
+									CDARJsPlumb.drawExistingNodes(resNodes,
 											resSubnodes);
 									$scope.drillDownLink(nodeid, resSubnodes);
 								}, function(error) {
@@ -1119,7 +1119,7 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id3 : nodeid
 								}, function(resLinks) {
-									myJsPlumb.makeNodeHierarchy(resLinks,
+									CDARJsPlumb.makeNodeHierarchy(resLinks,
 											resSubnodes);
 									w_launch();
 								}, function(error) {
@@ -1138,7 +1138,7 @@ app.controller("KnowledgeTreeController",
 									id1 : $routeParams.treeId,
 									id3 : nodeid
 								}, function(resLinks) {
-									myJsPlumb.makeNodeHierarchy(resLinks,
+									CDARJsPlumb.makeNodeHierarchy(resLinks,
 											resSubnodes);
 									w_launch();
 								}, function(error) {
