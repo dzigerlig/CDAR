@@ -48,7 +48,7 @@
 					</tr>
 				</thead>
 					<tr>
-						<td><strong>forthcomes</strong></td>
+						<td><strong>parent(s)</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(true, node.getId())}" var="nodeLink">
@@ -61,7 +61,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><strong>leads to</strong></td>
+						<td><strong>child(s)</strong></td>
 						<td>
 							<ul>
 								<c:forEach items="${tree.getNodeLinks(false, node.getId())}" var="nodeLink">
