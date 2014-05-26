@@ -85,26 +85,31 @@
 							${ tree.getNodeStatus(node.getStatus()) }
 						</td>
 					</tr>
-					<tr>
-						<td><strong>Comments:</strong></td>
-						<td>
-							<table class="table table-bordered table-striped table-condensed table-hover">
-								<thead>
-									<tr>
-										<th class="col-md-2">Username</th>
-										<th class="col-md-2">Date</th>
-										<th class="col-md-8">Comment</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-									<td>username</td>
-									<td>date</td>
-									<td>comment</td>
-								</tbody>
-							</table>
-						</td>
-					</tr>
+					<c:if test="${tree.getComments(node.getId()).size()!=0}">
+						<tr>
+							<td><strong>Comments:</strong></td>
+							<td>
+								<table class="table table-bordered table-striped table-condensed table-hover">
+									<thead>
+										<tr>
+											<th class="col-md-2">Username</th>
+											<th class="col-md-3">Date</th>
+											<th class="col-md-7">Comment</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${tree.getComments(node.getId())}" var="comment">
+											<tr>
+												<td>${comment.getUsername()}</td>
+												<td>${comment.getCreationTime()}</td>
+												<td>${comment.getComment()}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</c:if>
 				<tbody>
 				
 				</tbody>

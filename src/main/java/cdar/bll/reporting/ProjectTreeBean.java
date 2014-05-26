@@ -5,9 +5,11 @@ import java.util.Set;
 
 import cdar.bll.entity.NodeLink;
 import cdar.bll.entity.UserRole;
+import cdar.bll.entity.consumer.Comment;
 import cdar.bll.entity.consumer.ProjectNode;
 import cdar.bll.entity.consumer.ProjectSubnode;
 import cdar.bll.manager.TreeManager;
+import cdar.bll.manager.consumer.CommentManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
@@ -29,6 +31,7 @@ public class ProjectTreeBean extends ReportingBean {
 	private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 	private MediaWikiManager mwm = new MediaWikiManager();
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
+	private CommentManager cm = new CommentManager();
 	
 	public String getTreeTitle() throws UnknownProjectTreeException, EntityException, UnknownTreeException {
 		return ptm.getTree(getTreeId()).getTitle();
@@ -86,5 +89,15 @@ public class ProjectTreeBean extends ReportingBean {
 			case 5: return "closed";
 			default: return "open";
 		}
+	}
+	
+	public Set<Comment> getComments(int nodeId) throws EntityException {
+		Set<Comment> comments = new HashSet<Comment>();
+		
+		for (Comment comment : cm.getComments(nodeId)) {
+			comments.add(comment);
+		}
+		
+		return comments;
 	}
 }
