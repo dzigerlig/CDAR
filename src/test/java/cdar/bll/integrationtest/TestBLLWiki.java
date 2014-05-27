@@ -2,6 +2,7 @@ package cdar.bll.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 
+import org.glassfish.jersey.internal.util.PropertiesHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,18 +11,20 @@ import cdar.bll.entity.Directory;
 import cdar.bll.entity.Node;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
+import cdar.bll.entity.UserRole;
+import cdar.bll.manager.DirectoryManager;
+import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.UserManager;
-import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeManager;
-import cdar.bll.manager.producer.TreeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.dal.exceptions.UnknownUserException;
+import cdar.dal.helpers.PropertyHelper;
 
 public class TestBLLWiki {
 	private UserManager um = new UserManager();
-	private TreeManager tm = new TreeManager();
+	private TreeManager tm = new TreeManager(UserRole.PRODUCER);
 	private NodeManager nm = new NodeManager();
-	private DirectoryManager dm = new DirectoryManager();
+	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 	
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
@@ -51,6 +54,8 @@ public class TestBLLWiki {
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(did);
 		node = nm.addNode(um.getUser(username).getId(), node);
-		assertEquals("== CDAR ==", mwm.getKnowledgeNodeWikiEntry(node.getId()).getWikiContentPlain());
+		PropertyHelper helper = new PropertyHelper();
+		String content = helper.getProperty("NODE_DESCRIPTION").toUpperCase();
+		assertEquals("== "+content+" ==", mwm.getKnowledgeNodeWikiEntry(node.getId()).getWikiContentPlain());
 	}
 }

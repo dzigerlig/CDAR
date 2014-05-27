@@ -241,7 +241,6 @@ var CDARJsPlumb = (function() {
 	function bindDropConnection(info)
 	{
 		jsPlumb.bind("beforeDrop", function(connection) {
-			console.log("beforeDrop");
 			if(!isInitialized);
 			else if(newLinkFired)
 				{newLinkFired=false;}

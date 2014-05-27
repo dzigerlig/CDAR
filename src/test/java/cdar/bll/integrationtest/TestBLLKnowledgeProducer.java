@@ -13,14 +13,15 @@ import cdar.bll.entity.Subnode;
 import cdar.bll.entity.Tree;
 import cdar.bll.entity.User;
 import cdar.bll.entity.TreeXml;
+import cdar.bll.entity.UserRole;
 import cdar.bll.entity.producer.Template;
+import cdar.bll.manager.DirectoryManager;
+import cdar.bll.manager.TreeManager;
 import cdar.bll.manager.UserManager;
-import cdar.bll.manager.producer.DirectoryManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.bll.manager.producer.TemplateManager;
-import cdar.bll.manager.producer.TreeManager;
 import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownDirectoryException;
 import cdar.dal.exceptions.UnknownNodeException;
@@ -32,34 +33,37 @@ import cdar.dal.exceptions.UnknownUserException;
 
 public class TestBLLKnowledgeProducer {
 	private UserManager um = new UserManager();
-	private TreeManager tm = new TreeManager();
+	private TreeManager tm = new TreeManager(UserRole.PRODUCER);
 	
-	private final String username = "BLLUsername";
-	private final String password = "BLLPassword";
+	private final String USERNAME = "BLLUsername";
+	private final String PASSWORD = "BLLPassword";
+	private int UID;
 	
 	private final int unknownId = -13;
 	
 	@Before
 	public void createUser() throws Exception {
-		um.createUser(new User(username, password), false);
+		User user = um.createUser(new User(USERNAME, PASSWORD), false);
+		UID=user.getId();
+		
 	}
 	
 	@After
 	public void deleteUser() throws UnknownUserException, Exception {
-		um.deleteUser(um.getUser(username).getId());
+		um.deleteUser(um.getUser(USERNAME).getId());
 	}
 
 	@Test
 	public void testTree() throws Exception {
 		final String treeName = "MyTreeName";
-		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
+		int treeCount = tm.getTrees(um.getUser(USERNAME).getId()).size();
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
-		tree = tm.addTree(um.getUser(username).getId(), tree);
-		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
+		assertEquals(treeCount+1, tm.getTrees(um.getUser(USERNAME).getId()).size());
 		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
 		tm.deleteTree(tree.getId());
-		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
+		assertEquals(treeCount, tm.getTrees(um.getUser(USERNAME).getId()).size());
 	}
 	
 	@Test
@@ -91,17 +95,17 @@ public class TestBLLKnowledgeProducer {
 	public void testTreeUpdate() throws Exception {
 		final String treeName = "MyTreeName";
 		final String newTreeName = "My new tree";
-		int treeCount = tm.getTrees(um.getUser(username).getId()).size();
+		int treeCount = tm.getTrees(um.getUser(USERNAME).getId()).size();
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
-		tree = tm.addTree(um.getUser(username).getId(), tree);
-		assertEquals(treeCount+1, tm.getTrees(um.getUser(username).getId()).size());
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
+		assertEquals(treeCount+1, tm.getTrees(um.getUser(USERNAME).getId()).size());
 		assertEquals(treeName, tm.getTree(tree.getId()).getTitle());
 		tree.setTitle(newTreeName);
 		tm.updateTree(tree);
 		assertEquals(newTreeName, tm.getTree(tree.getId()).getTitle());
 		tm.deleteTree(tree.getId());
-		assertEquals(treeCount, tm.getTrees(um.getUser(username).getId()).size());
+		assertEquals(treeCount, tm.getTrees(um.getUser(USERNAME).getId()).size());
 	}
 	
 	@Test
@@ -111,7 +115,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = new Template();
 		template.setTreeId(tree.getId());
@@ -132,7 +136,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		Template template = new Template();
 		template.setTreeId(tree.getId());
 		template.setTitle("My Template Title");
@@ -147,7 +151,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		Template template1 = new Template();
 		template1.setTreeId(tree.getId());
 		template1.setTitle("My Template Title");
@@ -175,7 +179,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		Template template1 = new Template();
 		template1.setTreeId(tree.getId());
 		template1.setTitle("My Template Title");
@@ -210,7 +214,7 @@ public class TestBLLKnowledgeProducer {
 		TemplateManager tplm = new TemplateManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		assertEquals(0, tplm.getKnowledgeTemplates(tree.getId()).size());
 		Template template = new Template();
 		template.setTreeId(tree.getId());
@@ -267,17 +271,17 @@ public class TestBLLKnowledgeProducer {
 	public void testNode() throws Exception {
 		final String nodeTitle = "Node";
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		assertEquals(0, nm.getNodes(tree.getId()).size());
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(1, nm.getNodes(tree.getId()).size());
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
 		assertEquals(directoryId, nm.getNode(node.getId()).getDirectoryId());
@@ -292,16 +296,16 @@ public class TestBLLKnowledgeProducer {
 		final String nodeTitle = "Node";
 		final String newNodeTitle = "MyNewTitle";
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
 		node.setTitle(newNodeTitle);
 		nm.updateNode(node);
@@ -327,7 +331,7 @@ public class TestBLLKnowledgeProducer {
 		node.setTreeId(unknownId);
 		node.setTitle("Node title");
 		node.setDirectoryId(2);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		node.setTitle("Updated title");
 		nm.updateNode(node);
 	}
@@ -343,11 +347,11 @@ public class TestBLLKnowledgeProducer {
 		final String nameNode1 = "Node1";
 		final String nameNode2 = "Node2";
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = new Node();
 		node1.setTreeId(tree.getId());
@@ -357,8 +361,8 @@ public class TestBLLKnowledgeProducer {
 		node2.setTreeId(tree.getId());
 		node2.setTitle(nameNode2);
 		node2.setDirectoryId(directoryId);
-		node1 = nm.addNode(um.getUser(username).getId(), node1);
-		node2 = nm.addNode(um.getUser(username).getId(), node2);
+		node1 = nm.addNode(um.getUser(USERNAME).getId(), node1);
+		node2 = nm.addNode(um.getUser(USERNAME).getId(), node2);
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		NodeLink nodeLink = new NodeLink();
 		nodeLink.setTreeId(tree.getId());
@@ -381,11 +385,11 @@ public class TestBLLKnowledgeProducer {
 		final String nameSubnode2 = "Subnode2";
 		NodeManager nm = new NodeManager();
 		SubnodeManager snm = new SubnodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		NodeLinkManager nlm = new NodeLinkManager();
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node1 = new Node();
 		node1.setTreeId(tree.getId());
@@ -395,16 +399,16 @@ public class TestBLLKnowledgeProducer {
 		node2.setTreeId(tree.getId());
 		node2.setTitle(nameNode2);
 		node2.setDirectoryId(directoryId);
-		node1 = nm.addNode(um.getUser(username).getId(), node1);
-		node2 = nm.addNode(um.getUser(username).getId(), node2);
+		node1 = nm.addNode(um.getUser(USERNAME).getId(), node1);
+		node2 = nm.addNode(um.getUser(USERNAME).getId(), node2);
 		Subnode subnode1 = new Subnode();
 		subnode1.setNodeId(node1.getId());
 		subnode1.setTitle(nameSubnode1);
-		subnode1 = snm.addSubnode(subnode1);
+		subnode1 = snm.addSubnode(UID, node1.getId(),subnode1);
 		Subnode subnode2 = new Subnode();
 		subnode2.setNodeId(node1.getId());
 		subnode2.setTitle(nameSubnode2);
-		subnode2 = snm.addSubnode(subnode2);
+		subnode2 = snm.addSubnode(UID, node2.getId(),subnode2);
 		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
 		NodeLink nodeLink = new NodeLink();
 		nodeLink.setTreeId(tree.getId());
@@ -459,22 +463,22 @@ public class TestBLLKnowledgeProducer {
 		final String subnodename = "My Subnode";
 		SubnodeManager snm = new SubnodeManager();
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle("Node");
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
 		Subnode subnode = new Subnode();
 		subnode.setNodeId(node.getId());
 		subnode.setTitle(subnodename);
-		subnode = snm.addSubnode(subnode);
+		subnode = snm.addSubnode(UID, node.getId(),subnode);
 		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
 		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
@@ -489,22 +493,22 @@ public class TestBLLKnowledgeProducer {
 		final String newSubnodename = "My New Subnode";
 		SubnodeManager snm = new SubnodeManager();
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle("MyTree");
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle("Node");
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(0, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
 		Subnode subnode = new Subnode();
 		subnode.setNodeId(node.getId());
 		subnode.setTitle(subnodename);
-		subnode = snm.addSubnode(subnode);
+		subnode = snm.addSubnode(UID, node.getId(),subnode);
 		assertEquals(1, snm.getSubnodesFromNode(node.getId()).size());
 		assertEquals(1, snm.getSubnodesFromTree(tree.getId()).size());
 		assertEquals(subnodename, snm.getSubnode(subnode.getId()).getTitle());
@@ -533,11 +537,22 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test (expected = UnknownNodeException.class)
 	public void testUpdateUnknownSubnode() throws Exception {
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
+		Tree tree = new Tree();
+		tree.setTitle("MyTree");
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
+		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
+		Node node = new Node();
+		node.setTreeId(tree.getId());
+		node.setTitle("Node");
+		node.setDirectoryId(directoryId);
+		NodeManager nm = new NodeManager();
+		node = nm.addNode(um.getUser(USERNAME).getId(), node);
 		SubnodeManager snm = new SubnodeManager();
 		Subnode subnode = new Subnode();
 		subnode.setNodeId(unknownId);
 		subnode.setTitle("Subnode Title");
-		subnode = snm.addSubnode(subnode);
+		subnode = snm.addSubnode(UID, node.getId(),subnode);
 		subnode.setTitle("New subnode title");
 		Subnode updatedSubnode = snm.updateSubnode(subnode);
 		assertEquals(-1, updatedSubnode.getId());
@@ -557,13 +572,13 @@ public class TestBLLKnowledgeProducer {
 		DirectoryManager dm = new DirectoryManager();
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle("Node");
 		node.setDirectoryId(directoryId);
-		nm.addNode(um.getUser(username).getId(), node);
+		nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
 		Directory directory = new Directory();
 		directory.setTreeId(tree.getId());
@@ -585,13 +600,13 @@ public class TestBLLKnowledgeProducer {
 		DirectoryManager dm = new DirectoryManager();
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
-		tree = tm.addTree(um.getUser(username).getId(), tree);
+		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
 		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
 		Node node = new Node();
 		node.setTreeId(tree.getId());
 		node.setTitle("Node");
 		node.setDirectoryId(directoryId);
-		nm.addNode(um.getUser(username).getId(), node);
+		nm.addNode(um.getUser(USERNAME).getId(), node);
 		assertEquals(1, dm.getDirectories(tree.getId()).size());
 		Directory directory = new Directory();
 		directory.setTreeId(tree.getId());
