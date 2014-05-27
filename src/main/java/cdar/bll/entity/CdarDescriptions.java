@@ -16,7 +16,7 @@ public class CdarDescriptions {
 	private String expandedLevel;
 
 	/**
-	 * Default Constructor which immediately calls getPropertyValues()
+	 * Default Constructor which calls getPropertyValues()
 	 * @throws Exception 
 	 */
 	public CdarDescriptions() throws Exception {
