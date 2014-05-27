@@ -1,5 +1,11 @@
 package cdar.bll.entity;
 
+/**
+ * Class representing a User and its personal settings
+ * @author dzigerli
+ * @author mtinner
+ * 
+ */
 public class User extends BasicEntity {
 	private String username;
 	private String password;
@@ -7,51 +13,99 @@ public class User extends BasicEntity {
 	private boolean treeaccess;
 	private int drillHierarchy;
 
+	/**
+	 * Default Constructor
+	 */
 	public User() {
 
 	}
 
+	/**
+	 * Constructor passing username and password of the user
+	 * @param username
+	 * @param password
+	 */
 	public User(String username, String password) {
 		setUsername(username);
 		setPassword(password);
 	}
 
+	/**
+	 * 
+	 * @return username as String
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * 
+	 * @param username to be set (String)
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * 
+	 * @return password as String
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * 
+	 * @param password to be set (String)
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * 
+	 * @return accesstoken as String
+	 */
 	public String getAccesstoken() {
 		return accesstoken;
 	}
 
+	/**
+	 * 
+	 * @param accesstoken to be set (String)
+	 */
 	public void setAccesstoken(String accesstoken) {
 		this.accesstoken = accesstoken;
 	}
 
+	/**
+	 * 
+	 * @return boolean value which represents if user has access to the specific tree
+	 */
 	public boolean isTreeaccess() {
 		return treeaccess;
 	}
 
+	/**
+	 * 
+	 * @param treeaccess to be set as boolean, true if user has access to the specific tree, false if not
+	 */
 	public void setTreeaccess(boolean treeaccess) {
 		this.treeaccess = treeaccess;
 	}
 
+	/**
+	 * 
+	 * @return drill hierarchy as int
+	 */
 	public int getDrillHierarchy() {
 		return drillHierarchy;
 	}
 
+	/**
+	 * 
+	 * @param drillHierarchy as int to be set
+	 */
 	public void setDrillHierarchy(int drillHierarchy) {
 		this.drillHierarchy = drillHierarchy;
 	}
