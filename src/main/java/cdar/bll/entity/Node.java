@@ -2,15 +2,39 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
+/**
+ * The Class Node.
+ */
 public class Node extends WikiEntity {
+	
+	/** The tree id. */
 	private int treeId;
+	
+	/** The dynamic tree flag. */
 	private int dynamicTreeFlag;
+	
+	/** The directory id. */
 	private int directoryId;
 
+	/**
+	 * Instantiates a new node.
+	 */
 	public Node() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new node.
+	 *
+	 * @param id the id
+	 * @param creationDate the creation date
+	 * @param lastModification the last modification
+	 * @param title the title
+	 * @param wikititle the wikititle
+	 * @param treeId the tree id
+	 * @param dynamicTreeFlag the dynamic tree flag
+	 * @param directoryId the directory id
+	 */
 	public Node(int id, Date creationDate, Date lastModification, String title,
 			String wikititle, int treeId, int dynamicTreeFlag, int directoryId) {
 		super(id, creationDate, lastModification, title, wikititle);
@@ -19,30 +43,63 @@ public class Node extends WikiEntity {
 		setDirectoryId(directoryId);
 	}
 
+	/**
+	 * Gets the tree id.
+	 *
+	 * @return the tree id
+	 */
 	public int getTreeId() {
 		return treeId;
 	}
 
+	/**
+	 * Sets the tree id.
+	 *
+	 * @param treeId the new tree id
+	 */
 	public void setTreeId(int treeId) {
 		this.treeId = treeId;
 	}
 
+	/**
+	 * Gets the dynamic tree flag.
+	 *
+	 * @return the dynamic tree flag
+	 */
 	public int getDynamicTreeFlag() {
 		return dynamicTreeFlag;
 	}
 
+	/**
+	 * Sets the dynamic tree flag.
+	 *
+	 * @param dynamicTreeFlag the new dynamic tree flag
+	 */
 	public void setDynamicTreeFlag(int dynamicTreeFlag) {
 		this.dynamicTreeFlag = dynamicTreeFlag;
 	}
 
+	/**
+	 * Gets the directory id.
+	 *
+	 * @return the directory id
+	 */
 	public int getDirectoryId() {
 		return directoryId;
 	}
 
+	/**
+	 * Sets the directory id.
+	 *
+	 * @param directoryId the new directory id
+	 */
 	public void setDirectoryId(int directoryId) {
 		this.directoryId = directoryId;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -63,6 +120,9 @@ public class Node extends WikiEntity {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

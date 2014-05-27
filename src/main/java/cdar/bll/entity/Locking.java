@@ -6,24 +6,34 @@ import java.util.Date;
 import cdar.dal.helpers.PropertyHelper;
 
 /**
- * Class used for locking, to prevent data overrides when multiple users are trying to change the same tree at the same time
- * @author dani
+ * Class used for locking, to prevent data overrides when multiple users are trying to change the same tree at the same time.
  *
+ * @author dani
  */
 public class Locking {	
+	
+	/** The user id. */
 	private int userId;
+	
+	/** The tree id. */
 	private int treeId;
+	
+	/** The is producer. */
 	private boolean isProducer;
+	
+	/** The locking time. */
 	private Date lockingTime;
 	
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public Locking() {
 		super();
 	}
 
 	/**
+	 * Instantiates a new locking.
+	 *
 	 * @param userId id of the user who is editing (int)
 	 * @param treeId id of the tree which the user is trying to edit (int)
 	 * @param isProducer as a boolean to check if the user is in role producer or consumer
@@ -38,7 +48,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Gets the user id.
+	 *
 	 * @return id of the user as int
 	 */
 	public int getUserId() {
@@ -46,7 +57,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Sets the user id.
+	 *
 	 * @param userId as int to be set
 	 */
 	public void setUserId(int userId) {
@@ -54,7 +66,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Gets the tree id.
+	 *
 	 * @return id of the tree as int
 	 */
 	public int getTreeId() {
@@ -62,7 +75,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Sets the tree id.
+	 *
 	 * @param treeId as int to be set
 	 */
 	public void setTreeId(int treeId) {
@@ -70,7 +84,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Checks if is producer.
+	 *
 	 * @return boolean value representing the user state, true if user is in role producer, false if user is in role consumer
 	 */
 	public boolean isProducer() {
@@ -78,7 +93,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Sets the producer.
+	 *
 	 * @param isProducer boolean value, true if user is in role producer, false if user is in role consumer
 	 */
 	public void setProducer(boolean isProducer) {
@@ -86,7 +102,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Gets the locking time.
+	 *
 	 * @return locking time as a Date value
 	 */
 	public Date getLockingTime() {
@@ -94,7 +111,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Sets the locking time.
+	 *
 	 * @param lockingTime new date value of the locking time to be set
 	 */
 	public void setLockingTime(Date lockingTime) {
@@ -102,7 +120,7 @@ public class Locking {
 	}
 
 	/**
-	 * Gets the time of a lock out of the property file and adds it to the current date
+	 * Gets the time of a lock out of the property file and adds it to the current date.
 	 */
 	public void renewLockingTime() {
 		PropertyHelper property = new PropertyHelper();
@@ -114,7 +132,8 @@ public class Locking {
 	}
 
 	/**
-	 * 
+	 * Checks if is expired.
+	 *
 	 * @return boolean value which tells if the lock is expired (true) or not (false)
 	 */
 	public boolean isExpired() {

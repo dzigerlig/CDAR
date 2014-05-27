@@ -3,29 +3,42 @@ package cdar.bll.entity;
 import cdar.dal.helpers.PropertyHelper;
 
 /**
- * Class containing values out of the property file, used to transfer the configured value to the client application
+ * Class containing values out of the property file, used to transfer the configured value to the client application.
+ *
  * @author dzigerli
  * @author mtinner
- *
  */
 public class CdarDescriptions {
+	
+	/** The directory description. */
 	private String directoryDescription;
+	
+	/** The node description. */
 	private String nodeDescription;
+	
+	/** The subnode description. */
 	private String subnodeDescription;
+	
+	/** The wiki url. */
 	private String wikiUrl;
+	
+	/** The expanded level. */
 	private String expandedLevel;
 
 	/**
-	 * Default Constructor which calls getPropertyValues()
-	 * @throws Exception 
+	 * Default Constructor which calls getPropertyValues().
+	 *
+	 * @throws Exception the exception
 	 */
 	public CdarDescriptions() throws Exception {
 		getPropertyValues();
 	}
 
 	/**
-	 * Loads all values out of the property file and stores its values into the member variables
-	 * @throws Exception
+	 * Loads all values out of the property file and stores its values into the member variables.
+	 *
+	 * @return the property values
+	 * @throws Exception the exception
 	 */
 	private void getPropertyValues() throws Exception {
 		PropertyHelper propertyHelper = new PropertyHelper();
@@ -37,9 +50,10 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * sets the wikiUrl depending on the passed parameters (domain and page)
-	 * @param domain
-	 * @param page
+	 * sets the wikiUrl depending on the passed parameters (domain and page).
+	 *
+	 * @param domain the domain
+	 * @param page the page
 	 */
 	private void setWikiUrl(String domain, String page) {
 		if (domain.contains("http://")) {
@@ -50,7 +64,8 @@ public class CdarDescriptions {
 	}
 	
 	/**
-	 * 
+	 * Gets the directory description.
+	 *
 	 * @return current directory description as String
 	 */
 	public String getDirectoryDescription() {
@@ -58,7 +73,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Sets the directory description.
+	 *
 	 * @param directoryDescription description for a directory to set (String)
 	 */
 	public void setDirectoryDescription(String directoryDescription) {
@@ -66,7 +82,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Gets the node description.
+	 *
 	 * @return current node description as String
 	 */
 	public String getNodeDescription() {
@@ -74,7 +91,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Sets the node description.
+	 *
 	 * @param nodeDescription sets description of node (String)
 	 */
 	public void setNodeDescription(String nodeDescription) {
@@ -82,7 +100,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Gets the subnode description.
+	 *
 	 * @return current subnode description as String
 	 */
 	public String getSubnodeDescription() {
@@ -90,7 +109,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Sets the subnode description.
+	 *
 	 * @param subnodeDescription description for subnode to set (String)
 	 */
 	public void setSubnodeDescription(String subnodeDescription) {
@@ -98,7 +118,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Gets the wiki url.
+	 *
 	 * @return current wiki url as String
 	 */
 	public String getWikiUrl() {
@@ -106,7 +127,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Gets the expanded level.
+	 *
 	 * @return current expanded level as String
 	 */
 	public String getExpandedLevel() {
@@ -114,7 +136,8 @@ public class CdarDescriptions {
 	}
 
 	/**
-	 * 
+	 * Sets the expanded level.
+	 *
 	 * @param expandedLevel value of expanded level (String)
 	 */
 	public void setExpandedLevel(String expandedLevel) {

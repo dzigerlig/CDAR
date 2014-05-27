@@ -1,26 +1,35 @@
 package cdar.bll.entity;
 
 /**
- * Class of a NodeLink-Entity which represents the link between two specified Nodes
+ * Class of a NodeLink-Entity which represents the link between two specified Nodes.
+ *
  * @author dzigerli
  * @authro mtinner
- *
  */
 public class NodeLink extends BasicEntity {
+	
+	/** The source id. */
 	private int sourceId;
+	
+	/** The target id. */
 	private int targetId;
+	
+	/** The subnode id. */
 	private int subnodeId;
+	
+	/** The tree id. */
 	private int treeId;
 	
 	/**
-	 * Default Constructor which calls the constructor of the BasicEntity
+	 * Default Constructor which calls the constructor of the BasicEntity.
 	 */
 	public NodeLink() {
 		super();
 	}
 	
 	/**
-	 * 
+	 * Gets the source id.
+	 *
 	 * @return source id the specified Source-Node
 	 */
 	public int getSourceId() {
@@ -28,7 +37,8 @@ public class NodeLink extends BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Sets the source id.
+	 *
 	 * @param sourceId of the source node to be set as int value
 	 */
 	public void setSourceId(int sourceId) {
@@ -36,7 +46,8 @@ public class NodeLink extends BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Gets the target id.
+	 *
 	 * @return target id of the specified Target-Node
 	 */
 	public int getTargetId() {
@@ -44,7 +55,8 @@ public class NodeLink extends BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Sets the target id.
+	 *
 	 * @param targetId of the target node to be set as int value
 	 */
 	public void setTargetId(int targetId) {
@@ -52,7 +64,8 @@ public class NodeLink extends BasicEntity {
 	}
 
 	/**
-	 * This id can be 0 if no Subnode is defined
+	 * This id can be 0 if no Subnode is defined.
+	 *
 	 * @return subnode id of the specified subnode
 	 */
 	public int getSubnodeId() {
@@ -60,7 +73,8 @@ public class NodeLink extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the subnode id.
+	 *
 	 * @param subnodeId of the subnode to be set as int value, passing 0 if no subnode is defined
 	 */
 	public void setSubnodeId(int subnodeId) {
@@ -68,7 +82,8 @@ public class NodeLink extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the tree id.
+	 *
 	 * @return tree id of the specified tree
 	 */
 	public int getTreeId() {
@@ -76,13 +91,17 @@ public class NodeLink extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the tree id.
+	 *
 	 * @param treeId of the tree to be set as int Value
 	 */
 	public void setTreeId(int treeId) {
 		this.treeId = treeId;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,6 +120,9 @@ public class NodeLink extends BasicEntity {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

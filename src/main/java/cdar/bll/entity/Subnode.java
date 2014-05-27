@@ -2,14 +2,35 @@ package cdar.bll.entity;
 
 import java.util.Date;
 
+/**
+ * The Class Subnode.
+ */
 public class Subnode extends WikiEntity {
+	
+	/** The node id. */
 	private int nodeId;
+	
+	/** The position. */
 	private int position;
 
+	/**
+	 * Instantiates a new subnode.
+	 */
 	public Subnode() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new subnode.
+	 *
+	 * @param id the id
+	 * @param creationDate the creation date
+	 * @param lastModification the last modification
+	 * @param title the title
+	 * @param wikititle the wikititle
+	 * @param nodeId the node id
+	 * @param position the position
+	 */
 	public Subnode(int id, Date creationDate, Date lastModification,
 			String title, String wikititle, int nodeId, int position) {
 		super(id, creationDate, lastModification, title, wikititle);
@@ -17,22 +38,45 @@ public class Subnode extends WikiEntity {
 		setPosition(position);
 	}
 
+	/**
+	 * Gets the node id.
+	 *
+	 * @return the node id
+	 */
 	public int getNodeId() {
 		return nodeId;
 	}
 
+	/**
+	 * Sets the node id.
+	 *
+	 * @param nodeId the new node id
+	 */
 	public void setNodeId(int nodeId) {
 		this.nodeId = nodeId;
 	}
 
+	/**
+	 * Gets the position.
+	 *
+	 * @return the position
+	 */
 	public int getPosition() {
 		return position;
 	}
 
+	/**
+	 * Sets the position.
+	 *
+	 * @param position the new position
+	 */
 	public void setPosition(int position) {
 		this.position = position;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,6 +96,9 @@ public class Subnode extends WikiEntity {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

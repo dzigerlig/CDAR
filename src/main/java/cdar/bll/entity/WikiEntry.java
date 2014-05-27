@@ -10,29 +10,38 @@ import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.wiki.WikiRepository;
 
 /**
- * Class which loads wiki page of the specified node or subnode containing raw-string of the text and the html formatted string of the text
+ * Class which loads wiki page of the specified node or subnode containing raw-string of the text and the html formatted string of the text.
+ *
  * @author dzigerli
  * @author mtinner
- *
  */
 public class WikiEntry extends WikiEntity {
+	
+	/** The node id. */
 	private int nodeId;
+	
+	/** The subnode id. */
 	private int subnodeId;
+	
+	/** The wikicontentplain. */
 	private String wikicontentplain;
+	
+	/** The wikicontenthtml. */
 	private String wikicontenthtml;
 	
+	/** The property helper. */
 	private PropertyHelper propertyHelper = new PropertyHelper();
 
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public WikiEntry() {
 	}
 
 	/**
-	 * Constructor passing the values of a ProjectNode, calls Constructor of WikiEntity and gets the current wiki page
-	 * 
-	 * @param projectNode
+	 * Constructor passing the values of a ProjectNode, calls Constructor of WikiEntity and gets the current wiki page.
+	 *
+	 * @param projectNode the project node
 	 */
 	public WikiEntry(ProjectNode projectNode) {
 		super(projectNode.getId(), projectNode.getCreationTime(), projectNode
@@ -49,8 +58,9 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * Constructor passing the values of a Node, calls Constructor of WikiEntity and gets the current wiki page
-	 * @param node
+	 * Constructor passing the values of a Node, calls Constructor of WikiEntity and gets the current wiki page.
+	 *
+	 * @param node the node
 	 */
 	public WikiEntry(Node node) {
 		super(node.getId(), node.getCreationTime(), node
@@ -67,8 +77,9 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * Constructor passing the values of a Subnode, calls Constructor of WikiEntity and gets the current wiki page
-	 * @param subnode
+	 * Constructor passing the values of a Subnode, calls Constructor of WikiEntity and gets the current wiki page.
+	 *
+	 * @param subnode the subnode
 	 */
 	public WikiEntry(Subnode subnode)  {
 		super(subnode.getId(), subnode.getCreationTime(), subnode
@@ -85,7 +96,7 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * Private method which gets the current wiki page and sets the raw and html-formatted String
+	 * Private method which gets the current wiki page and sets the raw and html-formatted String.
 	 */
 	private void fillWikiContent()  {
 		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
@@ -101,7 +112,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the wiki content plain.
+	 *
 	 * @return raw String of the current Wiki Page
 	 */
 	public String getWikiContentPlain() {
@@ -109,7 +121,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the wiki content plain.
+	 *
 	 * @param wikicontentplain String value of the current Wiki Page containing the raw-text
 	 */
 	public void setWikiContentPlain(String wikicontentplain) {
@@ -117,7 +130,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the wiki content html.
+	 *
 	 * @return content of the Wiki Page as html formatted String
 	 */
 	public String getWikiContentHtml() {
@@ -125,7 +139,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the wiki content html.
+	 *
 	 * @param wikicontenthtml String value of the current Wiki Page containing the html-formatted text as a String
 	 */
 	public void setWikiContentHtml(String wikicontenthtml) {
@@ -133,7 +148,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * method which saves the current values to the specified Wiki Page
+	 * method which saves the current values to the specified Wiki Page.
+	 *
 	 * @param username String value of the Username of the Wiki User
 	 * @param password String value of the Password of the Wiki User
 	 * @return the current WikiEntry-Object
@@ -156,7 +172,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the node id.
+	 *
 	 * @return id of the specified Node as int value
 	 */
 	public int getNodeId() {
@@ -164,7 +181,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the node id.
+	 *
 	 * @param nodeId of the specified node as int value
 	 */
 	public void setNodeId(int nodeId) {
@@ -172,7 +190,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the subnode id.
+	 *
 	 * @return id of the specified Subnode as int value
 	 */
 	public int getSubnodeId() {
@@ -180,7 +199,8 @@ public class WikiEntry extends WikiEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the subnode id.
+	 *
 	 * @param subnodeId of the specified Subnode as int value
 	 */
 	public void setSubnodeId(int subnodeId) {

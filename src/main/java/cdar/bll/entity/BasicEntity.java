@@ -3,26 +3,32 @@ package cdar.bll.entity;
 import java.util.Date;
 
 /**
- * Default class for every entity, which gets transferred through the HTTP WebAPI
- * 
+ * Default class for every entity, which gets transferred through the HTTP WebAPI.
+ *
  * @author dzigerli
  * @author mtinner
- *
  */
 public class BasicEntity {
+	
+	/** The id. */
 	private int id;
+	
+	/** The creation time. */
 	private Date creationTime;
+	
+	/** The last modification time. */
 	private Date lastModificationTime;
 	
 	/**
-	 * Default Constructor
+	 * Default Constructor.
 	 */
 	public BasicEntity() {
 		super();
 	}
 	
 	/**
-	 * Constructor to create an object by id
+	 * Constructor to create an object by id.
+	 *
 	 * @param id integer value of id
 	 */
 	public BasicEntity(int id) {
@@ -31,7 +37,8 @@ public class BasicEntity {
 	}
 
 	/**
-	 * Constructor with all parameters
+	 * Constructor with all parameters.
+	 *
 	 * @param id integer value of id
 	 * @param creationTime value of creation time as Date
 	 * @param lastModificationTime value of last modification time as Date
@@ -44,7 +51,8 @@ public class BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Gets the id.
+	 *
 	 * @return current id value as int
 	 */
 	public int getId() {
@@ -52,7 +60,8 @@ public class BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Sets the id.
+	 *
 	 * @param id integer value of id
 	 */
 	public void setId(int id) {
@@ -60,7 +69,8 @@ public class BasicEntity {
 	}
 	
 	/**
-	 * 
+	 * Gets the creation time.
+	 *
 	 * @return creation time value as Date
 	 */
 	public Date getCreationTime() {
@@ -68,7 +78,8 @@ public class BasicEntity {
 	}
 	
 	/**
-	 * sets creation time
+	 * sets creation time.
+	 *
 	 * @param creationTime Date
 	 */
 	public void setCreationTime(Date creationTime) {
@@ -76,7 +87,8 @@ public class BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the last modification time.
+	 *
 	 * @return last modification time as Date
 	 */
 	public Date getLastModificationTime() {
@@ -84,7 +96,8 @@ public class BasicEntity {
 	}
 
 	/**
-	 * sets last modification time
+	 * sets last modification time.
+	 *
 	 * @param lastModificationTime Date
 	 */
 	public void setLastModificationTime(Date lastModificationTime) {

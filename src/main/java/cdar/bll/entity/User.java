@@ -1,29 +1,40 @@
 package cdar.bll.entity;
 
 /**
- * Class representing a User and its personal settings
+ * Class representing a User and its personal settings.
+ *
  * @author dzigerli
  * @author mtinner
- * 
  */
 public class User extends BasicEntity {
+	
+	/** The username. */
 	private String username;
+	
+	/** The password. */
 	private String password;
+	
+	/** The accesstoken. */
 	private String accesstoken;
+	
+	/** The treeaccess. */
 	private boolean treeaccess;
+	
+	/** The drill hierarchy. */
 	private int drillHierarchy;
 
 	/**
-	 * Default Constructor
+	 * Default Constructor.
 	 */
 	public User() {
 
 	}
 
 	/**
-	 * Constructor passing username and password of the user
-	 * @param username
-	 * @param password
+	 * Constructor passing username and password of the user.
+	 *
+	 * @param username the username
+	 * @param password the password
 	 */
 	public User(String username, String password) {
 		setUsername(username);
@@ -31,7 +42,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the username.
+	 *
 	 * @return username as String
 	 */
 	public String getUsername() {
@@ -39,7 +51,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the username.
+	 *
 	 * @param username to be set (String)
 	 */
 	public void setUsername(String username) {
@@ -47,7 +60,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the password.
+	 *
 	 * @return password as String
 	 */
 	public String getPassword() {
@@ -55,7 +69,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the password.
+	 *
 	 * @param password to be set (String)
 	 */
 	public void setPassword(String password) {
@@ -63,7 +78,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the accesstoken.
+	 *
 	 * @return accesstoken as String
 	 */
 	public String getAccesstoken() {
@@ -71,7 +87,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the accesstoken.
+	 *
 	 * @param accesstoken to be set (String)
 	 */
 	public void setAccesstoken(String accesstoken) {
@@ -79,7 +96,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Checks if is treeaccess.
+	 *
 	 * @return boolean value which represents if user has access to the specific tree
 	 */
 	public boolean isTreeaccess() {
@@ -87,7 +105,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the treeaccess.
+	 *
 	 * @param treeaccess to be set as boolean, true if user has access to the specific tree, false if not
 	 */
 	public void setTreeaccess(boolean treeaccess) {
@@ -95,7 +114,8 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Gets the drill hierarchy.
+	 *
 	 * @return drill hierarchy as int
 	 */
 	public int getDrillHierarchy() {
@@ -103,13 +123,17 @@ public class User extends BasicEntity {
 	}
 
 	/**
-	 * 
+	 * Sets the drill hierarchy.
+	 *
 	 * @param drillHierarchy as int to be set
 	 */
 	public void setDrillHierarchy(int drillHierarchy) {
 		this.drillHierarchy = drillHierarchy;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -128,6 +152,9 @@ public class User extends BasicEntity {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
