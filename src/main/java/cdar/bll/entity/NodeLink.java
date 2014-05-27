@@ -1,43 +1,84 @@
 package cdar.bll.entity;
 
+/**
+ * Class of a NodeLink-Entity which represents the link between two specified Nodes
+ * @author dzigerli
+ * @authro mtinner
+ *
+ */
 public class NodeLink extends BasicEntity {
 	private int sourceId;
 	private int targetId;
 	private int subnodeId;
 	private int treeId;
 	
+	/**
+	 * Default Constructor which calls the constructor of the BasicEntity
+	 */
 	public NodeLink() {
 		super();
 	}
 	
+	/**
+	 * 
+	 * @return source id the specified Source-Node
+	 */
 	public int getSourceId() {
 		return sourceId;
 	}
 	
+	/**
+	 * 
+	 * @param sourceId of the source node to be set as int value
+	 */
 	public void setSourceId(int sourceId) {
 		this.sourceId = sourceId;
 	}
 	
+	/**
+	 * 
+	 * @return target id of the specified Target-Node
+	 */
 	public int getTargetId() {
 		return targetId;
 	}
 	
+	/**
+	 * 
+	 * @param targetId of the target node to be set as int value
+	 */
 	public void setTargetId(int targetId) {
 		this.targetId = targetId;
 	}
 
+	/**
+	 * This id can be 0 if no Subnode is defined
+	 * @return subnode id of the specified subnode
+	 */
 	public int getSubnodeId() {
 		return subnodeId;
 	}
 
+	/**
+	 * 
+	 * @param subnodeId of the subnode to be set as int value, passing 0 if no subnode is defined
+	 */
 	public void setSubnodeId(int subnodeId) {
 		this.subnodeId = subnodeId;
 	}
 
+	/**
+	 * 
+	 * @return tree id of the specified tree
+	 */
 	public int getTreeId() {
 		return treeId;
 	}
 
+	/**
+	 * 
+	 * @param treeId of the tree to be set as int Value
+	 */
 	public void setTreeId(int treeId) {
 		this.treeId = treeId;
 	}
