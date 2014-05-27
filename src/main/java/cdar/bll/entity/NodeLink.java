@@ -136,4 +136,3 @@ public class NodeLink extends BasicEntity {
 		return true;
 	}	
 }
-
