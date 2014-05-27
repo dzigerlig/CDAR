@@ -143,7 +143,7 @@ public class DirectoryRepository implements IDirectoryRepository {
 	}
 
 	public Directory getRootDirectory(int treeid) throws EntityException, UnknownDirectoryException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM DIRECTORY WHERE  KTRID = ?)",DBTableHelper.DIRECTORY);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM %s WHERE  KTRID = ?)",DBTableHelper.DIRECTORY, DBTableHelper.DIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

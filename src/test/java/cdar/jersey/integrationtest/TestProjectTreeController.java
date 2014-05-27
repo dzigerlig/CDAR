@@ -851,7 +851,6 @@ public class TestProjectTreeController extends JerseyTest {
 	public void testEditComment() {
 		Directory addedDirectory = addDirectory(treeid, 0);
 		Node addedNode1 = addNode(treeid, addedDirectory.getId());
-		Node addedNode2 = addNode(treeid, addedDirectory.getId());
 		Comment addedComment = addComment(addedNode1.getId(), PASSWORD);
 		addedComment.setComment(USERNAME);
 		int commentId = addedComment.getId();
@@ -868,7 +867,6 @@ public class TestProjectTreeController extends JerseyTest {
 		deleteComment(commentId, addedNode1.getId());
 		
 		deleteNode(addedNode1.getId());
-		deleteNode(addedNode2.getId());
 		
 		deleteDirectory(addedDirectory.getId());
 		assertNotEquals(null, updatedComment);

@@ -145,7 +145,7 @@ public class ProjectDirectoryRepository implements IDirectoryRepository {
 	@Override
 	public Directory getRootDirectory(int treeid) throws EntityException,
 			UnknownDirectoryException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM DIRECTORY WHERE  PTREEID = ?)",DBTableHelper.PROJECTDIRECTORY);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM %s WHERE  PTREEID = ?)",DBTableHelper.PROJECTDIRECTORY,DBTableHelper.PROJECTDIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

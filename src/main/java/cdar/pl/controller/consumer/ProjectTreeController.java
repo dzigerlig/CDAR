@@ -80,6 +80,7 @@ public class ProjectTreeController {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

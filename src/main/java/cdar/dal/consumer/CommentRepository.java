@@ -52,7 +52,7 @@ public class CommentRepository {
 	}
 	
 	public Comment getComment(int commentId) throws UnknownCommentException, EntityException {
-		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.ID WHERE ID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
+		final String sql = String.format("SELECT COMMENT.ID, COMMENT.CREATION_TIME, COMMENT.LAST_MODIFICATION_TIME, COMMENT.KPNID, COMMENT.UID, COMMENT.COMMENT, USER.USERNAME FROM %s AS COMMENT JOIN %s AS USER ON USER.ID = COMMENT.UID WHERE COMMENT.ID = ?",DBTableHelper.USERCOMMENT,DBTableHelper.USER);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
