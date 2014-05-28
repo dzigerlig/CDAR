@@ -60,7 +60,7 @@ public class UserController {
 			User loggedInUser = userManager.loginUser(username, password);
 			loggedInUser.setPassword(null);
 			return StatusHelper.getStatusOk(loggedInUser);
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			return StatusHelper.getStatusUnauthorized();
 		}
 	}
