@@ -35,7 +35,7 @@ public class WikiRegistrationManager {
 	 */
 	public WikiRegistrationManager() {
 		PropertyHelper propertyHelper = new PropertyHelper();
-		URL = String.format("%s/api.php/?", propertyHelper.getProperty("MEDIAWIKI_CONNECTION"));
+		URL = String.format("http://%s/api.php/?", propertyHelper.getProperty("MEDIAWIKI_CONNECTION"));
 	}
 
 	/**
