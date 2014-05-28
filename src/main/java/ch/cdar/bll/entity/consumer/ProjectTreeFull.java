@@ -25,7 +25,7 @@ public class ProjectTreeFull extends ProjectTreeSimple {
 	/** The wiki entries. */
 	private Set<WikiEntry> wikiEntries;
 	
-	/** The mwm. */
+	/** The Media Wiki Manager. */
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
 	/**
@@ -34,7 +34,7 @@ public class ProjectTreeFull extends ProjectTreeSimple {
 	public ProjectTreeFull() { }
 	
 	/**
-	 * Instantiates a new project tree full.
+	 * Instantiates a new project tree full. Containing the values of the Wiki-Page
 	 *
 	 * @param treeId the tree id
 	 * @throws UnknownProjectTreeException the unknown project tree exception
@@ -51,7 +51,7 @@ public class ProjectTreeFull extends ProjectTreeSimple {
 	}
 	
 	/**
-	 * Fill wiki entries.
+	 * Fills wiki entries with the content of the wiki page.
 	 *
 	 * @throws UnknownProjectNodeException the unknown project node exception
 	 * @throws EntityException the entity exception

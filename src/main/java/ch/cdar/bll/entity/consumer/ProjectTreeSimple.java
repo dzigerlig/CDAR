@@ -26,7 +26,6 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  */
 @XmlRootElement
 public class ProjectTreeSimple {
-		
 		/** The tree. */
 		private Tree tree;
 		

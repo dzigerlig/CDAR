@@ -48,7 +48,7 @@ public class ProjectNode extends Node {
 	}
 
 	/**
-	 * Sets the inherited tree id.
+	 * Sets the inherited tree id refering to the copied knowledge tree
 	 *
 	 * @param inheritedTreeId the new inherited tree id
 	 */
