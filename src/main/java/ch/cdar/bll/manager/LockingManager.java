@@ -22,7 +22,7 @@ public class LockingManager {
 	private final String PRODUCER = "P";
 
 	/**
-	 * Generate key.
+	 * Generate locking key.
 	 *
 	 * @param isProducer the is producer
 	 * @param treeId the tree id
@@ -39,7 +39,7 @@ public class LockingManager {
 	}
 	
 	/**
-	 * Lock.
+	 * Locks the specified tree. Different Tree (KnowledgeTree/ProjectTree) depending on the isProduer value
 	 *
 	 * @param isProducer the is producer
 	 * @param treeId the tree id

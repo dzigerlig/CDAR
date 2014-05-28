@@ -23,7 +23,6 @@ import ch.cdar.dal.wiki.WikiRepository;
  * The Class UserManager.
  */
 public class UserManager {
-	
 	/** The user repository. */
 	private UserRepository userRepository = new UserRepository();
 
@@ -34,7 +33,7 @@ public class UserManager {
 	}
 
 	/**
-	 * Login user.
+	 * Tries to log in the user.
 	 *
 	 * @param username the username
 	 * @param password the password
@@ -66,7 +65,7 @@ public class UserManager {
 	}
 
 	/**
-	 * Creates the user.
+	 * Creates the user. If createWikiUser is true the code tries to register the user to the wiki-engine
 	 *
 	 * @param user the user
 	 * @param createWikiUser the create wiki user
@@ -93,7 +92,7 @@ public class UserManager {
 	}
 
 	/**
-	 * Delete user.
+	 * Delete user and its referenced trees.
 	 *
 	 * @param userId the user id
 	 * @throws UnknownUserException the unknown user exception

@@ -23,7 +23,7 @@ public class DirectoryManager {
 	private IDirectoryRepository directoryRepository;
 	
 	/**
-	 * Instantiates a new directory manager.
+	 * Instantiates a new directory manager. Using a different Repository depending on the User Role.
 	 *
 	 * @param userRole the user role
 	 */

@@ -43,7 +43,6 @@ import ch.cdar.dal.user.UserRepository;
  * The Class TreeManager.
  */
 public class TreeManager {
-	
 	/** The tree repository. */
 	private ITreeRepository treeRepository;
 	
@@ -290,5 +289,4 @@ public class TreeManager {
 		directory.setTitle(tree.getTitle());
 		directoryRepository.updateDirectory(directory);
 	}
-
 }
