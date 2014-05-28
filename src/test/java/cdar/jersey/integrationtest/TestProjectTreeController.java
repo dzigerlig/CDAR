@@ -16,21 +16,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cdar.bll.entity.ChangesWrapper;
-import cdar.bll.entity.Directory;
-import cdar.bll.entity.Node;
-import cdar.bll.entity.NodeLink;
-import cdar.bll.entity.Subnode;
-import cdar.bll.entity.Tree;
-import cdar.bll.entity.User;
-import cdar.bll.entity.consumer.Comment;
-import cdar.pl.controller.UserController;
-import cdar.pl.controller.consumer.CommentController;
-import cdar.pl.controller.consumer.ProjectDirectoryController;
-import cdar.pl.controller.consumer.ProjectNodeController;
-import cdar.pl.controller.consumer.ProjectNodeLinkController;
-import cdar.pl.controller.consumer.ProjectSubnodeController;
-import cdar.pl.controller.consumer.ProjectTreeController;
+import ch.cdar.bll.entity.ChangesWrapper;
+import ch.cdar.bll.entity.Directory;
+import ch.cdar.bll.entity.Node;
+import ch.cdar.bll.entity.NodeLink;
+import ch.cdar.bll.entity.Subnode;
+import ch.cdar.bll.entity.Tree;
+import ch.cdar.bll.entity.User;
+import ch.cdar.bll.entity.consumer.Comment;
+import ch.cdar.pl.controller.UserController;
+import ch.cdar.pl.controller.consumer.CommentController;
+import ch.cdar.pl.controller.consumer.ProjectDirectoryController;
+import ch.cdar.pl.controller.consumer.ProjectNodeController;
+import ch.cdar.pl.controller.consumer.ProjectNodeLinkController;
+import ch.cdar.pl.controller.consumer.ProjectSubnodeController;
+import ch.cdar.pl.controller.consumer.ProjectTreeController;
 
 public class TestProjectTreeController extends JerseyTest {
 	private final String USERNAME = "testuser";

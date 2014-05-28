@@ -13,8 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cdar.bll.entity.User;
-import cdar.pl.controller.UserController;
+import ch.cdar.bll.entity.User;
+import ch.cdar.pl.controller.UserController;
 
 public class TestUserController extends JerseyTest {
 	final String USERNAME = "testuser";
