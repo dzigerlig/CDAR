@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page errorPage="error.html" %>
 
-<jsp:useBean id="tree" class="cdar.bll.reporting.ProjectTreeBean" scope="request" />
+<jsp:useBean id="tree" class="ch.cdar.bll.reporting.ProjectTreeBean" scope="request" />
 <% tree.setTreeId(Integer.parseInt(request.getParameter("treeid"))); %>
 <% tree.checkCredentials(Integer.parseInt(request.getParameter("uid")), request.getParameter("accesstoken")); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

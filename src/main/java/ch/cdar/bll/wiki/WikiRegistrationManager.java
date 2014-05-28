@@ -1,4 +1,4 @@
-package cdar.bll.wiki;
+package ch.cdar.bll.wiki;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,14 +22,30 @@ import org.xml.sax.SAXException;
 import ch.cdar.dal.exceptions.WikiCreateUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
 
+/**
+ * The Class WikiRegistrationManager.
+ */
 public class WikiRegistrationManager {
+	
+	/** The url. */
 	private String URL = null;
 	
+	/**
+	 * Instantiates a new wiki registration manager.
+	 */
 	public WikiRegistrationManager() {
 		PropertyHelper propertyHelper = new PropertyHelper();
-		URL = String.format("http://%s/api.php/?", propertyHelper.getProperty("MEDIAWIKI_CONNECTION"));
+		URL = String.format("%s/api.php/?", propertyHelper.getProperty("MEDIAWIKI_CONNECTION"));
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return true, if successful
+	 * @throws WikiCreateUserException the wiki create user exception
+	 */
 	public boolean createUser(String username, String password)
 			throws WikiCreateUserException {
 		try {
@@ -64,6 +80,21 @@ public class WikiRegistrationManager {
 		}
 	}
 
+	/**
+	 * User request.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @param token the token
+	 * @param cookie the cookie
+	 * @return true, if successful
+	 * @throws WikiCreateUserException the wiki create user exception
+	 * @throws MalformedURLException the malformed url exception
+	 * @throws ProtocolException the protocol exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	private boolean userRequest(String username, String password, String token,
 			String cookie) throws WikiCreateUserException, MalformedURLException, ProtocolException, IOException, ParserConfigurationException, SAXException {
 		String body = "format=" + URLEncoder.encode("xml", "UTF-8") + "&"
@@ -109,6 +140,14 @@ public class WikiRegistrationManager {
 		}
 	}
 
+	/**
+	 * Flush writer.
+	 *
+	 * @param body the body
+	 * @param connection the connection
+	 * @return the output stream writer
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private OutputStreamWriter flushWriter(String body,
 			HttpURLConnection connection) throws IOException {
 		OutputStreamWriter writer = new OutputStreamWriter(
@@ -118,6 +157,15 @@ public class WikiRegistrationManager {
 		return writer;
 	}
 
+	/**
+	 * Establish connection.
+	 *
+	 * @param body the body
+	 * @return the http url connection
+	 * @throws MalformedURLException the malformed url exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ProtocolException the protocol exception
+	 */
 	private HttpURLConnection establishConnection(String body)
 			throws MalformedURLException, IOException, ProtocolException {
 		URL url = new URL(URL);
