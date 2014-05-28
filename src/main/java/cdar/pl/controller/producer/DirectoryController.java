@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -20,7 +17,6 @@ import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DirectoryController.
  */

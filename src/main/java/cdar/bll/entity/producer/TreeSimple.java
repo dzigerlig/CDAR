@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.entity.producer;
 
 import java.util.Set;
@@ -26,7 +23,6 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TreeSimple.
  */

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -23,7 +20,6 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.ITreeRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TreeRepository.
  */

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller;
 
 import javax.ws.rs.GET;
@@ -11,7 +8,6 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.CdarDescriptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DescriptionController.
  */

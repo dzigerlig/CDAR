@@ -1,13 +1,9 @@
-/*
- * 
- */
 package cdar.dal.helpers;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DBConnection.
  */

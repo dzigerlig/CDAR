@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.dal.consumer;
 
 import java.sql.Connection;
@@ -27,7 +24,6 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.INodeLinkRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ProjectNodeLinkRepository.
  */

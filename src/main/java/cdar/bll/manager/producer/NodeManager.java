@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager.producer;
 
 import java.util.HashSet;
@@ -20,7 +17,6 @@ import cdar.dal.user.UserRepository;
 
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class NodeManager.
  */

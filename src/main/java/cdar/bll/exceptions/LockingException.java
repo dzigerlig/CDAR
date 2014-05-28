@@ -1,9 +1,5 @@
-/*
- * 
- */
 package cdar.bll.exceptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LockingException.
  */

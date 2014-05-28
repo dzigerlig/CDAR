@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.producer;
 
 import java.util.List;
@@ -25,7 +22,6 @@ import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TreeController.
  */

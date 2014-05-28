@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.reporting;
 
 import java.util.HashSet;
@@ -21,7 +18,6 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownTreeException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TreeBean.
  */

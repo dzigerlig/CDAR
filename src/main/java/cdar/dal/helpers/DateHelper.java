@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.dal.helpers;
 
 import java.text.DateFormat;
@@ -9,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DateHelper.
  */

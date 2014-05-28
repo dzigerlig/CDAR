@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager;
 
 import java.util.HashSet;
@@ -17,7 +14,6 @@ import cdar.dal.helpers.PropertyHelper;
 import cdar.dal.interfaces.IDirectoryRepository;
 import cdar.dal.producer.DirectoryRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DirectoryManager.
  */

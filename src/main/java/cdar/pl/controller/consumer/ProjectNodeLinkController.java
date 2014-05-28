@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -19,7 +16,6 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ProjectNodeLinkController.
  */

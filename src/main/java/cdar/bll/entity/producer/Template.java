@@ -1,13 +1,9 @@
-/*
- * 
- */
 package cdar.bll.entity.producer;
 
 import info.bliki.wiki.model.WikiModel;
 
 import cdar.bll.entity.BasicEntity;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Template.
  */

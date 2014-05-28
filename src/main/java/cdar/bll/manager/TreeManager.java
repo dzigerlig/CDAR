@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager;
 
 import java.util.ArrayList;
@@ -42,7 +39,6 @@ import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.TreeRepository;
 import cdar.dal.user.UserRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TreeManager.
  */

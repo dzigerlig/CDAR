@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.dal.user;
 
 import java.sql.Connection;
@@ -21,7 +18,6 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserRepository.
  */

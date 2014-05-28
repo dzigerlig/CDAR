@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -19,7 +16,6 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TemplateController.
  */

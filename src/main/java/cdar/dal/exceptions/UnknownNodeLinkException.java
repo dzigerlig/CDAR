@@ -1,9 +1,5 @@
-/*
- * 
- */
 package cdar.dal.exceptions;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UnknownNodeLinkException.
  */

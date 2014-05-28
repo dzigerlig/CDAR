@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -21,7 +18,6 @@ import cdar.bll.manager.producer.NodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class NodeController.
  */

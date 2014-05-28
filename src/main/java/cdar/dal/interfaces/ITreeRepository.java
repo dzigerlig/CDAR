@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.dal.interfaces;
 
 import java.util.List;
@@ -12,7 +9,6 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface ITreeRepository.
  */

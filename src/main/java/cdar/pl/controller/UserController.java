@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller;
 
 import java.util.List;
@@ -17,7 +14,6 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserController.
  */

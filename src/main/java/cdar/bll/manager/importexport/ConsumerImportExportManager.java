@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager.importexport;
 
 import java.io.StringReader;
@@ -52,7 +49,6 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ConsumerImportExportManager.
  */

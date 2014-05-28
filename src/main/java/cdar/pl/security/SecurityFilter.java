@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.security;
 
 import java.io.IOException;
@@ -19,7 +16,6 @@ import org.glassfish.jersey.server.ExtendedUriInfo;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SecurityFilter.
  */

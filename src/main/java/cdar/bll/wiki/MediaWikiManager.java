@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.wiki;
 
 
@@ -18,7 +15,6 @@ import cdar.dal.exceptions.UnknownProjectSubnodeException;
 import cdar.dal.exceptions.UnknownSubnodeException;
 import cdar.dal.exceptions.UnknownUserException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MediaWikiManager.
  */

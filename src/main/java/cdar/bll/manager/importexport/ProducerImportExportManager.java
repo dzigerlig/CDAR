@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager.importexport;
 
 import java.io.StringReader;
@@ -50,7 +47,6 @@ import cdar.dal.producer.SubnodeRepository;
 import cdar.dal.producer.TemplateRepository;
 import cdar.dal.producer.XmlTreeRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ProducerImportExportManager.
  */

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.producer;
 
 import java.util.List;
@@ -28,7 +25,6 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SubnodeController.
  */

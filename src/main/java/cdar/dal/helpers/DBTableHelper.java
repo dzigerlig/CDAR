@@ -1,9 +1,5 @@
-/*
- * 
- */
 package cdar.dal.helpers;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DBTableHelper.
  */

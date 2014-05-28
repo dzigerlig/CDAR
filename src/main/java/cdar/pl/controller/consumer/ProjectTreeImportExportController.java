@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -20,7 +17,6 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.pl.controller.StatusHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ProjectTreeImportExportController.
  */

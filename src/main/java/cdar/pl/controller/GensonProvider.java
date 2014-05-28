@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.pl.controller;
 
 import java.text.SimpleDateFormat;
@@ -10,7 +7,6 @@ import javax.ws.rs.ext.Provider;
 
 import com.owlike.genson.Genson;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GensonProvider.
  */

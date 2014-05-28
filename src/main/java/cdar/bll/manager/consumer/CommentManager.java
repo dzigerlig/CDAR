@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager.consumer;
 
 import java.util.HashSet;
@@ -14,7 +11,6 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownCommentException;
 import cdar.dal.exceptions.UnknownProjectTreeException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CommentManager.
  */

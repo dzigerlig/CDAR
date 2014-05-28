@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager.producer;
 
 import java.util.HashSet;
@@ -13,7 +10,6 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.producer.TemplateRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TemplateManager.
  */

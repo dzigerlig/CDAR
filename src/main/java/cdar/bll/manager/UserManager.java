@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager;
 
 import java.util.Date;
@@ -22,7 +19,6 @@ import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
 import cdar.dal.wiki.WikiRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserManager.
  */

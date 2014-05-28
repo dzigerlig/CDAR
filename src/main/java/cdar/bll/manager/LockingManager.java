@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.manager;
 
 import java.util.HashMap;
@@ -10,7 +7,6 @@ import cdar.bll.entity.Locking;
 import cdar.bll.exceptions.LockingException;
 import cdar.dal.user.UserRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class LockingManager.
  */

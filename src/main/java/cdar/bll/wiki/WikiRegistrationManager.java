@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.wiki;
 
 import java.io.IOException;
@@ -25,7 +22,6 @@ import org.xml.sax.SAXException;
 import cdar.dal.exceptions.WikiCreateUserException;
 import cdar.dal.helpers.PropertyHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class WikiRegistrationManager.
  */

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package cdar.bll.wiki;
 
 import java.io.IOException;
@@ -15,7 +12,6 @@ import cdar.bll.manager.UserManager;
 import cdar.dal.exceptions.WikiLoginException;
 import cdar.dal.wiki.WikiRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MediaWikiCreationModel.
  */
