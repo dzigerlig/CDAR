@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import java.util.List;
@@ -23,12 +26,28 @@ import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectSubnodeController.
+ */
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
 public class ProjectSubnodeController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The psm. */
 	ProjectSubnodeManager psm = new ProjectSubnodeManager();
 
+	/**
+	 * Gets the subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the subnodes
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("nodeid") int nodeId) {
@@ -40,6 +59,14 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Adds the subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(@HeaderParam("uid") int uid,
@@ -56,6 +83,12 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Gets the subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the subnode
+	 */
 	@GET
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +100,15 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Update subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnodeId the subnode id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +127,14 @@ public class ProjectSubnodeController {
 		}
 	}
 	
+	/**
+	 * Rename subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param projectSubnode the project subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -101,6 +151,12 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Gets the subnode wiki entry.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the subnode wiki entry
+	 */
 	@GET
 	@Path("{subnodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -114,6 +170,13 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Update subnode wiki entry.
+	 *
+	 * @param uid the uid
+	 * @param wikiEntry the wiki entry
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -128,6 +191,13 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Drill up subnode.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -140,6 +210,14 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Drill down subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -152,6 +230,14 @@ public class ProjectSubnodeController {
 		}
 	}
 
+	/**
+	 * Delete subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param projectSubnode the project subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

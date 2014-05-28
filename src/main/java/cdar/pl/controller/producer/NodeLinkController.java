@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -16,12 +19,28 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.NodeLinkManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeLinkController.
+ */
 @Path("ktrees/{ktreeid}/links")
 public class NodeLinkController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The nlm. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 
+	/**
+	 * Gets the links.
+	 *
+	 * @param treeId the tree id
+	 * @return the links
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getLinks(@PathParam("ktreeid") int treeId) {
@@ -32,6 +51,14 @@ public class NodeLinkController {
 		}
 	}
 
+	/**
+	 * Adds the node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeLink the node link
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(@HeaderParam("uid") int uid,
@@ -47,6 +74,14 @@ public class NodeLinkController {
 		}
 	}
 
+	/**
+	 * Delete node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeLink the node link
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -64,6 +99,14 @@ public class NodeLinkController {
 		}
 	}
 
+	/**
+	 * Update node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeLink the node link
+	 * @return the response
+	 */
 	@POST
 	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -80,6 +123,13 @@ public class NodeLinkController {
 		}
 	}
 
+	/**
+	 * Drill up link.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,6 +142,14 @@ public class NodeLinkController {
 		}
 	}
 
+	/**
+	 * Drill down link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)

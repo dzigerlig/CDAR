@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.producer;
 
 import java.util.HashSet;
@@ -19,9 +22,28 @@ import cdar.dal.user.UserRepository;
 
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SubnodeManager.
+ */
 public class SubnodeManager {
+	
+	/** The sr. */
 	private SubnodeRepository sr = new SubnodeRepository();
 
+	/**
+	 * Adds the subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnode the subnode
+	 * @return the subnode
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public Subnode addSubnode(int uid, int treeId, Subnode subnode) throws EntityException, UnknownNodeException, CreationException, UnknownUserException, UnknownTreeException   {
 		boolean createSubnode = true;
 		if (subnode.getWikititle()!=null) {
@@ -46,6 +68,14 @@ public class SubnodeManager {
 		return subnode;
 	}
 	
+	/**
+	 * Gets the next subnode position.
+	 *
+	 * @param nodeId the node id
+	 * @return the next subnode position
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	private int getNextSubnodePosition(int nodeId) throws EntityException, UnknownNodeException {
 		int position = 0;
 
@@ -58,6 +88,15 @@ public class SubnodeManager {
 		return ++position;
 	}
 
+	/**
+	 * Gets the subnodes from tree.
+	 *
+	 * @param treeId the tree id
+	 * @return the subnodes from tree
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Set<Subnode> getSubnodesFromTree(int treeId) throws EntityException, UnknownTreeException, UnknownNodeException   {
 		NodeRepository nr = new NodeRepository();
 		Set<Subnode> subnodes = new HashSet<Subnode>();
@@ -71,6 +110,14 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
+	/**
+	 * Gets the subnodes from node.
+	 *
+	 * @param nodeId the node id
+	 * @return the subnodes from node
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Set<Subnode> getSubnodesFromNode(int nodeId) throws EntityException, UnknownNodeException   {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 
@@ -81,10 +128,27 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
+	/**
+	 * Gets the subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the subnode
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException, EntityException {
 		return sr.getSubnode(subnodeId);
 	}
 
+	/**
+	 * Update subnode.
+	 *
+	 * @param subnode the subnode
+	 * @return the subnode
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		Subnode updatedSubnode = sr.getSubnode(subnode.getId());
 		if (subnode.getNodeId()!=0) {
@@ -103,6 +167,16 @@ public class SubnodeManager {
 		return sr.updateSubnode(updatedSubnode);
 	}
 
+	/**
+	 * Change other subnode positions.
+	 *
+	 * @param subnode the subnode
+	 * @param oldPosition the old position
+	 * @param newPosition the new position
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 */
 	private void changeOtherSubnodePositions(Subnode subnode, int oldPosition,
 			int newPosition) throws EntityException, UnknownNodeException,
 			UnknownSubnodeException {
@@ -128,11 +202,27 @@ public class SubnodeManager {
 		}
 	}
 
+	/**
+	 * Delete subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		changeSubnodePositionOnDelete(subnodeId);
 		sr.deleteSubnode(subnodeId);
 	}
 
+	/**
+	 * Change subnode position on delete.
+	 *
+	 * @param subnodeId the subnode id
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	private void changeSubnodePositionOnDelete(int subnodeId) throws UnknownSubnodeException, EntityException,
 			UnknownNodeException {
 		Subnode delSubnode = getSubnode(subnodeId);
@@ -145,12 +235,30 @@ public class SubnodeManager {
 		}
 	}
 
+	/**
+	 * Rename subnode.
+	 *
+	 * @param subnode the subnode
+	 * @return the subnode
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public Subnode renameSubnode(Subnode subnode) throws UnknownSubnodeException, EntityException {
 		Subnode renamedSubnode = sr.getSubnode(subnode.getId());
 		renamedSubnode.setTitle(subnode.getTitle());
 		return sr.updateSubnode(renamedSubnode);
 	}
 
+	/**
+	 * Drill up.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<Subnode> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeException, UnknownUserException {
 		Set<Subnode> subnodes = new HashSet<Subnode>();
 		for (Subnode subnode : sr.getSubnodes(nodeId)) {
@@ -159,6 +267,15 @@ public class SubnodeManager {
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
+	/**
+	 * Recursive drill up.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param subnodes the subnodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<Subnode> recursiveDrillUp(int nodeId, int quantity,
 			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {
@@ -173,6 +290,17 @@ public class SubnodeManager {
 		return subnodes;
 	}
 
+	/**
+	 * Drill down.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<Subnode> drillDown(int uid, int treeId, int nodeId) throws EntityException, UnknownNodeException, UnknownUserException  {
 		if (nodeId == 0) {
 			Node rootNode = new NodeRepository().getRoot(treeId);
@@ -188,6 +316,15 @@ public class SubnodeManager {
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), subnodes);
 	}
 
+	/**
+	 * Recursive drill down.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param subnodes the subnodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<Subnode> recursiveDrillDown(int nodeId, int quantity,
 			Set<Subnode> subnodes) throws EntityException {
 		if (quantity > 0) {

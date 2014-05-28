@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager;
 
 import java.util.Date;
@@ -19,12 +22,31 @@ import cdar.dal.exceptions.WrongCredentialsException;
 import cdar.dal.user.UserRepository;
 import cdar.dal.wiki.WikiRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserManager.
+ */
 public class UserManager {
+	
+	/** The user repository. */
 	private UserRepository userRepository = new UserRepository();
 
+	/**
+	 * Instantiates a new user manager.
+	 */
 	public UserManager() {
 	}
 
+	/**
+	 * Login user.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 * @throws WrongCredentialsException the wrong credentials exception
+	 */
 	public User loginUser(String username, String password)
 			throws UnknownUserException, EntityException,
 			WrongCredentialsException {
@@ -47,6 +69,14 @@ public class UserManager {
 		}
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param user the user
+	 * @param createWikiUser the create wiki user
+	 * @return the user
+	 * @throws UsernameInvalidException the username invalid exception
+	 */
 	public User createUser(User user, boolean createWikiUser)
 			throws UsernameInvalidException {
 		try {
@@ -66,6 +96,15 @@ public class UserManager {
 		}
 	}
 
+	/**
+	 * Delete user.
+	 *
+	 * @param userId the user id
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 */
 	public void deleteUser(int userId) throws UnknownUserException,
 			EntityException, UnknownTreeException, UnknownProjectTreeException {
 		TreeManager tm = new TreeManager(UserRole.PRODUCER);
@@ -82,6 +121,14 @@ public class UserManager {
 		userRepository.deleteUser(userId);
 	}
 
+	/**
+	 * Update user.
+	 *
+	 * @param user the user
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 */
 	public User updateUser(User user) throws UnknownUserException,
 			EntityException {
 		User updatedUser = userRepository.getUser(user.getId());
@@ -100,27 +147,71 @@ public class UserManager {
 		return userRepository.updateUser(updatedUser);
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @param username the username
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public User getUser(String username) throws UnknownUserException {
 		return userRepository.getUser(username);
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @param userId the user id
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 */
 	public User getUser(int userId) throws UnknownUserException,
 			EntityException {
 		return userRepository.getUser(userId);
 	}
 
+	/**
+	 * Gets the users.
+	 *
+	 * @return the users
+	 * @throws EntityException the entity exception
+	 */
 	public List<User> getUsers() throws EntityException {
 		return userRepository.getUsers();
 	}
 
+	/**
+	 * Gets the users by tree.
+	 *
+	 * @param isProducer the is producer
+	 * @param treeId the tree id
+	 * @return the users by tree
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public List<User> getUsersByTree(boolean isProducer, int treeId) throws EntityException, UnknownUserException {
 		return userRepository.getUsersByTree(isProducer, treeId);
 	}
 
+	/**
+	 * Sets the consumer user right.
+	 *
+	 * @param treeId the tree id
+	 * @param user the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public void setConsumerUserRight(int treeId, User user) throws UnknownUserException {
 		userRepository.setConsumerUserRight(treeId, user);		
 	}
 
+	/**
+	 * Sets the producer user right.
+	 *
+	 * @param treeId the tree id
+	 * @param user the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public void setProducerUserRight(int treeId, User user) throws UnknownUserException {
 		userRepository.setProducerUserRight(treeId, user);				
 	}

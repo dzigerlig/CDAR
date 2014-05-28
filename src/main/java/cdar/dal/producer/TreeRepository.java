@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -20,8 +23,15 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.ITreeRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TreeRepository.
+ */
 public class TreeRepository implements ITreeRepository {
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.ITreeRepository#getTrees(int)
+	 */
 	public List<Tree> getTrees(int uid) throws UnknownUserException, EntityException {
 		String sql = null;
 		if (uid == 0) {
@@ -53,6 +63,9 @@ public class TreeRepository implements ITreeRepository {
 		return trees;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.ITreeRepository#getTree(int)
+	 */
 	public Tree getTree(int treeId) throws UnknownTreeException   {
 		final String sql = String.format("SELECT MAPPING.UID,TREE.ID,TREE.CREATION_TIME,TREE.LAST_MODIFICATION_TIME,TREE.TITLE FROM %s AS TREE JOIN %s AS MAPPING ON MAPPING.KTRID = TREE.ID WHERE ID = ?",DBTableHelper.TREE,DBTableHelper.TREEMAPPING);
 
@@ -76,6 +89,9 @@ public class TreeRepository implements ITreeRepository {
 		throw new UnknownTreeException();
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.ITreeRepository#createTree(cdar.bll.entity.Tree)
+	 */
 	public Tree createTree(Tree tree) throws CreationException   {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE) VALUES (?, ?)",DBTableHelper.TREE);
 		final String sql2 = String.format("INSERT INTO %s (uid, ktrid) VALUES (?, ?)",DBTableHelper.TREEMAPPING);
@@ -107,6 +123,9 @@ public class TreeRepository implements ITreeRepository {
 		return tree;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.ITreeRepository#updateTree(cdar.bll.entity.Tree)
+	 */
 	public Tree updateTree(Tree tree) throws UnknownTreeException   {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?", DBTableHelper.TREE);
 		try (Connection connection = DBConnection.getConnection();
@@ -123,6 +142,9 @@ public class TreeRepository implements ITreeRepository {
 		return tree;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.ITreeRepository#deleteTree(int)
+	 */
 	public void deleteTree(int treeId) throws UnknownTreeException   {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TREE);
 		try (Connection connection = DBConnection.getConnection();

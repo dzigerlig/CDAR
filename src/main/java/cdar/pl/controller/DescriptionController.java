@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller;
 
 import javax.ws.rs.GET;
@@ -8,8 +11,18 @@ import javax.ws.rs.core.Response;
 
 import cdar.bll.entity.CdarDescriptions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DescriptionController.
+ */
 @Path("descriptions")
 public class DescriptionController {
+	
+	/**
+	 * Gets the descriptions.
+	 *
+	 * @return the descriptions
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDescriptions() {

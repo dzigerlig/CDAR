@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.helpers;
 
 import java.text.DateFormat;
@@ -6,17 +9,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DateHelper.
+ */
 public class DateHelper {
 
+	/** The tz. */
 	private static TimeZone tz = TimeZone.getTimeZone("UTC");
+	
+	/** The df. */
 	private static DateFormat df = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ssX");
 
+	/**
+	 * Gets the date.
+	 *
+	 * @param date the date
+	 * @return the date
+	 */
 	public static String getDate(Date date) {
 		df.setTimeZone(tz);
 		return df.format(date);
 	}
 
+	/**
+	 * Gets the date.
+	 *
+	 * @param value the value
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date getDate(String value) throws ParseException {
 		try {
 			return df.parse(value);

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.importexport;
 
 import java.io.StringReader;
@@ -49,9 +52,23 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConsumerImportExportManager.
+ */
 public class ConsumerImportExportManager {
+	
+	/** The ptxr. */
 	private ProjectTreeXmlRepository ptxr = new ProjectTreeXmlRepository();
 
+	/**
+	 * Gets the xml trees.
+	 *
+	 * @param treeId the tree id
+	 * @return the xml trees
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownEntityException the unknown entity exception
+	 */
 	public Set<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException  {
 		Set<TreeXml> xmlTrees = new HashSet<TreeXml>();
 
@@ -62,6 +79,17 @@ public class ConsumerImportExportManager {
 		return xmlTrees;
 	}
 	
+	/**
+	 * Gets the tree simple xml string.
+	 *
+	 * @param treeId the tree id
+	 * @return the tree simple xml string
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	private String getTreeSimpleXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownTreeException, UnknownUserException {
 		ProjectTreeSimple pts = new ProjectTreeSimple(treeId);
 		try {
@@ -76,6 +104,19 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
+	/**
+	 * Gets the tree full xml string.
+	 *
+	 * @param treeId the tree id
+	 * @return the tree full xml string
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	private String getTreeFullXmlString(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException, UnknownUserException {
 		ProjectTreeFull pts = new ProjectTreeFull(treeId);
 		try {
@@ -90,6 +131,12 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
+	/**
+	 * Gets the project tree simple.
+	 *
+	 * @param xmlString the xml string
+	 * @return the project tree simple
+	 */
 	private ProjectTreeSimple getProjectTreeSimple(String xmlString) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ProjectTreeSimple.class);
@@ -103,6 +150,12 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 	
+	/**
+	 * Gets the project tree full.
+	 *
+	 * @param xmlString the xml string
+	 * @return the project tree full
+	 */
 	private ProjectTreeFull getProjectTreeFull(String xmlString) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(ProjectTreeFull.class);
@@ -116,6 +169,22 @@ public class ConsumerImportExportManager {
 		return null;
 	}
 
+	/**
+	 * Adds the xml tree simple.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param title the title
+	 * @param xmlString the xml string
+	 * @return the tree xml
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 */
 	public TreeXml addXmlTreeSimple(int uid, int treeId, String title, String xmlString) throws EntityException, UnknownTreeException, UnknownNodeException, UnknownUserException, UnknownXmlTreeException, UnknownProjectTreeException, UnknownProjectNodeLinkException    {
 		xmlString = xmlString==null ? getTreeSimpleXmlString(treeId) : xmlString;
 		TreeXml xmlTree = new TreeXml();
@@ -127,15 +196,45 @@ public class ConsumerImportExportManager {
 		return ptxr.createXmlTree(xmlTree);
 	}
 
+	/**
+	 * Delete xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws Exception the exception
+	 */
 	public void deleteXmlTree(int xmlTreeId) throws UnknownXmlTreeException, Exception {
 		ptxr.deleteXmlTree(ptxr.getXmlTree(xmlTreeId));
 	}
 
+	/**
+	 * Gets the xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @return the xml tree
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public TreeXml getXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException {
 		return ptxr.getXmlTree(xmlTreeId);
 	}
 
 
+	/**
+	 * Clean tree.
+	 *
+	 * @param projectTreeId the project tree id
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownCommentException the unknown comment exception
+	 */
 	private void cleanTree(int projectTreeId) throws UnknownXmlTreeException, EntityException, UnknownNodeException, UnknownUserException, UnknownDirectoryException, UnknownTreeException, UnknownTemplateException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException {
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
@@ -160,6 +259,23 @@ public class ConsumerImportExportManager {
 		}
 	}
 
+	/**
+	 * Sets the xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @param cleanTree the clean tree
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownCommentException the unknown comment exception
+	 */
 	public void setXmlTree(int xmlTreeId, boolean cleanTree) throws UnknownXmlTreeException, EntityException, UnknownTemplateException, UnknownDirectoryException, UnknownTreeException, CreationException, UnknownNodeException, UnknownUserException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownCommentException   {
 		TreeXml treeXml = getXmlTree(xmlTreeId);
 		
@@ -174,6 +290,17 @@ public class ConsumerImportExportManager {
 		}
 	}
 
+	/**
+	 * Sets the full xml tree.
+	 *
+	 * @param treeXml the new full xml tree
+	 * @throws CreationException the creation exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 */
 	private void setFullXmlTree(TreeXml treeXml) throws CreationException, UnknownProjectTreeException, UnknownProjectNodeException, UnknownUserException, EntityException, UnknownDirectoryException {
 		ProjectTreeFull projectTreeFull = getProjectTreeFull(treeXml.getXmlString());
 		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
@@ -275,6 +402,17 @@ public class ConsumerImportExportManager {
 		}
 	}
 
+	/**
+	 * Sets the simple xml tree.
+	 *
+	 * @param treeXml the new simple xml tree
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 */
 	private void setSimpleXmlTree(TreeXml treeXml) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeException, EntityException, UnknownUserException, UnknownDirectoryException {
 		ProjectTreeSimple projectTreeSimple = getProjectTreeSimple(treeXml.getXmlString());
 		DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
@@ -353,6 +491,23 @@ public class ConsumerImportExportManager {
 		}
 	}
 
+	/**
+	 * Adds the xml tree full.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param title the title
+	 * @param xmlString the xml string
+	 * @return the tree xml
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public TreeXml addXmlTreeFull(int uid, int treeId, String title, String xmlString) throws UnknownProjectTreeException, EntityException, UnknownXmlTreeException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException, UnknownUserException {
 		xmlString = xmlString==null ? getTreeFullXmlString(treeId) : xmlString;
 		TreeXml xmlTree = new TreeXml();
@@ -364,6 +519,14 @@ public class ConsumerImportExportManager {
 		return ptxr.createXmlTree(xmlTree);
 	}
 
+	/**
+	 * Update xml tree.
+	 *
+	 * @param treeXml the tree xml
+	 * @return the tree xml
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public TreeXml updateXmlTree(TreeXml treeXml) throws UnknownXmlTreeException, EntityException {
 		TreeXml updatedTreeXml = ptxr.getXmlTree(treeXml.getId());
 		if (treeXml.getTitle()!=null) {

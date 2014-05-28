@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -18,12 +21,28 @@ import cdar.bll.manager.consumer.ProjectNodeManager;
 import cdar.bll.wiki.MediaWikiManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeController.
+ */
 @Path("ptrees/{ptreeid}/nodes")
 public class ProjectNodeController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The pnm. */
 	private ProjectNodeManager pnm = new ProjectNodeManager();
 
+	/**
+	 * Gets the nodes.
+	 *
+	 * @param treeId the tree id
+	 * @return the nodes
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNodes(@PathParam("ptreeid") int treeId) {
@@ -34,6 +53,14 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Adds the node.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNode(@PathParam("ptreeid") int treeId,
@@ -50,6 +77,12 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param nodeId the node id
+	 * @return the node
+	 */
 	@GET
 	@Path("{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +94,15 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Update node.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @param node the node
+	 * @return the response
+	 */
 	@POST
 	@Path("{nodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -79,6 +121,12 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Gets the node wiki entry.
+	 *
+	 * @param nodeId the node id
+	 * @return the node wiki entry
+	 */
 	@GET
 	@Path("{nodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,6 +140,13 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Update node wiki entry.
+	 *
+	 * @param uid the uid
+	 * @param wikiEntry the wiki entry
+	 * @return the response
+	 */
 	@POST
 	@Path("{nodeid}/wiki")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -106,6 +161,13 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Drill up node.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -118,6 +180,14 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Drill down node.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -130,6 +200,14 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Rename node.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the response
+	 */
 	@POST
 	@Path("{nodeid}/rename")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -146,6 +224,14 @@ public class ProjectNodeController {
 		}
 	}
 
+	/**
+	 * Delete node.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

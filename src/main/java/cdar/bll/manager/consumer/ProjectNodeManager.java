@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.consumer;
 
 import java.util.HashSet;
@@ -20,9 +23,23 @@ import cdar.dal.user.UserRepository;
 
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeManager.
+ */
 public class ProjectNodeManager {
+	
+	/** The pnr. */
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	
+	/**
+	 * Gets the project nodes.
+	 *
+	 * @param ptreeId the ptree id
+	 * @return the project nodes
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public Set<ProjectNode> getProjectNodes(int ptreeId) throws UnknownProjectTreeException, EntityException {
 		Set<ProjectNode> projectNodes = new HashSet<ProjectNode>();
 		
@@ -33,10 +50,30 @@ public class ProjectNodeManager {
 		return projectNodes;
 	}
 	
+	/**
+	 * Gets the project node.
+	 *
+	 * @param projectNodeId the project node id
+	 * @return the project node
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectNode getProjectNode(int projectNodeId) throws UnknownProjectNodeException, EntityException {
 		return pnr.getNode(projectNodeId);
 	}
 
+	/**
+	 * Adds the project node.
+	 *
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws CreationException the creation exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public ProjectNode addProjectNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException, UnknownUserException, UnknownTreeException {
 		boolean createSubnode = true;
 		if(projectNode.getWikititle()!=null) {
@@ -66,10 +103,28 @@ public class ProjectNodeManager {
 		return projectNode;
 	}
 
+	/**
+	 * Delete project node.
+	 *
+	 * @param projectNodeId the project node id
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 */
 	public void deleteProjectNode(int projectNodeId) throws UnknownProjectNodeException {
 		pnr.deleteNode(projectNodeId);
 	}
 
+	/**
+	 * Update project node.
+	 *
+	 * @param userId the user id
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public ProjectNode updateProjectNode(int userId, ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownUserException, UnknownTreeException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getNode(projectNode.getId());
 		
@@ -107,11 +162,31 @@ public class ProjectNodeManager {
 	}
 
 
+	/**
+	 * Drill up.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<ProjectNode> drillUp(int uid, int nodeId) throws UnknownProjectNodeException, EntityException, UnknownUserException {
 		Set<ProjectNode> nodes = new HashSet<ProjectNode>();
 		nodes.add(pnr.getNode(nodeId));
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
+	
+	/**
+	 * Recursive drill up.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param nodes the nodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<ProjectNode> recursiveDrillUp(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectNode node : pnr.getSiblingNode(nodeId)) {
@@ -124,6 +199,19 @@ public class ProjectNodeManager {
 		}
 		return nodes;
 	}
+	
+	/**
+	 * Drill down.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Set<ProjectNode> drillDown(int uid, int treeId, int nodeId) throws EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException {
 		if (nodeId == 0) {
 			ProjectNode rootNode = getRoot(treeId);
@@ -138,6 +226,15 @@ public class ProjectNodeManager {
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), nodes);
 	}
 
+	/**
+	 * Recursive drill down.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param nodes the nodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<ProjectNode> recursiveDrillDown(int nodeId, int quantity, Set<ProjectNode> nodes) throws EntityException {
 		if (quantity > 0) {
 			for (ProjectNode node : pnr.getFollowerNode(nodeId)) {
@@ -148,12 +245,29 @@ public class ProjectNodeManager {
 		return nodes;
 	}
 
+	/**
+	 * Rename node.
+	 *
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public ProjectNode renameNode(ProjectNode projectNode) throws UnknownProjectNodeException, EntityException, UnknownNodeException {
 		ProjectNode updatedProjectNode = pnr.getNode(projectNode.getId());
 		updatedProjectNode.setTitle(projectNode.getTitle());
 		return pnr.updateNode(updatedProjectNode);
 	}
 
+	/**
+	 * Gets the root.
+	 *
+	 * @param treeId the tree id
+	 * @return the root
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	private ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
 		return pnr.getRoot(treeId);
 	}

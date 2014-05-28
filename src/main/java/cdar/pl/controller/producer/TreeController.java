@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.producer;
 
 import java.util.List;
@@ -22,12 +25,28 @@ import cdar.bll.manager.UserManager;
 import cdar.bll.manager.producer.SubnodeManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TreeController.
+ */
 @Path("ktrees")
 public class TreeController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The ktm. */
 	private TreeManager ktm = new TreeManager(UserRole.PRODUCER);
 
+	/**
+	 * Gets the knowledge trees.
+	 *
+	 * @param uid the uid
+	 * @return the knowledge trees
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getKnowledgeTrees(@HeaderParam("uid") int uid) {
@@ -38,6 +57,13 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Delete tree.
+	 *
+	 * @param uid the uid
+	 * @param tree the tree
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -54,6 +80,13 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Adds the knowledge tree.
+	 *
+	 * @param uid the uid
+	 * @param tree the tree
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addKnowledgeTree(@HeaderParam("uid") int uid, Tree tree) {
@@ -64,6 +97,12 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Gets the knowledge tree by id.
+	 *
+	 * @param treeId the tree id
+	 * @return the knowledge tree by id
+	 */
 	@GET
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +114,14 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Update knowledge tree.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param tree the tree
+	 * @return the response
+	 */
 	@POST
 	@Path("{ktreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,6 +139,12 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Gets the subnodes by tree.
+	 *
+	 * @param treeId the tree id
+	 * @return the subnodes by tree
+	 */
 	@GET
 	@Path("{ktreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -104,6 +157,12 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Gets the all users with tree right.
+	 *
+	 * @param treeId the tree id
+	 * @return the all users with tree right
+	 */
 	@GET
 	@Path("{ktreeid}/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -126,6 +185,14 @@ public class TreeController {
 		}
 	}
 
+	/**
+	 * Sets the user right.
+	 *
+	 * @param treeId the tree id
+	 * @param userId the user id
+	 * @param user the user
+	 * @return the response
+	 */
 	@POST
 	@Path("{ktreeid}/users/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)

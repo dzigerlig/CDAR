@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.producer;
 
 import java.util.HashSet;
@@ -17,9 +20,23 @@ import cdar.dal.user.UserRepository;
 
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeManager.
+ */
 public class NodeManager {
+	
+	/** The nr. */
 	private NodeRepository nr = new NodeRepository();
 
+	/**
+	 * Gets the nodes.
+	 *
+	 * @param treeId the tree id
+	 * @return the nodes
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public Set<Node> getNodes(int treeId) throws EntityException,
 			UnknownTreeException {
 		Set<Node> nodes = new HashSet<Node>();
@@ -29,15 +46,40 @@ public class NodeManager {
 		return nodes;
 	}
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param nodeId the node id
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	public Node getNode(int nodeId) throws UnknownNodeException,
 			EntityException {
 		return nr.getNode(nodeId);
 	}
 
+	/**
+	 * Delete node.
+	 *
+	 * @param nodeId the node id
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public void deleteNode(int nodeId) throws UnknownNodeException {
 		nr.deleteNode(nodeId);
 	}
 
+	/**
+	 * Adds the node.
+	 *
+	 * @param uid the uid
+	 * @param node the node
+	 * @return the node
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws CreationException the creation exception
+	 */
 	public Node addNode(int uid, Node node) throws EntityException,
 			UnknownUserException, UnknownTreeException, CreationException {
 		if (node.getDirectoryId() == 0) {
@@ -71,6 +113,14 @@ public class NodeManager {
 		return node;
 	}
 
+	/**
+	 * Rename node.
+	 *
+	 * @param node the node
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	public Node renameNode(Node node) throws UnknownNodeException,
 			EntityException {
 		Node renamedNode = nr.getNode(node.getId());
@@ -79,6 +129,14 @@ public class NodeManager {
 		return nr.updateNode(renamedNode);
 	}
 
+	/**
+	 * Update node.
+	 *
+	 * @param node the node
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	public Node updateNode(Node node) throws UnknownNodeException,
 			EntityException {
 		Node updatedNode = getNode(node.getId());
@@ -102,6 +160,16 @@ public class NodeManager {
 		return nr.updateNode(updatedNode);
 	}
 
+	/**
+	 * Drill up.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<Node> drillUp(int uid, int nodeId) throws UnknownNodeException,
 			EntityException, UnknownUserException {
 		Set<Node> nodes = new HashSet<Node>();
@@ -110,6 +178,15 @@ public class NodeManager {
 				.getDrillHierarchy(), nodes);
 	}
 
+	/**
+	 * Recursive drill up.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param nodes the nodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<Node> recursiveDrillUp(int nodeId, int quantity, Set<Node> nodes)
 			throws EntityException {
 		if (quantity > 0) {
@@ -124,6 +201,17 @@ public class NodeManager {
 		return nodes;
 	}
 
+	/**
+	 * Drill down.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<Node> drillDown(int uid, int treeId, int nodeId)
 			throws UnknownNodeException, EntityException, UnknownUserException {
 		if (nodeId == 0) {
@@ -140,6 +228,15 @@ public class NodeManager {
 				.getDrillHierarchy(), nodes);
 	}
 
+	/**
+	 * Recursive drill down.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param nodes the nodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<Node> recursiveDrillDown(int nodeId, int quantity,
 			Set<Node> nodes) throws EntityException {
 		if (quantity > 0) {
@@ -151,6 +248,14 @@ public class NodeManager {
 		return nodes;
 	}
 
+	/**
+	 * Gets the root.
+	 *
+	 * @param treeId the tree id
+	 * @return the root
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	private Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 		return nr.getRoot(treeId);

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -19,7 +22,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SubnodeRepository.
+ */
 public class SubnodeRepository {
+	
+	/**
+	 * Gets the subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the subnodes
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public List<Subnode> getSubnodes(int nodeId) throws EntityException, UnknownNodeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION FROM %s WHERE KNID = ?",DBTableHelper.SUBNODE);
 
@@ -51,6 +67,14 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
+	/**
+	 * Gets the subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the subnode
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public Subnode getSubnode(int subnodeId) throws UnknownSubnodeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KNID, TITLE, WIKITITLE, POSITION FROM %s WHERE ID = ?",DBTableHelper.SUBNODE);
 
@@ -80,6 +104,13 @@ public class SubnodeRepository {
 		throw new UnknownSubnodeException();
 	}
 	
+	/**
+	 * Gets the parent subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the parent subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<Subnode> getParentSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KNID) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID;",DBTableHelper.NODELINK, DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 
@@ -110,6 +141,13 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
+	/**
+	 * Gets the sibling subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the sibling subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<Subnode> getSiblingSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM ( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE LINK.SOURCEID IN ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID AND NODE.ID<>?) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 		List<Subnode> subnodes = new ArrayList<Subnode>();
@@ -140,6 +178,13 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 	
+	/**
+	 * Gets the follower subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the follower subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<Subnode> getFollowerSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION FROM ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID) AS NODES, %s AS SUBN WHERE SUBN.KNID=NODES.ID",DBTableHelper.NODELINK,DBTableHelper.NODE,DBTableHelper.NODEMAPPING,DBTableHelper.SUBNODE);
 
@@ -170,6 +215,14 @@ public class SubnodeRepository {
 		return subnodes;
 	}
 
+	/**
+	 * Creates the subnode.
+	 *
+	 * @param subnode the subnode
+	 * @return the subnode
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws CreationException the creation exception
+	 */
 	public Subnode createSubnode(Subnode subnode) throws UnknownNodeException, CreationException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KNID, TITLE, POSITION) VALUES (?, ?, ?, ?)",DBTableHelper.SUBNODE);
 		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.SUBNODE);
@@ -208,6 +261,13 @@ public class SubnodeRepository {
 		return subnode;
 	}
 	
+	/**
+	 * Update subnode.
+	 *
+	 * @param subnode the subnode
+	 * @return the subnode
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 */
 	public Subnode updateSubnode(Subnode subnode) throws UnknownSubnodeException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, KNID = ?, TITLE = ?, POSITION = ? WHERE id = ?",DBTableHelper.SUBNODE);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -224,6 +284,12 @@ public class SubnodeRepository {
 		return subnode;
 	}
 	
+	/**
+	 * Delete subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 */
 	public void deleteSubnode(int subnodeId) throws UnknownSubnodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.SUBNODE);
 		try (Connection connection = DBConnection.getConnection();

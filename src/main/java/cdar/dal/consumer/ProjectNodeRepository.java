@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.consumer;
 
 import java.sql.Connection;
@@ -20,7 +23,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeRepository.
+ */
 public class ProjectNodeRepository {
+	
+	/**
+	 * Gets the nodes.
+	 *
+	 * @param projectTreeId the project tree id
+	 * @return the nodes
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectNode> getNodes(int projectTreeId)
 			throws UnknownProjectTreeException, EntityException {
 		final String sql = String
@@ -58,6 +74,14 @@ public class ProjectNodeRepository {
 		return projectNodes;
 	}
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param projectNodeId the project node id
+	 * @return the node
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectNode getNode(int projectNodeId)
 			throws UnknownProjectNodeException, EntityException {
 		final String sql = String
@@ -95,6 +119,14 @@ public class ProjectNodeRepository {
 		throw new UnknownProjectNodeException();
 	}
 
+	/**
+	 * Creates the node.
+	 *
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws CreationException the creation exception
+	 */
 	public ProjectNode createNode(ProjectNode projectNode)
 			throws UnknownProjectTreeException, CreationException {
 		final String sqlProjectNode = String
@@ -161,6 +193,14 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 
+	/**
+	 * Update node.
+	 *
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public ProjectNode updateNode(ProjectNode projectNode)
 			throws UnknownProjectNodeException, UnknownNodeException {
 		final String sql = String
@@ -199,6 +239,12 @@ public class ProjectNodeRepository {
 		return projectNode;
 	}
 
+	/**
+	 * Delete node.
+	 *
+	 * @param projectNodeId the project node id
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 */
 	public void deleteNode(int projectNodeId)
 			throws UnknownProjectNodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",
@@ -217,6 +263,13 @@ public class ProjectNodeRepository {
 		}
 	}
 
+	/**
+	 * Gets the sibling node.
+	 *
+	 * @param nodeId the node id
+	 * @return the sibling node
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectNode> getSiblingNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT * FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?",
@@ -258,6 +311,13 @@ public class ProjectNodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the parent node.
+	 *
+	 * @param nodeId the node id
+	 * @return the parent node
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectNode> getParentNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KPNID",
@@ -298,6 +358,13 @@ public class ProjectNodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the follower node.
+	 *
+	 * @param nodeId the node id
+	 * @return the follower node
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectNode> getFollowerNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KPTID, NODE.NODESTATUS, NODE.INHERITEDTREEID, MAPPING.PDID FROM (SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID",
@@ -337,6 +404,14 @@ public class ProjectNodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the root.
+	 *
+	 * @param treeId the tree id
+	 * @return the root
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
 		final String sql = String
 				.format("SELECT PNODE.ID, PNODE.CREATION_TIME, PNODE.LAST_MODIFICATION_TIME, PNODE.TITLE, PNODE.WIKITITLE, PNODE.DYNAMICTREEFLAG, PNODE.NODESTATUS, PNODE.KPTID, PNODE.INHERITEDTREEID, MAPPING.PDID  FROM %s AS PNODE, %s AS MAPPING WHERE PNODE.ID NOT IN (SELECT TARGETID FROM %s) AND PNODE.DYNAMICTREEFLAG = 1 AND PNODE.ID = MAPPING.KPNID AND PNODE.KPTID=? LIMIT 1",
@@ -374,6 +449,14 @@ public class ProjectNodeRepository {
 
 	}
 
+	/**
+	 * Gets the min node.
+	 *
+	 * @param treeId the tree id
+	 * @return the min node
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	private ProjectNode getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
 		final String sql = String

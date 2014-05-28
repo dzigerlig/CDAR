@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -19,7 +22,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XmlTreeRepository.
+ */
 public class XmlTreeRepository {
+	
+	/**
+	 * Gets the xml trees.
+	 *
+	 * @param treeId the tree id
+	 * @return the xml trees
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownEntityException the unknown entity exception
+	 */
 	public List<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE KTRID = ?",DBTableHelper.TREEXML);
 
@@ -50,6 +66,14 @@ public class XmlTreeRepository {
 		return xmlTrees;
 	}
 
+	/**
+	 * Gets the xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @return the xml tree
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public TreeXml getXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 
@@ -79,6 +103,13 @@ public class XmlTreeRepository {
 		throw new UnknownXmlTreeException();
 	}
 	
+	/**
+	 * Creates the xml tree.
+	 *
+	 * @param xmlTree the xml tree
+	 * @return the tree xml
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 */
 	public TreeXml createXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.TREEXML);
 
@@ -109,6 +140,13 @@ public class XmlTreeRepository {
 		return xmlTree;
 	}
 	
+	/**
+	 * Update xml tree.
+	 *
+	 * @param xmlTree the xml tree
+	 * @return the tree xml
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 */
 	public TreeXml updateXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -123,6 +161,12 @@ public class XmlTreeRepository {
 		return xmlTree;
 	}
 	
+	/**
+	 * Delete xml tree.
+	 *
+	 * @param xmlTree the xml tree
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 */
 	public void deleteXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException   {
 		final String sql = String.format("DELETE FROM KNOWLEDGETREEXML WHERE ID = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection();

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -16,12 +19,28 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.producer.TemplateManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateController.
+ */
 @Path("ktrees/{ktreeid}/templates")
 public class TemplateController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The tm. */
 	private TemplateManager tm = new TemplateManager();
 
+	/**
+	 * Gets the templates.
+	 *
+	 * @param ktreeid the ktreeid
+	 * @return the templates
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTemplates(@PathParam("ktreeid") int ktreeid) {
@@ -32,6 +51,14 @@ public class TemplateController {
 		}
 	}
 
+	/**
+	 * Adds the template.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param template the template
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addTemplate(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Template template) {
@@ -47,6 +74,13 @@ public class TemplateController {
 		}
 	}
 
+	/**
+	 * Gets the template.
+	 *
+	 * @param treeId the tree id
+	 * @param templateId the template id
+	 * @return the template
+	 */
 	@GET
 	@Path("{templateid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +94,15 @@ public class TemplateController {
 		}
 	}
 
+	/**
+	 * Update template.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param templateId the template id
+	 * @param template the template
+	 * @return the response
+	 */
 	@POST
 	@Path("{templateid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -77,6 +120,14 @@ public class TemplateController {
 		}
 	}
 
+	/**
+	 * Delete template.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param template the template
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)

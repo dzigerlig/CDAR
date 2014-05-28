@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -22,7 +25,15 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.INodeLinkRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeLinkRepository.
+ */
 public class NodeLinkRepository implements INodeLinkRepository {
+	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinks(int)
+	 */
 	public List<NodeLink> getNodeLinks(int treeId) throws EntityException, UnknownTreeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM %s WHERE KTRID = ?", DBTableHelper.NODELINK);
 
@@ -54,6 +65,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getParentNodeLinks(int)
+	 */
 	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = TARGETID",DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -85,6 +99,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getSiblingNodeLinks(int)
+	 */
 	public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
 		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID) AND LINK.TARGETID <> ?", DBTableHelper.NODELINK,DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -117,6 +134,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getFollowerNodeLinks(int)
+	 */
 	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = SOURCEID",DBTableHelper.NODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -148,6 +168,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinksBySubnode(int)
+	 */
 	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE KSNID = ?",DBTableHelper.NODELINK);
 
@@ -179,6 +202,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLink(int)
+	 */
 	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM %s WHERE ID = ?",DBTableHelper.NODELINK);
 
@@ -208,6 +234,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		throw new UnknownNodeLinkException();
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#createNodeLink(cdar.bll.entity.NodeLink)
+	 */
 	public NodeLink createNodeLink(NodeLink nodeLink) throws UnknownTreeException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.NODELINK);
 
@@ -237,6 +266,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodeLink;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#updateNodeLink(cdar.bll.entity.NodeLink)
+	 */
 	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?",DBTableHelper.NODELINK);
 		try (Connection connection = DBConnection.getConnection();
@@ -260,6 +292,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 		return nodeLink;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#deleteNodeLink(int)
+	 */
 	public void deleteNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?", DBTableHelper.NODELINK);
 		try (Connection connection = DBConnection.getConnection();

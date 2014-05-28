@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import java.util.List;
@@ -23,12 +26,28 @@ import cdar.bll.manager.UserManager;
 import cdar.bll.manager.consumer.ProjectSubnodeManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectTreeController.
+ */
 @Path("ptrees")
 public class ProjectTreeController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The ptm. */
 	private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 
+	/**
+	 * Gets the project trees by uid.
+	 *
+	 * @param uid the uid
+	 * @return the project trees by uid
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProjectTreesByUid(@HeaderParam("uid") int uid) {
@@ -39,6 +58,13 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Adds the project tree.
+	 *
+	 * @param tree the tree
+	 * @param uid the uid
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addProjectTree(CreationTree tree,
@@ -55,6 +81,13 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Gets the project tree by id.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @return the project tree by id
+	 */
 	@GET
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +100,14 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Update project tree.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param tree the tree
+	 * @return the response
+	 */
 	@POST
 	@Path("{ptreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +126,13 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Delete tree.
+	 *
+	 * @param uid the uid
+	 * @param tree the tree
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -101,6 +149,12 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Gets the subnodes.
+	 *
+	 * @param treeId the tree id
+	 * @return the subnodes
+	 */
 	@GET
 	@Path("{ptreeid}/subnodes")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -114,6 +168,12 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Gets the all users with tree right.
+	 *
+	 * @param treeId the tree id
+	 * @return the all users with tree right
+	 */
 	@GET
 	@Path("{ptreeid}/users")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -136,6 +196,14 @@ public class ProjectTreeController {
 		}
 	}
 
+	/**
+	 * Sets the user right.
+	 *
+	 * @param treeId the tree id
+	 * @param userId the user id
+	 * @param user the user
+	 * @return the response
+	 */
 	@POST
 	@Path("{ptreeid}/users/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -18,7 +21,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateRepository.
+ */
 public class TemplateRepository {
+	
+	/**
+	 * Gets the templates.
+	 *
+	 * @param treeId the tree id
+	 * @return the templates
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public List<Template> getTemplates(int treeId) throws EntityException, UnknownTreeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, ISDEFAULT, DECISIONMADE, ISSUBNODE FROM %s WHERE KTRID = ?",DBTableHelper.TEMPLATE);
 
@@ -52,6 +68,14 @@ public class TemplateRepository {
 		return templates;
 	}
 
+	/**
+	 * Gets the template.
+	 *
+	 * @param templateId the template id
+	 * @return the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws EntityException the entity exception
+	 */
 	public Template getTemplate(int templateId) throws UnknownTemplateException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE, ISSUBNODE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
 
@@ -83,6 +107,13 @@ public class TemplateRepository {
 		throw new UnknownTemplateException();
 	}
 	
+	/**
+	 * Creates the template.
+	 *
+	 * @param template the template
+	 * @return the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	public Template createTemplate(Template template) throws UnknownTemplateException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, TITLE, TEMPLATETEXT, KTRID, ISDEFAULT, DECISIONMADE, ISSUBNODE) VALUES (?, ?, ?, ?, ?, ?, ?)",DBTableHelper.TEMPLATE);
 
@@ -124,6 +155,13 @@ public class TemplateRepository {
 		return template;
 	}
 	
+	/**
+	 * Update template.
+	 *
+	 * @param template the template
+	 * @return the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	public Template updateTemplate(Template template) throws UnknownTemplateException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, TEMPLATETEXT = ?, ISDEFAULT = ?, DECISIONMADE = ?, ISSUBNODE = ? WHERE id = ?",DBTableHelper.TEMPLATE);
 		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -153,6 +191,12 @@ public class TemplateRepository {
 		return template;
 	}
 	
+	/**
+	 * Delete template.
+	 *
+	 * @param templateId the template id
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	public void deleteTemplate(int templateId) throws UnknownTemplateException  {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TEMPLATE);
 		try (Connection connection = DBConnection.getConnection();

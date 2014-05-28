@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.producer;
 
 import java.sql.Connection;
@@ -19,7 +22,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeRepository.
+ */
 public class NodeRepository {
+	
+	/**
+	 * Gets the nodes.
+	 *
+	 * @param treeId the tree id
+	 * @return the nodes
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public List<Node> getNodes(int treeId) throws EntityException,
 			UnknownTreeException {
 		final String sql = String
@@ -56,6 +72,14 @@ public class NodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param nodeId the node id
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	public Node getNode(int nodeId) throws UnknownNodeException,
 			EntityException {
 		final String sql = String
@@ -90,6 +114,13 @@ public class NodeRepository {
 		throw new UnknownNodeException();
 	}
 
+	/**
+	 * Gets the sibling node.
+	 *
+	 * @param nodeId the node id
+	 * @return the sibling node
+	 * @throws EntityException the entity exception
+	 */
 	public List<Node> getSiblingNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT DISTINCT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM"
@@ -132,6 +163,13 @@ public class NodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the parent node.
+	 *
+	 * @param nodeId the node id
+	 * @return the parent node
+	 * @throws EntityException the entity exception
+	 */
 	public List<Node> getParentNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID=NODE.ID AND NODE.ID=MAPPING.KNID",
@@ -170,6 +208,13 @@ public class NodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Gets the follower node.
+	 *
+	 * @param nodeId the node id
+	 * @return the follower node
+	 * @throws EntityException the entity exception
+	 */
 	public List<Node> getFollowerNode(int nodeId) throws EntityException {
 		final String sql = String
 				.format("SELECT  NODE.ID, NODE.CREATION_TIME, NODE.LAST_MODIFICATION_TIME, NODE.TITLE, NODE.WIKITITLE, NODE.DYNAMICTREEFLAG, NODE.KTRID, MAPPING.DID FROM (SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KNID",
@@ -207,6 +252,14 @@ public class NodeRepository {
 		return nodes;
 	}
 
+	/**
+	 * Creates the node.
+	 *
+	 * @param node the node
+	 * @return the node
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws CreationException the creation exception
+	 */
 	public Node createNode(Node node) throws UnknownTreeException,
 			CreationException {
 		final String sqlNode = String
@@ -264,6 +317,13 @@ public class NodeRepository {
 		return node;
 	}
 
+	/**
+	 * Update node.
+	 *
+	 * @param node the node
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Node updateNode(Node node) throws UnknownNodeException {
 		final String sqlNode = String
 				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ?, DYNAMICTREEFLAG = ?, WIKITITLE = ?  WHERE id = ?",
@@ -301,6 +361,12 @@ public class NodeRepository {
 		return node;
 	}
 
+	/**
+	 * Delete node.
+	 *
+	 * @param nodeId the node id
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public void deleteNode(int nodeId) throws UnknownNodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",
 				DBTableHelper.NODE);
@@ -316,6 +382,14 @@ public class NodeRepository {
 		}
 	}
 
+	/**
+	 * Gets the root.
+	 *
+	 * @param treeId the tree id
+	 * @return the root
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 
@@ -352,6 +426,14 @@ public class NodeRepository {
 		}
 	}
 
+	/**
+	 * Gets the min node.
+	 *
+	 * @param treeId the tree id
+	 * @return the min node
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	private Node getMinNode(int treeId) throws EntityException,
 			UnknownNodeException {
 

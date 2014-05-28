@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.consumer;
 
 import java.sql.Connection;
@@ -24,7 +27,15 @@ import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 import cdar.dal.interfaces.INodeLinkRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeLinkRepository.
+ */
 public class ProjectNodeLinkRepository implements INodeLinkRepository {
+	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinks(int)
+	 */
 	public List<NodeLink> getNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM %s WHERE KPTID = ?",DBTableHelper.PROJECTNODELINK);
 
@@ -53,6 +64,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return projectNodeLinks;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#createNodeLink(cdar.bll.entity.NodeLink)
+	 */
 	public NodeLink createNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
@@ -81,6 +95,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return projectNodeLink;
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#deleteNodeLink(int)
+	 */
 	public void deleteNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
@@ -95,6 +112,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getParentNodeLinks(int)
+	 */
 	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = TARGETID",DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -127,6 +147,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 	
+		/* (non-Javadoc)
+		 * @see cdar.dal.interfaces.INodeLinkRepository#getSiblingNodeLinks(int)
+		 */
 		public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
 			final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID) AND LINK.TARGETID <> ?",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -160,6 +183,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getFollowerNodeLinks(int)
+	 */
 	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = SOURCEID", DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
@@ -192,6 +218,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinksBySubnode(int)
+	 */
 	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE KPNSNID = ?",DBTableHelper.PROJECTNODELINK);
 
@@ -223,6 +252,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		return nodelinks;
 	}
 
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLink(int)
+	 */
 	public NodeLink getNodeLink(int nodeLinkId) throws EntityException, UnknownNodeLinkException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
 
@@ -253,6 +285,9 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 		throw new UnknownNodeLinkException();
 	}
 	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#updateNodeLink(cdar.bll.entity.NodeLink)
+	 */
 	public NodeLink updateNodeLink(NodeLink updatedNodeLink) throws UnknownNodeLinkException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();

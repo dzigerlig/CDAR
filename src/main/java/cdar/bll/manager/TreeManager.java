@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager;
 
 import java.util.ArrayList;
@@ -39,10 +42,23 @@ import cdar.dal.producer.DirectoryRepository;
 import cdar.dal.producer.TreeRepository;
 import cdar.dal.user.UserRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TreeManager.
+ */
 public class TreeManager {
+	
+	/** The tree repository. */
 	private ITreeRepository treeRepository;
+	
+	/** The user role. */
 	private UserRole userRole;
 
+	/**
+	 * Instantiates a new tree manager.
+	 *
+	 * @param userRole the user role
+	 */
 	public TreeManager(UserRole userRole) {
 		setUserRole(userRole);
 		if (getUserRole() == UserRole.CONSUMER) {
@@ -52,6 +68,14 @@ public class TreeManager {
 		}
 	}
 
+	/**
+	 * Gets the trees.
+	 *
+	 * @param uid the uid
+	 * @return the trees
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 */
 	public Set<Tree> getTrees(int uid) throws UnknownUserException,
 			EntityException {
 		Set<Tree> trees = new HashSet<Tree>();
@@ -61,6 +85,17 @@ public class TreeManager {
 		return trees;
 	}
 
+	/**
+	 * Adds the tree.
+	 *
+	 * @param uid the uid
+	 * @param tree the tree
+	 * @return the tree
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 */
 	public Tree addTree(int uid, Tree tree) throws UnknownUserException,
 			EntityException, CreationException, UnknownDirectoryException {
 		User user = new UserRepository().getUser(uid);
@@ -79,6 +114,19 @@ public class TreeManager {
 		return tree;
 	}
 
+	/**
+	 * Adds the knowledge tree to project tree.
+	 *
+	 * @param ktreeId the ktree id
+	 * @param ptreeId the ptree id
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 */
 	public void addKnowledgeTreeToProjectTree(int ktreeId, int ptreeId)
 			throws EntityException, UnknownUserException, CreationException,
 			UnknownTreeException, UnknownProjectTreeException,
@@ -160,16 +208,42 @@ public class TreeManager {
 		}
 	}
 
+	/**
+	 * Delete tree.
+	 *
+	 * @param ktreeId the ktree id
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 */
 	public void deleteTree(int ktreeId) throws UnknownTreeException,
 			UnknownProjectTreeException {
 		treeRepository.deleteTree(ktreeId);
 	}
 
+	/**
+	 * Gets the tree.
+	 *
+	 * @param treeId the tree id
+	 * @return the tree
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public Tree getTree(int treeId) throws UnknownTreeException,
 			UnknownProjectTreeException, EntityException {
 		return treeRepository.getTree(treeId);
 	}
 
+	/**
+	 * Update tree.
+	 *
+	 * @param tree the tree
+	 * @return the tree
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 */
 	public Tree updateTree(Tree tree) throws UnknownTreeException,
 			UnknownProjectTreeException, EntityException,
 			UnknownDirectoryException {
@@ -182,14 +256,31 @@ public class TreeManager {
 		return treeRepository.updateTree(updatedTree);
 	}
 
+	/**
+	 * Gets the user role.
+	 *
+	 * @return the user role
+	 */
 	public UserRole getUserRole() {
 		return userRole;
 	}
 
+	/**
+	 * Sets the user role.
+	 *
+	 * @param userRole the new user role
+	 */
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
 
+	/**
+	 * Update directory.
+	 *
+	 * @param tree the tree
+	 * @throws EntityException the entity exception
+	 * @throws UnknownDirectoryException the unknown directory exception
+	 */
 	private void updateDirectory(Tree tree) throws EntityException,
 			UnknownDirectoryException {
 		IDirectoryRepository directoryRepository;

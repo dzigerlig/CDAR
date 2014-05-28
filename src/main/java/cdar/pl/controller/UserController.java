@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller;
 
 import java.util.List;
@@ -14,10 +17,21 @@ import javax.ws.rs.core.Response;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserController.
+ */
 @Path("users")
 public class UserController {
+	
+	/** The user manager. */
 	private UserManager userManager = new UserManager();
 	
+	/**
+	 * Gets the users.
+	 *
+	 * @return the users
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUsers() {
@@ -34,6 +48,13 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * Login.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return the response
+	 */
 	@GET
 	@Path("login")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -48,6 +69,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param user the user
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser(User user) {
@@ -61,6 +88,12 @@ public class UserController {
 		}
 	}
 
+	/**
+	 * Edits the user.
+	 *
+	 * @param user the user
+	 * @return the response
+	 */
 	@POST
 	@Path("{uid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -74,6 +107,12 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * Delete user.
+	 *
+	 * @param user the user
+	 * @return the response
+	 */
 	@POST
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)

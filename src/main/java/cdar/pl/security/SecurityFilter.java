@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.security;
 
 import java.io.IOException;
@@ -16,8 +19,16 @@ import org.glassfish.jersey.server.ExtendedUriInfo;
 import cdar.bll.entity.User;
 import cdar.bll.manager.UserManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SecurityFilter.
+ */
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
+	
+	/* (non-Javadoc)
+	 * @see javax.ws.rs.container.ContainerRequestFilter#filter(javax.ws.rs.container.ContainerRequestContext)
+	 */
 	@Override
 	public void filter(ContainerRequestContext requestContext)
 			throws IOException {
@@ -52,6 +63,11 @@ public class SecurityFilter implements ContainerRequestFilter {
 		}
 	}
 
+	/**
+	 * Abort request.
+	 *
+	 * @param requestContext the request context
+	 */
 	private void abortRequest(ContainerRequestContext requestContext) {
 		requestContext.abortWith(Response.status(Status.UNAUTHORIZED)
 				.header(HttpHeaders.WWW_AUTHENTICATE, "CDAR")

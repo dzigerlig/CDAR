@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -16,12 +19,28 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.CommentManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommentController.
+ */
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/comments")
 public class CommentController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The cm. */
 	private CommentManager cm = new CommentManager();
 
+	/**
+	 * Gets the comments.
+	 *
+	 * @param nodeId the node id
+	 * @return the comments
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getComments(@PathParam("nodeid") int nodeId) {
@@ -32,6 +51,15 @@ public class CommentController {
 		}
 	}
 
+	/**
+	 * Adds the comment.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @param comment the comment
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addComment(@HeaderParam("uid") int uid,
@@ -51,6 +79,12 @@ public class CommentController {
 		}
 	}
 
+	/**
+	 * Gets the comment.
+	 *
+	 * @param commentId the comment id
+	 * @return the comment
+	 */
 	@GET
 	@Path("{commentid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -62,6 +96,15 @@ public class CommentController {
 		}
 	}
 
+	/**
+	 * Update comment.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param commentId the comment id
+	 * @param comment the comment
+	 * @return the response
+	 */
 	@POST
 	@Path("{commentid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -80,6 +123,14 @@ public class CommentController {
 		}
 	}
 
+	/**
+	 * Delete comment.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param comment the comment
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

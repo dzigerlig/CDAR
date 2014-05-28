@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -17,12 +20,28 @@ import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectDirectoryController.
+ */
 @Path("ptrees/{ptreeid}/directories")
 public class ProjectDirectoryController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The pdm. */
 	DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 
+	/**
+	 * Gets the directories.
+	 *
+	 * @param treeId the tree id
+	 * @return the directories
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDirectories(@PathParam("ptreeid") int treeId) {
@@ -33,6 +52,14 @@ public class ProjectDirectoryController {
 		}
 	}
 
+	/**
+	 * Adds the directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addDirectory(@HeaderParam("uid") int uid,
@@ -48,6 +75,12 @@ public class ProjectDirectoryController {
 		}
 	}
 
+	/**
+	 * Gets the directory.
+	 *
+	 * @param directoryId the directory id
+	 * @return the directory
+	 */
 	@GET
 	@Path("{directoryid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -59,6 +92,15 @@ public class ProjectDirectoryController {
 		}
 	}
 
+	/**
+	 * Update directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directoryId the directory id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Path("{directoryid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -77,6 +119,14 @@ public class ProjectDirectoryController {
 		}
 	}
 
+	/**
+	 * Delete directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

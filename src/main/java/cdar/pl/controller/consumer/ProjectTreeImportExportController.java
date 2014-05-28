@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -17,10 +20,22 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectTreeImportExportController.
+ */
 @Path("ptrees/{treeid}/exports")
 public class ProjectTreeImportExportController {
+	
+	/** The ciem. */
 	private ConsumerImportExportManager ciem = new ConsumerImportExportManager();
 
+	/**
+	 * Gets the xml trees.
+	 *
+	 * @param treeId the tree id
+	 * @return the xml trees
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getXmlTrees(@PathParam("treeid") int treeId) {
@@ -31,6 +46,12 @@ public class ProjectTreeImportExportController {
 		}
 	}
 	
+	/**
+	 * Gets the xml file string.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @return the xml file string
+	 */
 	@GET
 	@Path("{xmltreeid}/filexml")
 	@Produces(MediaType.APPLICATION_XML)
@@ -43,6 +64,14 @@ public class ProjectTreeImportExportController {
 		}
 	}
 	
+	/**
+	 * Adds the xml tree.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param treeXml the tree xml
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addXmlTree(@HeaderParam("uid") int uid, @PathParam("treeid") int treeId, TreeXml treeXml) {
@@ -58,6 +87,13 @@ public class ProjectTreeImportExportController {
 		} 
 	}
 	
+	/**
+	 * Gets the xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @param uid the uid
+	 * @return the xml tree
+	 */
 	@GET
 	@Path("{xmltreeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +105,12 @@ public class ProjectTreeImportExportController {
 		}
 	}
 	
+	/**
+	 * Update xml tree.
+	 *
+	 * @param treeXml the tree xml
+	 * @return the response
+	 */
 	@POST
 	@Path("{xmltreeid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -82,6 +124,13 @@ public class ProjectTreeImportExportController {
 		}
 	}
 	
+	/**
+	 * Sets the xml tree.
+	 *
+	 * @param xmlTreeId the xml tree id
+	 * @param cleantree the cleantree
+	 * @return the response
+	 */
 	@GET
 	@Path("{xmltreeid}/set")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -95,6 +144,12 @@ public class ProjectTreeImportExportController {
 		}
 	}
 	
+	/**
+	 * Delete xml tree.
+	 *
+	 * @param treeXml the tree xml
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

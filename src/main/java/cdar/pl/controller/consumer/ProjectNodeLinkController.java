@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.consumer;
 
 import javax.ws.rs.Consumes;
@@ -16,12 +19,28 @@ import cdar.bll.manager.LockingManager;
 import cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeLinkController.
+ */
 @Path("ptrees/{ptreeid}/links")
 public class ProjectNodeLinkController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The pnlm. */
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 
+	/**
+	 * Gets the node link.
+	 *
+	 * @param treeId the tree id
+	 * @return the node link
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getNodeLink(@PathParam("ptreeid") int treeId) {
@@ -32,6 +51,14 @@ public class ProjectNodeLinkController {
 		}
 	}
 
+	/**
+	 * Adds the node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param projectNodeLink the project node link
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addNodeLink(@HeaderParam("uid") int uid,
@@ -48,6 +75,14 @@ public class ProjectNodeLinkController {
 		}
 	}
 
+	/**
+	 * Update node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeLink the node link
+	 * @return the response
+	 */
 	@POST
 	@Path("{linkid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -64,6 +99,13 @@ public class ProjectNodeLinkController {
 		}
 	}
 
+	/**
+	 * Drill up node link.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("nodes/{nodeid}/drillup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,6 +118,14 @@ public class ProjectNodeLinkController {
 		}
 	}
 
+	/**
+	 * Drill down node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("nodes/{nodeid}/drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +138,14 @@ public class ProjectNodeLinkController {
 		}
 	}
 
+	/**
+	 * Delete node link.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeLink the node link
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Produces(MediaType.APPLICATION_JSON)

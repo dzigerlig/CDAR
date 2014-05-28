@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.consumer;
 
 import java.util.ArrayList;
@@ -20,9 +23,23 @@ import cdar.dal.exceptions.UnknownUserException;
 import cdar.dal.user.UserRepository;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectNodeLinkManager.
+ */
 public class ProjectNodeLinkManager {
+	
+	/** The pnlr. */
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 
+	/**
+	 * Gets the project node links.
+	 *
+	 * @param projectTreeId the project tree id
+	 * @return the project node links
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 */
 	public Set<NodeLink> getProjectNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
 		Set<NodeLink> projectNodeLinks = new HashSet<NodeLink>();
 		
@@ -33,10 +50,26 @@ public class ProjectNodeLinkManager {
 		return projectNodeLinks;
 	}
 
+	/**
+	 * Adds the project node link.
+	 *
+	 * @param projectNodeLink the project node link
+	 * @return the node link
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 */
 	public NodeLink addProjectNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
 		return pnlr.createNodeLink(projectNodeLink);
 	}
 	
+	/**
+	 * Update link.
+	 *
+	 * @param nodeLink the node link
+	 * @return the node link
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeLinkException the unknown node link exception
+	 */
 	public NodeLink updateLink(NodeLink nodeLink) throws UnknownProjectNodeLinkException, EntityException, UnknownNodeLinkException {
 		NodeLink updatedProjectNodeLink = pnlr.getNodeLink(nodeLink.getId());
 		if (nodeLink.getTreeId()!=0) {
@@ -54,19 +87,56 @@ public class ProjectNodeLinkManager {
 		return pnlr.updateNodeLink(updatedProjectNodeLink);
 	}
 	
+	/**
+	 * Gets the project node link.
+	 *
+	 * @param projectNodeLinkId the project node link id
+	 * @return the project node link
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeLinkException the unknown node link exception
+	 */
 	public NodeLink getProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException, EntityException, UnknownNodeLinkException {
 		return pnlr.getNodeLink(projectNodeLinkId);
 	}
 	
+	/**
+	 * Delete project node link.
+	 *
+	 * @param projectNodeLinkId the project node link id
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 */
 	public void deleteProjectNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
 		pnlr.deleteNodeLink(projectNodeLinkId);
 	}
 
+	/**
+	 * Drill up.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeLinkException the unknown node link exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<NodeLink> drillUp(int uid, int nodeId) throws EntityException, UnknownNodeLinkException, UnknownTreeException, UnknownUserException {
 		Set<NodeLink> links = new HashSet<NodeLink>();
 		return recursiveDrillUp(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 	
+	/**
+	 * Drill down.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<NodeLink> drillDown(int uid, int treeId, int nodeId) throws UnknownNodeException, EntityException, UnknownUserException  {
 		if (nodeId == 0) {
 			ProjectNode rootNode = new ProjectNodeRepository().getRoot(treeId);
@@ -80,6 +150,17 @@ public class ProjectNodeLinkManager {
 		return recursiveDrillDown(nodeId, new UserRepository().getUser(uid).getDrillHierarchy(), links);
 	}
 
+	/**
+	 * Recursive drill up.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param links the links
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeLinkException the unknown node link exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	private Set<NodeLink> recursiveDrillUp(int nodeId, int quantity, Set<NodeLink> links) throws EntityException, UnknownNodeLinkException, UnknownTreeException {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : pnlr.getSiblingNodeLinks(nodeId)) {
@@ -93,6 +174,16 @@ public class ProjectNodeLinkManager {
 		return links;
 	}
 	
+	/**
+	 * Recursive drill down.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param links the links
+	 * @return the sets the
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 */
 	private Set<NodeLink> recursiveDrillDown(int nodeId, int quantity, Set<NodeLink> links) throws UnknownNodeException, EntityException  {
 		if (quantity > 0) {
 			for (NodeLink nodeLink : pnlr.getFollowerNodeLinks(nodeId)) {
@@ -103,6 +194,14 @@ public class ProjectNodeLinkManager {
 		return links;
 	}
 
+	/**
+	 * Gets the project node links by subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the project node links by subnode
+	 * @throws EntityException the entity exception
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 */
 	public List<NodeLink> getProjectNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
 		List<NodeLink> nodeLinks = new ArrayList<NodeLink>();
 
@@ -113,6 +212,14 @@ public class ProjectNodeLinkManager {
 		return nodeLinks;
 	}
 	
+	/**
+	 * Update node link.
+	 *
+	 * @param nodelink the nodelink
+	 * @return the node link
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeLinkException the unknown node link exception
+	 */
 	public NodeLink updateNodeLink(NodeLink nodelink) throws EntityException, UnknownNodeLinkException {
 		NodeLink updatedNodeLink = pnlr.getNodeLink(nodelink.getId());
 		if (nodelink.getSubnodeId()!=0) {

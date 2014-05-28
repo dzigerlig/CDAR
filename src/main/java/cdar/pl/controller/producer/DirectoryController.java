@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.producer;
 
 import javax.ws.rs.Consumes;
@@ -17,12 +20,28 @@ import cdar.bll.manager.DirectoryManager;
 import cdar.bll.manager.LockingManager;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DirectoryController.
+ */
 @Path("ktrees/{ktreeid}/directories")
 public class DirectoryController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The dm. */
 	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 
+	/**
+	 * Gets the directories.
+	 *
+	 * @param treeId the tree id
+	 * @return the directories
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDirectories(@PathParam("ktreeid") int treeId) {
@@ -33,6 +52,14 @@ public class DirectoryController {
 		}
 	}
 
+	/**
+	 * Adds the directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addDirectory(@HeaderParam("uid") int uid,@PathParam("ktreeid") int treeId, Directory directory) {
@@ -47,6 +74,14 @@ public class DirectoryController {
 		}
 	}
 
+	/**
+	 * Delete directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -62,6 +97,15 @@ public class DirectoryController {
 		}
 	}
 
+	/**
+	 * Update directory.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param directoryId the directory id
+	 * @param directory the directory
+	 * @return the response
+	 */
 	@POST
 	@Path("{directoryid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -78,6 +122,12 @@ public class DirectoryController {
 		}
 	}
 
+	/**
+	 * Gets the directory.
+	 *
+	 * @param directoryId the directory id
+	 * @return the directory
+	 */
 	@GET
 	@Path("{directoryid}")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.consumer;
 
 import java.sql.Connection;
@@ -20,7 +23,20 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectSubnodeRepository.
+ */
 public class ProjectSubnodeRepository {
+	
+	/**
+	 * Gets the subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the subnodes
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectSubnode> getSubnodes(int nodeId) throws UnknownProjectNodeLinkException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE KPNID = ?", DBTableHelper.PROJECTSUBNODE);
 
@@ -52,6 +68,14 @@ public class ProjectSubnodeRepository {
 		return projectsubnodes;
 	}
 	
+	/**
+	 * Gets the subnode.
+	 *
+	 * @param projectSubnodeId the project subnode id
+	 * @return the subnode
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectSubnode getSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException, EntityException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, KPNID, TITLE, WIKITITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
 
@@ -83,6 +107,14 @@ public class ProjectSubnodeRepository {
 		throw new UnknownProjectSubnodeException();
 	}
 	
+	/**
+	 * Creates the subnode.
+	 *
+	 * @param projectSubnode the project subnode
+	 * @return the project subnode
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws CreationException the creation exception
+	 */
 	public ProjectSubnode createSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeException, CreationException {
 		final String sql = String.format("INSERT INTO %s (CREATION_TIME, KPNID, TITLE, POSITION, SUBNODESTATUS, INHERITEDTREEID) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTSUBNODE);
 		final String sqlUpdate = String.format("UPDATE %s SET WIKITITLE = ? where id = ?",DBTableHelper.PROJECTSUBNODE);
@@ -125,6 +157,13 @@ public class ProjectSubnodeRepository {
 		return projectSubnode;
 	}
 	
+	/**
+	 * Update subnode.
+	 *
+	 * @param projectSubnode the project subnode
+	 * @return the project subnode
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 */
 	public ProjectSubnode updateSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, KPNID = ?, TITLE = ?, WIKITITLE = ?, POSITION = ?, SUBNODESTATUS = ? WHERE id = ?",DBTableHelper.PROJECTSUBNODE);
 		try (Connection connection = DBConnection.getConnection();
@@ -145,6 +184,12 @@ public class ProjectSubnodeRepository {
 		return projectSubnode;
 	}
 	
+	/**
+	 * Delete subnode.
+	 *
+	 * @param projectSubnodeId the project subnode id
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 */
 	public void deleteSubnode(int projectSubnodeId) throws UnknownProjectSubnodeException {
 		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTSUBNODE);
 		try (Connection connection = DBConnection.getConnection();
@@ -159,6 +204,13 @@ public class ProjectSubnodeRepository {
 		}
 	}
 	
+	/**
+	 * Gets the parent subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the parent subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectSubnode> getParentSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM (SELECT NODE.ID FROM(SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ? = LINKTO.TARGETID) AS SUB,  %s AS NODE, %s AS MAPPING WHERE SUB.SOURCEID = NODE.ID AND NODE.ID = MAPPING.KPNID) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID;",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 
@@ -192,6 +244,13 @@ public class ProjectSubnodeRepository {
 		return subnodes;
 	}
 
+	/**
+	 * Gets the sibling subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the sibling subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectSubnode> getSiblingSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM( SELECT DISTINCT  NODE.ID FROM ( SELECT* FROM %s AS LINK WHERE LINK.SOURCEID IN ( SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE ?=LINKTO.TARGETID)) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID AND NODE.ID<>?) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID", DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODELINK, DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 		List<ProjectSubnode> subnodes = new ArrayList<ProjectSubnode>();
@@ -225,6 +284,13 @@ public class ProjectSubnodeRepository {
 		return subnodes;
 	}
 	
+	/**
+	 * Gets the follower subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the follower subnodes
+	 * @throws EntityException the entity exception
+	 */
 	public List<ProjectSubnode> getFollowerSubnodes(int nodeId) throws EntityException {
 		final String sql = String.format("SELECT SUBN.ID, SUBN.CREATION_TIME, SUBN.LAST_MODIFICATION_TIME, SUBN.KPNID, SUBN.TITLE, SUBN.WIKITITLE, SUBN.POSITION, SUBN.SUBNODESTATUS, SUBN.INHERITEDTREEID FROM ( SELECT  NODE.ID FROM( SELECT LINKTO.TARGETID FROM %s AS LINKTO WHERE ?=LINKTO.SOURCEID) AS SUB, %s AS NODE, %s AS MAPPING WHERE SUB.TARGETID=NODE.ID AND NODE.ID=MAPPING.KPNID) AS NODES, %s AS SUBN WHERE SUBN.KPNID=NODES.ID",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODE,DBTableHelper.PROJECTNODEMAPPING,DBTableHelper.PROJECTSUBNODE);
 

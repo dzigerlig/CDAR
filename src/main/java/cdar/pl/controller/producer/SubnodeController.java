@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.pl.controller.producer;
 
 import java.util.List;
@@ -25,13 +28,31 @@ import cdar.dal.exceptions.EntityException;
 import cdar.dal.exceptions.UnknownUserException;
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SubnodeController.
+ */
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class SubnodeController {
+	
+	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
+	
+	/** The lm. */
 	private LockingManager lm = new LockingManager();
+	
+	/** The sm. */
 	private SubnodeManager sm = new SubnodeManager();
+	
+	/** The nlm. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 
+	/**
+	 * Gets the subnodes.
+	 *
+	 * @param nodeId the node id
+	 * @return the subnodes
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubnodes(@PathParam("nodeid") int nodeId) {
@@ -42,6 +63,14 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Adds the subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addSubnode(@HeaderParam("uid") int uid,
@@ -58,6 +87,15 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Update subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnodeId the subnode id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,6 +114,12 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Gets the subnode.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the subnode
+	 */
 	@GET
 	@Path("{subnodeid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -87,6 +131,14 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Rename subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}/rename")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -105,6 +157,14 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Delete subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param subnode the subnode
+	 * @return the response
+	 */
 	@POST
 	@Path("delete")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -125,6 +185,13 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Drill up subnode.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("drillup")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -137,6 +204,14 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Drill down subnode.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the response
+	 */
 	@GET
 	@Path("drilldown")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -149,6 +224,12 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Gets the knowledge subnode wiki entry.
+	 *
+	 * @param subnodeId the subnode id
+	 * @return the knowledge subnode wiki entry
+	 */
 	@GET
 	@Path("{subnodeid}/wiki")
 	public Response getKnowledgeSubnodeWikiEntry(
@@ -162,6 +243,13 @@ public class SubnodeController {
 		}
 	}
 
+	/**
+	 * Update knowledge subnode wiki entry.
+	 *
+	 * @param uid the uid
+	 * @param wikiEntry the wiki entry
+	 * @return the response
+	 */
 	@POST
 	@Path("{subnodeid}/wiki")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.producer;
 
 import java.util.HashSet;
@@ -10,9 +13,23 @@ import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownXmlTreeException;
 import cdar.dal.producer.TemplateRepository;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateManager.
+ */
 public class TemplateManager {
+	
+	/** The tr. */
 	private TemplateRepository tr = new TemplateRepository();
 
+	/**
+	 * Gets the knowledge templates.
+	 *
+	 * @param ktreeId the ktree id
+	 * @return the knowledge templates
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public Set<Template> getKnowledgeTemplates(int ktreeId) throws EntityException, UnknownTreeException {
 		Set<Template> templates = new HashSet<Template>();
 		for (Template template : tr.getTemplates(ktreeId)) {
@@ -21,20 +38,51 @@ public class TemplateManager {
 		return templates;
 	}
 
+	/**
+	 * Gets the knowledge template.
+	 *
+	 * @param templateId the template id
+	 * @return the knowledge template
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws EntityException the entity exception
+	 */
 	public Template getKnowledgeTemplate(int templateId)
 			throws UnknownTemplateException, EntityException {
 		return tr.getTemplate(templateId);
 	}
 
+	/**
+	 * Adds the knowledge template.
+	 *
+	 * @param template the template
+	 * @return the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	public Template addKnowledgeTemplate(Template template)
 			throws UnknownTemplateException {
 		return tr.createTemplate(template);
 	}
 
+	/**
+	 * Delete template.
+	 *
+	 * @param templateId the template id
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	public void deleteTemplate(int templateId) throws UnknownTemplateException {
 		tr.deleteTemplate(templateId);
 	}
 
+	/**
+	 * Update template.
+	 *
+	 * @param template the template
+	 * @return the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public Template updateTemplate(Template template)
 			throws UnknownTemplateException, UnknownXmlTreeException,
 			EntityException, UnknownTreeException {
@@ -54,6 +102,17 @@ public class TemplateManager {
 		return tr.updateTemplate(updatedTemplate);
 	}
 
+	/**
+	 * Sets the default template.
+	 *
+	 * @param treeId the tree id
+	 * @param templateId the template id
+	 * @return the sets the
+	 * @throws UnknownTemplateException the unknown template exception
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public Set<Template> setDefaultTemplate(int treeId, int templateId)
 			throws UnknownTemplateException, UnknownXmlTreeException,
 			EntityException, UnknownTreeException {
@@ -85,11 +144,26 @@ public class TemplateManager {
 		return getKnowledgeTemplates(treeId);
 	}
 
+	/**
+	 * Update template default setting.
+	 *
+	 * @param templateId the template id
+	 * @param template the template
+	 * @throws UnknownTemplateException the unknown template exception
+	 */
 	private void updateTemplateDefaultSetting(int templateId, Template template) throws UnknownTemplateException {
 		template.setIsDefault(template.getId() == templateId);
 		tr.updateTemplate(template);
 	}
 
+	/**
+	 * Gets the default knowledge template text.
+	 *
+	 * @param treeId the tree id
+	 * @return the default knowledge template text
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public String getDefaultKnowledgeTemplateText(int treeId)
 			throws EntityException, UnknownTreeException {
 		for (Template template : tr.getTemplates(treeId)) {
@@ -101,6 +175,14 @@ public class TemplateManager {
 		return null;
 	}
 
+	/**
+	 * Gets the default project template text.
+	 *
+	 * @param treeId the tree id
+	 * @return the default project template text
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public String getDefaultProjectTemplateText(int treeId)
 			throws EntityException, UnknownTreeException {
 		for (Template template : tr.getTemplates(treeId)) {
@@ -112,6 +194,14 @@ public class TemplateManager {
 		return null;
 	}
 
+	/**
+	 * Gets the default subnode template text.
+	 *
+	 * @param treeId the tree id
+	 * @return the default subnode template text
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public String getDefaultSubnodeTemplateText(int treeId)
 			throws EntityException, UnknownTreeException {
 		for (Template template : tr.getTemplates(treeId)) {

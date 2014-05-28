@@ -16,19 +16,47 @@ import cdar.dal.exceptions.UnknownProjectTreeException;
 import cdar.dal.exceptions.UnknownTreeException;
 import cdar.dal.exceptions.UnknownUserException;
 
+/**
+ * The Class ProjectTreeFull.
+ */
 @XmlRootElement
 public class ProjectTreeFull extends ProjectTreeSimple {
+	
+	/** The wiki entries. */
 	private Set<WikiEntry> wikiEntries;
 	
+	/** The mwm. */
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
+	/**
+	 * Instantiates a new project tree full.
+	 */
 	public ProjectTreeFull() { }
 	
+	/**
+	 * Instantiates a new project tree full.
+	 *
+	 * @param treeId the tree id
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public ProjectTreeFull(int treeId) throws UnknownProjectTreeException, EntityException, UnknownProjectNodeLinkException, UnknownProjectNodeException, UnknownProjectSubnodeException, UnknownTreeException, UnknownUserException {
 		super(treeId);
 		fillWikiEntries();
 	}
 	
+	/**
+	 * Fill wiki entries.
+	 *
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 */
 	private void fillWikiEntries() throws UnknownProjectNodeException, EntityException, UnknownProjectSubnodeException {
 		Set<WikiEntry> wikiEntries = new HashSet<WikiEntry>();
 		
@@ -43,11 +71,21 @@ public class ProjectTreeFull extends ProjectTreeSimple {
 		setWikiEntries(wikiEntries);
 	}
 	
+	/**
+	 * Gets the wiki entries.
+	 *
+	 * @return the wiki entries
+	 */
 	@XmlElement
 	public Set<WikiEntry> getWikiEntries() {
 		return wikiEntries;
 	}
 
+	/**
+	 * Sets the wiki entries.
+	 *
+	 * @param wikiEntries the new wiki entries
+	 */
 	public void setWikiEntries(Set<WikiEntry> wikiEntries) {
 		this.wikiEntries = wikiEntries;
 	}

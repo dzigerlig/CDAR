@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.dal.user;
 
 import java.sql.Connection;
@@ -18,7 +21,18 @@ import cdar.dal.helpers.DBConnection;
 import cdar.dal.helpers.DBTableHelper;
 import cdar.dal.helpers.DateHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserRepository.
+ */
 public class UserRepository {
+	
+	/**
+	 * Gets the users.
+	 *
+	 * @return the users
+	 * @throws EntityException the entity exception
+	 */
 	public List<User> getUsers() throws EntityException {
 		final String sql = String
 				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s",
@@ -46,6 +60,14 @@ public class UserRepository {
 		return users;
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @param userId the user id
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 */
 	public User getUser(int userId) throws UnknownUserException, EntityException {
 		User user = new User();
 		final String sql = String
@@ -77,6 +99,13 @@ public class UserRepository {
 		throw new UnknownUserException();
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @param username the username
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public User getUser(String username) throws UnknownUserException {
 		final String sql = String
 				.format("SELECT ID,CREATION_TIME,LAST_MODIFICATION_TIME,USERNAME,PASSWORD,ACCESSTOKEN, DRILL_HIERARCHY FROM %s WHERE USERNAME = ?",
@@ -109,6 +138,13 @@ public class UserRepository {
 		throw new UnknownUserException();
 	}
 
+	/**
+	 * Creates the user.
+	 *
+	 * @param user the user
+	 * @return the user
+	 * @throws UsernameInvalidException the username invalid exception
+	 */
 	public User createUser(User user) throws UsernameInvalidException {
 		final String sql = String
 				.format("INSERT INTO %s (CREATION_TIME, USERNAME, PASSWORD,DRILL_HIERARCHY) VALUES (?, ?, ?,?)",
@@ -136,6 +172,13 @@ public class UserRepository {
 		return user;
 	}
 
+	/**
+	 * Update user.
+	 *
+	 * @param user the user
+	 * @return the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public User updateUser(User user) throws UnknownUserException {
 		final String sql = String
 				.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, USERNAME = ?, PASSWORD = ?, ACCESSTOKEN = ?, DRILL_HIERARCHY=? WHERE id = ?",
@@ -158,6 +201,12 @@ public class UserRepository {
 		return user;
 	}
 
+	/**
+	 * Delete user.
+	 *
+	 * @param userId the user id
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public void deleteUser(int userId) throws UnknownUserException {
 		final String sql = "DELETE FROM USER WHERE ID = ?";
 		try (Connection connection = DBConnection.getConnection();
@@ -172,6 +221,15 @@ public class UserRepository {
 		}
 	}
 
+	/**
+	 * Gets the users by tree.
+	 *
+	 * @param isProducer the is producer
+	 * @param treeId the tree id
+	 * @return the users by tree
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public List<User> getUsersByTree(boolean isProducer, int treeId) throws EntityException,
 			UnknownUserException {
 		String sql = null;
@@ -212,6 +270,13 @@ public class UserRepository {
 		return users;
 	}
 
+	/**
+	 * Sets the producer user right.
+	 *
+	 * @param treeId the tree id
+	 * @param user the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public void setProducerUserRight(int treeId, User user)
 			throws UnknownUserException {
 		final String sql;
@@ -235,6 +300,13 @@ public class UserRepository {
 		}
 	}
 
+	/**
+	 * Sets the consumer user right.
+	 *
+	 * @param treeId the tree id
+	 * @param user the user
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public void setConsumerUserRight(int treeId, User user)
 			throws UnknownUserException {
 		final String sql;

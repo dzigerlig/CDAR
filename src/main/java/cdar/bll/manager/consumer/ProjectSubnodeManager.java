@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cdar.bll.manager.consumer;
 
 import java.util.HashSet;
@@ -22,10 +25,30 @@ import cdar.dal.user.UserRepository;
 
 import cdar.pl.controller.StatusHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProjectSubnodeManager.
+ */
 public class ProjectSubnodeManager {
+	
+	/** The pnr. */
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
+	
+	/** The psr. */
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
+	/**
+	 * Adds the project subnode.
+	 *
+	 * @param uid the uid
+	 * @param projectSubnode the project subnode
+	 * @return the project subnode
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException,
 			UnknownProjectNodeException, CreationException,
 			UnknownUserException, EntityException {
@@ -49,6 +72,14 @@ public class ProjectSubnodeManager {
 		return projectSubnode;
 	}
 
+	/**
+	 * Gets the next subnode position.
+	 *
+	 * @param nodeId the node id
+	 * @return the next subnode position
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	private int getNextSubnodePosition(int nodeId)
 			throws UnknownProjectNodeLinkException, EntityException {
 		int position = 0;
@@ -62,6 +93,15 @@ public class ProjectSubnodeManager {
 		return ++position;
 	}
 
+	/**
+	 * Gets the project subnodes from project tree.
+	 *
+	 * @param projectTreeId the project tree id
+	 * @return the project subnodes from project tree
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	public Set<ProjectSubnode> getProjectSubnodesFromProjectTree(
 			int projectTreeId) throws UnknownProjectTreeException,
 			UnknownProjectNodeLinkException, EntityException {
@@ -77,6 +117,14 @@ public class ProjectSubnodeManager {
 		return projectSubnodes;
 	}
 
+	/**
+	 * Gets the project subnodes from project node.
+	 *
+	 * @param projectNodeId the project node id
+	 * @return the project subnodes from project node
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	public Set<ProjectSubnode> getProjectSubnodesFromProjectNode(
 			int projectNodeId) throws UnknownProjectNodeLinkException,
 			EntityException {
@@ -90,11 +138,28 @@ public class ProjectSubnodeManager {
 		return projectSubnodes;
 	}
 
+	/**
+	 * Gets the project subnode.
+	 *
+	 * @param projectSubnodeId the project subnode id
+	 * @return the project subnode
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectSubnode getProjectSubnode(int projectSubnodeId)
 			throws UnknownProjectSubnodeException, EntityException {
 		return psr.getSubnode(projectSubnodeId);
 	}
 
+	/**
+	 * Update project subnode.
+	 *
+	 * @param projectSubnode the project subnode
+	 * @return the project subnode
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectSubnode updateProjectSubnode(ProjectSubnode projectSubnode)
 			throws UnknownProjectSubnodeException,
 			UnknownProjectNodeLinkException, EntityException {
@@ -119,6 +184,15 @@ public class ProjectSubnodeManager {
 		return psr.updateSubnode(updatedProjectSubnode);
 	}
 
+	/**
+	 * Change other project subnode positions.
+	 *
+	 * @param projectSubnode the project subnode
+	 * @param oldPosition the old position
+	 * @param newPosition the new position
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	private void changeOtherProjectSubnodePositions(Subnode projectSubnode,
 			int oldPosition, int newPosition)
 			throws UnknownProjectNodeLinkException, EntityException {
@@ -146,6 +220,14 @@ public class ProjectSubnodeManager {
 		}
 	}
 
+	/**
+	 * Delete project subnode.
+	 *
+	 * @param projectSubnodeId the project subnode id
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 */
 	public void deleteProjectSubnode(int projectSubnodeId)
 			throws UnknownProjectSubnodeException,
 			UnknownProjectNodeLinkException, EntityException {
@@ -153,6 +235,14 @@ public class ProjectSubnodeManager {
 		psr.deleteSubnode(projectSubnodeId);
 	}
 
+	/**
+	 * Change subnode position on delete.
+	 *
+	 * @param subnodeId the subnode id
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 */
 	private void changeSubnodePositionOnDelete(int subnodeId)
 			throws UnknownProjectNodeLinkException, EntityException,
 			UnknownProjectSubnodeException {
@@ -167,6 +257,16 @@ public class ProjectSubnodeManager {
 		}
 	}
 
+	/**
+	 * Drill up.
+	 *
+	 * @param uid the uid
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 */
 	public Set<ProjectSubnode> drillUp(int uid, int nodeId)
 			throws UnknownProjectNodeLinkException, EntityException,
 			UnknownUserException {
@@ -178,6 +278,15 @@ public class ProjectSubnodeManager {
 				.getDrillHierarchy(), subnodes);
 	}
 
+	/**
+	 * Recursive drill up.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param subnodes the subnodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<ProjectSubnode> recursiveDrillUp(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
@@ -193,6 +302,18 @@ public class ProjectSubnodeManager {
 		return subnodes;
 	}
 
+	/**
+	 * Drill down.
+	 *
+	 * @param uid the uid
+	 * @param treeId the tree id
+	 * @param nodeId the node id
+	 * @return the sets the
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownNodeException the unknown node exception
+	 */
 	public Set<ProjectSubnode> drillDown(int uid, int treeId, int nodeId)
 			throws UnknownProjectNodeLinkException, EntityException,
 			UnknownUserException, UnknownNodeException {
@@ -212,6 +333,15 @@ public class ProjectSubnodeManager {
 				.getDrillHierarchy(), subnodes);
 	}
 
+	/**
+	 * Recursive drill down.
+	 *
+	 * @param nodeId the node id
+	 * @param quantity the quantity
+	 * @param subnodes the subnodes
+	 * @return the sets the
+	 * @throws EntityException the entity exception
+	 */
 	private Set<ProjectSubnode> recursiveDrillDown(int nodeId, int quantity,
 			Set<ProjectSubnode> subnodes) throws EntityException {
 		if (quantity > 0) {
@@ -224,6 +354,15 @@ public class ProjectSubnodeManager {
 		return subnodes;
 	}
 
+	/**
+	 * Rename subnode.
+	 *
+	 * @param projectSubnode the project subnode
+	 * @return the project subnode
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws EntityException the entity exception
+	 */
 	public ProjectSubnode renameSubnode(ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException, UnknownProjectSubnodeException, EntityException {
 		ProjectSubnode renamedProjectSubnode = psr.getSubnode(projectSubnode.getId());
 		renamedProjectSubnode.setTitle(projectSubnode.getTitle());

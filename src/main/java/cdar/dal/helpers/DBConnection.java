@@ -1,10 +1,23 @@
+/*
+ * 
+ */
 package cdar.dal.helpers;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DBConnection.
+ */
 public class DBConnection {
+	
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 */
 	public static Connection getConnection() {
 		Connection connection = null;
 		PropertyHelper propertyHelper = new PropertyHelper();
