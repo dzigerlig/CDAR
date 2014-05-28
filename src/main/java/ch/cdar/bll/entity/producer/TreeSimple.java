@@ -24,11 +24,10 @@ import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 
 /**
- * The Class TreeSimple.
+ * The Class TreeSimple representing a Simple Tree Export/Import
  */
 @XmlRootElement
 public class TreeSimple {
-	
 	/** The tree. */
 	private Tree tree;
 	

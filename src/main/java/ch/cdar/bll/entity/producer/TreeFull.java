@@ -22,7 +22,6 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  */
 @XmlRootElement
 public class TreeFull extends TreeSimple {
-	
 	/** The wiki entries. */
 	private Set<WikiEntry> wikiEntries;
 	
@@ -51,7 +50,7 @@ public class TreeFull extends TreeSimple {
 	}
 	
 	/**
-	 * Fill wiki entries.
+	 * Fill wiki entries with the content of the wiki pages.
 	 *
 	 * @throws EntityException the entity exception
 	 * @throws UnknownSubnodeException the unknown subnode exception

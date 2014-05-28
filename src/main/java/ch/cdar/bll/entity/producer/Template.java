@@ -7,7 +7,6 @@ import ch.cdar.bll.entity.BasicEntity;
  * The Class Template.
  */
 public class Template extends BasicEntity {
-	
 	/** The tree id. */
 	private int treeId;
 	
