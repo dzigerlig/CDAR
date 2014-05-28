@@ -1,4 +1,4 @@
-package cdar.jersey.integrationtest;
+package ch.cdar.jersey.integrationtest;
 
 import static org.junit.Assert.*;
 
