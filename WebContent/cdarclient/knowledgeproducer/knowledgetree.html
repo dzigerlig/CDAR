@@ -9,11 +9,13 @@
 			<div class="content-header inset">
 				<div class="col-md-9">
 					<h3>
-						<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a>
-						Collaborative Decision Management and Architectural Refactoring (CDAR) Tool
+						<a id="menu-toggle" class="btn btn-default"><i
+							class="icon-reorder"></i></a> Collaborative Decision Management and
+						Architectural Refactoring (CDAR) Tool
 					</h3>
 					<h3>
-						<a id="menu-toggle" class="btn btn-default"><i class="icon-reorder"></i></a> Knowledge Tree: {{knowledgetree.title}}
+						<a id="menu-toggle" class="btn btn-default"><i
+							class="icon-reorder"></i></a> Knowledge Tree: {{knowledgetree.title}}
 					</h3>
 				</div>
 				<div ng-include src="'templates/heading.html'"></div>
@@ -33,8 +35,9 @@
 					class="btn btn-md btn-success btn-block">User Access</a>
 			</div>
 			<div class="col-md-2 pull-right">
-			<button type="button" class="btn btn-md btn-success btn-block "
-					onclick="location.reload();">Refresh Page
+				<button type="button" class="btn btn-md btn-success btn-block "
+					onclick="location.reload();">
+					<i class="glyphicon glyphicon-refresh"></i>Refresh Page
 				</button>
 			</div>
 		</div>
@@ -51,10 +54,11 @@
 					onclick="CDARJsTree.createNode();">
 					<i class="glyphicon glyphicon-asterisk"></i> Create
 					{{DescriptionService.getNodeDescription()}}
-				</button>				
-				<button type="button" class="btn btn-success btn-sm" onclick="CDARJsTree.drillDown()">
-						<img class="drillTree" src="../cdarclient/app/img/treedown.png">Drill Down
-					</button>
+				</button>
+				<button type="button" class="btn btn-success btn-sm"
+					onclick="CDARJsTree.drillDown()">
+					<i class="glyphicon glyphicon-arrow-right"></i>Show Route
+				</button>
 				<button type="button" class="btn btn-warning btn-sm"
 					onclick="CDARJsTree.rename();">
 					<i class="glyphicon glyphicon-pencil"></i> Rename
@@ -72,17 +76,21 @@
 			<div class="col-md-8">
 
 				<p align="right">
-					<button type="button" class="btn btn-success btn-sm" onclick="CDARJsPlumb.drillDownButton()">
-						<img class="drillTree" src="../cdarclient/app/img/treedown.png">Drill Down
+					<button type="button" class="btn btn-success btn-sm"
+						onclick="CDARJsPlumb.drillDownButton()">
+						<img class="drillTree" src="../cdarclient/app/img/treedown.png">Drill
+						Down
 					</button>
-					<button type="button" class="btn btn-success btn-sm" onclick="CDARJsPlumb.drillUpButton()">
-						<img class="drillTree" src="../cdarclient/app/img/treeup.png">Drill Up
+					<button type="button" class="btn btn-success btn-sm"
+						onclick="CDARJsPlumb.drillUpButton()">
+						<img class="drillTree" src="../cdarclient/app/img/treeup.png">Drill
+						Up
 					</button>
-					
+
 					<button type="button" class="btn btn-danger btn-sm"
 						onclick="CDARJsPlumb.removeSelected();">
-						<i class="glyphicon glyphicon-remove"></i> Remove Selected Element From
-						Diagram
+						<i class="glyphicon glyphicon-remove"></i> Remove Selected Element
+						From Diagram
 					</button>
 				</p>
 				<div id="jsplumb-container"></div>
