@@ -32,7 +32,7 @@ app.controller("LoginController", [ '$scope', '$location',
 					}
 				}, function(error) {
 					noty({
-						type : 'alert',
+						type : 'information',
 						text : 'wrong username/password combination',
 						timeout : 4000
 					});
@@ -79,7 +79,7 @@ app
 
 								if ($scope.credentials.password !== $scope.credentials.confirmpassword) {
 									noty({
-										type : 'warning',
+										type : 'information',
 										text : "Passwords aren't equal",
 										timeout : 3500
 									});
@@ -98,7 +98,7 @@ app
 									$location.path('/login');
 								}, function(error) {
 									noty({
-										type : 'alert',
+										type : 'warning',
 										text : 'user creation failed',
 										timeout : 4000
 									});
@@ -204,7 +204,7 @@ app.controller("AccountController",
 								$scope.confirmPw = '';
 							}, function(error) {
 								noty({
-									type : 'alert',
+									type : 'error',
 									text : "Password change failed",
 									timeout : 3500
 								});
@@ -245,7 +245,7 @@ app.controller("AccessController", [
 					$scope.users = response;
 				}, function(error) {
 					noty({
-						type : 'alert',
+						type : 'error',
 						text : 'error getting users',
 						timeout : 1500
 					});
@@ -259,7 +259,7 @@ app.controller("AccessController", [
 				$scope.tree = response;
 			}, function(error) {
 				noty({
-					type : 'alert',
+					type : 'error',
 					text : 'error getting tree',
 					timeout : 1500
 				});
@@ -278,7 +278,7 @@ app.controller("AccessController", [
 						getAllUsers();
 					}, function(error) {
 						noty({
-							type : 'alert',
+							type : 'error',
 							text : 'cannot add this user',
 							timeout : 1500
 						});
@@ -310,7 +310,7 @@ app.controller("AccessController", [
 						getAllUsers();
 					}, function(error) {
 						noty({
-							type : 'alert',
+							type : 'error',
 							text : 'access right change failed!',
 							timeout : 1500
 						});
