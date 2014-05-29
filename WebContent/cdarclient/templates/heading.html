@@ -4,9 +4,6 @@
 		<a href="#/account"><div class="col-xs-10 text-left">User: {{UserService.getUsername()}}</div></a>
 	</div>
 	<div class="row">
-		<a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-md-2 userrole"><img src="app/img/switch.png" height="18" width="18" /></div></a>
-		<div data-ng-show="UserService.getIsProducer()=='false'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-md-10 text-left userrole">Current Role: Knowledge Consumer</div></a></div>
-		<div data-ng-show="UserService.getIsProducer()=='true'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-md-10 text-left userrole">Current Role: Knowledge Producer</div></a></div>
 		<a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-2 col-md-2 col-lg-2 userrole"><img src="app/img/switch.png" height="18" width="18" /></div></a>
 		<div data-ng-show="UserService.getIsProducer()=='false'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-10 col-md-10 col-lg-10 text-left userrole">Current Role: Knowledge Consumer</div></a></div>
 		<div data-ng-show="UserService.getIsProducer()=='true'"><a href="#" data-ng-click="UserService.redirectUrl()"><div class="col-xs-10 col-md-10 col-lg-10 text-left userrole">Current Role: Knowledge Producer</div></a></div>
