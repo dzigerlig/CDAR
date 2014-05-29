@@ -22,8 +22,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees/{treeid}/exports")
 public class ProjectTreeImportExportController {
-	
-	/** The ciem. */
+	/** The consumer import export manager. */
 	private ConsumerImportExportManager ciem = new ConsumerImportExportManager();
 
 	/**

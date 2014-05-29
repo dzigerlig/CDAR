@@ -54,7 +54,7 @@ import ch.cdar.dal.exceptions.UnknownXmlTreeException;
  */
 public class ConsumerImportExportManager {
 	
-	/** The ptxr. */
+	/** The Project Tree Xml Repository. */
 	private ProjectTreeXmlRepository ptxr = new ProjectTreeXmlRepository();
 
 	/**

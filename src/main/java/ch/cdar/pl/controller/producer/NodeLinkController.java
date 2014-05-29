@@ -21,14 +21,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees/{ktreeid}/links")
 public class NodeLinkController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The nlm. */
+	/** The node link manager. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 
 	/**

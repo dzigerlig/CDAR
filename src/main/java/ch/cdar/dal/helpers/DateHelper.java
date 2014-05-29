@@ -10,11 +10,10 @@ import java.util.TimeZone;
  * The Class DateHelper.
  */
 public class DateHelper {
-
-	/** The tz. */
+	/** The timezone. */
 	private static TimeZone tz = TimeZone.getTimeZone("UTC");
 	
-	/** The df. */
+	/** The dateformat. */
 	private static DateFormat df = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ssX");
 

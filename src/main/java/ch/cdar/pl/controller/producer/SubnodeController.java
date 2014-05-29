@@ -30,17 +30,16 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees/{ktreeid}/nodes/{nodeid}/subnodes")
 public class SubnodeController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The sm. */
+	/** The subnode manager. */
 	private SubnodeManager sm = new SubnodeManager();
 	
-	/** The nlm. */
+	/** The node link manager. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 
 	/**

@@ -2,7 +2,7 @@ package ch.cdar.bll.reporting;
 
 import java.util.Date;
 
-import ch.cdar.bll.entity.CdarDescriptions;
+import ch.cdar.bll.entity.Descriptions;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.dal.exceptions.EntityException;
@@ -15,15 +15,14 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  * The Class ReportingBean.
  */
 public class ReportingBean {
-	
 	/** The tree id. */
 	private int treeId;
 	
 	/** The creation time. */
 	private Date creationTime;
 	
-	/** The cdar descriptions. */
-	private CdarDescriptions cdarDescriptions;
+	/** The descriptions. */
+	private Descriptions cdarDescriptions;
 	
 	/** The username. */
 	private String username;
@@ -35,7 +34,7 @@ public class ReportingBean {
 	 */
 	public ReportingBean() throws Exception {
 		setCreationTime(new Date());
-		setCdarDescriptions(new CdarDescriptions());
+		setCdarDescriptions(new Descriptions());
 	}
 	
 	/**
@@ -104,7 +103,7 @@ public class ReportingBean {
 	 *
 	 * @return the cdar descriptions
 	 */
-	public CdarDescriptions getCdarDescriptions() {
+	public Descriptions getCdarDescriptions() {
 		return cdarDescriptions;
 	}
 
@@ -113,7 +112,7 @@ public class ReportingBean {
 	 *
 	 * @param cdarDescriptions the new cdar descriptions
 	 */
-	public void setCdarDescriptions(CdarDescriptions cdarDescriptions) {
+	public void setCdarDescriptions(Descriptions cdarDescriptions) {
 		this.cdarDescriptions = cdarDescriptions;
 	}
 

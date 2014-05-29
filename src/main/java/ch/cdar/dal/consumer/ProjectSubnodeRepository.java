@@ -24,7 +24,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class ProjectSubnodeRepository.
  */
 public class ProjectSubnodeRepository {
-	
 	/**
 	 * Gets the subnodes.
 	 *

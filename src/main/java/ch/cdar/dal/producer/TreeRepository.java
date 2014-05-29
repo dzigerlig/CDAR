@@ -24,7 +24,6 @@ import ch.cdar.dal.interfaces.ITreeRepository;
  * The Class TreeRepository.
  */
 public class TreeRepository implements ITreeRepository {
-
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.ITreeRepository#getTrees(int)
 	 */

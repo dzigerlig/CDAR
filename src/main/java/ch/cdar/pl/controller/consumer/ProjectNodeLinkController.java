@@ -21,14 +21,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees/{ptreeid}/links")
 public class ProjectNodeLinkController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The pnlm. */
+	/** The project node link manager. */
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 
 	/**

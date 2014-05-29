@@ -52,7 +52,7 @@ import ch.cdar.dal.producer.XmlTreeRepository;
  */
 public class ProducerImportExportManager {
 	
-	/** The xtr. */
+	/** The Xml Tree Repository. */
 	private XmlTreeRepository xtr = new XmlTreeRepository();
 	
 	/**

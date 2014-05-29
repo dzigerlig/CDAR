@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
  * @param <T> the generic type
  */
 public class StatusHelper<T> {
-	
 	/**
 	 * Gets the cache control.
 	 *

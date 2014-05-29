@@ -16,8 +16,7 @@ import ch.cdar.dal.wiki.WikiRepository;
  * The Class MediaWikiCreationModel.
  */
 public class MediaWikiCreationModel extends Thread {
-	
-	/** The uid. */
+	/** The user id. */
 	private int uid;
 	
 	/** The title. */

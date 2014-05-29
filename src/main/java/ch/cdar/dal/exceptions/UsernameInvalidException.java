@@ -4,7 +4,6 @@ package ch.cdar.dal.exceptions;
  * The Class UsernameInvalidException.
  */
 public class UsernameInvalidException extends Exception {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 

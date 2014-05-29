@@ -21,7 +21,6 @@ import ch.cdar.bll.manager.UserManager;
  */
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
-	
 	/* (non-Javadoc)
 	 * @see javax.ws.rs.container.ContainerRequestFilter#filter(javax.ws.rs.container.ContainerRequestContext)
 	 */

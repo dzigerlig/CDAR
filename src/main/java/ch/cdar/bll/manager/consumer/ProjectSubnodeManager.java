@@ -26,10 +26,10 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 public class ProjectSubnodeManager {
 	
-	/** The pnr. */
+	/** The Project Node Repository. */
 	private ProjectNodeRepository pnr = new ProjectNodeRepository();
 	
-	/** The psr. */
+	/** The Project Subnode Repository. */
 	private ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
 
 	/**

@@ -23,7 +23,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 public class NodeLinkManager {
 	
-	/** The nlr. */
+	/** The Node Link Repository. */
 	private NodeLinkRepository nlr = new NodeLinkRepository();
 
 	/**

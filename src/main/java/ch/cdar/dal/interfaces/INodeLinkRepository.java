@@ -15,7 +15,6 @@ import ch.cdar.dal.exceptions.UnknownTreeException;
  * The Interface INodeLinkRepository.
  */
 public interface INodeLinkRepository {
-	
 	/**
 	 * Gets the node links.
 	 *

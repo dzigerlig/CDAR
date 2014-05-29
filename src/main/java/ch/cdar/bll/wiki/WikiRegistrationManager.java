@@ -26,7 +26,6 @@ import ch.cdar.dal.helpers.PropertyHelper;
  * The Class WikiRegistrationManager.
  */
 public class WikiRegistrationManager {
-	
 	/** The url. */
 	private String URL = null;
 	

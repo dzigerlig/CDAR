@@ -22,7 +22,6 @@ import ch.cdar.dal.exceptions.UnknownTreeException;
  * The Class TreeBean.
  */
 public class TreeBean extends ReportingBean {
-
 	/**
 	 * Instantiates a new tree bean.
 	 *
@@ -32,19 +31,19 @@ public class TreeBean extends ReportingBean {
 		super();
 	}
 
-	/** The tm. */
+	/** The Tree Manager. */
 	private TreeManager tm = new TreeManager(UserRole.PRODUCER);
 	
-	/** The nm. */
+	/** The Node Manager. */
 	private NodeManager nm = new NodeManager();
 	
-	/** The sm. */
+	/** The Subnode Manager. */
 	private SubnodeManager sm = new SubnodeManager();
 	
-	/** The mwm. */
+	/** The Media Wiki Manager. */
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
-	/** The nlm. */
+	/** The Node Link Manager. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 
 	/**

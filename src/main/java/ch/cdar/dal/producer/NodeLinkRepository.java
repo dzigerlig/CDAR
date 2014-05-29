@@ -26,7 +26,6 @@ import ch.cdar.dal.interfaces.INodeLinkRepository;
  * The Class NodeLinkRepository.
  */
 public class NodeLinkRepository implements INodeLinkRepository {
-	
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinks(int)
 	 */

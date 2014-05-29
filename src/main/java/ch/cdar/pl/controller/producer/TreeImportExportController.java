@@ -22,8 +22,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees/{ktreeid}/exports")
 public class TreeImportExportController {
-	
-	/** The piem. */
+	/** The producer import export manager. */
 	private ProducerImportExportManager piem = new ProducerImportExportManager();
 	
 	/**

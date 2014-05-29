@@ -16,7 +16,7 @@ import ch.cdar.dal.exceptions.UnknownProjectTreeException;
  */
 public class CommentManager {
 	
-	/** The cr. */
+	/** The Comment Repository. */
 	private CommentRepository cr = new CommentRepository();
 	
 	/**

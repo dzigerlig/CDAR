@@ -22,7 +22,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class CommentRepository.
  */
 public class CommentRepository {
-
 	/**
 	 * Gets the comments.
 	 *

@@ -23,7 +23,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class XmlTreeRepository.
  */
 public class XmlTreeRepository {
-	
 	/**
 	 * Gets the xml trees.
 	 *

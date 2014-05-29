@@ -23,14 +23,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees/{ktreeid}/nodes")
 public class NodeController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
 	
-	/** The nm. */
+	/** The node manager. */
 	private NodeManager nm = new NodeManager();
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 
 	/**

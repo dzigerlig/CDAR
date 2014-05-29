@@ -22,7 +22,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class TemplateRepository.
  */
 public class TemplateRepository {
-	
 	/**
 	 * Gets the templates.
 	 *

@@ -46,22 +46,22 @@ public class TreeSimple {
 	/** The templates. */
 	private Set<Template> templates;
 	
-	/** The trm. */
+	/** The tree manager. */
 	private TreeManager trm = new TreeManager(UserRole.PRODUCER);
 	
-	/** The nm. */
+	/** The node manager. */
 	private NodeManager nm = new NodeManager();
 	
-	/** The sm. */
+	/** The subnode manager. */
 	private SubnodeManager sm = new SubnodeManager();
 	
-	/** The nlm. */
+	/** The node link manager. */
 	private NodeLinkManager nlm = new NodeLinkManager();
 	
-	/** The dm. */
+	/** The directory manager. */
 	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 	
-	/** The tm. */
+	/** The template manager. */
 	private TemplateManager tm = new TemplateManager();
 	
 	/**

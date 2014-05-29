@@ -3,7 +3,7 @@ package ch.cdar.bll.entity.consumer;
 import ch.cdar.bll.entity.Tree;
 
 /**
- * The Class CreationTree.
+ * The Class CreationTree is an extension of a tree, containing the inherited tree id of the producer tree
  */
 public class CreationTree extends Tree {
 	

@@ -23,7 +23,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 public class SubnodeManager {
 	
-	/** The sr. */
+	/** The Subnode Repository. */
 	private SubnodeRepository sr = new SubnodeRepository();
 
 	/**

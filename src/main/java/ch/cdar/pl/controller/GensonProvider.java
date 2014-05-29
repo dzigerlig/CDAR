@@ -12,7 +12,6 @@ import com.owlike.genson.Genson;
  */
 @Provider
 public class GensonProvider implements ContextResolver<Genson> {
-   
    /** The genson. */
    private final Genson genson = new Genson.Builder().setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).create();
 

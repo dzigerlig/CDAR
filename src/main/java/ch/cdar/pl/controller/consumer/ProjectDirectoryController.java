@@ -22,14 +22,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees/{ptreeid}/directories")
 public class ProjectDirectoryController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The pdm. */
+	/** The project directory manager. */
 	DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 
 	/**

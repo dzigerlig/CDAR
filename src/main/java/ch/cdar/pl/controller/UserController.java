@@ -19,7 +19,6 @@ import ch.cdar.bll.manager.UserManager;
  */
 @Path("users")
 public class UserController {
-	
 	/** The user manager. */
 	private UserManager userManager = new UserManager();
 	

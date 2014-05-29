@@ -24,7 +24,6 @@ import ch.cdar.dal.interfaces.IDirectoryRepository;
  * The Class DirectoryRepository.
  */
 public class DirectoryRepository implements IDirectoryRepository {
-	
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#getDirectories(int)
 	 */

@@ -136,6 +136,125 @@ public class TreeManager {
 		ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 		ProjectNodeRepository pnr = new ProjectNodeRepository();
 		ProjectSubnodeRepository psr = new ProjectSubnodeRepository();
+		Map<Integer, Integer> directoryMapping = addDirectories(ktreeId,
+				ptreeId, dm, pdr);
+		addNodes(ktreeId, ptreeId, linkMapping, nm, pnr, directoryMapping);
+		addSubnodes(ktreeId, linkMapping, subnodeMapping, snm, psr);
+		addNodeLinks(ktreeId, ptreeId, linkMapping, subnodeMapping, nlm, pnlr);
+	}
+
+	/**
+	 * Adds the node links.
+	 *
+	 * @param ktreeId the ktree id
+	 * @param ptreeId the ptree id
+	 * @param linkMapping the link mapping
+	 * @param subnodeMapping the subnode mapping
+	 * @param nlm the nlm
+	 * @param pnlr the pnlr
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 */
+	private void addNodeLinks(int ktreeId, int ptreeId,
+			Map<Integer, Integer> linkMapping,
+			Map<Integer, Integer> subnodeMapping, NodeLinkManager nlm,
+			ProjectNodeLinkRepository pnlr) throws EntityException,
+			UnknownTreeException, UnknownProjectTreeException {
+		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
+			NodeLink projectNodeLink = new NodeLink();
+			projectNodeLink
+					.setSourceId(linkMapping.get(nodelink.getSourceId()));
+			projectNodeLink
+					.setTargetId(linkMapping.get(nodelink.getTargetId()));
+			if (nodelink.getSubnodeId() != 0) {
+				projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink
+						.getSubnodeId()));
+			}
+			projectNodeLink.setTreeId(ptreeId);
+			pnlr.createNodeLink(projectNodeLink);
+		}
+	}
+
+	/**
+	 * Adds the subnodes to the tree.
+	 *
+	 * @param ktreeId the ktree id
+	 * @param linkMapping the link mapping
+	 * @param subnodeMapping the subnode mapping
+	 * @param snm the snm
+	 * @param psr the psr
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws CreationException the creation exception
+	 */
+	private void addSubnodes(int ktreeId, Map<Integer, Integer> linkMapping,
+			Map<Integer, Integer> subnodeMapping, SubnodeManager snm,
+			ProjectSubnodeRepository psr) throws EntityException,
+			UnknownTreeException, UnknownNodeException,
+			UnknownProjectNodeException, CreationException {
+		for (Subnode subnode : snm.getSubnodesFromTree(ktreeId)) {
+			ProjectSubnode projectSubnode = new ProjectSubnode();
+			projectSubnode.setTitle(subnode.getTitle());
+			projectSubnode.setWikititle(subnode.getWikititle());
+			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
+			projectSubnode.setPosition(subnode.getPosition());
+			projectSubnode.setInheritedTreeId(ktreeId);
+			projectSubnode = psr.createSubnode(projectSubnode);
+			subnodeMapping.put(subnode.getId(), projectSubnode.getId());
+		}
+	}
+
+	/**
+	 * Adds the nodes to the tree.
+	 *
+	 * @param ktreeId the ktree id
+	 * @param ptreeId the ptree id
+	 * @param linkMapping the link mapping
+	 * @param nm the nm
+	 * @param pnr the pnr
+	 * @param directoryMapping the directory mapping
+	 * @throws EntityException the entity exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws CreationException the creation exception
+	 */
+	private void addNodes(int ktreeId, int ptreeId,
+			Map<Integer, Integer> linkMapping, NodeManager nm,
+			ProjectNodeRepository pnr, Map<Integer, Integer> directoryMapping)
+			throws EntityException, UnknownTreeException,
+			UnknownProjectTreeException, CreationException {
+		for (Node node : nm.getNodes(ktreeId)) {
+			ProjectNode projectNode = new ProjectNode();
+			projectNode.setTreeId(ptreeId);
+			projectNode.setTitle(node.getTitle());
+			projectNode.setWikititle(node.getWikititle());
+			projectNode.setDirectoryId(directoryMapping.get(node
+					.getDirectoryId()));
+			projectNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
+			projectNode.setInheritedTreeId(node.getTreeId());
+			projectNode = pnr.createNode(projectNode);
+			linkMapping.put(node.getId(), projectNode.getId());
+		}
+	}
+
+	/**
+	 * Adds the directories to the tree.
+	 *
+	 * @param ktreeId the ktree id
+	 * @param ptreeId the ptree id
+	 * @param dm the dm
+	 * @param pdr the pdr
+	 * @return the map
+	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws CreationException the creation exception
+	 */
+	private Map<Integer, Integer> addDirectories(int ktreeId, int ptreeId,
+			DirectoryManager dm, ProjectDirectoryRepository pdr)
+			throws EntityException, UnknownUserException, CreationException {
 		Directory rootDirectory = new Directory();
 		for (Directory directory : pdr.getDirectories(ptreeId)) {
 			if (directory.getParentId() == 0) {
@@ -163,44 +282,7 @@ public class TreeManager {
 			}
 
 		}
-
-		for (Node node : nm.getNodes(ktreeId)) {
-			ProjectNode projectNode = new ProjectNode();
-			projectNode.setTreeId(ptreeId);
-			projectNode.setTitle(node.getTitle());
-			projectNode.setWikititle(node.getWikititle());
-			projectNode.setDirectoryId(directoryMapping.get(node
-					.getDirectoryId()));
-			projectNode.setDynamicTreeFlag(node.getDynamicTreeFlag());
-			projectNode.setInheritedTreeId(node.getTreeId());
-			projectNode = pnr.createNode(projectNode);
-			linkMapping.put(node.getId(), projectNode.getId());
-		}
-
-		for (Subnode subnode : snm.getSubnodesFromTree(ktreeId)) {
-			ProjectSubnode projectSubnode = new ProjectSubnode();
-			projectSubnode.setTitle(subnode.getTitle());
-			projectSubnode.setWikititle(subnode.getWikititle());
-			projectSubnode.setNodeId(linkMapping.get(subnode.getNodeId()));
-			projectSubnode.setPosition(subnode.getPosition());
-			projectSubnode.setInheritedTreeId(ktreeId);
-			projectSubnode = psr.createSubnode(projectSubnode);
-			subnodeMapping.put(subnode.getId(), projectSubnode.getId());
-		}
-
-		for (NodeLink nodelink : nlm.getNodeLinks(ktreeId)) {
-			NodeLink projectNodeLink = new NodeLink();
-			projectNodeLink
-					.setSourceId(linkMapping.get(nodelink.getSourceId()));
-			projectNodeLink
-					.setTargetId(linkMapping.get(nodelink.getTargetId()));
-			if (nodelink.getSubnodeId() != 0) {
-				projectNodeLink.setSubnodeId(subnodeMapping.get(nodelink
-						.getSubnodeId()));
-			}
-			projectNodeLink.setTreeId(ptreeId);
-			pnlr.createNodeLink(projectNodeLink);
-		}
+		return directoryMapping;
 	}
 
 	/**
