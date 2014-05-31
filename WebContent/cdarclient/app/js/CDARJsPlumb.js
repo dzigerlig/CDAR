@@ -19,7 +19,7 @@ var CDARJsPlumb = (function() {
 		container.append(popup);
 		var top = $('<div>').addClass('top');
 		popup.append(top);
-		var text = $('<h4>').html('Choose decision');
+		var text = $('<h4>').html('Choose '+ scope.DescriptionService.getSubnodeDescription());
 		top.append(text);
 		var bottom = $('<div>').addClass('bottom');
 		popup.append(bottom);

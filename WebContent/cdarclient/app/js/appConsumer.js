@@ -14,11 +14,11 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	} 
 	setReload(true);							 
 	$scope.isProducer = false;
+	$scope.DescriptionService = DescriptionService;
 	 $scope.modal = $modal;
-	CDARJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
-    $scope.DescriptionService = DescriptionService;
+    CDARJsPlumb.initialize();
     $scope.projecttree = "";
     $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
 	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
