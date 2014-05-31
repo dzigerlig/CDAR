@@ -23,7 +23,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class NodeRepository.
  */
 public class NodeRepository {
-	
 	/**
 	 * Gets the nodes.
 	 *

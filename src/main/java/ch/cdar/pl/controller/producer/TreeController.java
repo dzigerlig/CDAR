@@ -27,14 +27,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees")
 public class TreeController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The ktm. */
+	/** The tree manager. */
 	private TreeManager ktm = new TreeManager(UserRole.PRODUCER);
 
 	/**

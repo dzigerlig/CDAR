@@ -21,14 +21,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/comments")
 public class CommentController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The cm. */
+	/** The comment manager. */
 	private CommentManager cm = new CommentManager();
 
 	/**

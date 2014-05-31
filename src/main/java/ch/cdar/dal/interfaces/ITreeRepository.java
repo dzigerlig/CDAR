@@ -13,7 +13,6 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  * The Interface ITreeRepository.
  */
 public interface ITreeRepository {
-	
 	/**
 	 * Gets the trees.
 	 *

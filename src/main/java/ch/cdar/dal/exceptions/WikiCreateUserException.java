@@ -4,7 +4,6 @@ package ch.cdar.dal.exceptions;
  * The Class WikiCreateUserException.
  */
 public class WikiCreateUserException extends Exception {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 

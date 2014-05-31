@@ -25,7 +25,7 @@ public class TreeFull extends TreeSimple {
 	/** The wiki entries. */
 	private Set<WikiEntry> wikiEntries;
 	
-	/** The mwm. */
+	/** The Media Wiki Manager. */
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
 	/**

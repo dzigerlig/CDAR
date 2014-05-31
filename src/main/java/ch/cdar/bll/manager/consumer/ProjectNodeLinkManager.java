@@ -25,7 +25,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 public class ProjectNodeLinkManager {
 	
-	/** The pnlr. */
+	/** The Project Node Link Repository. */
 	private ProjectNodeLinkRepository pnlr = new ProjectNodeLinkRepository();
 
 	/**

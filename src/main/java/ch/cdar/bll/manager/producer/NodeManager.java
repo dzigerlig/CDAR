@@ -21,7 +21,7 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 public class NodeManager {
 	
-	/** The nr. */
+	/** The Node Repository. */
 	private NodeRepository nr = new NodeRepository();
 
 	/**

@@ -28,14 +28,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees/{ptreeid}/nodes/{nodeid}/subnodes")
 public class ProjectSubnodeController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The psm. */
+	/** The project subnode manager. */
 	ProjectSubnodeManager psm = new ProjectSubnodeManager();
 
 	/**

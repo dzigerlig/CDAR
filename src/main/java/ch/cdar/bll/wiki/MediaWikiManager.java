@@ -19,8 +19,7 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  * The Class MediaWikiManager.
  */
 public class MediaWikiManager {
-	
-	/** The um. */
+	/** The User Manager. */
 	private UserManager um = new UserManager();
 
 	/**

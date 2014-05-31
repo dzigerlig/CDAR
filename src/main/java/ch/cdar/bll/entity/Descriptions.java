@@ -8,7 +8,7 @@ import ch.cdar.dal.helpers.PropertyHelper;
  * @author dzigerli
  * @author mtinner
  */
-public class CdarDescriptions {
+public class Descriptions {
 	
 	/** The directory description. */
 	private String directoryDescription;
@@ -30,7 +30,7 @@ public class CdarDescriptions {
 	 *
 	 * @throws Exception the exception
 	 */
-	public CdarDescriptions() throws Exception {
+	public Descriptions() throws Exception {
 		getPropertyValues();
 	}
 

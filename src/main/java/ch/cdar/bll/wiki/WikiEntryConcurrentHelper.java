@@ -7,7 +7,6 @@ import java.util.Map;
  * The Class WikiEntryConcurrentHelper.
  */
 public class WikiEntryConcurrentHelper {
-	
 	/** The wiki list. */
 	private static volatile Map<String, String> wikiList = new HashMap<String, String>();
 

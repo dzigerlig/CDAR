@@ -111,7 +111,7 @@ public class Template extends BasicEntity {
 	}
 
 	/**
-	 * Gets the checks if is default.
+	 * Gets the checks if the template is default.
 	 *
 	 * @return the checks if is default
 	 */
@@ -120,7 +120,7 @@ public class Template extends BasicEntity {
 	}
 
 	/**
-	 * Sets the checks if is default.
+	 * Sets the checks if the template is default.
 	 *
 	 * @param isDefault the new checks if is default
 	 */
@@ -129,7 +129,7 @@ public class Template extends BasicEntity {
 	}
 	
 	/**
-	 * Gets the decision made.
+	 * Gets the boolean decision made.
 	 *
 	 * @return the decision made
 	 */
@@ -138,7 +138,7 @@ public class Template extends BasicEntity {
 	}
 
 	/**
-	 * Sets the decision made.
+	 * Sets the boolean decision made.
 	 *
 	 * @param decisionMade the new decision made
 	 */
@@ -147,7 +147,7 @@ public class Template extends BasicEntity {
 	}
 	
 	/**
-	 * Gets the checks if is subnode.
+	 * Gets the checks if the template is a subnode template.
 	 *
 	 * @return the checks if is subnode
 	 */
@@ -156,7 +156,7 @@ public class Template extends BasicEntity {
 	}
 	
 	/**
-	 * Sets the checks if is subnode.
+	 * Sets the checks if the template is a subnode template.
 	 *
 	 * @param isSubnode the new checks if is subnode
 	 */

@@ -7,11 +7,10 @@ import java.util.Properties;
  * The Class PropertyHelper.
  */
 public class PropertyHelper {
-	
 	/** The resourcename. */
 	private final String RESOURCENAME = "cdarconfig.properties";
 	
-	/** The prop. */
+	/** The properties */
 	private Properties prop;
 	
 	/** The loader. */

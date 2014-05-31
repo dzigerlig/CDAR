@@ -4,7 +4,6 @@ package ch.cdar.dal.helpers;
  * The Class DBTableHelper.
  */
 public class DBTableHelper {
-	
 	/** The Constant USER. */
 	public static final String USER = "User";
 

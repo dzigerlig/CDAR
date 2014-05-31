@@ -15,7 +15,7 @@ import ch.cdar.dal.producer.TemplateRepository;
  */
 public class TemplateManager {
 	
-	/** The tr. */
+	/** The Template Repository. */
 	private TemplateRepository tr = new TemplateRepository();
 
 	/**

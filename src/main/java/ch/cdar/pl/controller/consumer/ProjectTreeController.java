@@ -28,14 +28,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ptrees")
 public class ProjectTreeController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = false;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The ptm. */
+	/** The project tree m anager. */
 	private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 
 	/**

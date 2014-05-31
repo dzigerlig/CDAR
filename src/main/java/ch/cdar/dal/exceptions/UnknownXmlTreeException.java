@@ -4,7 +4,6 @@ package ch.cdar.dal.exceptions;
  * The Class UnknownXmlTreeException.
  */
 public class UnknownXmlTreeException extends Exception {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 

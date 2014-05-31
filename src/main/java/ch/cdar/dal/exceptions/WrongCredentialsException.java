@@ -4,7 +4,6 @@ package ch.cdar.dal.exceptions;
  * The Class WrongCredentialsException.
  */
 public class WrongCredentialsException extends Exception {
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 

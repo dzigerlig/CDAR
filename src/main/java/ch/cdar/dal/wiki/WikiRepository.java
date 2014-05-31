@@ -1,6 +1,3 @@
-/*
- * 
- */
 package ch.cdar.dal.wiki;
 
 import java.util.HashMap;
@@ -11,12 +8,10 @@ import org.wikipedia.Wiki;
 import ch.cdar.dal.exceptions.WikiLoginException;
 import ch.cdar.dal.helpers.PropertyHelper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class WikiRepository.
  */
 public class WikiRepository {
-	
 	/** The connection map. */
 	private static Map<String, Wiki> connectionMap = new HashMap<String, Wiki>();
 

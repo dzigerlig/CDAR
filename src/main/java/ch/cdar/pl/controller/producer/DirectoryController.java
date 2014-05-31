@@ -22,14 +22,13 @@ import ch.cdar.pl.controller.StatusHelper;
  */
 @Path("ktrees/{ktreeid}/directories")
 public class DirectoryController {
-	
 	/** The isproducer. */
 	private final boolean ISPRODUCER = true;
 	
-	/** The lm. */
+	/** The locking manager. */
 	private LockingManager lm = new LockingManager();
 	
-	/** The dm. */
+	/** The directory manager. */
 	private DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 
 	/**

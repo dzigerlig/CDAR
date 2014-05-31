@@ -12,7 +12,6 @@ import ch.cdar.dal.exceptions.UnknownUserException;
  * The Interface IDirectoryRepository.
  */
 public interface IDirectoryRepository {
-	
 	/**
 	 * Gets the directories.
 	 *

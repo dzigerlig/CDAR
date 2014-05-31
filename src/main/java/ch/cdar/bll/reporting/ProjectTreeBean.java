@@ -35,22 +35,22 @@ public class ProjectTreeBean extends ReportingBean {
 		super();
 	}
 	
-	/** The ptm. */
+	/** The Project Tree Manager. */
 	private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 	
-	/** The pnm. */
+	/** The Project Node Manager. */
 	private ProjectNodeManager pnm = new ProjectNodeManager();
 	
-	/** The psm. */
+	/** The Project Subnode Manager. */
 	private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 	
-	/** The mwm. */
+	/** The Media Wiki Manager. */
 	private MediaWikiManager mwm = new MediaWikiManager();
 	
-	/** The pnlm. */
+	/** The Project Node Link Manager. */
 	private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 	
-	/** The cm. */
+	/** The Comment Manager. */
 	private CommentManager cm = new CommentManager();
 	
 	/**

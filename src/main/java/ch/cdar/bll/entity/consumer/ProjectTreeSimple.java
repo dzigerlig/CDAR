@@ -44,22 +44,22 @@ public class ProjectTreeSimple {
 		/** The comments. */
 		private Set<Comment> comments;
 		
-		/** The ptm. */
+		/** The Project Tree Manager. */
 		private TreeManager ptm = new TreeManager(UserRole.CONSUMER);
 		
-		/** The psm. */
+		/** The Project Subnode Manager. */
 		private ProjectSubnodeManager psm = new ProjectSubnodeManager();
 		
-		/** The pnm. */
+		/** The Project Node Manager. */
 		private ProjectNodeManager pnm = new ProjectNodeManager();
 		
-		/** The pnlm. */
+		/** The Project Node Link Manager. */
 		private ProjectNodeLinkManager pnlm = new ProjectNodeLinkManager();
 		
-		/** The pdm. */
+		/** The Project Directory Manager. */
 		private DirectoryManager pdm = new DirectoryManager(UserRole.CONSUMER);
 		
-		/** The cm. */
+		/** The Comment Manager. */
 		private CommentManager cm = new CommentManager();
 		
 		/**

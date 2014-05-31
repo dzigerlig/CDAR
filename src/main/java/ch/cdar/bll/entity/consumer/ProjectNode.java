@@ -3,7 +3,7 @@ package ch.cdar.bll.entity.consumer;
 import ch.cdar.bll.entity.Node;
 
 /**
- * The Class ProjectNode.
+ * The Class ProjectNode representing a Consumer node.
  */
 public class ProjectNode extends Node {
 	

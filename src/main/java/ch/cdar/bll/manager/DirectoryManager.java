@@ -15,7 +15,7 @@ import ch.cdar.dal.interfaces.IDirectoryRepository;
 import ch.cdar.dal.producer.DirectoryRepository;
 
 /**
- * The Class DirectoryManager.
+ * The Class DirectoryManager manages the Directory (Consumer and Producer).
  */
 public class DirectoryManager {
 	

@@ -22,7 +22,6 @@ import ch.cdar.dal.helpers.DateHelper;
  * The Class UserRepository.
  */
 public class UserRepository {
-	
 	/**
 	 * Gets the users.
 	 *
