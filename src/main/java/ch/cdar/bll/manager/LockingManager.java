@@ -90,7 +90,7 @@ public class LockingManager {
 	public String getLockText(boolean isProducer, int treeId){
 		Locking locking = lockingMap.get(generateKey(isProducer, treeId));
 			try {
-				return String.format("Object is locked by User %s till %s", new UserRepository().getUser(locking.getUserId()).getUsername(), lockingMap.get(generateKey(isProducer, treeId)).getLockingTime().toString() );
+				return String.format("Object is locked by %s till %s", new UserRepository().getUser(locking.getUserId()).getUsername(), lockingMap.get(generateKey(isProducer, treeId)).getLockingTime().toString() );
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "Object is locked";
