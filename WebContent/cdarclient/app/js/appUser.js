@@ -237,6 +237,19 @@ app.controller("AccessController", [
 				roleEntity = 'ptrees';
 			}
 			
+			$scope.showLockingNotification = function(error) {
+				 if (error.status === 409) {
+					noty({
+						type : 'error',
+						text : error.data,
+						timeout : 5000
+					});
+					return true;
+				 } else {
+					 return false;
+				 }
+			 };
+			
 			var getAllUsers = function() {
 				TreeService.getAllUsersWithTreeRight({
 					entity1 : roleEntity,
@@ -309,11 +322,13 @@ app.controller("AccessController", [
 					}, function(response) {
 						getAllUsers();
 					}, function(error) {
-						noty({
-							type : 'error',
-							text : 'access right change failed!',
-							timeout : 1500
-						});
+						 if (!$scope.showLockingNotification(error)) {
+							 noty({
+								type : 'error',
+								text : 'access right change failed!',
+								timeout : 1500
+							});
+						}
 					});
 			    });
 			};

@@ -203,13 +203,19 @@ public class ProjectTreeController {
 	@Path("{ptreeid}/users/{uid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response setUserRight(@PathParam("ptreeid") int treeId,
-			@PathParam("uid") int userId, User user) {
+			@PathParam("uid") int userId, @HeaderParam("uid") int uid, User user) {
 		try {
+			if(!user.isTreeaccess()){
+				lm.lock(ISPRODUCER, treeId, uid);
+			}
 			user.setId(userId);
 			UserManager um = new UserManager();
 			um.setConsumerUserRight(treeId, user);
 			return StatusHelper.getStatusOk(null);
-		} catch (Exception e) {
+		}  catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
+		}catch (Exception e) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
