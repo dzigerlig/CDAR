@@ -153,6 +153,7 @@ public class TreeImportExportController {
 			piem.deleteXmlTree(treeXml.getId());
 			return StatusHelper.getStatusOk(null);
 		} catch (Exception e) {
+		System.out.println(e.getMessage());
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

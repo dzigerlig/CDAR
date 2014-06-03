@@ -23,8 +23,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			}, function(error) {
 				UserService.checkResponseUnauthorized(error);
 				noty({
-					type : 'alert',
-					text : 'cannot get projecttree',
+					type : 'error',
+					text : 'Cannot get Projecttree',
 					timeout : 1500
 				});
 			});
@@ -38,8 +38,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}, function(error) {
 					UserService.checkResponseUnauthorized(error);
 					noty({
-						type : 'alert',
-						text : 'cannot get xml trees',
+						type : 'error',
+						text : 'Cannot get Import/Export',
 						timeout : 1500
 					});
 				});
@@ -68,8 +68,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 					}, function (error) {
 						UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot delete tree',
+							type : 'error',
+							text : 'Cannot delete Import/Export',
 							timeout : 1500
 						});
 					});
@@ -79,7 +79,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			 $scope.saveXmlTreeTitle = function(data, treeId) {
 				 if (data.length>45) {
 						noty({
-							type : 'alert',
+							type : 'warning',
 							text : 'Please enter a text with less than 45 Characters',
 							timeout : 3000
 						});
@@ -97,8 +97,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 						}, xmltree, function(response) { }, function(error) {
 							UserService.checkResponseUnauthorized(error);
 							noty({
-								type : 'alert',
-								text : 'error while saving title',
+								type : 'error',
+								text : 'Error while saving title',
 								timeout : 1500
 							});
 						});
@@ -139,7 +139,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}, function(error) {
 					UserService.checkResponseUnauthorized(error);
 					noty({
-						type : 'alert',
+						type : 'error',
 						text : "Couldn't import :'" + $scope.importTitle + "'successfully",
 						timeout : 1500
 					});
@@ -152,7 +152,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}
 				if (treetitle.length>45) {
 					noty({
-						type : 'alert',
+						type : 'error',
 						text : 'Please enter a text with less than 45 Characters',
 						timeout : 3000
 					});
@@ -171,8 +171,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 					}, function(error) {
 						UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot add tree',
+							type : 'error',
+							text : 'Cannot add Tree',
 							timeout : 1500
 						});
 					});	
@@ -185,7 +185,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}
 				if (treetitle.length>45) {
 					noty({
-						type : 'alert',
+						type : 'warning',
 						text : 'Please enter a text with less than 45 Characters',
 						timeout : 3000
 					});
@@ -204,8 +204,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 					}, function(error) {
 						UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot add tree',
+							type : 'error',
+							text : 'Cannot add Tree',
 							timeout : 1500
 						});
 					});	
@@ -227,8 +227,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				    }
 				    else {
 				    	noty({
-							type : 'alert',
-							text : 'specified file does not match - maybe you are trying to add a consumer export to a producer tree?',
+							type : 'warning',
+							text : 'Specified File does not match - maybe you are trying to add a Consumer export to a Producer Tree?',
 							timeout : 8000
 						});
 				    }
@@ -243,8 +243,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				    }
 				    else {
 				    	noty({
-							type : 'alert',
-							text : 'specified file does not match - maybe you are trying to add a producer export to a consumer tree?',
+							type : 'warning',
+							text : 'Specified File does not match - maybe you are trying to add a Producer Export to a Consumer Tree?',
 							timeout : 8000
 						});
                     }

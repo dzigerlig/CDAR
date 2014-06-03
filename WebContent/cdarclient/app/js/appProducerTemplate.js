@@ -29,8 +29,8 @@ app.controller("TemplatesController", [
 				$scope.knowledgetree = response;
 			}, function(error) {
 				noty({
-					type : 'alert',
-					text : 'cannot get tree',
+					type : 'error',
+					text : 'Cannot get Tree',
 					timeout : 1500
 				});
 			});
@@ -44,8 +44,8 @@ app.controller("TemplatesController", [
 				}, function(error) {
 					 UserService.checkResponseUnauthorized(error);
 					noty({
-						type : 'alert',
-						text : 'cannot reload templates',
+						type : 'error',
+						text : 'Cannot reload Templates',
 						timeout : 1500
 					});
 				});
@@ -59,8 +59,8 @@ app.controller("TemplatesController", [
 				}, function(error) {
 					 UserService.checkResponseUnauthorized(error);
 					noty({
-						type : 'alert',
-						text : 'cannot set default template',
+						type : 'error',
+						text : 'Cannot set default Template',
 						timeout : 1500
 					});
 				});
@@ -90,8 +90,8 @@ app.controller("TemplatesController", [
 					}, function(error) {
 						 UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot delete template',
+							type : 'error',
+							text : 'Cannot delete Template',
 							timeout : 1500
 						});
 					});
@@ -101,7 +101,7 @@ app.controller("TemplatesController", [
 			$scope.editTemplateTitle = function(data, id) {
 				if (data.length>45) {
 					noty({
-						type : 'alert',
+						type : 'warning',
 						text : 'Please enter a text with less than 45 Characters',
 						timeout : 3000
 					});
@@ -115,8 +115,8 @@ app.controller("TemplatesController", [
 					}, function(error) {
 						 UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot edit template title',
+							type : 'error',
+							text : 'Cannot edit Template Title',
 							timeout : 1500
 						});
 					});
@@ -138,7 +138,7 @@ app.controller("TemplatesController", [
 				
 				if (templateName.length>45) {
 					noty({
-						type : 'alert',
+						type : 'warning',
 						text : 'Please enter a text with less than 45 Characters',
 						timeout : 3000
 					});
@@ -165,8 +165,8 @@ app.controller("TemplatesController", [
 					}, function(error) {
 						 UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot add new template',
+							type : 'error',
+							text : 'Cannot add new Template',
 							timeout : 1500
 						});
 					});
@@ -185,8 +185,8 @@ app.controller("TemplatesController", [
 				}, function(error) {
 					 UserService.checkResponseUnauthorized(error);
 					noty({
-						type : 'alert',
-						text : 'cannot change template',
+						type : 'error',
+						text : 'Cannot change Template',
 						timeout : 1500
 					});
 				});
@@ -218,8 +218,8 @@ app.controller("TemplatesController", [
 					}, function(error) {
 						 UserService.checkResponseUnauthorized(error);
 						noty({
-							type : 'alert',
-							text : 'cannot save template',
+							type : 'error ',
+							text : 'Cannot save Template',
 							timeout : 1500
 						});
 					});

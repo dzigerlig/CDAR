@@ -15,8 +15,8 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
         }, function (error) {
         	UserService.checkResponseUnauthorized(error);
         	noty({
-				type : 'alert',
-				text : 'error getting trees',
+				type : 'error',
+				text : 'Error getting Trees',
 				timeout : 1500
 			});
         });
@@ -28,7 +28,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     	if ($scope.selectedktreeId.length!==0) {
     		if ($scope.newTreeName.length>45) {
     			noty({
-    				type : 'alert',
+    				type : 'warning',
     				text : 'Please enter a text with less than 45 Characters',
     				timeout : 3000
     			});
@@ -39,8 +39,8 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 		        }, function (error) {
 		        	UserService.checkResponseUnauthorized(error);
 		        	noty({
-						type : 'alert',
-						text : 'error while adding tree',
+						type : 'error',
+						text : 'Error while adding Tree',
 						timeout : 1500
 					});
 		        });
@@ -68,8 +68,8 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	        }, function (error) {
 	        	UserService.checkResponseUnauthorized(error);
 	        	noty({
-					type : 'alert',
-					text : 'cannot delete tree',
+					type : 'error',
+					text : 'Cannot delete Tree',
 					timeout : 1500
 				});
 	        });
@@ -79,7 +79,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     $scope.saveProjectTreeTitle = function(data, id) {
     	if (data.length>45) {
     		noty({
-    			type : 'alert',
+    			type : 'warning',
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
@@ -99,8 +99,8 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
 	    		UserService.checkResponseUnauthorized(error);
 	    		 reloadTrees();
 				noty({
-					type : 'alert',
-					text : 'error while saving tree title',
+					type : 'error',
+					text : 'Error while saving Tree Title',
 					timeout : 1500
 				});
 	    	});

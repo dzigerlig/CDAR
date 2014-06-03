@@ -19,22 +19,22 @@
 			<div class="page-content inset">
 				<div class="row">
 					<div class="col-md-2">
-						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">Back To Knowledge Tree</a></div>
-						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">Back To Project Tree</a></div>
+						<div data-ng-show="UserService.getIsProducer()==='true'"><a class="btn btn-md btn-primary btn-block" href="#/knowledgetree/{{tree.id}}">Back To Project</a></div>
+						<div data-ng-show="UserService.getIsProducer()==='false'"><a class="btn btn-md btn-primary btn-block" href="#/projecttree/{{tree.id}}">Back To Project</a></div>
 					</div>
 				</div>
 				
 				<div class="row">
 					<div class="col-md-12">
-						<h1>Import from File</h1>
+						<h1>Upload File</h1>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-3">
 						<input class="btn form-horizontal" type="file" id="file" name="file"/>
 					</div>
-					<div class="col-md-3">
-						<button class="btn btn-success col-md-3" ng-click="add()">Add Export</button>
+					<div class="col-md-7">
+						<button class="btn btn-success" ng-click="add()">Add Export to List</button>
 					</div>
 				</div>
 				
@@ -51,7 +51,7 @@
 										<th class="col-md-1">#</th>
 										<th class="col-md-1">Date</th>
 										<th class="col-md-3">Title</th>
-										<th class="col-md-2">Set it</th>
+										<th class="col-md-2">Import</th>
 										<th class="col-md-2">Export</th>
 										<th class="col-md-2">Delete</th>
 									</tr>
@@ -61,7 +61,7 @@
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
 										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
-										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
+										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import to Project</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete Simple Export</a></td>
 									</tr>
@@ -103,7 +103,7 @@
 										<td>{{$index+1}}</td>
 										<td>{{xmltree.creationTime}}</td>
 										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
-										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import Data</a></td>
+										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import to Project</a></td>
 										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete Full Export</a></td>
 									</tr>

@@ -163,7 +163,7 @@ public class XmlTreeRepository {
 	 * @throws UnknownXmlTreeException the unknown xml tree exception
 	 */
 	public void deleteXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException   {
-		final String sql = String.format("DELETE FROM KNOWLEDGETREEXML WHERE ID = ?",DBTableHelper.TREEXML);
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
