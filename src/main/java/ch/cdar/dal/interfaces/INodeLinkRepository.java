@@ -73,8 +73,9 @@ public interface INodeLinkRepository {
 	 * @return the node link
 	 * @throws UnknownNodeLinkException the unknown node link exception
 	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeLinkException 
 	 */
-	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException;
+	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException, UnknownProjectNodeLinkException;
 	
 	/**
 	 * Creates the node link.
@@ -92,8 +93,9 @@ public interface INodeLinkRepository {
 	 * @param nodeLink the node link
 	 * @return the node link
 	 * @throws UnknownNodeLinkException the unknown node link exception
+	 * @throws UnknownProjectNodeLinkException 
 	 */
-	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException;
+	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException, UnknownProjectNodeLinkException;
 	
 	/**
 	 * Delete node link.

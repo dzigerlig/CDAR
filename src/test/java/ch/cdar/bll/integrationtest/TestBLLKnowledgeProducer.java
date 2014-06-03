@@ -76,14 +76,11 @@ public class TestBLLKnowledgeProducer {
 		tm.getTree(unknownId);
 	}
 	
-	@Test(expected = UnknownUserException.class)
+	@Test(expected = UnknownTreeException.class)
 	public void testUpdateUnknownTree() throws Exception {
-		Tree tree = new Tree();
-		tree.setTitle("MyTree");
-		tree = tm.addTree(unknownId, tree);
-		tree.setTitle("My unknown tree");
-		Tree updatedTree = tm.updateTree(tree);
-		assertEquals(-1, updatedTree.getId());
+		Tree tree = tm.getTree(unknownId);
+		tree.setTitle("Unknown Tree");
+		tm.updateTree(tree);
 	}
 	
 	@Test(expected = UnknownTreeException.class)
@@ -559,7 +556,7 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	@Test (expected = UnknownSubnodeException.class)
-	public void testDeleteUnknownSubnode() throws UnknownSubnodeException {
+	public void testDeleteUnknownSubnode() throws UnknownSubnodeException, EntityException, UnknownNodeException {
 		SubnodeManager snm = new SubnodeManager();
 		snm.deleteSubnode(unknownId);
 	}
@@ -569,7 +566,7 @@ public class TestBLLKnowledgeProducer {
 		final String treeName = "MyTree";
 		final String directoryName = "TestDirectory";
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
 		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
@@ -597,7 +594,7 @@ public class TestBLLKnowledgeProducer {
 		final String directoryName = "TestDirectory";
 		final String newDirectoryName = "MyNewDirectory";
 		NodeManager nm = new NodeManager();
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Tree tree = new Tree();
 		tree.setTitle(treeName);
 		tree = tm.addTree(um.getUser(USERNAME).getId(), tree);
@@ -621,18 +618,18 @@ public class TestBLLKnowledgeProducer {
 	}
 	
 	public void testDirectoryUnknownTreeId() throws Exception {
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		assertEquals(0, dm.getDirectories(unknownId).size());
 	}
 	@Test(expected = UnknownDirectoryException.class)
 	public void testGetUnknownDirectory() throws UnknownDirectoryException, EntityException {
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		dm.getDirectory(unknownId).getId();
 	}
 	
 	@Test(expected = Exception.class)
 	public void testUpdateUnknownDirectory() throws Exception {
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		Directory directory = new Directory();
 		directory.setTreeId(unknownId);
 		directory.setParentId(0);
@@ -645,85 +642,7 @@ public class TestBLLKnowledgeProducer {
 	
 	@Test(expected = UnknownDirectoryException.class)
 	public void testDeleteUnknownDirectory() throws Exception {
-		DirectoryManager dm = new DirectoryManager();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
 		dm.deleteDirectory(unknownId);
 	}
-	
-//	@Test
-//	public void testSimpleTreeExportAndImport() throws Exception {
-//		XmlTreeModel xtm = new XmlTreeModel();
-//		NodeModel nm = new NodeModel();
-//		SubnodeModel snm = new SubnodeModel();
-//		DirectoryModel dm = new DirectoryModel();
-//		NodeLinkModel nlm = new NodeLinkModel();
-//		TemplateModel tmm = new TemplateModel();
-//		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-//		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-//		//before copy
-//		Template template1 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 1", false);
-//		Template template2 = tmm.addKnowledgeTemplate(tree.getId(), "Title", "Text 2", false);
-//		Directory directory1 = dm.addDirectory(tree.getId(), directoryId, "Directory 1");
-//		Directory directory2 = dm.addDirectory(tree.getId(), directoryId, "Directory 2");
-//		Directory directory3 = dm.addDirectory(tree.getId(), directory2.getId(), "Directory 3");
-//		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 1", directoryId);
-//		Node node2 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 2", directoryId);
-//		Node node3 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 3", directoryId);
-//		Node node4 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 4", directoryId);
-//		Node node5 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 5", directoryId);
-//		Node node6 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 6", directoryId);
-//		Subnode subnode1 = snm.addSubnode(node1.getId(), "Subnode 1");
-//		Subnode subnode2 = snm.addSubnode(node4.getId(), "Subnode 2");
-//		Subnode subnode3 = snm.addSubnode(node4.getId(), "Subnode 3");
-//		Subnode subnode4 = snm.addSubnode(node5.getId(), "Subnode 4");
-//		NodeLink nodeLink1 = nlm.addNodeLink(tree.getId(), node1.getId(), node2.getId(), subnode1.getId());
-//		NodeLink nodeLink2 = nlm.addNodeLink(tree.getId(), node3.getId(), node4.getId(), subnode2.getId());
-//		NodeLink nodeLink3 = nlm.addNodeLink(tree.getId(), node6.getId(), node5.getId(), 0);
-//		assertEquals(2, tmm.getKnowledgeTemplates(tree.getId()).size());
-//		assertEquals(4, dm.getDirectories(tree.getId()).size());
-//		assertEquals(6, nm.getNodes(tree.getId()).size());
-//		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
-//		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
-//		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
-//		//delete
-//		assertTrue(xtm.cleanTree(xmlTree.getId()));
-//		assertEquals(0, tmm.getKnowledgeTemplates(tree.getId()).size());
-//		assertEquals(1, dm.getDirectories(tree.getId()).size());
-//		assertEquals(0, nm.getNodes(tree.getId()).size());
-//		assertEquals(0, snm.getSubnodesFromTree(tree.getId()).size());
-//		assertEquals(0, nlm.getNodeLinks(tree.getId()).size());
-//		//after copy
-//		xtm.setXmlTree(xmlTree.getId());
-//		assertEquals(2, tmm.getKnowledgeTemplates(tree.getId()).size());
-//		assertEquals(4, dm.getDirectories(tree.getId()).size());
-//		assertEquals(6, nm.getNodes(tree.getId()).size());
-//		assertEquals(4, snm.getSubnodesFromTree(tree.getId()).size());
-//		assertEquals(3, nlm.getNodeLinks(tree.getId()).size());
-//	}
-	
-//	@Test
-//	public void testSimpleImportExportEmptyTree() throws Exception {
-//		XmlTreeManager xtm = new XmlTreeManager();
-//		Tree tree = new Tree();
-//		tree.setTitle("MyTree");
-//		tree = tm.addTree(um.getUser(username).getId(), tree);
-//		TreeXml xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
-//		xtm.cleanTree(xmlTree.getId());
-//		xtm.setXmlTree(xmlTree.getId());
-//	}
-	
-//	@Test
-//	public void testSimpleImportExportTreeOneNode() throws Exception {
-//		NodeModel nm = new NodeModel();
-//		DirectoryModel dm = new DirectoryModel();
-//		XmlTreeModel xtm = new XmlTreeModel();
-//		Tree tree = tm.addTree(um.getUser(username).getId(), "MyTree");
-//		int directoryId = ((Directory)dm.getDirectories(tree.getId()).toArray()[0]).getId();
-//		Node node1 = nm.addNode(um.getUser(username).getId(), tree.getId(), "Node 1", directoryId);
-//		assertEquals(1, nm.getNodes(tree.getId()).size());
-//		XmlTree xmlTree = xtm.addXmlTree(um.getUser(username).getId(), tree.getId());
-//		assertTrue(xtm.cleanTree(xmlTree.getId()));
-//		assertEquals(0, nm.getNodes(tree.getId()).size());
-//		xtm.setXmlTree(xmlTree.getId());
-//		assertEquals(1, nm.getNodes(tree.getId()).size());
-//	}
 }

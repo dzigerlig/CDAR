@@ -214,9 +214,9 @@ public class ProjectNodeLinkManager {
 	 * @param nodelink the nodelink
 	 * @return the node link
 	 * @throws EntityException the entity exception
-	 * @throws UnknownNodeLinkException the unknown node link exception
+	 * @throws UnknownProjectNodeLinkException 
 	 */
-	public NodeLink updateNodeLink(NodeLink nodelink) throws EntityException, UnknownNodeLinkException {
+	public NodeLink updateNodeLink(NodeLink nodelink) throws EntityException, UnknownProjectNodeLinkException, UnknownNodeLinkException {
 		NodeLink updatedNodeLink = pnlr.getNodeLink(nodelink.getId());
 		if (nodelink.getSubnodeId()!=0) {
 			updatedNodeLink.setSubnodeId(nodelink.getSubnodeId());

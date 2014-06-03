@@ -250,7 +250,7 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLink(int)
 	 */
-	public NodeLink getNodeLink(int nodeLinkId) throws EntityException, UnknownNodeLinkException {
+	public NodeLink getNodeLink(int nodeLinkId) throws EntityException, UnknownProjectNodeLinkException {
 		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
 
 
@@ -275,15 +275,15 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw new UnknownNodeLinkException();
+			throw new UnknownProjectNodeLinkException();
 		}
-		throw new UnknownNodeLinkException();
+		throw new UnknownProjectNodeLinkException();
 	}
 	
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#updateNodeLink(cdar.bll.entity.NodeLink)
 	 */
-	public NodeLink updateNodeLink(NodeLink updatedNodeLink) throws UnknownNodeLinkException {
+	public NodeLink updateNodeLink(NodeLink updatedNodeLink) throws UnknownProjectNodeLinkException {
 		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -301,7 +301,7 @@ public class ProjectNodeLinkRepository implements INodeLinkRepository {
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw new UnknownNodeLinkException();
+			throw new UnknownProjectNodeLinkException();
 		}
 		return updatedNodeLink;
 	}

@@ -8,7 +8,9 @@ import org.junit.Test;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.dal.exceptions.EntityException;
+import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exceptions.UsernameInvalidException;
 import ch.cdar.dal.exceptions.WrongCredentialsException;
 
 public class TestBLLUser {
@@ -31,10 +33,10 @@ public class TestBLLUser {
 		User user = um.createUser(new User(username, password), false);
 		try {
 			um.createUser(new User(username, password), false);
-		} catch (Exception ex) {
+		} catch (UsernameInvalidException e) {
 			assert (true);
 		}
-		um.deleteUser(user.getId());
+		um.deleteUser(um.getUser(username).getId());
 	}
 
 	@Test(expected = UnknownUserException.class)
@@ -43,7 +45,8 @@ public class TestBLLUser {
 	}
 
 	@Test(expected = UnknownUserException.class)
-	public void testGetUnknownUserById() throws UnknownUserException, EntityException {
+	public void testGetUnknownUserById() throws UnknownUserException,
+			EntityException {
 		um.getUser(-13);
 	}
 
@@ -77,7 +80,7 @@ public class TestBLLUser {
 		User user = um.createUser(new User(username, password), false);
 		try {
 			um.loginUser(user.getUsername(), "fakePassword");
-		} catch (WrongCredentialsException ex) {
+		} catch (WrongCredentialsException e) {
 			assert (true);
 		}
 		um.deleteUser(user.getId());
