@@ -17,20 +17,12 @@ import ch.cdar.dal.exceptions.UnknownNodeException;
 import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
+import ch.cdar.dal.exceptions.UnknownUserException;
 
 /**
  * The Class TreeBean.
  */
 public class TreeBean extends ReportingBean {
-	/**
-	 * Instantiates a new tree bean.
-	 *
-	 * @throws Exception the exception
-	 */
-	public TreeBean() throws Exception {
-		super();
-	}
-
 	/** The Tree Manager. */
 	private TreeManager tm = new TreeManager(UserRole.PRODUCER);
 	
@@ -45,6 +37,15 @@ public class TreeBean extends ReportingBean {
 	
 	/** The Node Link Manager. */
 	private NodeLinkManager nlm = new NodeLinkManager();
+	
+	/**
+	 * Instantiates a new tree bean.
+	 *
+	 * @throws Exception the exception
+	 */
+	public TreeBean() throws Exception {
+		super(UserRole.PRODUCER);
+	}
 
 	/**
 	 * Gets the tree title.
@@ -53,11 +54,12 @@ public class TreeBean extends ReportingBean {
 	 * @throws UnknownTreeException the unknown tree exception
 	 * @throws UnknownProjectTreeException the unknown project tree exception
 	 * @throws EntityException the entity exception
+	 * @throws UnknownUserException 
 	 */
-	public String getTreeTitle() throws UnknownTreeException, UnknownProjectTreeException, EntityException {
+	public String getTreeTitle() throws UnknownTreeException, UnknownProjectTreeException, EntityException, UnknownUserException {
 		return tm.getTree(getTreeId()).getTitle();
 	}
-
+	
 	/**
 	 * Gets the nodes.
 	 *

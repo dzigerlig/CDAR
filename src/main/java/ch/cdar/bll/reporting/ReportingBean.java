@@ -1,12 +1,19 @@
 package ch.cdar.bll.reporting;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import ch.cdar.bll.entity.Descriptions;
+import ch.cdar.bll.entity.Directory;
 import ch.cdar.bll.entity.User;
+import ch.cdar.bll.entity.UserRole;
+import ch.cdar.bll.manager.DirectoryManager;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.dal.exceptions.EntityException;
+import ch.cdar.dal.exceptions.UnknownDirectoryException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
+import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
@@ -27,14 +34,17 @@ public class ReportingBean {
 	/** The username. */
 	private String username;
 	
+	private DirectoryManager dm;
+	
 	/**
 	 * Instantiates a new reporting bean.
 	 *
 	 * @throws Exception the exception
 	 */
-	public ReportingBean() throws Exception {
+	public ReportingBean(UserRole userRole) throws Exception {
 		setCreationTime(new Date());
 		setCdarDescriptions(new Descriptions());
+		dm = new DirectoryManager(userRole);
 	}
 	
 	/**
@@ -132,5 +142,32 @@ public class ReportingBean {
 	 */
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getDirectoryBreadcrumb(String treeTitle, int directoryId) throws UnknownDirectoryException, EntityException, UnknownTreeException, UnknownProjectTreeException, UnknownUserException {
+		try {
+		Directory directory = dm.getDirectory(directoryId);
+		ArrayList<String> directoryNames = new ArrayList<String>();
+		//get all parents
+		while (directory.getParentId()!=0) {
+			directoryNames.add(directory.getTitle());
+			directory = dm.getDirectory(directory.getParentId());
+		}
+		
+		StringBuilder sb = new StringBuilder(); 
+		sb.append(treeTitle);
+		
+		Collections.reverse(directoryNames);
+		
+		for (String directoryName : directoryNames) {
+			sb.append(" > ");
+			sb.append(directoryName);
+		}
+		
+		return sb.toString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 }
