@@ -6,8 +6,8 @@ import java.util.Set;
 import ch.cdar.bll.entity.Node;
 import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.entity.WikiEntry;
+import ch.cdar.bll.helpers.SubnodeCopyHelper;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.bll.wiki.SubnodeCopyHelper;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
@@ -309,10 +309,8 @@ public class NodeManager {
 		node.setWikititle(null);
 		WikiEntry wikiEntry = mwm.getKnowledgeNodeWikiEntry(node.getId());
 		Node newNode = addNode(uid, node, wikiEntry.getWikiContentPlain());
-		SubnodeManager psm = new SubnodeManager();
 		SubnodeCopyHelper sch = new SubnodeCopyHelper(uid, nodeId, newNode.getId(), newNode.getTreeId(), UserRole.PRODUCER);
 		sch.start();
-		//psm.copySubnodes(uid, newNode.getTreeId(), nodeId, newNode.getId());
 		return newNode;
 	}
 }
