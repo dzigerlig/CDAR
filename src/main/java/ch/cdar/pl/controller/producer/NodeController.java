@@ -151,7 +151,7 @@ public class NodeController {
 	@POST
 	@Path("{nodeid}/copy")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response copyNode(@PathParam("ptreeid") int treeId,@PathParam("nodeid") int nodeid,
+	public Response copyNode(@PathParam("ktreeid") int treeId,@PathParam("nodeid") int nodeid,
 			@HeaderParam("uid") int uid, Node node) {
 		node.setId(nodeid);
 		try {
