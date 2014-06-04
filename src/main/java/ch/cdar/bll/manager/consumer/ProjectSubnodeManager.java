@@ -400,6 +400,5 @@ public class ProjectSubnodeManager {
 			addProjectSubnode(uid, subnode, swe.getWikiContentPlain(),subnodeLatch);
 		}
 		subnodeLatch.await();
-		System.out.println(subnodeLatch.getCount());
 	}
 }

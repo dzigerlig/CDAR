@@ -170,7 +170,6 @@ var CDARJsTree = (function () {
     	var i = 0;
         data.node.children_d.forEach(function (nodeId) {
             var node = data.instance._model.data[nodeId];
-            console.log(data);
             if (node.type === 'default') {
                 scope.addDirectoryCopy(node);
             } else {
