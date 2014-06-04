@@ -1,6 +1,7 @@
 package ch.cdar.bll.wiki;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
@@ -27,7 +28,12 @@ public class MediaWikiCreationModel extends Thread {
 	
 	/** The wiki helper. */
 	private WikiEntryConcurrentHelper wikiHelper;
+	
 
+	private CountDownLatch subnodeLatch;
+	
+	
+	
 	/**
 	 * Instantiates a new media wiki creation model.
 	 *
@@ -42,6 +48,11 @@ public class MediaWikiCreationModel extends Thread {
 		setWikiHelper(wikiHelper);
 		setContent(content);
 		setUid(uid);
+	}
+	
+	public MediaWikiCreationModel(int uid, String title, String content, WikiEntryConcurrentHelper wikiHelper, CountDownLatch subnodeLatch) {
+		this(uid,title,content,wikiHelper);
+		this.subnodeLatch = subnodeLatch;
 	}
 
 	/**
@@ -126,6 +137,12 @@ public class MediaWikiCreationModel extends Thread {
 			getWikiHelper().removeWikiEntry(getTitle());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		finally{
+			if(subnodeLatch!=null)
+			{
+				subnodeLatch.countDown();
+			}
 		}
 	}
 

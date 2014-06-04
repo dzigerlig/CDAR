@@ -1,7 +1,9 @@
 package ch.cdar.bll.manager.consumer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import ch.cdar.bll.entity.Subnode;
 import ch.cdar.bll.entity.WikiEntry;
@@ -44,10 +46,11 @@ public class ProjectSubnodeManager {
 	 * @throws CreationException the creation exception
 	 * @throws UnknownUserException the unknown user exception
 	 * @throws EntityException the entity exception
+	 * @throws InterruptedException 
 	 */
-	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode, String content) throws UnknownProjectNodeLinkException,
+	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode, String content, CountDownLatch subnodeLatch) throws UnknownProjectNodeLinkException,
 			UnknownProjectNodeException, CreationException,
-			UnknownUserException, EntityException {
+			UnknownUserException, EntityException, InterruptedException {
 		boolean createSubnode = true;
 		if (projectSubnode.getWikititle() != null) {
 			createSubnode = false;
@@ -63,7 +66,12 @@ public class ProjectSubnodeManager {
 				content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 			}
 			MediaWikiManager mwm = new MediaWikiManager();
-			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content);
+			if (subnodeLatch==null) {
+				mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content);				
+			}
+			else{
+				mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content, subnodeLatch);				
+			}
 		}
 
 		return projectSubnode;
@@ -377,15 +385,19 @@ public class ProjectSubnodeManager {
 	 * @throws CreationException the creation exception
 	 * @throws UnknownUserException the unknown user exception
 	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws InterruptedException 
 	 */
-	public void copySubnodes(int uid, int projectNodeId, int newNodeId) throws UnknownProjectNodeException, EntityException, UnknownProjectNodeLinkException, CreationException, UnknownUserException, UnknownProjectSubnodeException {
+	public void copySubnodes(int uid, int projectNodeId, int newNodeId) throws UnknownProjectNodeException, EntityException, UnknownProjectNodeLinkException, CreationException, UnknownUserException, UnknownProjectSubnodeException, InterruptedException {
 		MediaWikiManager mwm = new MediaWikiManager();
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		for (ProjectSubnode subnode : psm.getProjectSubnodesFromProjectNode(projectNodeId)) {
+		Set <ProjectSubnode> subnodeList = psm.getProjectSubnodesFromProjectNode(projectNodeId);
+		CountDownLatch subnodeLatch = new CountDownLatch(subnodeList.size());
+		for (ProjectSubnode subnode : subnodeList) {
 			WikiEntry swe = mwm.getKnowledgeProjectSubnodeWikiEntry(subnode.getId());
 			subnode.setWikititle(null);
 			subnode.setNodeId(newNodeId);
-			psm.addProjectSubnode(uid, subnode, swe.getWikiContentPlain());
+			psm.addProjectSubnode(uid, subnode, swe.getWikiContentPlain(),subnodeLatch);
 		}
+		subnodeLatch.await();
 	}
 }

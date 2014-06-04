@@ -3,10 +3,12 @@ package ch.cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectNode;
 import ch.cdar.bll.manager.producer.TemplateManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
+import ch.cdar.bll.wiki.SubnodeCopyHelper;
 import ch.cdar.dal.consumer.ProjectDirectoryRepository;
 import ch.cdar.dal.consumer.ProjectNodeRepository;
 import ch.cdar.dal.exceptions.CreationException;
@@ -287,8 +289,9 @@ public class ProjectNodeManager {
 	 * @throws UnknownNodeException the unknown node exception
 	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
 	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws InterruptedException 
 	 */
-	public ProjectNode copyNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeLinkException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException, UnknownProjectSubnodeException, UnknownTreeException {
+	public ProjectNode copyNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeLinkException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException, UnknownProjectSubnodeException, UnknownTreeException, InterruptedException {
 		int projectNodeId = projectNode.getId();
 		MediaWikiManager mwm = new MediaWikiManager();
 		projectNode = getProjectNode(projectNodeId);
@@ -296,7 +299,9 @@ public class ProjectNodeManager {
 		WikiEntry wikiEntry = mwm.getProjectNodeWikiEntry(projectNode.getId());
 		ProjectNode newNode = addProjectNode(uid, projectNode, wikiEntry.getWikiContentPlain());
 		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		psm.copySubnodes(uid, projectNodeId, newNode.getId());
+		SubnodeCopyHelper sch = new SubnodeCopyHelper(uid, projectNodeId, newNode.getId(), UserRole.CONSUMER);
+		sch.start();
+		//psm.copySubnodes(uid, projectNodeId, newNode.getId());
 		return newNode;
 	}
 }

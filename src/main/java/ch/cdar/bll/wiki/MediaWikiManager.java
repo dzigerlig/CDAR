@@ -1,6 +1,8 @@
 package ch.cdar.bll.wiki;
 
 
+import java.util.concurrent.CountDownLatch;
+
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.manager.UserManager;
@@ -143,6 +145,23 @@ public class MediaWikiManager {
 		WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
 		wikiHelper.addWikiEntry(title, content);
 		MediaWikiCreationModel mwm = new MediaWikiCreationModel(userId, title, content, wikiHelper);
+		mwm.start();
+	}
+	
+	/**
+	 * Creates the wiki entry triggered by thread.
+	 *
+	 * @param userId the user id
+	 * @param title the title
+	 * @param content the content
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws EntityException the entity exception
+	 * @throws InterruptedException 
+	 */
+	public void createWikiEntry(int userId, String title, String content, CountDownLatch subnodeLatch) throws UnknownUserException, EntityException, InterruptedException {
+		WikiEntryConcurrentHelper wikiHelper = new WikiEntryConcurrentHelper();
+		wikiHelper.addWikiEntry(title, content);
+		MediaWikiCreationModel mwm = new MediaWikiCreationModel(userId, title, content, wikiHelper, subnodeLatch);
 		mwm.start();
 	}
 }

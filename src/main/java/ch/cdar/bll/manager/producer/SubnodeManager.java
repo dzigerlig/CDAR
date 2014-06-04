@@ -2,6 +2,7 @@ package ch.cdar.bll.manager.producer;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import ch.cdar.bll.entity.Node;
 import ch.cdar.bll.entity.Subnode;
@@ -46,11 +47,12 @@ public class SubnodeManager {
 	 *             the unknown user exception
 	 * @throws UnknownTreeException
 	 *             the unknown tree exception
+	 * @throws InterruptedException 
 	 */
 	public Subnode addSubnode(int uid, int treeId, Subnode subnode,
-			String templateContent) throws EntityException,
+			String templateContent, CountDownLatch subnodeLatch) throws EntityException,
 			UnknownNodeException, CreationException, UnknownUserException,
-			UnknownTreeException {
+			UnknownTreeException, InterruptedException {
 		boolean createSubnode = true;
 		if (subnode.getWikititle() != null) {
 			createSubnode = false;
@@ -71,7 +73,11 @@ public class SubnodeManager {
 			}
 
 			MediaWikiManager mwm = new MediaWikiManager();
-			mwm.createWikiEntry(uid, subnode.getWikititle(), templateContent);
+			if (subnodeLatch==null) {
+				mwm.createWikiEntry(uid, subnode.getWikititle(), templateContent);			
+			} else {
+				mwm.createWikiEntry(uid, subnode.getWikititle(), templateContent, subnodeLatch);
+			}
 		}
 
 		return subnode;
@@ -428,15 +434,19 @@ public class SubnodeManager {
 	 * @throws UnknownSubnodeException 
 	 * @throws UnknownNodeException 
 	 * @throws EntityException 
+	 * @throws InterruptedException 
 	 */
-	public void copySubnodes(int uid, int treeId, int nodeId, int newNodeId) throws EntityException, UnknownNodeException, UnknownSubnodeException, CreationException, UnknownUserException, UnknownTreeException {
+	public void copySubnodes(int uid, int treeId, int nodeId, int newNodeId) throws EntityException, UnknownNodeException, UnknownSubnodeException, CreationException, UnknownUserException, UnknownTreeException, InterruptedException {
 		MediaWikiManager mwm = new MediaWikiManager();
 		SubnodeManager psm = new SubnodeManager();
-		for (Subnode subnode : psm.getSubnodesFromNode(nodeId)) {
+		Set<Subnode> subnodeList = psm.getSubnodesFromNode(nodeId);
+		CountDownLatch subnodeLatch = new CountDownLatch(subnodeList.size());
+		for (Subnode subnode : subnodeList) {
 			WikiEntry swe = mwm.getKnowledgeSubnodeWikiEntry(subnode.getId());
 			subnode.setWikititle(null);
 			subnode.setNodeId(newNodeId);
-			psm.addSubnode(uid, treeId, subnode, swe.getWikiContentPlain());
+			psm.addSubnode(uid, treeId, subnode, swe.getWikiContentPlain(), subnodeLatch);
 		}
+		subnodeLatch.await();
 	}
 }
