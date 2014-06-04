@@ -21,16 +21,19 @@ var CDARJsTree = (function () {
         $('#jstree').jstree('get_selected');
 
         var to = false;
-        $('#plugins4_q').keyup(function () {
+        //Listener keyup jsTree Search
+        $('#jsTreeSearch').keyup(function () {
             if (to) {
                 clearTimeout(to);
             }
             to = setTimeout(function () {
-                var v = $('#plugins4_q').val();
+                var v = $('#jsTreeSearch').val();
                 $('#jstree').jstree(true).search(v);
             }, 250);
         });
 
+        //Listener on select node in jsTree
+        //Show wiki content
         $('#jstree').on("select_node.jstree", function (e, data) {
             if (data.node.type !== 'default' && data.node.type !== 'root') {
                 var id = data.selected[0];
@@ -40,6 +43,8 @@ var CDARJsTree = (function () {
             }
         });
 
+        //Listener on node- or foldercopy in jsTree
+        //add new Node with Subnodes or Folder copies
         $('#jstree').on("copy_node.jstree", function (e, data) {
             quantitiyOfCopies = 1;
             var node = data.node;
@@ -55,6 +60,9 @@ var CDARJsTree = (function () {
             }
         });
 
+        //Listener on rename node or folder
+        //Check new name length
+        //Rename selected Element in jsTree
         $('#jstree').on(
             "rename_node.jstree",
             function (e, data) {        	
@@ -83,12 +91,17 @@ var CDARJsTree = (function () {
                 }
             });
 
+        //Listener on delete node or folder
         $('#jstree').on("delete_node.jstree", function (e, data) {
             scope.selectedNodeId = 0;
             scope.selectednodename = "";
         });
 
+        
+        //Listener on create node or folder
+        //Set parentid after creation
         $('#jstree').on("create_node.jstree", function (e, data) {
+        	console.log('create node');
             var id = data.node.id;
             var parentId = data.parent.replace(DIRECTORY, "");
             id = id.replace(DIRECTORY, "");
@@ -104,6 +117,7 @@ var CDARJsTree = (function () {
         });
     });
 
+    //Set jsTree Configuration and draw it with nodes and folders and expand jsTree
     function drawDirectory(treeArray, rootid) {
         $('#jstree').jstree(
             {
@@ -144,6 +158,7 @@ var CDARJsTree = (function () {
         }
     }
     
+    //expand directories
     function openDirectories(val,children){
     	$.each(children, function( index, value ) {
     		if(val>=1)
@@ -154,6 +169,7 @@ var CDARJsTree = (function () {
     	});
     }
 
+    //delete each children of a directory
     function deleteChildNodes(data) {
         data.children_d.forEach(function (nodeId) {
         	node = $('#jstree').jstree(true).get_node(nodeId);
@@ -166,6 +182,7 @@ var CDARJsTree = (function () {
         });
     }
 
+    //copy each node/folder of a directory
     function dndCopyCreateSubnodes(data) {
     	var i = 0;
         data.node.children_d.forEach(function (nodeId) {
@@ -180,6 +197,7 @@ var CDARJsTree = (function () {
         });
     }
 
+    //set parentid of each copied element
     function setId() {
         for (var i in copiedId) {
             var nodeParent = $('#jstree').jstree(true).get_node(copiedId[i]);
@@ -198,6 +216,7 @@ var CDARJsTree = (function () {
         quantitiyOfCopies = 0;
     }
     
+    //delete an element with confirmation
     function deleteElement(selected){
     	scope.modal.open({
     		templateUrl : 'templates/confirmation.html',
@@ -234,6 +253,8 @@ var CDARJsTree = (function () {
 
 // public Methods
     return{
+    	
+    	//Buttonclick createNode
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== "default") {
@@ -243,6 +264,8 @@ var CDARJsTree = (function () {
                 scope.addNode(sel[0].replace(DIRECTORY, ""));
             };
         },
+        
+      //Buttonclick createDirectory
         createDirectory: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1
@@ -253,6 +276,8 @@ var CDARJsTree = (function () {
                 scope.addDirectory(sel[0].replace(DIRECTORY, ""));
             }
         },
+        
+        //Buttonclick drillDown (showRoute)
         drillDown: function () {
         	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
         	if (!sel.length || sel.length > 1
@@ -267,6 +292,7 @@ var CDARJsTree = (function () {
         	}
         },
 
+        //Buttonclick rename element
         rename: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
@@ -283,6 +309,8 @@ var CDARJsTree = (function () {
             }
             ref.edit(sel);
         },
+        
+        //Buttonclick delete element
         delete: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length) {
@@ -299,6 +327,7 @@ var CDARJsTree = (function () {
             deleteElement(selected);
         },
 
+        //prepare all Directories and Nodes for jsTree visualization
         directoryDataToArray: function (resDirectory, resNodes) {
             var treeArray = [];
             var parentId;
@@ -331,12 +360,15 @@ var CDARJsTree = (function () {
             });
             drawDirectory(treeArray, rootid);
         },
+        
+        //draw new node after create
         drawNewNode: function (response) {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             sel = sel[0];
             sel = ref.create_node(sel, {
                 "type": "file",
-                "id": DIRECTORY + NODE + response.id,
+                "id": DIRECTORY + NODE
+                + response.id,
                 "text": 'new '+scope.DescriptionService.getNodeDescription()
             });
             if (sel) {
@@ -344,6 +376,7 @@ var CDARJsTree = (function () {
             }
         },
 
+        //draw new directory after create
         drawNewDirectory: function(response){
             var sel;
             var ref = $('#jstree').jstree(true);
@@ -359,6 +392,7 @@ var CDARJsTree = (function () {
             }
         },
 
+        //set id of copied elements
         prepareForSetId:function(node,id){
         	editedCopies++;
             var nodeCopy = $('#jstree').jstree(true).get_node(node.id);

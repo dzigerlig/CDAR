@@ -22,6 +22,7 @@ var CDARDragDrop = (function () {
         return mouseOverFlag;
     }
 
+    //Listener start drag and drop
     $(document).bind('dnd_start.vakata', function (e, data) {
         var id = data.data.nodes[0];
         var type = data.data.origin._model.data[id].type;
@@ -31,6 +32,9 @@ var CDARDragDrop = (function () {
             scope.getNode(id);
         }
     });
+    
+    //Listener stop drag and drop
+    // Drop Node in Graph
     $(document).bind(
         'dnd_stop.vakata',
         function (e, data) {
@@ -47,6 +51,8 @@ var CDARDragDrop = (function () {
             }
         });
 
+    //Listener while move drag and drop
+    //Check if Node is already dropped in Graph
     $(document).bind(
         'dnd_move.vakata',
         function (e, data) {
@@ -62,6 +68,8 @@ var CDARDragDrop = (function () {
             }
         });
 
+    //Listener move Node / Folder inside jsTree
+    //Update parentId
     $('#jstree').on("move_node.jstree", function (e, data) {
         var id = data.node.id;
         var type = data.node.type;
@@ -78,13 +86,13 @@ var CDARDragDrop = (function () {
             scope.moveDirectory(id, parentId);
         }
     });
-//public Methods
+
+    //public Methods
     return{
         setMovedNode: function (node) {
             movedNode = node;
         }
     };
-
 })();
 
 

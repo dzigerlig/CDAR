@@ -11,6 +11,7 @@ var CDARJsPlumb = (function() {
 	var newLinkFired=true;
 
 	// private Methods
+	//clear and build new content
 	function buildContent() {
 		jsPlumb.deleteEveryEndpoint();
 		$("#jsplumb-container").empty();
@@ -27,6 +28,7 @@ var CDARJsPlumb = (function() {
 		bottom.append(form);
 	}
 
+	//set default setting for jsPlumb
 	function setDefaultSettings() {
 		jsPlumb.Defaults.PaintStyle = {
 			connectorStyle : {
@@ -48,6 +50,7 @@ var CDARJsPlumb = (function() {
 		};
 	}
 
+	//Popup event
 	function makePopupEvents() {
 		$('#radio-form')
 				.on(
@@ -74,6 +77,7 @@ var CDARJsPlumb = (function() {
 						});
 	}
 
+	//make Source for jsPlumb connection
 	function makeSource(connect, newState) {
 		jsPlumb.makeSource(connect, {
 			parent : newState,
@@ -108,6 +112,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//make Target for jsPlumb connection
 	function makeTarget(newState) {
 		jsPlumb.makeTarget(newState, {
 			anchor : 'Continuous',
@@ -115,6 +120,8 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	
+	//connect nodes and set label
 	function connectNodes(stateSource, stateTarget, id, subnode) {
 		var label = 'all '+ scope.DescriptionService.getSubnodeDescription() + 's';
 		if (subnode !== undefined) {
@@ -136,6 +143,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//append html elements
 	function appendElements(title, connect, newState, subnode) {
 		newState.append(title);
 		newState.append(subnode);
@@ -143,12 +151,14 @@ var CDARJsPlumb = (function() {
 		$('#jsplumb-container').append(newState);
 	}
 
+	//make node draggable
 	function makeNodesDraggable(newState) {
 		jsPlumb.draggable(newState, {
 			containment : 'parent'
 		});
 	}
 
+	//double click on node show or hide options
 	function toggleSubnode(newState) {
 		newState.dblclick(function(e) {
 			$('#' + newState[0].id + ' .option').toggle();
@@ -156,6 +166,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//Listener select node with connections and show wikicontent
 	function clickNodeEvent(newState) {
 		newState.click(function(e) {
 			scope.changeNode(newState[0].id.replace(NODE, ""), $(
@@ -177,6 +188,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//reset selected nodes or connections to normal design
 	function resetSelectDesign() {
 		if (selectedElement !== null) {
 			if (selectedElement.indexOf(NODE) > -1) {
@@ -208,6 +220,7 @@ var CDARJsPlumb = (function() {
 		selectedElement = null;
 	}
 
+	//Listener drill up image inside node
 	function drillUpEvent(uptree, newState) {
 		uptree.click(function(e) {
 			e.stopPropagation();
@@ -215,6 +228,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//Listener drill down image inside node
 	function drillDownEvent(downtree, newState) {
 		downtree.click(function(e) {
 			e.stopPropagation();
@@ -222,6 +236,8 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	// bind new connection event
+	// store connection and show popup for option selection
 	function bindNewConnection() {
 		jsPlumb.bind("connection", function(info) {
 			if (!isInitialized) {
@@ -238,6 +254,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 	
+	//Listener before connection dropped on target
 	function bindDropConnection(info)
 	{
 		jsPlumb.bind("beforeDrop", function(connection) {
@@ -264,6 +281,8 @@ var CDARJsPlumb = (function() {
         });
 	}
 
+	//Listener click on connection
+	//mark it
 	function bindClickConnection(info) {
 		info.connection.bind("click", function(c) {
 			resetSelectDesign();
@@ -277,6 +296,7 @@ var CDARJsPlumb = (function() {
 		});
 	}
 
+	//show popup for option selection on connection
 	function showSubnodePopup(info) {
 		$('#popup-box-1').show();
 		$('#radio-form').empty();
@@ -289,6 +309,7 @@ var CDARJsPlumb = (function() {
 		buildPopupContent(-1, 'all '+ scope.DescriptionService.getSubnodeDescription() + 's');
 	}
 
+	//build popup content
 	function buildPopupContent(id, title) {
 		$('#radio-form').append(
 				"<input type=\"radio\" id=\"" + SUBNODE + id
@@ -296,6 +317,7 @@ var CDARJsPlumb = (function() {
 						+ title + "\">" + title + "<br>");
 	};
 
+	//Register Connection template
 	function registerLinkTemplate() {
 		jsPlumb.registerConnectionType("change", {
 			paintStyle : {
@@ -328,12 +350,14 @@ var CDARJsPlumb = (function() {
 
 	}
 
+	//remove existing value from array
 	jQuery.removeFromArray = function(value, arr) {
 		return jQuery.grep(arr, function(elem, index) {
 			return elem !== value;
 		});
 	};
 
+	//get all Connections of node
 	function getConnections(state) {
 		var allTargetConnection = jsPlumb.getConnections({
 			target : state
@@ -344,6 +368,7 @@ var CDARJsPlumb = (function() {
 		return allTargetConnection.concat(allSourceConnection);
 	}
 
+	//declare imagestatus
 	function getStatusImage(status) {
 		var state;
 		switch (status) {
@@ -369,10 +394,12 @@ var CDARJsPlumb = (function() {
 		return 'app/img/' + state;
 	}
 	
+	//prepare to remove connection
 	function prepareRemoveLink(id){
 		scope.deleteLink(id.replace(LINK, ""));
 	}
 
+	//detach node and delete connections
     function detachNode(id) {
         var node = $('#' + NODE + id);
         if (node.size() !== 0) {
@@ -386,6 +413,7 @@ var CDARJsPlumb = (function() {
 
 	// public Methods
 	return {
+		//initialize jsPlumb
 		initialize : function() {
 			scope = angular.element(document.getElementById("wrapper")).scope();
 			setDefaultSettings();
@@ -402,6 +430,7 @@ var CDARJsPlumb = (function() {
 			});
 		},
 
+		//draw dropped node, build content and register listeners
 		drawNewNode : function(response, e) {
 			isInitialized = true;
 			var newState = $('<div>').attr('id', NODE + response.id).addClass(
@@ -441,6 +470,7 @@ var CDARJsPlumb = (function() {
 			scope.getSubnodesOfNode(response.id);
 		},
 
+		//draw statup nodes with content and register listeners
 		drawExistingNodes : function(data, resSubnodes) {
 			buildContent();
 			makePopupEvents();
@@ -518,6 +548,8 @@ var CDARJsPlumb = (function() {
 				}
 			});
         },
+        
+        //Button call remove selected element
 		removeSelected : function() {
 			if (selectedElement !== null) {
 				if (selectedElement.indexOf(NODE) > -1) {
@@ -534,6 +566,7 @@ var CDARJsPlumb = (function() {
 			}
 		},
 		
+		//remove node and detach all connections
 		removeNode: function(node){
 			if (node.size() !== 0) {
 				var connections = getConnections(node);
@@ -546,6 +579,7 @@ var CDARJsPlumb = (function() {
 			}
 		},
 
+		//remove connetion
 		removeLink: function(id) {
 			var connections = jsPlumb.getConnections();
 			jQuery.each(connections, function(object) {
@@ -555,6 +589,7 @@ var CDARJsPlumb = (function() {
 			});
 		},
 		
+		//order nodes
 		makeNodeHierarchy : function(data, resSubNodes) {
 			$("#dot-src").empty();
 			var map = {};
@@ -574,11 +609,13 @@ var CDARJsPlumb = (function() {
 			isInitialized = true;
 		},
 
+		//set id of connection
 		setLinkId : function(connection, id) {
 			connection.id = LINK + id;
 			lastConnectionID = LINK + id;
 		},
 
+		//rename node
 		renameNode : function(id, newTitle) {
 			var title = $('#' + NODE + id + ' .title');
 			if (title.size() !== 0) {
@@ -586,12 +623,14 @@ var CDARJsPlumb = (function() {
 			}
 		},
 
+		//set status image
 		setStatusImage : function(node) {
 			var imageDiv = $('#' + STATUS + node.id);
 			imageDiv.css('background-image', 'url('
 					+ getStatusImage(node.status) + ')');
 		},
 
+		//update options of node
 		updateSubnodesOfNode : function(newSubnode, nodeId, changes) {
 			if ($("#" + NODE + nodeId).size() !== 0) {
 				var options = $("#" + NODE + nodeId).data("subnode");
@@ -642,6 +681,7 @@ var CDARJsPlumb = (function() {
 			}
 		},
 
+		//Button drill down
 		drillDownButton : function() {
 			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
 				scope.drillDownNode(selectedElement.replace(NODE, ""));
@@ -656,6 +696,7 @@ var CDARJsPlumb = (function() {
 			}
 		},
 
+		//Button drill up
 		drillUpButton : function() {
 			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
 				scope.drillUpNode(selectedElement.replace(NODE, ""));
