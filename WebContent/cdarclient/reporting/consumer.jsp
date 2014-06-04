@@ -48,6 +48,12 @@
 					</tr>
 				</thead>
 					<tr>
+						<td><strong>Directory</strong></td>
+						<td>
+							${ tree.getDirectoryBreadcrumb(tree.getTreeTitle(), node.getDirectoryId()) }
+						</td>
+					</tr>
+					<tr>
 						<td><strong>Predecessor</strong></td>
 						<td>
 							<ul>

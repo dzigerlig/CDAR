@@ -32,7 +32,7 @@ public class ProjectTreeBean extends ReportingBean {
 	 * @throws Exception the exception
 	 */
 	public ProjectTreeBean() throws Exception {
-		super();
+		super(UserRole.CONSUMER);
 	}
 	
 	/** The Project Tree Manager. */
