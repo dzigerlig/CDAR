@@ -5,7 +5,6 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectNode;
-import ch.cdar.bll.entity.consumer.ProjectSubnode;
 import ch.cdar.bll.manager.producer.TemplateManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
 import ch.cdar.dal.consumer.ProjectDirectoryRepository;
@@ -21,7 +20,6 @@ import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
 import ch.cdar.dal.user.UserRepository;
-import ch.cdar.pl.controller.StatusHelper;
 
 /**
  * The Class ProjectNodeManager.
@@ -66,6 +64,7 @@ public class ProjectNodeManager {
 	 *
 	 * @param uid the uid
 	 * @param projectNode the project node
+	 * @param content the content
 	 * @return the project node
 	 * @throws UnknownProjectTreeException the unknown project tree exception
 	 * @throws CreationException the creation exception
@@ -73,10 +72,10 @@ public class ProjectNodeManager {
 	 * @throws UnknownUserException the unknown user exception
 	 * @throws UnknownTreeException the unknown tree exception
 	 */
-	public ProjectNode addProjectNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, EntityException, UnknownUserException, UnknownTreeException {
-		boolean createSubnode = true;
+	public ProjectNode addProjectNode(int uid, ProjectNode projectNode, String content) throws UnknownProjectTreeException, CreationException, EntityException, UnknownUserException, UnknownTreeException {
+		boolean createNode = true;
 		if(projectNode.getWikititle()!=null) {
-			createSubnode = false;
+			createNode = false;
 		}
 		
 		if (projectNode.getTitle() == null) {
@@ -93,9 +92,11 @@ public class ProjectNodeManager {
 		
 		projectNode = pnr.createNode(projectNode);
 		
-		if (createSubnode) {
+		if (createNode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
-			String content = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
+			if (content == null) {
+				content = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
+			}
 			MediaWikiManager mwm = new MediaWikiManager();
 			mwm.createWikiEntry(uid, projectNode.getWikititle(), content);
 		}
@@ -271,26 +272,31 @@ public class ProjectNodeManager {
 		return pnr.getRoot(treeId);
 	}
 
+	/**
+	 * Copy node.
+	 *
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the project node
+	 * @throws UnknownProjectTreeException the unknown project tree exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 */
 	public ProjectNode copyNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeLinkException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException, UnknownProjectSubnodeException, UnknownTreeException {
-		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		int projectNodeId = projectNode.getId();
 		MediaWikiManager mwm = new MediaWikiManager();
-		projectNode = getProjectNode(projectNode.getId());
+		projectNode = getProjectNode(projectNodeId);
 		projectNode.setWikititle(null);
-		ProjectNode newNode =addProjectNode(uid, projectNode);
-		WikiEntry nwe= mwm.getProjectNodeWikiEntry(projectNode.getId());
-		System.out.println(nwe.getWikititle());
-		System.out.println(newNode.getWikititle());
-		nwe.setWikititle(newNode.getWikititle());
-		mwm.saveProjectNodeWikiEntry(uid, nwe);
-		WikiEntry swe;
-		for (ProjectSubnode subnode : psm.getProjectSubnodesFromProjectNode(projectNode.getId())) {
-			subnode.setWikititle(null);
-			subnode.setNodeId(newNode.getId());
-			ProjectSubnode ps= psm.addProjectSubnode(uid, subnode);
-			swe = mwm.getKnowledgeProjectSubnodeWikiEntry(subnode.getId());
-			swe.setWikititle(ps.getWikititle());
-			mwm.saveKnowledgeProjectSubnodeWikiEntry(uid, swe);			
-		}
+		WikiEntry wikiEntry = mwm.getProjectNodeWikiEntry(projectNode.getId());
+		ProjectNode newNode = addProjectNode(uid, projectNode, wikiEntry.getWikiContentPlain());
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		psm.copySubnodes(uid, projectNodeId, newNode.getId());
 		return newNode;
 	}
 }

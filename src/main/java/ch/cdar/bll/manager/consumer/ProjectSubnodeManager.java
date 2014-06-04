@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ch.cdar.bll.entity.Subnode;
+import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectNode;
 import ch.cdar.bll.entity.consumer.ProjectSubnode;
 import ch.cdar.bll.wiki.MediaWikiManager;
@@ -19,7 +20,6 @@ import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
 import ch.cdar.dal.user.UserRepository;
-import ch.cdar.pl.controller.StatusHelper;
 
 /**
  * The Class ProjectSubnodeManager.
@@ -37,6 +37,7 @@ public class ProjectSubnodeManager {
 	 *
 	 * @param uid the uid
 	 * @param projectSubnode the project subnode
+	 * @param content the content
 	 * @return the project subnode
 	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
 	 * @throws UnknownProjectNodeException the unknown project node exception
@@ -44,7 +45,7 @@ public class ProjectSubnodeManager {
 	 * @throws UnknownUserException the unknown user exception
 	 * @throws EntityException the entity exception
 	 */
-	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode) throws UnknownProjectNodeLinkException,
+	public ProjectSubnode addProjectSubnode(int uid, ProjectSubnode projectSubnode, String content) throws UnknownProjectNodeLinkException,
 			UnknownProjectNodeException, CreationException,
 			UnknownUserException, EntityException {
 		boolean createSubnode = true;
@@ -58,8 +59,9 @@ public class ProjectSubnodeManager {
 
 		if (createSubnode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
-			String content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
-
+			if (content==null) {
+				content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+			}
 			MediaWikiManager mwm = new MediaWikiManager();
 			mwm.createWikiEntry(uid, projectSubnode.getWikititle(), content);
 		}
@@ -125,8 +127,7 @@ public class ProjectSubnodeManager {
 			EntityException {
 		Set<ProjectSubnode> projectSubnodes = new HashSet<ProjectSubnode>();
 
-		for (ProjectSubnode projectSubnode : psr
-				.getSubnodes(projectNodeId)) {
+		for (ProjectSubnode projectSubnode : psr.getSubnodes(projectNodeId)) {
 			projectSubnodes.add(projectSubnode);
 		}
 
@@ -362,5 +363,29 @@ public class ProjectSubnodeManager {
 		ProjectSubnode renamedProjectSubnode = psr.getSubnode(projectSubnode.getId());
 		renamedProjectSubnode.setTitle(projectSubnode.getTitle());
 		return psr.updateSubnode(renamedProjectSubnode);
+	}
+	
+	/**
+	 * Copy subnodes.
+	 *
+	 * @param uid the uid
+	 * @param projectNodeId the project node id
+	 * @param newNodeId the new node id
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeLinkException the unknown project node link exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownProjectSubnodeException the unknown project subnode exception
+	 */
+	public void copySubnodes(int uid, int projectNodeId, int newNodeId) throws UnknownProjectNodeException, EntityException, UnknownProjectNodeLinkException, CreationException, UnknownUserException, UnknownProjectSubnodeException {
+		MediaWikiManager mwm = new MediaWikiManager();
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		for (ProjectSubnode subnode : psm.getProjectSubnodesFromProjectNode(projectNodeId)) {
+			WikiEntry swe = mwm.getKnowledgeProjectSubnodeWikiEntry(subnode.getId());
+			subnode.setWikititle(null);
+			subnode.setNodeId(newNodeId);
+			psm.addProjectSubnode(uid, subnode, swe.getWikiContentPlain());
+		}
 	}
 }

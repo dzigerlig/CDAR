@@ -63,7 +63,7 @@ public class ProjectNodeController {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusCreated(pnm.addProjectNode(uid,
-					projectNode));
+					projectNode, null));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
