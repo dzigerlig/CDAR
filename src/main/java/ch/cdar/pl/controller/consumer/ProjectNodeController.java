@@ -218,6 +218,31 @@ public class ProjectNodeController {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}
+	
+	/**
+	 * Copy node.
+	 *
+	 * @param treeId the tree id
+	 * @param uid the uid
+	 * @param projectNode the project node
+	 * @return the response
+	 */
+	@POST
+	@Path("{nodeid}/copy")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response copyNode(@PathParam("ptreeid") int treeId,@PathParam("nodeid") int nodeid,
+			@HeaderParam("uid") int uid, ProjectNode projectNode) {
+		projectNode.setId(nodeid);
+		try {
+			lm.lock(ISPRODUCER, treeId, uid);
+			return StatusHelper.getStatusOk(pnm.copyNode(uid, projectNode));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
+		} catch (Exception ex) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
 
 	/**
 	 * Delete node.

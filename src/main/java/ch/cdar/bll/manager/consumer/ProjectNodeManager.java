@@ -3,7 +3,9 @@ package ch.cdar.bll.manager.consumer;
 import java.util.HashSet;
 import java.util.Set;
 
+import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectNode;
+import ch.cdar.bll.entity.consumer.ProjectSubnode;
 import ch.cdar.bll.manager.producer.TemplateManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
 import ch.cdar.dal.consumer.ProjectDirectoryRepository;
@@ -12,6 +14,8 @@ import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
 import ch.cdar.dal.exceptions.UnknownProjectNodeException;
+import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
 import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
@@ -265,5 +269,28 @@ public class ProjectNodeManager {
 	 */
 	private ProjectNode getRoot(int treeId) throws UnknownNodeException, EntityException {
 		return pnr.getRoot(treeId);
+	}
+
+	public ProjectNode copyNode(int uid, ProjectNode projectNode) throws UnknownProjectTreeException, CreationException, UnknownProjectNodeLinkException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownNodeException, UnknownProjectSubnodeException, UnknownTreeException {
+		ProjectSubnodeManager psm = new ProjectSubnodeManager();
+		MediaWikiManager mwm = new MediaWikiManager();
+		projectNode = getProjectNode(projectNode.getId());
+		projectNode.setWikititle(null);
+		ProjectNode newNode =addProjectNode(uid, projectNode);
+		WikiEntry nwe= mwm.getProjectNodeWikiEntry(projectNode.getId());
+		System.out.println(nwe.getWikititle());
+		System.out.println(newNode.getWikititle());
+		nwe.setWikititle(newNode.getWikititle());
+		mwm.saveProjectNodeWikiEntry(uid, nwe);
+		WikiEntry swe;
+		for (ProjectSubnode subnode : psm.getProjectSubnodesFromProjectNode(projectNode.getId())) {
+			subnode.setWikititle(null);
+			subnode.setNodeId(newNode.getId());
+			ProjectSubnode ps= psm.addProjectSubnode(uid, subnode);
+			swe = mwm.getKnowledgeProjectSubnodeWikiEntry(subnode.getId());
+			swe.setWikititle(ps.getWikititle());
+			mwm.saveKnowledgeProjectSubnodeWikiEntry(uid, swe);			
+		}
+		return newNode;
 	}
 }

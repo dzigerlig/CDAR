@@ -145,6 +145,14 @@ app
 												entity2 : 'nodes'
 											}
 										},
+										'addNodeCopy' : {
+											headers : CDAR.getCustomHeader(),
+											method : 'POST',
+											params : {
+												entity2 : 'nodes',
+												action : 'copy'
+											}
+										},
 										'getNode' : {
 											headers : CDAR.getCustomHeader(),
 											method : 'GET',

@@ -50,7 +50,8 @@ var CDARJsTree = (function () {
                     dndCopyCreateSubnodes(data);
                 }
             } else {
-                scope.addNodeCopy(node);
+            	var id = data.original.id.replace(NODE, "").replace(DIRECTORY, "");
+                scope.addNodeCopy(id,node);
             }
         });
 
@@ -171,7 +172,8 @@ var CDARJsTree = (function () {
             if (node.type === 'default') {
                 scope.addDirectoryCopy(node);
             } else {
-                scope.addNodeCopy(node);
+            	var id = data.original.id.replace(NODE, "").replace(DIRECTORY, "");
+                scope.addNodeCopy(id,node);
             }
 
         });
@@ -366,7 +368,6 @@ var CDARJsTree = (function () {
             }
             $('#jstree').jstree(true).set_id(nodeCopy, id);
             copiedId.push(id);
-
             if (editedCopies == quantitiyOfCopies) {
                 setId();
             }

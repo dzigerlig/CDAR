@@ -144,11 +144,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 			 }
         });
     };
-
-    $scope.addNodeCopy = function(node) {
-        TreeService.addNode({
+    
+    $scope.addNodeCopy = function(id,node) {
+        TreeService.addNodeCopy({
                 entity1 : 'ptrees',
-                id1 : $routeParams.treeId
+                id1 : $routeParams.treeId,
+                id2 : id
             }, {
                 treeId : $routeParams.treeId,
                 title : node.text,
