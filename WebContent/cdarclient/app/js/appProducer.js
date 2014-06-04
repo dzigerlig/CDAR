@@ -710,12 +710,13 @@ app.controller("KnowledgeTreeController",
 								});
 							};
 
-							$scope.addNodeCopy = function(node) {
+							$scope.addNodeCopy = function(id, node) {
 								TreeService
-										.addNode(
+										.addNodeCopy(
 												{
 													entity1 : 'ktrees',
-													id1 : $routeParams.treeId
+													id1 : $routeParams.treeId,
+									                id2 : id
 												},
 												{
 													treeId : $routeParams.treeId,
