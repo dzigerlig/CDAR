@@ -62,7 +62,7 @@
 										<td>{{xmltree.creationTime}}</td>
 										<td><a href="#" editable-text="xmltree.title" onbeforesave="saveXmlTreeTitle($data, xmltree.id)">{{xmltree.title}}</a></td>
 										<td><a data-ng-click="showImportTreeModal(xmltree.title, xmltree.id)" href="">Import to Project</a></td>
-										<td><a href="{{getXmlFileString(xmltree.id)}}" target="_blank">Save</a></td>
+										<td><a href="{{getXmlFileString(xmltree.id)}}" type="application/xml" download="export.xml" target="_blank">Save</a></td>
 										<td><a data-ng-click="deleteXmlTree(xmltree.id)" href="">Delete Simple Export</a></td>
 									</tr>
 									<tr>
