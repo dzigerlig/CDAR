@@ -57,7 +57,9 @@ public class SubnodeManager {
 		if (subnode.getWikititle() != null) {
 			createSubnode = false;
 		}
-		subnode.setPosition(getNextSubnodePosition(subnode.getNodeId()));
+		if (subnode.getPosition()==0) {
+			subnode.setPosition(getNextSubnodePosition(subnode.getNodeId()));
+		}
 		subnode = sr.createSubnode(subnode);
 
 		if (createSubnode) {
@@ -438,14 +440,13 @@ public class SubnodeManager {
 	 */
 	public void copySubnodes(int uid, int treeId, int nodeId, int newNodeId) throws EntityException, UnknownNodeException, UnknownSubnodeException, CreationException, UnknownUserException, UnknownTreeException, InterruptedException {
 		MediaWikiManager mwm = new MediaWikiManager();
-		SubnodeManager psm = new SubnodeManager();
-		Set<Subnode> subnodeList = psm.getSubnodesFromNode(nodeId);
+		Set<Subnode> subnodeList = getSubnodesFromNode(nodeId);
 		CountDownLatch subnodeLatch = new CountDownLatch(subnodeList.size());
 		for (Subnode subnode : subnodeList) {
 			WikiEntry swe = mwm.getKnowledgeSubnodeWikiEntry(subnode.getId());
 			subnode.setWikititle(null);
 			subnode.setNodeId(newNodeId);
-			psm.addSubnode(uid, treeId, subnode, swe.getWikiContentPlain(), subnodeLatch);
+			addSubnode(uid, treeId, subnode, swe.getWikiContentPlain(), subnodeLatch);
 		}
 		subnodeLatch.await();
 	}

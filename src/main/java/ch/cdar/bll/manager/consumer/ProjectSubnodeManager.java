@@ -56,8 +56,10 @@ public class ProjectSubnodeManager {
 			createSubnode = false;
 		}
 
-		projectSubnode.setPosition(getNextSubnodePosition(projectSubnode
+		if (projectSubnode.getPosition()==0) {
+			projectSubnode.setPosition(getNextSubnodePosition(projectSubnode
 				.getNodeId()));
+		}
 		projectSubnode = psr.createSubnode(projectSubnode);
 
 		if (createSubnode) {
@@ -389,14 +391,13 @@ public class ProjectSubnodeManager {
 	 */
 	public void copySubnodes(int uid, int projectNodeId, int newNodeId) throws UnknownProjectNodeException, EntityException, UnknownProjectNodeLinkException, CreationException, UnknownUserException, UnknownProjectSubnodeException, InterruptedException {
 		MediaWikiManager mwm = new MediaWikiManager();
-		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		Set <ProjectSubnode> subnodeList = psm.getProjectSubnodesFromProjectNode(projectNodeId);
+		Set <ProjectSubnode> subnodeList = getProjectSubnodesFromProjectNode(projectNodeId);
 		CountDownLatch subnodeLatch = new CountDownLatch(subnodeList.size());
 		for (ProjectSubnode subnode : subnodeList) {
 			WikiEntry swe = mwm.getKnowledgeProjectSubnodeWikiEntry(subnode.getId());
 			subnode.setWikititle(null);
 			subnode.setNodeId(newNodeId);
-			psm.addProjectSubnode(uid, subnode, swe.getWikiContentPlain(),subnodeLatch);
+			addProjectSubnode(uid, subnode, swe.getWikiContentPlain(),subnodeLatch);
 		}
 		subnodeLatch.await();
 	}
