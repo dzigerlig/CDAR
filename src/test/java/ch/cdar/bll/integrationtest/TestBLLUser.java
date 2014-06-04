@@ -8,7 +8,6 @@ import org.junit.Test;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.exceptions.UsernameInvalidException;
 import ch.cdar.dal.exceptions.WrongCredentialsException;
@@ -30,7 +29,7 @@ public class TestBLLUser {
 
 	@Test
 	public void testCreateUserSameUsername() throws Exception {
-		User user = um.createUser(new User(username, password), false);
+		um.createUser(new User(username, password), false);
 		try {
 			um.createUser(new User(username, password), false);
 		} catch (UsernameInvalidException e) {

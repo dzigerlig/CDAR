@@ -73,7 +73,7 @@ public class SubnodeController {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
 			return StatusHelper.getStatusCreated(sm.addSubnode(uid, treeId,
-					subnode));
+					subnode, null));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));

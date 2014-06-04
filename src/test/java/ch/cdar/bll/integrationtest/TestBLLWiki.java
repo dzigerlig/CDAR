@@ -2,7 +2,6 @@ package ch.cdar.bll.integrationtest;
 
 import static org.junit.Assert.assertEquals;
 
-import org.glassfish.jersey.internal.util.PropertiesHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +52,7 @@ public class TestBLLWiki {
 		node.setTreeId(tree.getId());
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(did);
-		node = nm.addNode(um.getUser(username).getId(), node);
+		node = nm.addNode(um.getUser(username).getId(), node, null);
 		PropertyHelper helper = new PropertyHelper();
 		String content = helper.getProperty("NODE_DESCRIPTION").toUpperCase();
 		assertEquals("== "+content+" ==", mwm.getKnowledgeNodeWikiEntry(node.getId()).getWikiContentPlain());

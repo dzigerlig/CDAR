@@ -11,7 +11,6 @@ import ch.cdar.bll.entity.Node;
 import ch.cdar.bll.entity.NodeLink;
 import ch.cdar.bll.entity.Subnode;
 import ch.cdar.bll.entity.Tree;
-import ch.cdar.bll.entity.TreeXml;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.entity.producer.Template;
@@ -278,7 +277,7 @@ public class TestBLLKnowledgeProducer {
 		node.setTreeId(tree.getId());
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(USERNAME).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node, null);
 		assertEquals(1, nm.getNodes(tree.getId()).size());
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
 		assertEquals(directoryId, nm.getNode(node.getId()).getDirectoryId());
@@ -302,7 +301,7 @@ public class TestBLLKnowledgeProducer {
 		node.setTreeId(tree.getId());
 		node.setTitle(nodeTitle);
 		node.setDirectoryId(directoryId);
-		node = nm.addNode(um.getUser(USERNAME).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node, null);
 		assertEquals(nodeTitle, nm.getNode(node.getId()).getTitle());
 		node.setTitle(newNodeTitle);
 		nm.updateNode(node);
@@ -328,7 +327,7 @@ public class TestBLLKnowledgeProducer {
 		node.setTreeId(unknownId);
 		node.setTitle("Node title");
 		node.setDirectoryId(2);
-		node = nm.addNode(um.getUser(USERNAME).getId(), node);
+		node = nm.addNode(um.getUser(USERNAME).getId(), node, null);
 		node.setTitle("Updated title");
 		nm.updateNode(node);
 	}

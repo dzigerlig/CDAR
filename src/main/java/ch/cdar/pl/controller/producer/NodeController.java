@@ -62,7 +62,7 @@ public class NodeController {
 			@HeaderParam("uid") int uid, Node node) {
 		try {
 			lm.lock(ISPRODUCER, treeId, uid);
-			return StatusHelper.getStatusCreated(nm.addNode(uid, node));
+			return StatusHelper.getStatusCreated(nm.addNode(uid, node, null));
 		} catch (LockingException e) {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
@@ -135,6 +135,32 @@ public class NodeController {
 			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
 					treeId));
 		} catch (Exception e) {
+			return StatusHelper.getStatusBadRequest();
+		}
+	}
+	
+	/**
+	 * Copy node.
+	 *
+	 * @param treeId the tree id
+	 * @param nodeid the node id
+	 * @param uid the uid
+	 * @param Node the project node
+	 * @return the response
+	 */
+	@POST
+	@Path("{nodeid}/copy")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response copyNode(@PathParam("ptreeid") int treeId,@PathParam("nodeid") int nodeid,
+			@HeaderParam("uid") int uid, Node node) {
+		node.setId(nodeid);
+		try {
+			lm.lock(ISPRODUCER, treeId, uid);
+			return StatusHelper.getStatusOk(nm.copyNode(uid, node));
+		} catch (LockingException e) {
+			return StatusHelper.getStatusConflict(lm.getLockText(ISPRODUCER,
+					treeId));
+		} catch (Exception ex) {
 			return StatusHelper.getStatusBadRequest();
 		}
 	}

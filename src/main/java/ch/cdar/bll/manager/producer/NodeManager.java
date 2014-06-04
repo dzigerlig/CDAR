@@ -4,33 +4,38 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ch.cdar.bll.entity.Node;
+import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.wiki.MediaWikiManager;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
+import ch.cdar.dal.exceptions.UnknownProjectNodeException;
+import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
 import ch.cdar.dal.producer.DirectoryRepository;
 import ch.cdar.dal.producer.NodeRepository;
 import ch.cdar.dal.user.UserRepository;
-import ch.cdar.pl.controller.StatusHelper;
 
 /**
  * The Class NodeManager.
  */
 public class NodeManager {
-	
+
 	/** The Node Repository. */
 	private NodeRepository nr = new NodeRepository();
 
 	/**
 	 * Gets the nodes.
-	 *
-	 * @param treeId the tree id
+	 * 
+	 * @param treeId
+	 *            the tree id
 	 * @return the nodes
-	 * @throws EntityException the entity exception
-	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws EntityException
+	 *             the entity exception
+	 * @throws UnknownTreeException
+	 *             the unknown tree exception
 	 */
 	public Set<Node> getNodes(int treeId) throws EntityException,
 			UnknownTreeException {
@@ -43,11 +48,14 @@ public class NodeManager {
 
 	/**
 	 * Gets the node.
-	 *
-	 * @param nodeId the node id
+	 * 
+	 * @param nodeId
+	 *            the node id
 	 * @return the node
-	 * @throws UnknownNodeException the unknown node exception
-	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
+	 * @throws EntityException
+	 *             the entity exception
 	 */
 	public Node getNode(int nodeId) throws UnknownNodeException,
 			EntityException {
@@ -56,9 +64,11 @@ public class NodeManager {
 
 	/**
 	 * Delete node.
-	 *
-	 * @param nodeId the node id
-	 * @throws UnknownNodeException the unknown node exception
+	 * 
+	 * @param nodeId
+	 *            the node id
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
 	 */
 	public void deleteNode(int nodeId) throws UnknownNodeException {
 		nr.deleteNode(nodeId);
@@ -66,17 +76,24 @@ public class NodeManager {
 
 	/**
 	 * Adds the node.
-	 *
-	 * @param uid the uid
-	 * @param node the node
+	 * 
+	 * @param uid
+	 *            the uid
+	 * @param node
+	 *            the node
 	 * @return the node
-	 * @throws EntityException the entity exception
-	 * @throws UnknownUserException the unknown user exception
-	 * @throws UnknownTreeException the unknown tree exception
-	 * @throws CreationException the creation exception
+	 * @throws EntityException
+	 *             the entity exception
+	 * @throws UnknownUserException
+	 *             the unknown user exception
+	 * @throws UnknownTreeException
+	 *             the unknown tree exception
+	 * @throws CreationException
+	 *             the creation exception
 	 */
-	public Node addNode(int uid, Node node) throws EntityException,
-			UnknownUserException, UnknownTreeException, CreationException {
+	public Node addNode(int uid, Node node, String templateContent)
+			throws EntityException, UnknownUserException, UnknownTreeException,
+			CreationException {
 		if (node.getDirectoryId() == 0) {
 			DirectoryRepository dr = new DirectoryRepository();
 			int rootDirectoryId = dr.getDirectories(node.getTreeId()).get(0)
@@ -93,13 +110,16 @@ public class NodeManager {
 		node = nr.createNode(node);
 
 		TemplateManager tm = new TemplateManager();
-		String templateContent = tm.getDefaultKnowledgeTemplateText(node
-				.getTreeId());
 
 		if (templateContent == null) {
-			PropertyHelper propertyHelper = new PropertyHelper();
-			templateContent = String.format("== %S ==",
-					propertyHelper.getProperty("NODE_DESCRIPTION"));
+			templateContent = tm.getDefaultKnowledgeTemplateText(node
+					.getTreeId());
+
+			if (templateContent == null) {
+				PropertyHelper propertyHelper = new PropertyHelper();
+				templateContent = String.format("== %S ==",
+						propertyHelper.getProperty("NODE_DESCRIPTION"));
+			}
 		}
 
 		MediaWikiManager mwm = new MediaWikiManager();
@@ -110,11 +130,14 @@ public class NodeManager {
 
 	/**
 	 * Rename node.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 * @return the node
-	 * @throws UnknownNodeException the unknown node exception
-	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
+	 * @throws EntityException
+	 *             the entity exception
 	 */
 	public Node renameNode(Node node) throws UnknownNodeException,
 			EntityException {
@@ -126,11 +149,14 @@ public class NodeManager {
 
 	/**
 	 * Update node.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 * @return the node
-	 * @throws UnknownNodeException the unknown node exception
-	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
+	 * @throws EntityException
+	 *             the entity exception
 	 */
 	public Node updateNode(Node node) throws UnknownNodeException,
 			EntityException {
@@ -157,13 +183,18 @@ public class NodeManager {
 
 	/**
 	 * Drill up.
-	 *
-	 * @param uid the uid
-	 * @param nodeId the node id
+	 * 
+	 * @param uid
+	 *            the uid
+	 * @param nodeId
+	 *            the node id
 	 * @return the sets the
-	 * @throws UnknownNodeException the unknown node exception
-	 * @throws EntityException the entity exception
-	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
+	 * @throws EntityException
+	 *             the entity exception
+	 * @throws UnknownUserException
+	 *             the unknown user exception
 	 */
 	public Set<Node> drillUp(int uid, int nodeId) throws UnknownNodeException,
 			EntityException, UnknownUserException {
@@ -175,12 +206,16 @@ public class NodeManager {
 
 	/**
 	 * Recursive drill up.
-	 *
-	 * @param nodeId the node id
-	 * @param quantity the quantity
-	 * @param nodes the nodes
+	 * 
+	 * @param nodeId
+	 *            the node id
+	 * @param quantity
+	 *            the quantity
+	 * @param nodes
+	 *            the nodes
 	 * @return the sets the
-	 * @throws EntityException the entity exception
+	 * @throws EntityException
+	 *             the entity exception
 	 */
 	private Set<Node> recursiveDrillUp(int nodeId, int quantity, Set<Node> nodes)
 			throws EntityException {
@@ -198,14 +233,20 @@ public class NodeManager {
 
 	/**
 	 * Drill down.
-	 *
-	 * @param uid the uid
-	 * @param treeId the tree id
-	 * @param nodeId the node id
+	 * 
+	 * @param uid
+	 *            the uid
+	 * @param treeId
+	 *            the tree id
+	 * @param nodeId
+	 *            the node id
 	 * @return the sets the
-	 * @throws UnknownNodeException the unknown node exception
-	 * @throws EntityException the entity exception
-	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownNodeException
+	 *             the unknown node exception
+	 * @throws EntityException
+	 *             the entity exception
+	 * @throws UnknownUserException
+	 *             the unknown user exception
 	 */
 	public Set<Node> drillDown(int uid, int treeId, int nodeId)
 			throws UnknownNodeException, EntityException, UnknownUserException {
@@ -225,12 +266,16 @@ public class NodeManager {
 
 	/**
 	 * Recursive drill down.
-	 *
-	 * @param nodeId the node id
-	 * @param quantity the quantity
-	 * @param nodes the nodes
+	 * 
+	 * @param nodeId
+	 *            the node id
+	 * @param quantity
+	 *            the quantity
+	 * @param nodes
+	 *            the nodes
 	 * @return the sets the
-	 * @throws EntityException the entity exception
+	 * @throws EntityException
+	 *             the entity exception
 	 */
 	private Set<Node> recursiveDrillDown(int nodeId, int quantity,
 			Set<Node> nodes) throws EntityException {
@@ -245,14 +290,25 @@ public class NodeManager {
 
 	/**
 	 * Gets the root.
-	 *
-	 * @param treeId the tree id
+	 * 
+	 * @param treeId
+	 *            the tree id
 	 * @return the root
-	 * @throws EntityException the entity exception
-	 * @throws UnknownNodeException the unknown node exception
 	 */
 	private Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 		return nr.getRoot(treeId);
+	}
+
+	public Node copyNode(int uid, Node node) throws UnknownNodeException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownTreeException, CreationException, UnknownSubnodeException {
+		int nodeId = node.getId();
+		MediaWikiManager mwm = new MediaWikiManager();
+		node = getNode(nodeId);
+		node.setWikititle(null);
+		WikiEntry wikiEntry = mwm.getKnowledgeNodeWikiEntry(node.getId());
+		Node newNode = addNode(uid, node, wikiEntry.getWikiContentPlain());
+		SubnodeManager psm = new SubnodeManager();
+		psm.copySubnodes(uid, newNode.getTreeId(), nodeId, newNode.getId());
+		return newNode;
 	}
 }
