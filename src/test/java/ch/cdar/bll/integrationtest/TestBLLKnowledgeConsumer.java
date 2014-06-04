@@ -157,8 +157,8 @@ public class TestBLLKnowledgeConsumer {
 		node2.setTreeId(tree.getId());
 		node2.setTitle(nodeTitle2);
 		node2.setDirectoryId(directoryId);
-		node1 = nm.addNode(um.getUser(username).getId(), node1);
-		node2 = nm.addNode(um.getUser(username).getId(), node2);
+		node1 = nm.addNode(um.getUser(username).getId(), node1, null);
+		node2 = nm.addNode(um.getUser(username).getId(), node2, null);
 		NodeLink nodeLink = new NodeLink();
 		nodeLink.setTreeId(tree.getId());
 		nodeLink.setSourceId(node1.getId());
@@ -212,8 +212,8 @@ public class TestBLLKnowledgeConsumer {
 		node2.setTreeId(tree.getId());
 		node2.setTitle(nodeTitle2);
 		node2.setDirectoryId(directoryId);
-		node1 = nm.addNode(um.getUser(username).getId(), node1);
-		node2 = nm.addNode(um.getUser(username).getId(), node2);
+		node1 = nm.addNode(um.getUser(username).getId(), node1, null);
+		node2 = nm.addNode(um.getUser(username).getId(), node2, null);
 		Subnode subnode1 = new Subnode();
 		subnode1.setNodeId(node1.getId());
 		subnode1.setTitle(subnodeTitle1);
@@ -223,9 +223,9 @@ public class TestBLLKnowledgeConsumer {
 		Subnode subnode3 = new Subnode();
 		subnode3.setNodeId(node2.getId());
 		subnode3.setTitle(subnodeTitle3);
-		snm.addSubnode(uid,tree.getId(),subnode1);
-		snm.addSubnode(uid,tree.getId(),subnode2);
-		snm.addSubnode(uid,tree.getId(),subnode3);
+		snm.addSubnode(uid,tree.getId(),subnode1, null, null);
+		snm.addSubnode(uid,tree.getId(),subnode2, null, null);
+		snm.addSubnode(uid,tree.getId(),subnode3, null, null);
 		NodeLink nodeLink = new NodeLink();
 		nodeLink.setTreeId(tree.getId());
 		nodeLink.setSourceId(node1.getId());
@@ -465,7 +465,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectSubnode projectSubnode = new ProjectSubnode();
 		projectSubnode.setNodeId(projectNode.getId());
 		projectSubnode.setTitle(projectSubnodeName);
-		projectSubnode = psm.addProjectSubnode(uid,projectSubnode, null);
+		projectSubnode = psm.addProjectSubnode(uid,projectSubnode, null, null);
 		assertEquals(1, psm.getProjectSubnodesFromProjectNode(projectNode.getId()).size());
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(projectTree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(projectSubnode.getId()).getTitle());
@@ -496,7 +496,7 @@ public class TestBLLKnowledgeConsumer {
 		ProjectSubnode projectSubnode = new ProjectSubnode();
 		projectSubnode.setNodeId(pnode.getId());
 		projectSubnode.setTitle(projectSubnodeName);
-		projectSubnode = psm.addProjectSubnode(uid, projectSubnode, null);
+		projectSubnode = psm.addProjectSubnode(uid, projectSubnode, null, null);
 		assertEquals(1, psm.getProjectSubnodesFromProjectNode(pnode.getId()).size());
 		assertEquals(1, psm.getProjectSubnodesFromProjectTree(projectTree.getId()).size());
 		assertEquals(projectSubnodeName, psm.getProjectSubnode(projectSubnode.getId()).getTitle());

@@ -141,6 +141,7 @@ public class MediaWikiCreationModel extends Thread {
 		finally{
 			if(subnodeLatch!=null)
 			{
+				System.out.println(subnodeLatch.getCount());
 				subnodeLatch.countDown();
 			}
 		}

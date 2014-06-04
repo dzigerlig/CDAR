@@ -167,15 +167,17 @@ var CDARJsTree = (function () {
     }
 
     function dndCopyCreateSubnodes(data) {
+    	var i = 0;
         data.node.children_d.forEach(function (nodeId) {
             var node = data.instance._model.data[nodeId];
+            console.log(data);
             if (node.type === 'default') {
                 scope.addDirectoryCopy(node);
             } else {
-            	var id = data.original.id.replace(NODE, "").replace(DIRECTORY, "");
+            	var id = data.original.children_d[i].replace(NODE, "").replace(DIRECTORY, "");
                 scope.addNodeCopy(id,node);
             }
-
+            i++;
         });
     }
 
