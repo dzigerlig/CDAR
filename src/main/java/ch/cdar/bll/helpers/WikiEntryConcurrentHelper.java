@@ -1,10 +1,11 @@
-package ch.cdar.bll.wiki;
+package ch.cdar.bll.helpers;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * The Class WikiEntryConcurrentHelper.
+ * It saves the wiki content to a list and edits the page, if a user accesses a node/subnode which is currently in edit, he returns the value from the list, reduces waiting for the completion of the edit in media wiki
  */
 public class WikiEntryConcurrentHelper {
 	/** The wiki list. */

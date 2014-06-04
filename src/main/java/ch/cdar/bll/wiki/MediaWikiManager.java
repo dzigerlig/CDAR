@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch;
 
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.WikiEntry;
+import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeManager;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
