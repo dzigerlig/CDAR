@@ -241,11 +241,17 @@ public class ConsumerImportExportManager {
 				pnr.deleteNode(projectNode.getId());
 			}
 	
+			Directory rootDirectory = new Directory();
+
 			for (Directory directory : pdm.getDirectories(projectTreeId)) {
-				if (directory.getParentId()!=0) {
+				if (directory.getParentId()==0) {
+					rootDirectory= directory;
 					pdm.deleteDirectory(directory.getId());
 				}
 			}
+			
+			pdm.addDirectory(rootDirectory);
+			
 			
 			for (Comment comment : cm.getCommentsByTree(projectTreeId)) {
 				cm.deleteComment(comment.getId());
@@ -314,8 +320,13 @@ public class ConsumerImportExportManager {
 		Map<Integer, String> nodeWikiMapping = new HashMap<Integer, String>();
 		Map<Integer, String> subnodeWikiMapping = new HashMap<Integer, String>();
 		
-		int rootDirectory = ((Directory)pdm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
-
+		int rootDirectory =0;
+		for (Directory directory : pdm.getDirectories(treeXml.getTreeId())) {
+			if (directory.getParentId()==0) {
+				rootDirectory= directory.getId();
+			}
+		}
+		
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
 				directoryMapping.put(directory.getId(), rootDirectory);
@@ -423,8 +434,13 @@ public class ConsumerImportExportManager {
 
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		
-		int rootDirectory = ((Directory)pdm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
-		
+		int rootDirectory =0;
+		for (Directory directory : pdm.getDirectories(treeXml.getTreeId())) {
+			if (directory.getParentId()==0) {
+				rootDirectory= directory.getId();
+			}
+		}
+				
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
 				directoryMapping.put(directory.getId(), rootDirectory);

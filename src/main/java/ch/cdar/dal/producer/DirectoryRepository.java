@@ -156,6 +156,8 @@ public class DirectoryRepository implements IDirectoryRepository {
 				throw new UnknownDirectoryException();
 			}
 		} catch (Exception ex) {
+			System.out.println(directoryId);
+			System.out.println(ex.getMessage());
 			throw new UnknownDirectoryException();
 		}
 	}
