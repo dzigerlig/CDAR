@@ -67,7 +67,7 @@ app.config(function ($routeProvider,$httpProvider) {
     
     $routeProvider.when('/knowledgetree/:treeId', {
     	templateUrl: 'knowledgeproducer/knowledgetree.html',
-    	controller: 'KnowledgeTreeController',
+    	controller: 'TreeController',
     	needsLogin: true
     });
     

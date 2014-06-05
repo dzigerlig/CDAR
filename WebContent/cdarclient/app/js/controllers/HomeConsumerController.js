@@ -101,14 +101,14 @@ app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'Tr
 	    		entity1 : 'ptrees',
 	    		id1 : tree.id
 	    	}, tree, function(response) {}, function(error) {
-	    		UserService.checkResponseUnauthorized(error);
-	    		 reloadTrees();
+                UserService.checkResponseUnauthorized(error);
+                reloadTrees();
 				noty({
 					type : 'error',
 					text : 'Error while saving Tree Title',
 					timeout : 1500
 				});
-	    	});
-    	}
+           });
+        }
 	};
 }]);
