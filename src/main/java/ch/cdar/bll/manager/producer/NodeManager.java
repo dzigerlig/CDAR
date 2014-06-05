@@ -20,6 +20,7 @@ import ch.cdar.dal.producer.DirectoryRepository;
 import ch.cdar.dal.producer.NodeRepository;
 import ch.cdar.dal.user.UserRepository;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class NodeManager.
  */
@@ -78,20 +79,15 @@ public class NodeManager {
 
 	/**
 	 * Adds the node.
-	 * 
-	 * @param uid
-	 *            the uid
-	 * @param node
-	 *            the node
+	 *
+	 * @param uid            the uid
+	 * @param node            the node
+	 * @param templateContent the template content
 	 * @return the node
-	 * @throws EntityException
-	 *             the entity exception
-	 * @throws UnknownUserException
-	 *             the unknown user exception
-	 * @throws UnknownTreeException
-	 *             the unknown tree exception
-	 * @throws CreationException
-	 *             the creation exception
+	 * @throws EntityException             the entity exception
+	 * @throws UnknownUserException             the unknown user exception
+	 * @throws UnknownTreeException             the unknown tree exception
+	 * @throws CreationException             the creation exception
 	 */
 	public Node addNode(int uid, Node node, String templateContent)
 			throws EntityException, UnknownUserException, UnknownTreeException,
@@ -292,21 +288,37 @@ public class NodeManager {
 
 	/**
 	 * Gets the root.
-	 * 
-	 * @param treeId
-	 *            the tree id
+	 *
+	 * @param treeId            the tree id
 	 * @return the root
+	 * @throws EntityException the entity exception
+	 * @throws UnknownNodeException the unknown node exception
 	 */
 	private Node getRoot(int treeId) throws EntityException,
 			UnknownNodeException {
 		return nr.getRoot(treeId);
 	}
 
+	/**
+	 * Copy node.
+	 *
+	 * @param uid the uid
+	 * @param node the node
+	 * @return the node
+	 * @throws UnknownNodeException the unknown node exception
+	 * @throws EntityException the entity exception
+	 * @throws UnknownProjectNodeException the unknown project node exception
+	 * @throws UnknownUserException the unknown user exception
+	 * @throws UnknownTreeException the unknown tree exception
+	 * @throws CreationException the creation exception
+	 * @throws UnknownSubnodeException the unknown subnode exception
+	 */
 	public Node copyNode(int uid, Node node) throws UnknownNodeException, EntityException, UnknownProjectNodeException, UnknownUserException, UnknownTreeException, CreationException, UnknownSubnodeException {
 		int nodeId = node.getId();
 		MediaWikiManager mwm = new MediaWikiManager();
 		node = getNode(nodeId);
 		node.setWikititle(null);
+		node.setDynamicTreeFlag(0);
 		WikiEntry wikiEntry = mwm.getKnowledgeNodeWikiEntry(node.getId());
 		Node newNode = addNode(uid, node, wikiEntry.getWikiContentPlain());
 		SubnodeCopyHelper sch = new SubnodeCopyHelper(uid, nodeId, newNode.getId(), newNode.getTreeId(), UserRole.PRODUCER);
