@@ -16,7 +16,7 @@ var CDAR = (function() {
 })();
 
 
-var app = angular.module("app", [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
+var app = angular.module('app', [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
 
 app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;
@@ -103,7 +103,7 @@ app.config(function ($routeProvider,$httpProvider) {
 app.run(function ($rootScope, $location, editableOptions, UserService, DescriptionService) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!UserService.isLoggedIn() && next.needsLogin) {
-            $location.url("/login");
+            $location.url('/login');
         }
         event.preventDefault();
     });

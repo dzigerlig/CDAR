@@ -6,10 +6,10 @@ function setReload(value) {
 	reload = value;
 }
 
-app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService', '$modal',
+app.controller('HomeProducerController', ['$scope', '$location', 'TreeService', 'AuthenticationService', 'UserService', '$modal',
                                           function($scope, $location, TreeService, AuthenticationService, UserService, $modal) {
-	$scope.knowledgeTrees = "";
-	$scope.newTreeName = "";
+	$scope.knowledgeTrees = '';
+	$scope.newTreeName = '';
 	$scope.UserService = UserService;
 	$scope.showLockingNotification = function(error) {
 		if (error.status === 409) {
@@ -115,7 +115,7 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 				text : 'Please enter a text with less than 45 Characters',
 				timeout : 3000
 			});
-			return "";
+			return '';
 		} else {
 			var tree = $.grep($scope.knowledgeTrees,function(t) {
 				return t.id === id;
@@ -146,7 +146,7 @@ app.controller("HomeProducerController", ['$scope', '$location', 'TreeService', 
 	};
 } ]);
 
-app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', 'DescriptionService', '$modal',
+app.controller('KnowledgeTreeController', ['$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', 'DescriptionService', '$modal',
                                            function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, DescriptionService, $modal) {
 			 
 	//Workaround jstree not selectable
@@ -161,13 +161,13 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 	CDARJsPlumb.initialize();
 	$scope.treeId = $routeParams.treeId;
 	$scope.UserService = UserService;
-	$scope.knowledgetree = "";
-	$scope.nodes = "";
+	$scope.knowledgetree = '';
+	$scope.nodes = '';
 	$scope.selectedNode = {
 			id : 0,
-			title : ""
+			title : ''
 	};
-	$scope.updatedWikiTitle = "";
+	$scope.updatedWikiTitle = '';
 
 	$scope.updateWikiTitle = function() {
 		$scope.selectedNode.wikititle = this.updatedWikiTitle;
@@ -199,24 +199,24 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 			return false;
 	};
 	
-	$scope.subnodes = "";
+	$scope.subnodes = '';
 	$scope.selectedSubnode = {
 			id : 0,
-			title : ""
+			title : ''
 	};
 				
-	$scope.subnodeHtmlText = "";
-	$scope.nodeitle = "";
-	$scope.wikiHtmlText = "";
+	$scope.subnodeHtmlText = '';
+	$scope.nodeitle = '';
+	$scope.wikiHtmlText = '';
 	$scope.nodetabs = [ {
-		title : "READ"
+		title : 'READ'
 	}, {
-		title : "WRITE"
+		title : 'WRITE'
 	} ];
 	$scope.subnodetabs = [ {
-		title : "READ"
+		title : 'READ'
 	}, {
-		title : "WRITE"
+		title : 'WRITE'
 			} ];
 	
 	$scope.saveKnowledgeTreeTitle = function(title) {
@@ -226,7 +226,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 				text : 'Please enter a text with less than 45 Characters',
 				timeout : 3000
 			});
-			return "";
+			return '';
 		} else {
 			TreeService.updateTree({
 				entity1 : 'ktrees',
@@ -327,8 +327,8 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 				}
 			};
 			
-			$scope.newSubnodeWikiName = "";
-			$scope.newSubnodeWikiTitle = "";
+			$scope.newSubnodeWikiName = '';
+			$scope.newSubnodeWikiTitle = '';
 			
 			$scope.addSubnodeByWikiTitle = function() {
 				if (this.newSubnodeWikiName.length>45) {
@@ -386,12 +386,12 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 			
 			var changeWikiFieldsSubnode = function() {
 				$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
-				$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
+				$('#wikiSubnodeArea').val($scope.selectedSubnode.wikiContentPlain);
 			};
 
 			$scope.saveWikiSubnodeEntry = function() {
 				if ($scope.selectedSubnode !== 0) {
-					$scope.selectedSubnode.wikiContentPlain = $("#wikiSubnodeArea").val();
+					$scope.selectedSubnode.wikiContentPlain = $('#wikiSubnodeArea').val();
 					switchSubnodeToRead();
 					setLoadingSubnode();
 					TreeService.updateSubnodeWiki(
@@ -473,17 +473,17 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 			
 			var updateNodeTitle = function() {
 				if ($scope.selectedNode.id !== 0) {
-					$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
+					$scope.nodeTitle = 'Selected ' + DescriptionService.getNodeDescription() + ': ' + $scope.selectedNode.title;
 				} else {
-					$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription()+ " selected";
+					$scope.nodeTitle = 'Selected ' + DescriptionService.getNodeDescription() + ': no ' + DescriptionService.getNodeDescription()+ ' selected';
 				}
 			};
 			
 			var updateSubnodeTitle = function() {
 				if ($scope.selectedSubnode.id !== 0) {
-					$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription()+ ": " + $scope.selectedSubnode.title;
+					$scope.subnodeTitle = 'Selected ' + DescriptionService.getSubnodeDescription()+ ': ' + $scope.selectedSubnode.title;
 					} else {
-						$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": no " + DescriptionService.getSubnodeDescription() + " selected";
+						$scope.subnodeTitle = 'Selected ' + DescriptionService.getSubnodeDescription() + ': no ' + DescriptionService.getSubnodeDescription() + ' selected';
 					}
 			};
 			
@@ -509,7 +509,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 			
 			var changeWikiFields = function() {
 				$scope.wikiHtmlText = $scope.selectedNode.wikiContentHtml;
-				$("#wikiArea").val($scope.selectedNode.wikiContentPlain);
+				$('#wikiArea').val($scope.selectedNode.wikiContentPlain);
 			};
 			
 			$scope.changeNode = function(id, name) {
@@ -537,7 +537,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 			
 			$scope.saveWikiNodeEntry = function() {
 				if ($scope.selectedNode.id !== 0) {
-					$scope.selectedNode.wikiContentPlain = $("#wikiArea").val();
+					$scope.selectedNode.wikiContentPlain = $('#wikiArea').val();
 					switchNodeToRead();
 					setLoadingNode();
 					TreeService.updateNodeWiki(
@@ -778,7 +778,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 							CDARJsPlumb.renameNode(id, data.text);
 						}, function(error) {
 							UserService.checkResponseUnauthorized(error);
-							$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
+							$('#jstree').jstree('rename_node', $('#directorynode'+id) , data.old);
 							if (!$scope.showLockingNotification(error)) {
 								noty({
 									type : 'error',
@@ -911,7 +911,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 								}, function(response) {
 								}, function(error) {
 									UserService.checkResponseUnauthorized(error);
-									$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
+									$('#jstree').jstree('rename_node', $('#directory'+directoryId) , data.old);
 									if (!$scope.showLockingNotification(error)) {
 									noty({
 										type : 'error',
@@ -1088,7 +1088,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 										text : 'Please enter a text with less than 45 Characters',
 										timeout : 3000
 									});
-									return "";
+									return '';
 								} else {
 									var subnode = $.grep($scope.subnodes,	function(t) {
 										return t.id === id;
@@ -1115,7 +1115,7 @@ app.controller("KnowledgeTreeController", ['$scope', '$routeParams', 'TreeServic
 														text : 'error renaming ' + DescriptionService.getSubnodeDescription(),
 														timeout : 1500
 													});}
-												return "";
+												return '';
 											}
 									);
 								}

@@ -1,9 +1,9 @@
-app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', '$modal', function ($scope, AuthenticationService, TreeService, UserService, $resource, $modal) {
-    $scope.projectTrees = "";
-    $scope.newTreeName = "";
+app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', '$modal', function ($scope, AuthenticationService, TreeService, UserService, $resource, $modal) {
+    $scope.projectTrees = '';
+    $scope.newTreeName = '';
     $scope.UserService = UserService;
-    $scope.knowledgetrees = "";
-    $scope.selectedktreeId = "";
+    $scope.knowledgetrees = '';
+    $scope.selectedktreeId = '';
     
     TreeService.getTrees({entity1: 'ktrees' }, function (response) {
         $scope.knowledgetrees = response;
@@ -83,7 +83,7 @@ app.controller("HomeConsumerController", ['$scope', 'AuthenticationService', 'Tr
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
-    		return "";
+    		return '';
     	} else {
 	    	var tree = $.grep($scope.projectTrees, function(t) {
 	    		return t.id === id;
