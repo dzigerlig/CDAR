@@ -6,6 +6,7 @@ function setReload(value) {
 	reload = value;
 }
 
+//project tree controller consumer
 app.controller('ProjectTreeController', ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', '$modal', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService, $modal) {
 	//Workaround jstree not selectable
 	if (getReload()) { 
@@ -30,6 +31,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 	$scope.subnodeHtmlText = '';
 	$scope.updatedWikiTitle = '';
 
+	//change wikititle and update node
 	$scope.updateWikiTitle = function() {
 		$scope.selectedNode.wikititle = this.updatedWikiTitle;
 		TreeService.updateNode({
@@ -48,6 +50,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	//define locking notification (text in server) 
 	$scope.showLockingNotification = function(error) {
 		 if (error.status === 409) {
 			noty({
@@ -61,7 +64,8 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		 }
 	 };
 
-    var reloadTree = function () {
+	 //reload all trees
+	 var reloadTree = function () {
         TreeService.getTree({entity1: 'ptrees', id1: $routeParams.treeId}, function (response) {
             $scope.projecttree = response;
         }, function(error) {
@@ -73,6 +77,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 			});
         });
 
+		//get directories by tree
         TreeService.getDirectories({
             entity1: 'ptrees',
             id1: $routeParams.treeId
@@ -103,6 +108,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
  
+	//update Link (label)
     $scope.updateLink = function(linkId, subnodeid) {
         TreeService.updateLink({
             entity1 : 'ptrees',
@@ -124,6 +130,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//add new node in jsTree
     $scope.addNode = function(did) {
         TreeService.addNode({
             entity1 : 'ptrees',
@@ -145,6 +152,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
     
+	//copy node for jsTree and set id after response
     $scope.addNodeCopy = function(id,node) {
         TreeService.addNodeCopy({
                 entity1 : 'ptrees',
@@ -170,6 +178,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
             });
     };
 
+	//delete node and check jsPlumb nodes, if found remove node and connections
     $scope.deleteNode = function(nodeId) {
         TreeService.deleteNode({
             entity1 : 'ptrees',
@@ -196,6 +205,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//check if node already dropped in jsPlumb
     $scope.getNode = function(nodeId) {
         TreeService.getNode({
             entity1 : 'ptrees',
@@ -213,6 +223,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//dopp node to jsPlumb
     $scope.dropNode = function(e, nodeId) {
         TreeService.updateNode({
             entity1 : 'ptrees',
@@ -235,6 +246,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//remove node from jsPlumb
     $scope.undropNode = function(nodeId) {
         TreeService.updateNode({
             entity1 : 'ptrees',
@@ -257,6 +269,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//rename node node, update jsPlumb
     $scope.renameNode = function(id, data, did) {
         TreeService.renameNode({
             entity1 : 'ptrees',
@@ -281,6 +294,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//move node (action in jsTree)
     $scope.moveNode = function(id, newParentId) {
         TreeService.updateNode({
             entity1 : 'ptrees',
@@ -302,6 +316,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//add new connection, set connection id after response
     $scope.addLink = function(treeId, sourceId,
                               targetId, connection) {
         TreeService.addLink({
@@ -327,6 +342,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
             });
     };
 
+	//delete link
     $scope.deleteLink = function(linkId) {
         TreeService.deleteLink({
             entity1 : 'ptrees',
@@ -347,6 +363,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//add directory(action in jsTree)
     $scope.addDirectory = function(parentid) {
         TreeService.addDirectory({
             entity1 : 'ptrees',
@@ -368,6 +385,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//copy Directory, set id after response
     $scope.addDirectoryCopy = function(node) {
         TreeService.addDirectory({
                 entity1 : 'ptrees',
@@ -392,6 +410,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
             });
     };
 
+	//rename directory
     $scope.renameDirectory = function(directoryId,
                                       data) {
         TreeService.updateDirectory({
@@ -415,6 +434,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
+	//delete directory (action in jsTree)
     $scope.deleteDirectory = function(directoryId) {
         TreeService.deleteDirectory(
             {
@@ -443,6 +463,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
             });
     };
 
+	//move directory (action in jsTree)
     $scope.moveDirectory = function(directoryId,
                                     newParentId) {
         TreeService.updateDirectory({
@@ -465,6 +486,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
     
+	//drill up node
     $scope.drillUpNode = function(nodeid) {
 		TreeService.nodeDrillUp({
 			entity1 : 'ptrees',
@@ -484,6 +506,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//drill down node
 	$scope.drillDownNode = function(nodeid) {
 		TreeService.nodeDrillDown({
 			entity1 : 'ptrees',
@@ -503,6 +526,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//drill up subnodes and draw it in jsPlumb
 	$scope.drillUpSubnode = function(nodeid, resNodes) {
 		TreeService.subnodeDrillUp({
 			entity1 : 'ptrees',
@@ -522,6 +546,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//drill down subnodes and draw it in jsPlumb
 	$scope.drillDownSubnode = function(nodeid, resNodes) {
 		TreeService.subnodeDrillDown({
 			entity1 : 'ptrees',
@@ -541,6 +566,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//drill up link and order nodes in jsPlumb
 	$scope.drillUpLink = function(nodeid, resSubnodes) {
 		TreeService.linkDrillUp({
 			entity1 : 'ptrees',
@@ -560,6 +586,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//drill down link and order nodes in jsPlumb
 	$scope.drillDownLink = function(nodeid, resSubnodes) {
 		TreeService.linkDrillDown({
 			entity1 : 'ptrees',
@@ -579,6 +606,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//edit subnodetitle
     $scope.editSubnodeTitle = function(data, id) {
     	if (data.length>45) {
     		noty({
@@ -613,6 +641,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 
     reloadTree();
 
+    //update projecttitle
     $scope.saveProjectTreeTitle = function(title) {
     	if (title.length>45) {
     		noty({
@@ -676,6 +705,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		$scope.subnodeHtmlText = "<img degrees='angle' rotate id='image' src='app/img/ajax-loader.gif'/>";
 	};
 	
+	//get all subnodes from tree
 	var getSubnodes = function() {
 		TreeService.getSubnodes({
 			entity1 : 'ptrees',
@@ -693,6 +723,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	//update nodetitle
 	$scope.changeNode = function(id) {
 		setLoadingNode();
 		TreeService.getNode({
@@ -737,6 +768,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 				$scope.selectedNodeWiki.wikiContentPlain);
 	};
 	
+	//update wiki from subnode
 	$scope.saveWikiNodeEntry = function() {
 		if ($scope.selectedNodeWiki !== 0) {
 			$scope.selectedNodeWiki.wikiContentPlain = $('#wikiArea').val();
@@ -769,6 +801,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		}
 	};
 	
+	//add new subnode
 	$scope.addNewSubnode = function() {
 		if (this.newSubnodeName.length>45) {
 			noty({
@@ -802,6 +835,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 	$scope.newSubnodeWikiName = '';
 	$scope.newSubnodeWikiTitle = '';
 	
+	//add subnode by wiki title
 	$scope.addSubnodeByWikiTitle = function() {
 		if (this.newSubnodeWikiName.length>45) {
 			noty({
@@ -833,6 +867,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		}
 	};
 	
+	//get subnodes of node and update them in jsPlumb
 	$scope.getSubnodesOfNode = function(idObject) {
 		var identity;
 		var changes = null;
@@ -862,6 +897,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	//delete subnode
 	$scope.deleteSubnode = function(subnodeId) {
 		$modal.open({ 
             templateUrl: 'templates/confirmation.html',
@@ -907,6 +943,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	//update subnodetitel
 	$scope.changeSubnode = function(subnodeid, name) {
 		setLoadingSubnode();
 		$scope.selectedSubnode.id = subnodeid;
@@ -935,6 +972,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		$('#wikiSubnodeArea').val($scope.selectedSubnode.wikiContentPlain);
 	};
 	
+	//update wiki from subnode
 	$scope.saveWikiSubnodeEntry = function() {
 		if ($scope.selectedSubnode !== 0) {
 			$scope.selectedSubnode.wikiContentPlain = $('#wikiSubnodeArea').val();
@@ -969,6 +1007,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		}
 	};
 	
+	//status array
 	$scope.statuses = [
 	                   {value: 1, text: 'open', show: false},
 	                   {value: 2, text: 'decided', show: true},
@@ -982,6 +1021,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		return ($scope.selectedNode.status && selected.length) ? selected[0].text : 'open';
 	};
 
+	//update nodestatus in jsPlumb after change
 	$scope.updateNodeStatus = function(status) {
 		var oldStatus = $scope.selectedNode.status;
 		$scope.selectedNode.status = status;
@@ -1003,6 +1043,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 			});
 	};
 	
+	//change subnodeposition
 	$scope.moveSubnodeUp = function(id) {
 		var subnode = $.grep($scope.subnodes, function(t) {
 			return t.id === id;
@@ -1029,6 +1070,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 
+	//change subnodeposition
 	$scope.moveSubnodeDown = function(id) {
 		var subnode = $.grep($scope.subnodes, function(
 				t) {
@@ -1058,6 +1100,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
+	//get all comments of node
 	var getComments = function(nodeId) {
 		TreeService.getComments({
 			entity1 : 'ptrees',
@@ -1078,6 +1121,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 	$scope.comments = '';
 	$scope.newCommentText = '';
 	
+	//add new comment
 	$scope.addComment = function() {
 		if (this.newCommentText.length>200) {
 			noty({
@@ -1105,6 +1149,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 		}
 	};
 	
+	//delte comment
 	$scope.deleteComment = function(commentId) {
 		$modal.open({ 
             templateUrl: 'templates/confirmation.html',

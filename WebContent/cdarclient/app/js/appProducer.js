@@ -12,6 +12,8 @@ app.controller('HomeProducerController', ['$scope', '$location', 'TreeService', 
 	$scope.newTreeName = '';
 	$scope.UserService = UserService;
 	$scope.DescriptionService = DescriptionService;
+
+	//define locking notification (text in server) 
 	$scope.showLockingNotification = function(error) {
 		if (error.status === 409) {
 			noty({

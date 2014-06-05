@@ -263,6 +263,7 @@ app.controller('AccessController', ['$scope', '$routeParams', '$location', 'Auth
 	});
 	
 	getAllUsers();
+	//add access right to another user
 	$scope.addAccessRight = function() {
 		if ($scope.selectedUserId.length !== 0) {
 			TreeService.setUserRight({
@@ -283,6 +284,8 @@ app.controller('AccessController', ['$scope', '$routeParams', '$location', 'Auth
 		}
 	};
 	
+	
+	//remove access right from another user
 	$scope.removeAccessRight = function(userid) {
 		$modal.open({ 
 			templateUrl: 'templates/confirmation.html',
