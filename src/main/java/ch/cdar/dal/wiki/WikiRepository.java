@@ -29,7 +29,7 @@ public class WikiRepository {
 		} else {
 			PropertyHelper property = new PropertyHelper();
 			Wiki wiki = new Wiki(
-					property.getProperty("MEDIAWIKI_CONNECTION"),"");
+					property.getProperty("CDAR_MEDIAWIKI_CONNECTION"),"");
 			try {
 				wiki.login(username, password);
 			} catch (Exception ex) {

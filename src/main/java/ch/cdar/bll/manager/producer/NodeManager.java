@@ -102,7 +102,7 @@ public class NodeManager {
 		if (node.getTitle() == null) {
 			PropertyHelper propertyHelper = new PropertyHelper();
 			node.setTitle(String.format("new %s",
-					propertyHelper.getProperty("NODE_DESCRIPTION")));
+					propertyHelper.getProperty("CDAR_NODE_DESCRIPTION")));
 		}
 
 		node = nr.createNode(node);

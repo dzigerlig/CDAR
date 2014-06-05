@@ -83,7 +83,7 @@ public class ProjectNodeManager {
 		if (projectNode.getTitle() == null) {
 			PropertyHelper propertyHelper = new PropertyHelper();
 			projectNode.setTitle(String.format("new %s",
-					propertyHelper.getProperty("NODE_DESCRIPTION")));
+					propertyHelper.getProperty("CDAR_NODE_DESCRIPTION")));
 		}
 		
 		if (projectNode.getDirectoryId() == 0) {
@@ -97,7 +97,7 @@ public class ProjectNodeManager {
 		if (createNode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
 			if (content == null) {
-				content = String.format("== %S ==", propertyHelper.getProperty("NODE_DESCRIPTION"));
+				content = String.format("== %S ==", propertyHelper.getProperty("CDAR_NODE_DESCRIPTION"));
 			}
 			MediaWikiManager mwm = new MediaWikiManager();
 			mwm.createWikiEntry(uid, projectNode.getWikititle(), content);

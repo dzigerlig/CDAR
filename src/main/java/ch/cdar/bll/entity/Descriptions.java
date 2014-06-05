@@ -9,7 +9,6 @@ import ch.cdar.dal.helpers.PropertyHelper;
  * @author mtinner
  */
 public class Descriptions {
-	
 	/** The directory description. */
 	private String directoryDescription;
 	
@@ -45,13 +44,13 @@ public class Descriptions {
 	 */
 	private void getPropertyValues() throws Exception {
 		PropertyHelper propertyHelper = new PropertyHelper();
-		setDirectoryDescription(propertyHelper.getProperty("DIRECTORY_DESCRIPTION"));
-		setNodeDescription(propertyHelper.getProperty("NODE_DESCRIPTION"));
-		setSubnodeDescription(propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
-		setWikiUrl(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("MEDIAWIKI_PAGEURL"));
-		setExpandedLevel(propertyHelper.getProperty("EXPANDING_LEVEL"));
-		setProducerDescription(propertyHelper.getProperty("KNOWLEDGE_PRODUCER_DESCRIPTION"));
-		setConsumerDescription(propertyHelper.getProperty("KNOWLEDGE_CONSUMER_DESCRIPTION"));
+		setDirectoryDescription(propertyHelper.getProperty("CDAR_DIRECTORY_DESCRIPTION"));
+		setNodeDescription(propertyHelper.getProperty("CDAR_NODE_DESCRIPTION"));
+		setSubnodeDescription(propertyHelper.getProperty("CDAR_SUBNODE_DESCRIPTION"));
+		setWikiUrl(propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("CDAR_MEDIAWIKI_PAGEURL"));
+		setExpandedLevel(propertyHelper.getProperty("CDAR_EXPANDING_LEVEL"));
+		setProducerDescription(propertyHelper.getProperty("CDAR_KNOWLEDGE_PRODUCER_DESCRIPTION"));
+		setConsumerDescription(propertyHelper.getProperty("CDAR_KNOWLEDGE_CONSUMER_DESCRIPTION"));
 	}
 
 	/**

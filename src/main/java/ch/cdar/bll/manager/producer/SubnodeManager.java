@@ -70,7 +70,7 @@ public class SubnodeManager {
 				if (templateContent == null) {
 					PropertyHelper propertyHelper = new PropertyHelper();
 					templateContent = String.format("== %S ==",
-							propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+							propertyHelper.getProperty("CDAR_SUBNODE_DESCRIPTION"));
 				}
 			}
 

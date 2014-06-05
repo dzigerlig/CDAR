@@ -65,7 +65,7 @@ public class ProjectSubnodeManager {
 		if (createSubnode) {
 			PropertyHelper propertyHelper = new PropertyHelper();
 			if (content==null) {
-				content = String.format("== %S ==", propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
+				content = String.format("== %S ==", propertyHelper.getProperty("CDAR_SUBNODE_DESCRIPTION"));
 			}
 			MediaWikiManager mwm = new MediaWikiManager();
 			if (subnodeLatch==null) {
