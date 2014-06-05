@@ -31,6 +31,10 @@
 					<a href="#/projecttree/{{projecttree.id}}/users"
 						class="btn btn-md btn-success btn-block">Access Right</a>
 				</div>
+				<div class="col-md-2">
+					<a href="reporting/consumer.jsp?treeid={{projecttree.id}}&uid={{UserService.getUserId()}}&accesstoken={{UserService.getAccesstoken()}}" target="_blank"
+						class="btn btn-md btn-success btn-block">Show Report</a>
+				</div>
 				<div class="col-md-2 pull-right">
 					<button type="button" class="btn btn-md btn-success btn-block"
 						onclick="location.reload();">
