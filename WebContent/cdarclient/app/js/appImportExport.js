@@ -1,3 +1,4 @@
+//controller for import and export
 app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal', 'DescriptionService',
 		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location, $modal, DescriptionService) {
 			$scope.UserService = UserService;
@@ -16,6 +17,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				userRole = 'ptrees';
 			}
 			
+			//get tree
 			TreeService.getTree({
 				entity1 : userRole,
 				id1 : $routeParams.treeId
@@ -30,6 +32,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				});
 			});
 			
+			//get all exports
 			var reloadXmlTrees = function() {
 					TreeService.getExports({
 					entity1 : userRole,
@@ -46,6 +49,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				});
 			};
 			
+			//delete xml tree after confirmation
 			$scope.deleteXmlTree = function(xmlTreeId) {
 				$modal.open({ 
 		            templateUrl: 'templates/confirmation.html',
@@ -77,6 +81,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 			    });
 			};
 			
+			//update xml treetitle
 			 $scope.saveXmlTreeTitle = function(data, treeId) {
 				 if (data.length>45) {
 						noty({
@@ -120,6 +125,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				$('#importTreeModal').modal('hide');
 			};
 			
+			//set xml tree
 			var setXmlTree = function(xmlTreeId, cleanBool) {
 				TreeService.setExport({
 					entity1 : userRole,
@@ -147,6 +153,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				});
 			};
 			
+			//add new simple tree
 			$scope.addNewSimpleXmlTree = function(treetitle, xml) {
 				if (!treetitle) {
 					treetitle = $scope.newSimpleTreeName;
@@ -180,6 +187,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				}
 			};
 			
+			//add new full tree
 			$scope.addNewFullXmlTree = function(treetitle, xml) {
 				if (!treetitle) {
 					treetitle = $scope.newFullTreeName;
@@ -213,6 +221,7 @@ app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeServic
 				}
 			};
 			
+			//add export / import (upload)
 			$scope.add = function() {
 			  var f = document.getElementById('file').files[0], r = new FileReader();
 			  r.onloadend = function(e) {

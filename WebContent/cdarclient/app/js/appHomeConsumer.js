@@ -1,3 +1,4 @@
+//tree overview controller consumer
 app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'TreeService', 'UserService', '$resource', '$modal', 'DescriptionService', function ($scope, AuthenticationService, TreeService, UserService, $resource, $modal, DescriptionService) {
     $scope.projectTrees = '';
     $scope.newTreeName = '';
@@ -25,6 +26,7 @@ app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'Tr
 
     reloadTrees();
 
+	//add new Tree
     $scope.addNewTree = function() {
     	if ($scope.selectedktreeId.length!==0) {
     		if ($scope.newTreeName.length>45) {
@@ -49,6 +51,7 @@ app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'Tr
     	}
     };
 
+  //delete tree with confirmation
     $scope.deleteTree = function (treeid) {
     	$modal.open({ 
             templateUrl: 'templates/confirmation.html',
@@ -77,6 +80,7 @@ app.controller('HomeConsumerController', ['$scope', 'AuthenticationService', 'Tr
 	    });
     };
     
+  //update projecttitle
     $scope.saveProjectTreeTitle = function(data, id) {
     	if (data.length>45) {
     		noty({

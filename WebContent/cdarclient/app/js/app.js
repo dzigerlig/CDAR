@@ -1,3 +1,4 @@
+//header vor rest communication
 var CDAR = (function() {
 	var customHeaders = {
 			'uid': 'none',
@@ -17,6 +18,7 @@ var CDAR = (function() {
 
 var app = angular.module('app', [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
 
+//controller assignment
 app.config(function ($routeProvider,$httpProvider) {
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -98,7 +100,7 @@ app.config(function ($routeProvider,$httpProvider) {
     });
 });
 
-
+//start up
 app.run(function ($rootScope, $location, editableOptions, UserService, DescriptionService) {
     $rootScope.$on('$routeChangeStart', function (evt, next) {
         if (!UserService.isLoggedIn() && next.needsLogin) {
