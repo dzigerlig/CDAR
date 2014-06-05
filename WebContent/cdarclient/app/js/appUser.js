@@ -1,6 +1,6 @@
 //controller for login
-app.controller('LoginController', [ '$scope', '$location', 'AuthenticationService', 'UserService',
-                                    function($scope, $location, AuthenticationService, UserService) {
+app.controller('LoginController', [ '$scope', '$location', 'AuthenticationService', 'UserService', 'DescriptionService',
+                                    function($scope, $location, AuthenticationService, UserService, DescriptionService) {
 	UserService.removeCookies();
 	$scope.chkbKnowledgeProducer = '';
 	
@@ -10,6 +10,8 @@ app.controller('LoginController', [ '$scope', '$location', 'AuthenticationServic
 			username : '',
 			password : ''
 	};
+	
+	$scope.DescriptionService = DescriptionService;
 
 	$scope.login = function() {
 		$scope.loading = true;
@@ -44,7 +46,6 @@ app.controller('LoginController', [ '$scope', '$location', 'AuthenticationServic
 //confirmation dialog controller
 app.controller('ConfirmationController', ['$scope', '$modalInstance', 'data', 
                                           function ($scope, $modalInstance, data) {
-
 	$scope.data = data;
 	
 	$scope.ok = function() {
@@ -103,12 +104,14 @@ app.controller('RegistrationController', ['$scope', '$location', 'Authentication
 ]);
 
 //account controller
-app.controller('AccountController',	['$scope', '$location',	'AuthenticationService', 'UserService', '$filter', '$modal',
-				function($scope, $location, AuthenticationService, UserService,	$filter, $modal) {
+app.controller('AccountController',	['$scope', '$location',	'AuthenticationService', 'UserService', '$filter', '$modal', 'DescriptionService',
+				function($scope, $location, AuthenticationService, UserService,	$filter, $modal, DescriptionService) {
 		$scope.UserService = UserService;
 		$scope.newPw = '';
 		$scope.confirmPw = '';
 		$scope.drillHierarchy = UserService.getDrillHierarchy();
+		$scope.DescriptionService = DescriptionService;
+		
 		$scope.statuses = [ {
 			value : 2,
 			text : '2',
@@ -201,10 +204,11 @@ app.controller('AccountController',	['$scope', '$location',	'AuthenticationServi
 } ]);
 	
 //access right controller
-app.controller('AccessController', ['$scope', '$routeParams', '$location', 'AuthenticationService',	'UserService', 'TreeService', '$modal',
-		function($scope, $routeParams, $location, AuthenticationService, UserService, TreeService, $modal) {
+app.controller('AccessController', ['$scope', '$routeParams', '$location', 'AuthenticationService',	'UserService', 'TreeService', '$modal', 'DescriptionService',
+		function($scope, $routeParams, $location, AuthenticationService, UserService, TreeService, $modal, DescriptionService) {
 	$scope.UserService = UserService;
 	$scope.isProducer = UserService.getIsProducer();
+	$scope.DescriptionService = DescriptionService;
 	$scope.treeId = $routeParams.treeId;
 	$scope.selectedUserId = '';
 	$scope.users = '';

@@ -1,6 +1,7 @@
-app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal',
-		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location, $modal) {
+app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal', 'DescriptionService',
+		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location, $modal, DescriptionService) {
 			$scope.UserService = UserService;
+			$scope.DescriptionService = DescriptionService;
 			
 			$scope.tree = '';
 			$scope.xmlTrees = '';

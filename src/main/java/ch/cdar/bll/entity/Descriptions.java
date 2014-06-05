@@ -24,6 +24,9 @@ public class Descriptions {
 	
 	/** The expanded level. */
 	private String expandedLevel;
+	
+	private String producerDescription;
+	private String consumerDescription;
 
 	/**
 	 * Default Constructor which calls getPropertyValues().
@@ -47,6 +50,8 @@ public class Descriptions {
 		setSubnodeDescription(propertyHelper.getProperty("SUBNODE_DESCRIPTION"));
 		setWikiUrl(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), propertyHelper.getProperty("MEDIAWIKI_PAGEURL"));
 		setExpandedLevel(propertyHelper.getProperty("EXPANDING_LEVEL"));
+		setProducerDescription(propertyHelper.getProperty("KNOWLEDGE_PRODUCER_DESCRIPTION"));
+		setConsumerDescription(propertyHelper.getProperty("KNOWLEDGE_CONSUMER_DESCRIPTION"));
 	}
 
 	/**
@@ -142,5 +147,21 @@ public class Descriptions {
 	 */
 	public void setExpandedLevel(String expandedLevel) {
 		this.expandedLevel = expandedLevel;
+	}
+
+	public String getProducerDescription() {
+		return producerDescription;
+	}
+
+	public void setProducerDescription(String producerDescription) {
+		this.producerDescription = producerDescription;
+	}
+
+	public String getConsumerDescription() {
+		return consumerDescription;
+	}
+
+	public void setConsumerDescription(String consumerDescription) {
+		this.consumerDescription = consumerDescription;
 	}
 }

@@ -534,6 +534,8 @@ app.service('DescriptionService', ['$resource', function($resource) {
 		cdarDescriptions.subnode = response.subnodeDescription;
 		cdarDescriptions.wikiurl = response.wikiUrl;
 		cdarDescriptions.expandedLevel= response.expandedLevel;
+		cdarDescriptions.consumerDescription = response.consumerDescription;
+		cdarDescriptions.producerDescription = response.producerDescription;
 	});
 	
 	cdarDescriptions.getDirectoryDescription = function() {
@@ -553,6 +555,14 @@ app.service('DescriptionService', ['$resource', function($resource) {
 	
 	cdarDescriptions.getExpandedLevel = function() {
 		return cdarDescriptions.expandedLevel;
+	};
+	
+	cdarDescriptions.getProducerDescription = function() {
+		return cdarDescriptions.producerDescription;
+	};
+	
+	cdarDescriptions.getConsumerDescription = function() {
+		return cdarDescriptions.consumerDescription;
 	};
 	
 	return cdarDescriptions;
