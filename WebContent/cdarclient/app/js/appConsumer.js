@@ -6,7 +6,7 @@ function setReload(value) {
 	reload = value;
 }
 
-app.controller("ProjectTreeController", ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', '$modal', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService, $modal) {
+app.controller('ProjectTreeController', ['$scope', '$routeParams', 'AuthenticationService', 'TreeService', 'UserService', '$filter', 'DescriptionService', '$modal', function ($scope, $routeParams, AuthenticationService, TreeService, UserService, $filter, DescriptionService, $modal) {
 	//Workaround jstree not selectable
 	if (getReload()) { 
 		setReload(false);
@@ -19,16 +19,16 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     CDARJsPlumb.initialize();
-    $scope.projecttree = "";
-    $scope.nodetabs = [ { title : "READ" }, { title : "WRITE" } ];
-	$scope.subnodetabs = [ { title : "READ" }, { title : "WRITE" } ];
-	$scope.wikiHtmlText = "";
-	$scope.selectedNode = { id : 0 , title : "" };
-	$scope.selectedNodeWiki = "";
-	$scope.selectedSubnode = { id : 0, title : "" };
-	$scope.subnodes = "";
-	$scope.subnodeHtmlText = "";
-	$scope.updatedWikiTitle = "";
+    $scope.projecttree = '';
+    $scope.nodetabs = [ { title : 'READ' }, { title : 'WRITE' } ];
+	$scope.subnodetabs = [ { title : 'READ' }, { title : 'WRITE' } ];
+	$scope.wikiHtmlText = '';
+	$scope.selectedNode = { id : 0 , title : '' };
+	$scope.selectedNodeWiki = '';
+	$scope.selectedSubnode = { id : 0, title : '' };
+	$scope.subnodes = '';
+	$scope.subnodeHtmlText = '';
+	$scope.updatedWikiTitle = '';
 
 	$scope.updateWikiTitle = function() {
 		$scope.selectedNode.wikititle = this.updatedWikiTitle;
@@ -270,7 +270,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
             CDARJsPlumb.renameNode(id, data.text);
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
-        	$("#jstree").jstree('rename_node', $('#directorynode'+id) , data.old);
+        	$('#jstree').jstree('rename_node', $('#directorynode'+id) , data.old);
     			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -404,7 +404,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
         }, function(response) {
         }, function(error) {
         	UserService.checkResponseUnauthorized(error);
-        	$("#jstree").jstree('rename_node', $('#directory'+directoryId) , data.old);
+        	$('#jstree').jstree('rename_node', $('#directory'+directoryId) , data.old);
 			 if (!$scope.showLockingNotification(error)) {
 				 noty({
 					 type : 'error',
@@ -586,7 +586,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
-    		return "";
+    		return '';
     	} else {
 	        var subnode = $.grep($scope.subnodes, function(
 	            t) {
@@ -620,7 +620,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     			text : 'Please enter a text with less than 45 Characters',
     			timeout : 3000
     		});
-    		return "";
+    		return '';
     	} else {
 	    	TreeService.updateTree({
 				entity1 : 'ptrees',
@@ -642,17 +642,17 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
     //SELECTED NODE / SUBNODE
     var updateNodeTitle = function() {
 		if ($scope.selectedNode.id !== 0) {
-			$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": " + $scope.selectedNode.title;
+			$scope.nodeTitle = 'Selected ' + DescriptionService.getNodeDescription() + ': ' + $scope.selectedNode.title;
 		} else {
-			$scope.nodeTitle = "Selected " + DescriptionService.getNodeDescription() + ": no " + DescriptionService.getNodeDescription() + " selected";
+			$scope.nodeTitle = 'Selected ' + DescriptionService.getNodeDescription() + ': no ' + DescriptionService.getNodeDescription() + ' selected';
 		}
 	};
 	
 	var updateSubnodeTitle = function() {
 		if ($scope.selectedSubnode.id !== 0) {
-			$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": " + $scope.selectedSubnode.title;
+			$scope.subnodeTitle = 'Selected ' + DescriptionService.getSubnodeDescription() + ': ' + $scope.selectedSubnode.title;
 		} else {
-			$scope.subnodeTitle = "Selected " + DescriptionService.getSubnodeDescription() + ": no " + DescriptionService.getSubnodeDescription() + " selected";
+			$scope.subnodeTitle = 'Selected ' + DescriptionService.getSubnodeDescription() + ': no ' + DescriptionService.getSubnodeDescription() + ' selected';
 		}
 	};
 
@@ -702,7 +702,7 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}, function(response) {
 			$scope.selectedNode = response;
 			updateNodeTitle();
-			$scope.selectedSubnode = {id : 0, title : ""};
+			$scope.selectedSubnode = {id : 0, title : ''};
 			updateSubnodeTitle();
 			getSubnodes();
 			getComments();
@@ -733,13 +733,13 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	var changeWikiFields = function() {
 		$scope.wikiHtmlText = $scope.selectedNodeWiki.wikiContentHtml;
-		$("#wikiArea").val(
+		$('#wikiArea').val(
 				$scope.selectedNodeWiki.wikiContentPlain);
 	};
 	
 	$scope.saveWikiNodeEntry = function() {
 		if ($scope.selectedNodeWiki !== 0) {
-			$scope.selectedNodeWiki.wikiContentPlain = $("#wikiArea").val();
+			$scope.selectedNodeWiki.wikiContentPlain = $('#wikiArea').val();
 			switchNodeToRead();
 			setLoadingNode();
 			TreeService
@@ -800,8 +800,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		}
 	};
 	
-	$scope.newSubnodeWikiName = "";
-	$scope.newSubnodeWikiTitle = "";
+	$scope.newSubnodeWikiName = '';
+	$scope.newSubnodeWikiTitle = '';
 	
 	$scope.addSubnodeByWikiTitle = function() {
 		if (this.newSubnodeWikiName.length>45) {
@@ -933,12 +933,12 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 	
 	var changeWikiFieldsSubnode = function() {
 		$scope.subnodeHtmlText = $scope.selectedSubnode.wikiContentHtml;
-		$("#wikiSubnodeArea").val($scope.selectedSubnode.wikiContentPlain);
+		$('#wikiSubnodeArea').val($scope.selectedSubnode.wikiContentPlain);
 	};
 	
 	$scope.saveWikiSubnodeEntry = function() {
 		if ($scope.selectedSubnode !== 0) {
-			$scope.selectedSubnode.wikiContentPlain = $("#wikiSubnodeArea").val();
+			$scope.selectedSubnode.wikiContentPlain = $('#wikiSubnodeArea').val();
 			switchSubnodeToRead();
 			setLoadingSubnode();
 			TreeService.updateSubnodeWiki(
@@ -1076,8 +1076,8 @@ app.controller("ProjectTreeController", ['$scope', '$routeParams', 'Authenticati
 		});
 	};
 	
-	$scope.comments = "";
-	$scope.newCommentText = "";
+	$scope.comments = '';
+	$scope.newCommentText = '';
 	
 	$scope.addComment = function() {
 		if (this.newCommentText.length>200) {

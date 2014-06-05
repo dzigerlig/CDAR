@@ -1,18 +1,18 @@
-app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal',
+app.controller('ImportExportController', [ '$scope', '$routeParams', 'TreeService', 'AuthenticationService', 'UserService', '$route', '$location', '$modal',
 		function($scope, $routeParams, TreeService, AuthenticationService, UserService, $route, $location, $modal) {
 			$scope.UserService = UserService;
 			
-			$scope.tree = "";
-			$scope.xmlTrees = "";
+			$scope.tree = '';
+			$scope.xmlTrees = '';
 			
-			$scope.newSimpleTreeName = "";
-			$scope.newFullTreeName = "";
-			var userRole = "";
+			$scope.newSimpleTreeName = '';
+			$scope.newFullTreeName = '';
+			var userRole = '';
 			
 			if ($scope.UserService.getIsProducer()==='true') {
-				userRole = "ktrees";
+				userRole = 'ktrees';
 			} else {
-				userRole = "ptrees";
+				userRole = 'ptrees';
 			}
 			
 			TreeService.getTree({
@@ -105,8 +105,8 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 					}
 			    };
 			
-			$scope.importTitle = "";
-			$scope.importId = "";
+			$scope.importTitle = '';
+			$scope.importId = '';
 			
 			$scope.showImportTreeModal = function(title, treeId) {
 				$scope.importTitle = title;
@@ -128,7 +128,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 				}, function(response) {
 					noty({
 						type : 'success',
-						text : "Import successfully",
+						text : 'Import successfully',
 						timeout : 1500
 					});
 					if ($scope.UserService.getIsProducer()==='true') {
@@ -167,7 +167,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 							text : 'Export "' + treetitle + '" added successfully!',
 							timeout : 1500
 						});
-						$scope.newSimpleTreeName = "";
+						$scope.newSimpleTreeName = '';
 					}, function(error) {
 						UserService.checkResponseUnauthorized(error);
 						noty({
@@ -200,7 +200,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 							text : 'Export "' + treetitle + '" added successfully!',
 							timeout : 1500
 						});
-						$scope.newFullTreeName = "";
+						$scope.newFullTreeName = '';
 					}, function(error) {
 						UserService.checkResponseUnauthorized(error);
 						noty({
@@ -218,12 +218,12 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			    var data = e.target.result;
 			    
 			    if ($scope.UserService.getIsProducer()==='true') {
-				    if (data.indexOf("treeFull") > -1) {
-				    	$scope.addNewFullXmlTree("imported xml", data);
+				    if (data.indexOf('treeFull') > -1) {
+				    	$scope.addNewFullXmlTree('imported xml', data);
 				    }
 				    
-				    else if (data.indexOf("treeSimple") > -1) {
-				    	$scope.addNewSimpleXmlTree("imported xml", data);
+				    else if (data.indexOf('treeSimple') > -1) {
+				    	$scope.addNewSimpleXmlTree('imported xml', data);
 				    }
 				    else {
 				    	noty({
@@ -235,11 +235,11 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
 			    }
 			    
 			    if ($scope.UserService.getIsProducer()==='false') {
-				    if (data.indexOf("projectTreeFull") > -1) {
-				    	$scope.addNewFullXmlTree("imported xml", data);
+				    if (data.indexOf('projectTreeFull') > -1) {
+				    	$scope.addNewFullXmlTree('imported xml', data);
 				    }
-				    else if (data.indexOf("projectTreeSimple") > -1) {
-				    	$scope.addNewSimpleXmlTree("imported xml", data);
+				    else if (data.indexOf('projectTreeSimple') > -1) {
+				    	$scope.addNewSimpleXmlTree('imported xml', data);
 				    }
 				    else {
 				    	noty({
@@ -254,7 +254,7 @@ app.controller("ImportExportController", [ '$scope', '$routeParams', 'TreeServic
              };
 			
 			$scope.getXmlFileString = function(xmlId) {
-				return "../webapi/" + userRole + "/" + $routeParams.treeId + " /exports/" + xmlId + "/filexml?uid=" + UserService.getUserId() + "&accesstoken=" + UserService.getAccesstoken();
+				return '../webapi/' + userRole + '/' + $routeParams.treeId + ' /exports/' + xmlId + '/filexml?uid=' + UserService.getUserId() + '&accesstoken=' + UserService.getAccesstoken();
 			};
 			
 			reloadXmlTrees();
