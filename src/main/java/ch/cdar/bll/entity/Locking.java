@@ -126,8 +126,8 @@ public class Locking {
 		PropertyHelper property = new PropertyHelper();
 		Calendar calendar = Calendar.getInstance();
 	    calendar.setTime(new Date());
-	    calendar.add(Calendar.HOUR_OF_DAY, Integer.valueOf(property.getProperty("LOCKING_HOUR")));
-	    calendar.add(Calendar.MINUTE, Integer.valueOf(property.getProperty("LOCKING_MINUTE")));
+	    calendar.add(Calendar.HOUR_OF_DAY, Integer.valueOf(property.getProperty("CDAR_LOCKING_HOUR")));
+	    calendar.add(Calendar.MINUTE, Integer.valueOf(property.getProperty("CDAR_LOCKING_MINUTE")));
 		setLockingTime(calendar.getTime());
 	}
 

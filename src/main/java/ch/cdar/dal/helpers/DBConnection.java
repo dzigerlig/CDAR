@@ -19,9 +19,9 @@ public class DBConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection(
-					propertyHelper.getProperty("LOCAL_DB_CONNECTION"),
-					propertyHelper.getProperty("LOCAL_DB_USER"),
-					propertyHelper.getProperty("LOCAL_DB_PASSWORD"));
+					propertyHelper.getProperty("CDAR_LOCAL_DB_CONNECTION"),
+					propertyHelper.getProperty("CDAR_LOCAL_DB_USER"),
+					propertyHelper.getProperty("CDAR_LOCAL_DB_PASSWORD"));
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

@@ -99,12 +99,12 @@ public class WikiEntry extends WikiEntity {
 	 * Private method which gets the current wiki page and sets the raw and html-formatted String.
 	 */
 	private void fillWikiContent()  {
-		Wiki wiki = new Wiki(propertyHelper.getProperty("MEDIAWIKI_CONNECTION"), "");
+		Wiki wiki = new Wiki(propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION"), "");
 
 		try {
 			setWikiContentPlain(wiki.getPageText(getWikititle()));
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("http://%s/images/${image}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")), String.format("http://%s/index.php/${title}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")));
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("http://%s/images/${image}", propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION")), String.format("http://%s/index.php/${title}", propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION")));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -162,7 +162,7 @@ public class WikiEntry extends WikiEntity {
 			Wiki wiki = wikiConnection.getConnection(username, password);
 			wiki.edit(getWikititle(), getWikiContentPlain(), "");
 			StringBuilder sb = new StringBuilder();
-			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")), String.format("%s/index.php/${title}", propertyHelper.getProperty("MEDIAWIKI_CONNECTION")));
+			WikiModel.toHtml(getWikiContentPlain(), sb, String.format("%s/images/${image}", propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION")), String.format("%s/index.php/${title}", propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION")));
 			setWikiContentHtml(sb.toString());
 		} catch (Exception e) {
 			e.printStackTrace();

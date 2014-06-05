@@ -54,7 +54,7 @@ public class TestBLLWiki {
 		node.setDirectoryId(did);
 		node = nm.addNode(um.getUser(username).getId(), node, null);
 		PropertyHelper helper = new PropertyHelper();
-		String content = helper.getProperty("NODE_DESCRIPTION").toUpperCase();
+		String content = helper.getProperty("CDAR_NODE_DESCRIPTION").toUpperCase();
 		assertEquals("== "+content+" ==", mwm.getKnowledgeNodeWikiEntry(node.getId()).getWikiContentPlain());
 	}
 }

@@ -85,7 +85,7 @@ public class DirectoryManager {
 	{ 
 		if (directory.getTitle() == null) {
 			PropertyHelper propertyHelper = new PropertyHelper();
-			directory.setTitle(propertyHelper.getProperty("DIRECTORY_DESCRIPTION"));
+			directory.setTitle(propertyHelper.getProperty("CDAR_DIRECTORY_DESCRIPTION"));
 		}
 		return directoryRepository.createDirectory(directory);
 	}
