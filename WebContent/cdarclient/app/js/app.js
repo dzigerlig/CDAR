@@ -15,7 +15,6 @@ var CDAR = (function() {
 	};	
 })();
 
-
 var app = angular.module('app', [ 'ngRoute', 'ngResource', 'ngSanitize', 'ui.bootstrap', 'xeditable', 'ngCookies' ]);
 
 app.config(function ($routeProvider,$httpProvider) {

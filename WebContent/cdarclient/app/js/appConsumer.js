@@ -16,7 +16,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 	setReload(true);							 
 	$scope.isProducer = false;
 	$scope.DescriptionService = DescriptionService;
-	 $scope.modal = $modal;
+	$scope.modal = $modal;
 	$scope.treeId = $routeParams.treeId;
     $scope.UserService = UserService;
     CDARJsPlumb.initialize();
