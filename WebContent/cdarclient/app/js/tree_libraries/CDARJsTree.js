@@ -63,9 +63,7 @@ var CDARJsTree = (function () {
         //Listener on rename node or folder
         //Check new name length
         //Rename selected Element in jsTree
-        $('#jstree').on(
-            'rename_node.jstree',
-            function (e, data) {        	
+        $('#jstree').on('rename_node.jstree', function (e, data) {        	
                 if (data.text === ''||lastRenamed!==undefined&&data.text===lastRenamed.old&&data.old===lastRenamed.text) {
                    return false;
                 }
@@ -76,7 +74,6 @@ var CDARJsTree = (function () {
 						 timeout : 3000
 					 });
 			        	$('#jstree').jstree('rename_node', $('#'+data.node.id) , data.old);
-
 					 return false;
 				}
                 lastRenamed=data;
@@ -84,8 +81,7 @@ var CDARJsTree = (function () {
                 id = id.replace(DIRECTORY, '');
                 if (data.node.type !== 'default') {
                     id = id.replace(NODE, '');
-                   scope.renameNode(id, data, data.node.parent.replace(
-                        DIRECTORY, ''));
+                   scope.renameNode(id, data, data.node.parent.replace(DIRECTORY, ''));
                 } else {
                     scope.renameDirectory(id, data);
                 }
@@ -95,25 +91,6 @@ var CDARJsTree = (function () {
         $('#jstree').on('delete_node.jstree', function (e, data) {
             scope.selectedNodeId = 0;
             scope.selectednodename = '';
-        });
-
-        
-        //Listener on create node or folder
-        //Set parentid after creation
-        $('#jstree').on('create_node.jstree', function (e, data) {
-        	console.log('create node');
-            var id = data.node.id;
-            var parentId = data.parent.replace(DIRECTORY, '');
-            id = id.replace(DIRECTORY, '');
-            if (data.node.type !== 'default') {
-                id = id.replace(NODE, '');
-                scope.moveNode(id, parentId);
-            } else {
-                if (parentId === '#') {
-                    parentId = id;
-                }
-                scope.moveDirectory(id, parentId);
-            }
         });
     });
 
