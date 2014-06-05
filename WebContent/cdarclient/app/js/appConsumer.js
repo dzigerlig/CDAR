@@ -742,31 +742,30 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
 			$scope.selectedNodeWiki.wikiContentPlain = $('#wikiArea').val();
 			switchNodeToRead();
 			setLoadingNode();
-			TreeService
-					.updateNodeWiki(
-							{
-								entity1 : 'ptrees',
-								id1 : $routeParams.treeId,
-								id2 : $scope.selectedNodeWiki.id
-							},
-							$scope.selectedNodeWiki,
-							function(response) {
-								$scope.selectedNodeWiki = response;
-								changeWikiFields(response);
-								noty({
-									type : 'success',
-									text : DescriptionService.getNodeDescription() + ' text edited successfully',
-									timeout : 1500
-								});
-							}, function(error) {
-								UserService.checkResponseUnauthorized(error);
-								changeWikiFields($scope.selectedNodeWiki);
-								noty({
-									type : 'error',
-									text : 'cannot edit wiki text',
-									timeout : 1500
-								});
-							});
+			TreeService.updateNodeWiki(
+					{
+						entity1 : 'ptrees',
+						id1 : $routeParams.treeId,
+						id2 : $scope.selectedNodeWiki.id
+					},
+					$scope.selectedNodeWiki,
+					function(response) {
+						$scope.selectedNodeWiki = response;
+						changeWikiFields(response);
+						noty({
+							type : 'success',
+							text : DescriptionService.getNodeDescription() + ' text edited successfully',
+							timeout : 1500
+						});
+					}, function(error) {
+						UserService.checkResponseUnauthorized(error);
+						changeWikiFields($scope.selectedNodeWiki);
+						noty({
+							type : 'error',
+							text : 'cannot edit wiki text',
+							timeout : 1500
+						});
+					});	
 		}
 	};
 	
