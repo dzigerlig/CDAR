@@ -296,12 +296,12 @@ public class ProjectNodeManager {
 		MediaWikiManager mwm = new MediaWikiManager();
 		projectNode = getProjectNode(projectNodeId);
 		projectNode.setWikititle(null);
+		projectNode.setDynamicTreeFlag(0);
+		projectNode.setStatus(0);
 		WikiEntry wikiEntry = mwm.getProjectNodeWikiEntry(projectNode.getId());
 		ProjectNode newNode = addProjectNode(uid, projectNode, wikiEntry.getWikiContentPlain());
-		ProjectSubnodeManager psm = new ProjectSubnodeManager();
-		SubnodeCopyHelper sch = new SubnodeCopyHelper(uid, projectNodeId, newNode.getId(), UserRole.CONSUMER);
-		sch.start();
-		//psm.copySubnodes(uid, projectNodeId, newNode.getId());
+		SubnodeCopyHelper subnodeCopyHelper = new SubnodeCopyHelper(uid, projectNodeId, newNode.getId(), UserRole.CONSUMER);
+		subnodeCopyHelper.start();
 		return newNode;
 	}
 }
