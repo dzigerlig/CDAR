@@ -223,7 +223,7 @@ app.controller('ProjectTreeController', ['$scope', '$routeParams', 'Authenticati
         });
     };
 
-	//dopp node to jsPlumb
+	//drop node to jsPlumb
     $scope.dropNode = function(e, nodeId) {
         TreeService.updateNode({
             entity1 : 'ptrees',

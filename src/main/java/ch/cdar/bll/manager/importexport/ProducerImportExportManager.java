@@ -28,6 +28,7 @@ import ch.cdar.bll.entity.producer.TreeFull;
 import ch.cdar.bll.entity.producer.TreeSimple;
 import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
 import ch.cdar.bll.manager.DirectoryManager;
+import ch.cdar.bll.manager.producer.TemplateManager;
 import ch.cdar.bll.wiki.MediaWikiCreationModel;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
@@ -219,21 +220,25 @@ public class ProducerImportExportManager {
 	 */
 	private void cleanTree(int treeId) {
 		NodeRepository nr = new NodeRepository();
-		DirectoryRepository dr = new DirectoryRepository();
-		TemplateRepository tr = new TemplateRepository();
+		DirectoryManager dm = new DirectoryManager(UserRole.PRODUCER);
+		TemplateManager tr = new TemplateManager();
 		
 		try {
 			for (Node node : nr.getNodes(treeId)) {
 				nr.deleteNode(node.getId());
 			}
 	
-			for (Directory directory : dr.getDirectories(treeId)) {
-				if (directory.getParentId()!=0) {
-					dr.deleteDirectory(directory.getId());
+			Directory rootDirectory = new Directory();
+			for (Directory directory : dm.getDirectories(treeId)) {
+				if (directory.getParentId()==0) {
+					rootDirectory=directory;
+					dm.deleteDirectory(directory.getId());
 				}
 			}
 			
-			for (Template template : tr.getTemplates(treeId)) {
+			dm.addDirectory(rootDirectory);
+			
+			for (Template template : tr.getKnowledgeTemplates(treeId)) {
 				tr.deleteTemplate(template.getId());
 			}
 		} catch (Exception ex) {
@@ -296,8 +301,13 @@ public class ProducerImportExportManager {
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		Map<Integer, String> nodeWikiMapping = new HashMap<Integer, String>();
 		Map<Integer, String> subnodeWikiMapping = new HashMap<Integer, String>();
+		int rootDirectory = 0;
+		for (Directory directory : dm.getDirectories(treeXml.getTreeId())) {
+			if (directory.getParentId()==0) {
+				rootDirectory= directory.getId();
+			}
+		}
 		
-		int rootDirectory = ((Directory)dm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
 
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
@@ -406,8 +416,13 @@ public class ProducerImportExportManager {
 
 		Map<Integer, Integer> directoryMapping = new HashMap<Integer, Integer>();
 		
-		int rootDirectory = ((Directory)dm.getDirectories(treeXml.getTreeId()).toArray()[0]).getId();
-		
+		int rootDirectory = 0;
+		for (Directory directory : dm.getDirectories(treeXml.getTreeId())) {
+			if (directory.getParentId()==0) {
+				rootDirectory= directory.getId();
+			}
+		}
+				
 		for (Directory directory : directoryList) {
 			if (directory.getParentId()==0) {
 				directoryMapping.put(directory.getId(), rootDirectory);
