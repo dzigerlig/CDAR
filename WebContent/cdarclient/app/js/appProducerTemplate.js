@@ -237,7 +237,10 @@ app.controller('TemplatesController', ['$scope', '$routeParams', 'TreeService', 
 		}
 	};
 	
-	$scope.tabs = [{ title:'READ' },{ title:'WRITE' }];
+	$scope.tabs = [
+	               { title:'READ' },
+	               { title:'WRITE'}
+	               ];
 	
 	var switchToRead = function() {
 		$scope.tabs[0].active = true;
