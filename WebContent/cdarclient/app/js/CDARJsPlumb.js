@@ -14,8 +14,8 @@ var CDARJsPlumb = (function() {
 	//clear and build new content
 	function buildContent() {
 		jsPlumb.deleteEveryEndpoint();
-		$("#jsplumb-container").empty();
-		var container = $("#jsplumb-container");
+		$('#jsplumb-container').empty();
+		var container = $('#jsplumb-container');
 		var popup = $('<div>').addClass('popup-box').attr('id', 'popup-box-1');
 		container.append(popup);
 		var top = $('<div>').addClass('top');
@@ -32,49 +32,40 @@ var CDARJsPlumb = (function() {
 	function setDefaultSettings() {
 		jsPlumb.Defaults.PaintStyle = {
 			connectorStyle : {
-				strokeStyle : "#5c96bc",
+				strokeStyle : '#5c96bc',
 				lineWidth : 2,
-				outlineColor : "transparent",
+				outlineColor : 'transparent',
 				outlineWidth : 4
 			},
 
-			connectorOverlays : [ [ "Arrow", {
+			connectorOverlays : [ [ 'Arrow', {
 				location : 1,
-				id : "arrow",
+				id : 'arrow',
 				length : 14,
 				foldback : 0.8
-			} ], [ "Label", {
-				id : "label",
-				cssClass : "aLabel"
+			} ], [ 'Label', {
+				id : 'label',
+				cssClass : 'aLabel'
 			} ] ]
 		};
 	}
 
 	//Popup event
 	function makePopupEvents() {
-		$('#radio-form')
-				.on(
-						'change',
-						'.radio_item',
-						function(element) {
-							var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
-							jQuery.each(connections, function(object) {
-								if (this.id === lastConnectionID) {
-									this.getOverlay("label").setLabel(
-											$(element.currentTarget).val());
-									if ($(element.currentTarget).attr("id")
-											.replace(SUBNODE, "") != -1) {
-										scope.updateLink(this.id.replace(LINK,
-												""), $(element.currentTarget)
-												.attr("id")
-												.replace(SUBNODE, ""));
-									}
-									$('[id^=popup-box-]').hide();
-								}
-							});
-							element.stopPropagation();
-
-						});
+		$('#radio-form').on('change', '.radio_item', function(element) {
+			var connections = jsPlumb.getAllConnections().jsPlumb_DefaultScope;
+			jQuery.each(connections, function(object) {
+				if (this.id === lastConnectionID) {
+					this.getOverlay('label').setLabel(
+							$(element.currentTarget).val());
+					if ($(element.currentTarget).attr('id').replace(SUBNODE, '') != -1) {
+						scope.updateLink(this.id.replace(LINK,''), $(element.currentTarget).attr('id').replace(SUBNODE, ''));
+					}
+					$('[id^=popup-box-]').hide();
+				}
+			});
+			element.stopPropagation();
+		});
 	}
 
 	//make Source for jsPlumb connection
@@ -82,32 +73,32 @@ var CDARJsPlumb = (function() {
 		jsPlumb.makeSource(connect, {
 			parent : newState,
 			anchor : 'Continuous',
-			type : "change",
+			type : 'change',
 			data : {
-				color : "#5C96BC",
-				label : ""
+				color : '#5C96BC',
+				label : ''
 			},
 			connectorStyle : {
-				strokeStyle : "#5C96BC",
+				strokeStyle : '#5C96BC',
 				lineWidth : 2,
-				outlineColor : "transparent",
+				outlineColor : 'transparent',
 				outlineWidth : 4
 			},
 
-			connector : [ "StateMachine", {
+			connector : [ 'StateMachine', {
 				curviness : 20
 			} ],
-			endpoint : [ "Dot", {
+			endpoint : [ 'Dot', {
 				radius : 2
 			} ],
-			connectorOverlays : [ [ "Arrow", {
+			connectorOverlays : [ [ 'Arrow', {
 				location : 1,
-				id : "arrow",
+				id : 'arrow',
 				length : 14,
 				foldback : 0.8
-			} ], [ "Label", {
-				id : "label",
-				cssClass : "aLabel"
+			} ], [ 'Label', {
+				id : 'label',
+				cssClass : 'aLabel'
 			} ] ]
 		});
 	}
@@ -116,7 +107,7 @@ var CDARJsPlumb = (function() {
 	function makeTarget(newState) {
 		jsPlumb.makeTarget(newState, {
 			anchor : 'Continuous',
-			endpoint : "Blank"
+			endpoint : 'Blank'
 		});
 	}
 
@@ -132,12 +123,12 @@ var CDARJsPlumb = (function() {
 			source : stateSource,
 			target : stateTarget,
 			parameters : {
-				"id" : id
+				'id' : id
 			},
 			anchors : 'Continuous',
-			type : "change",
+			type : 'change',
 			data : {
-				color : "#5C96BC",
+				color : '#5C96BC',
 				label : label
 			}
 		});
@@ -169,18 +160,17 @@ var CDARJsPlumb = (function() {
 	//Listener select node with connections and show wikicontent
 	function clickNodeEvent(newState) {
 		newState.click(function(e) {
-			scope.changeNode(newState[0].id.replace(NODE, ""), $(
-					'#' + newState[0].id + ' .title').text());
+			scope.changeNode(newState[0].id.replace(NODE, ''), $('#' + newState[0].id + ' .title').text());
 
 			resetSelectDesign();
-			newState.addClass("selectednode");
+			newState.addClass('selectednode');
 
 			var connections = getConnections(newState);
 
 			jQuery.each(connections, function(object) {
-				this.setType("change", {
-					color : "#beebff",
-					label : this.getOverlay("label").getLabel()
+				this.setType('change', {
+					color : '#beebff',
+					label : this.getOverlay('label').getLabel()
 				});
 			});
 			selectedElement = newState[0].id;
@@ -192,14 +182,14 @@ var CDARJsPlumb = (function() {
 	function resetSelectDesign() {
 		if (selectedElement !== null) {
 			if (selectedElement.indexOf(NODE) > -1) {
-				if ($("#" + selectedElement).size() !== 0) {
+				if ($('#' + selectedElement).size() !== 0) {
 					var newState = $('#' + selectedElement);
-					newState.removeClass("selectednode");
+					newState.removeClass('selectednode');
 					var connections = getConnections(newState);
 					jQuery.each(connections, function(object) {
-						this.setType("change", {
-							color : "#5C96BC",
-							label : this.getOverlay("label").getLabel()
+						this.setType('change', {
+							color : '#5C96BC',
+							label : this.getOverlay('label').getLabel()
 						});
 					});
 				}
@@ -207,10 +197,9 @@ var CDARJsPlumb = (function() {
 				var connections = jsPlumb.getConnections();
 				jQuery.each(connections, function(object) {
 					if (selectedElement === this.id) {
-						var label = this.getOverlay("label").getLabel();
-
-						this.setType("change", {
-							color : "#5C96BC",
+						var label = this.getOverlay('label').getLabel();
+						this.setType('change', {
+							color : '#5C96BC',
 							label : label
 						});
 					}
@@ -224,7 +213,7 @@ var CDARJsPlumb = (function() {
 	function drillUpEvent(uptree, newState) {
 		uptree.click(function(e) {
 			e.stopPropagation();
-			scope.drillUpNode(newState[0].id.replace(NODE, ""));
+			scope.drillUpNode(newState[0].id.replace(NODE, ''));
 		});
 	}
 
@@ -232,21 +221,20 @@ var CDARJsPlumb = (function() {
 	function drillDownEvent(downtree, newState) {
 		downtree.click(function(e) {
 			e.stopPropagation();
-			scope.drillDownNode(newState[0].id.replace(NODE, ""));
+			scope.drillDownNode(newState[0].id.replace(NODE, ''));
 		});
 	}
 
 	// bind new connection event
 	// store connection and show popup for option selection
 	function bindNewConnection() {
-		jsPlumb.bind("connection", function(info) {
+		jsPlumb.bind('connection', function(info) {
 			if (!isInitialized) {
 				CDARJsPlumb.setLinkId(info.connection, info.connection
-						.getParameter("id"));
+						.getParameter('id'));
 				bindClickConnection(info);
 			} else {
-				scope.addLink(scope.treeId, info.sourceId.replace(NODE, ""),
-						info.targetId.replace(NODE, ""), info.connection);
+				scope.addLink(scope.treeId, info.sourceId.replace(NODE, ''), info.targetId.replace(NODE, ''), info.connection);
 				showSubnodePopup(info);
 				bindClickConnection(info);
 				newLinkFired=true;
@@ -257,26 +245,35 @@ var CDARJsPlumb = (function() {
 	//Listener before connection dropped on target
 	function bindDropConnection(info)
 	{
-		jsPlumb.bind("beforeDrop", function(connection) {
+		jsPlumb.bind('beforeDrop', function(connection) {
 			if(!isInitialized);
-			else if(newLinkFired)
-				{newLinkFired=false;}
-			else 
-				{noty({
-					  text: 'An error has occurred. You have to reload!', 
-					  buttons: [
-					    {addClass: 'btn btn-primary', text: 'Reload', onClick: function($noty) {
-					    	location.reload();
-					        $noty.close();
+		
+			else if(newLinkFired){
+				newLinkFired=false;
+			}
+			
+			else {
+				noty({
+					text: 'An error has occurred. You have to reload!', 
+					buttons: [{
+						addClass: 'btn btn-primary', text: 'Reload', onClick: function($noty) {
+							location.reload();
+							$noty.close();
 					      }
 					    },
-					    {addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+					    {
+					    	addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
 					        $noty.close();
-					        noty({text: 'Your changes may not be stored correctly', type: 'error'});
+					        noty(
+					        		{
+					        			text: 'Your changes may not be stored correctly', type: 'error'
+					        		}
+					        );
 					      }
 					    }
 					  ]
-					});}
+					});
+				}
 			return !newLinkFired ;
         });
 	}
@@ -284,12 +281,12 @@ var CDARJsPlumb = (function() {
 	//Listener click on connection
 	//mark it
 	function bindClickConnection(info) {
-		info.connection.bind("click", function(c) {
+		info.connection.bind('click', function(c) {
 			resetSelectDesign();
-			var label = info.connection.getOverlay("label").getLabel();
+			var label = info.connection.getOverlay('label').getLabel();
 
-			info.connection.setType("change", {
-				color : "#BEEBFF",
+			info.connection.setType('change', {
+				color : '#BEEBFF',
 				label : label
 			});
 			selectedElement = info.connection.id;
@@ -312,38 +309,38 @@ var CDARJsPlumb = (function() {
 	//build popup content
 	function buildPopupContent(id, title) {
 		$('#radio-form').append(
-				"<input type=\"radio\" id=\"" + SUBNODE + id
-						+ "\" name=\"option\" class=\"radio_item\" value=\""
-						+ title + "\">" + title + "<br>");
+				'<input type=\'radio\' id=\'' + SUBNODE + id
+				+ '\' name=\'option\' class=\'radio_item\' value=\''
+				+ title + '\'>' + title + '<br>');
 	};
 
 	//Register Connection template
 	function registerLinkTemplate() {
-		jsPlumb.registerConnectionType("change", {
+		jsPlumb.registerConnectionType('change', {
 			paintStyle : {
-				strokeStyle : "${color}",
+				strokeStyle : '${color}',
 				lineWidth : 2
 			},
-			overlays : [ [ "Arrow", {
+			overlays : [ [ 'Arrow', {
 				location : 1,
-				id : "arrow",
+				id : 'arrow',
 				length : 14,
 				foldback : 0.8
-			} ], [ "Label", {
-				label : "${label}",
-				id : "label",
-				cssClass : "aLabel"
+			} ], [ 'Label', {
+				label : '${label}',
+				id : 'label',
+				cssClass : 'aLabel'
 			} ] ],
 
-			connector : [ "StateMachine", {
+			connector : [ 'StateMachine', {
 				curviness : 20
 			} ],
-			endpoint : [ "Dot", {
+			endpoint : [ 'Dot', {
 				radius : 2
 			} ],
 			endpointStyle : {
-				fillStyle : "${color}",
-				outlineColor : "black",
+				fillStyle : '${color}',
+				outlineColor : 'black',
 				outlineWidth : 1
 			}
 		});
@@ -373,22 +370,22 @@ var CDARJsPlumb = (function() {
 		var state;
 		switch (status) {
 		case 1:
-			state = "open.png";
+			state = 'open.png';
 			break;
 		case 2:
-			state = "decided.png";
+			state = 'decided.png';
 			break;
 		case 3:
-			state = "accepted.png";
+			state = 'accepted.png';
 			break;
 		case 4:
-			state = "rejected.png";
+			state = 'rejected.png';
 			break;
 		case 5:
-			state = "closed.png";
+			state = 'closed.png';
 			break;
 		default:
-			state = "open.png";
+			state = 'open.png';
 			break;
 		}
 		return 'app/img/' + state;
@@ -396,7 +393,7 @@ var CDARJsPlumb = (function() {
 	
 	//prepare to remove connection
 	function prepareRemoveLink(id){
-		scope.deleteLink(id.replace(LINK, ""));
+		scope.deleteLink(id.replace(LINK, ''));
 	}
 
 	//detach node and delete connections
@@ -405,9 +402,9 @@ var CDARJsPlumb = (function() {
         if (node.size() !== 0) {
             var connections = getConnections(node);
             jQuery.each(connections, function() {
-                scope.deleteLink(this.id.replace(LINK, ""));
+                scope.deleteLink(this.id.replace(LINK, ''));
             });
-            scope.undropNode(node[0].id.replace(NODE, ""));
+            scope.undropNode(node[0].id.replace(NODE, ''));
         }
     }
 
@@ -415,7 +412,7 @@ var CDARJsPlumb = (function() {
 	return {
 		//initialize jsPlumb
 		initialize : function() {
-			scope = angular.element(document.getElementById("wrapper")).scope();
+			scope = angular.element(document.getElementById('wrapper')).scope();
 			setDefaultSettings();
 			registerLinkTemplate();
 			buildContent();
@@ -508,12 +505,8 @@ var CDARJsPlumb = (function() {
 					var uptree = $('<div>').addClass('uptree');
 
 					if (!scope.isProducer) {
-
 						var status = $('<div>').attr('id', STATUS + this.id)
-								.addClass('status').css(
-										'background-image',
-										'url(' + getStatusImage(this.status)
-												+ ')');
+								.addClass('status').css('background-image',	'url(' + getStatusImage(this.status) + ')');
 						newState.append(status);
 					}
 					newState.append(downtree);
@@ -543,8 +536,6 @@ var CDARJsPlumb = (function() {
 
 					appendElements(title, connect, newState, option);
 					scope.getSubnodesOfNode(this.id);
-
-
 				}
 			});
         },
@@ -553,7 +544,7 @@ var CDARJsPlumb = (function() {
 		removeSelected : function() {
 			if (selectedElement !== null) {
 				if (selectedElement.indexOf(NODE) > -1) {
-					detachNode(selectedElement.replace(NODE, ""));
+					detachNode(selectedElement.replace(NODE, ''));
 				} else {
 					prepareRemoveLink(selectedElement);
 				}
@@ -591,20 +582,18 @@ var CDARJsPlumb = (function() {
 		
 		//order nodes
 		makeNodeHierarchy : function(data, resSubNodes) {
-			$("#dot-src").empty();
+			$('#dot-src').empty();
 			var map = {};
 			jQuery.each(resSubNodes, function(object) {
 				map[this.id] = this;
 			});
 
-			var direction = "digraph chargraph {node[shape=box, margin=0, width=2, height=1];";
+			var direction = 'digraph chargraph {node[shape=box, margin=0, width=2, height=1];';
 			jQuery.each(data, function(object) {
-				connectNodes(NODE + this.sourceId, NODE + this.targetId,
-						this.id, map[this.subnodeId]);
-				direction += NODE + this.sourceId + " -> " + NODE
-						+ this.targetId + ";";
+				connectNodes(NODE + this.sourceId, NODE + this.targetId, this.id, map[this.subnodeId]);
+				direction += NODE + this.sourceId + ' -> ' + NODE + this.targetId + ';';
 			});
-			direction += "}";
+			direction += '}';
 			$('#dot-src').val(direction);
 			isInitialized = true;
 		},
@@ -632,8 +621,8 @@ var CDARJsPlumb = (function() {
 
 		//update options of node
 		updateSubnodesOfNode : function(newSubnode, nodeId, changes) {
-			if ($("#" + NODE + nodeId).size() !== 0) {
-				var options = $("#" + NODE + nodeId).data("subnode");
+			if ($('#' + NODE + nodeId).size() !== 0) {
+				var options = $('#' + NODE + nodeId).data('subnode');
 				if (changes !== null && changes.changedEntities !== null) {
 					var oldSubnodes = options.subnode.slice(0);
 				}
@@ -649,13 +638,13 @@ var CDARJsPlumb = (function() {
 
 				if (changes !== null && changes.changedEntities !== null) {
 					var allSourceConnection = jsPlumb.getConnections({
-						source : $("#" + NODE + nodeId)
+						source : $('#' + NODE + nodeId)
 					});
 					var map = {};
 					jQuery.each(changes.changedEntities, function(object) {
 						map[this.id] = true;
 					});
-					// get delte from new to old
+					// get delta from new to old subnodes
 					var linkTitle = [];
 					jQuery.each(newSubnode, function(object) {
 						linkTitle.push(this.title);
@@ -666,17 +655,15 @@ var CDARJsPlumb = (function() {
 									linkTitle);
 						}
 					});
-					jQuery.each(allSourceConnection,
-							function(object) {
-								if (map[this.id.replace(LINK, "")]) {
-									if (changes.operation === 'delete') {
-										jsPlumb.detach(this);
-									} else if (changes.operation === 'update') {
-										this.getOverlay("label").setLabel(
-												linkTitle[0]);
-									}
-								}
-							});
+					jQuery.each(allSourceConnection, function(object) {
+						if (map[this.id.replace(LINK, '')]) {
+							if (changes.operation === 'delete') {
+								jsPlumb.detach(this);
+							} else if (changes.operation === 'update') {
+								this.getOverlay('label').setLabel(linkTitle[0]);
+							}
+						}
+					});
 				}
 			}
 		},
@@ -684,7 +671,7 @@ var CDARJsPlumb = (function() {
 		//Button drill down
 		drillDownButton : function() {
 			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
-				scope.drillDownNode(selectedElement.replace(NODE, ""));
+				scope.drillDownNode(selectedElement.replace(NODE, ''));
 			}
 			else
 			{
@@ -699,7 +686,7 @@ var CDARJsPlumb = (function() {
 		//Button drill up
 		drillUpButton : function() {
 			if (selectedElement&&selectedElement.indexOf(NODE) > -1) {
-				scope.drillUpNode(selectedElement.replace(NODE, ""));
+				scope.drillUpNode(selectedElement.replace(NODE, ''));
 			}
 			else{
 				noty({

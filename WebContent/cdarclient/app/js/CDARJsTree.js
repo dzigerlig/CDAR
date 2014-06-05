@@ -1,14 +1,14 @@
 var CDARJsTree = (function () {
     var DIRECTORY = 'directory';
     var NODE = 'node';
-    var scope = angular.element(document.getElementById("wrapper")).scope();
+    var scope = angular.element(document.getElementById('wrapper')).scope();
     var copiedId = [];
     var quantitiyOfCopies = 0;
     var editedCopies = 0;
     var lastRenamed;
 
     var mouseOverJsTreeFlag = false;
-    var eleme = $("#jstree-container");
+    var eleme = $('#jstree-container');
 
     // private Methods
     eleme.mouseover(function () {
@@ -34,19 +34,19 @@ var CDARJsTree = (function () {
 
         //Listener on select node in jsTree
         //Show wiki content
-        $('#jstree').on("select_node.jstree", function (e, data) {
+        $('#jstree').on('select_node.jstree', function (e, data) {
             if (data.node.type !== 'default' && data.node.type !== 'root') {
                 var id = data.selected[0];
-                id = id.replace(NODE, "");
-                id = id.replace(DIRECTORY, "");
+                id = id.replace(NODE, '');
+                id = id.replace(DIRECTORY, '');
                 scope.changeNode(id, data.node.text);
             }
         });
 
         //Listener on node- or foldercopy in jsTree
         //add new Node with Subnodes or Folder copies
-        $('#jstree').on("copy_node.jstree", function (e, data) {
-            quantitiyOfCopies = 1;
+        $('#jstree').on('copy_node.jstree', function (e, data) {
+        	quantitiyOfCopies = 1;
             var node = data.node;
             if (node.type === 'default') {
                 scope.addDirectoryCopy(node);
@@ -55,7 +55,7 @@ var CDARJsTree = (function () {
                     dndCopyCreateSubnodes(data);
                 }
             } else {
-            	var id = data.original.id.replace(NODE, "").replace(DIRECTORY, "");
+            	var id = data.original.id.replace(NODE, '').replace(DIRECTORY, '');
                 scope.addNodeCopy(id,node);
             }
         });
@@ -64,9 +64,9 @@ var CDARJsTree = (function () {
         //Check new name length
         //Rename selected Element in jsTree
         $('#jstree').on(
-            "rename_node.jstree",
+            'rename_node.jstree',
             function (e, data) {        	
-                if (data.text === ""||lastRenamed!==undefined&&data.text===lastRenamed.old&&data.old===lastRenamed.text) {
+                if (data.text === ''||lastRenamed!==undefined&&data.text===lastRenamed.old&&data.old===lastRenamed.text) {
                    return false;
                 }
                 else  if (data.text.length > 45) {
@@ -75,38 +75,38 @@ var CDARJsTree = (function () {
 						 text : 'Please enter a text with less than 45 Characters',
 						 timeout : 3000
 					 });
-			        	$("#jstree").jstree('rename_node', $('#'+data.node.id) , data.old);
+			        	$('#jstree').jstree('rename_node', $('#'+data.node.id) , data.old);
 
 					 return false;
 				}
                 lastRenamed=data;
                 var id = data.node.id;
-                id = id.replace(DIRECTORY, "");
+                id = id.replace(DIRECTORY, '');
                 if (data.node.type !== 'default') {
-                    id = id.replace(NODE, "");
+                    id = id.replace(NODE, '');
                    scope.renameNode(id, data, data.node.parent.replace(
-                        DIRECTORY, ""));
+                        DIRECTORY, ''));
                 } else {
                     scope.renameDirectory(id, data);
                 }
             });
 
         //Listener on delete node or folder
-        $('#jstree').on("delete_node.jstree", function (e, data) {
+        $('#jstree').on('delete_node.jstree', function (e, data) {
             scope.selectedNodeId = 0;
-            scope.selectednodename = "";
+            scope.selectednodename = '';
         });
 
         
         //Listener on create node or folder
         //Set parentid after creation
-        $('#jstree').on("create_node.jstree", function (e, data) {
+        $('#jstree').on('create_node.jstree', function (e, data) {
         	console.log('create node');
             var id = data.node.id;
-            var parentId = data.parent.replace(DIRECTORY, "");
-            id = id.replace(DIRECTORY, "");
+            var parentId = data.parent.replace(DIRECTORY, '');
+            id = id.replace(DIRECTORY, '');
             if (data.node.type !== 'default') {
-                id = id.replace(NODE, "");
+                id = id.replace(NODE, '');
                 scope.moveNode(id, parentId);
             } else {
                 if (parentId === '#') {
@@ -122,38 +122,38 @@ var CDARJsTree = (function () {
         $('#jstree').jstree(
             {
                 'core': {
-                    "animation": 0,
-                    "check_callback": true,
-                    "themes": {
-                        "stripes": true
+                    'animation': 0,
+                    'check_callback': true,
+                    'themes': {
+                        'stripes': true
                     },
                     'data': treeArray
                 },
-                "types": {
+                'types': {
 
-                    "#": {
-                        "icon": "../cdarclient/app/img/tree.png",
-                        "valid_children": [ "default" ]
+                    '#': {
+                        'icon': '../cdarclient/app/img/tree.png',
+                        'valid_children': [ 'default' ]
                     },
-                    "root": {
-                        "icon": "../cdarclient/app/img/tree.png",
-                        "valid_children": [ "default" ]
+                    'root': {
+                        'icon': '../cdarclient/app/img/tree.png',
+                        'valid_children': [ 'default' ]
                     },
-                    "default": {
-                        "valid_children": [ "default", "file" ]
+                    'default': {
+                        'valid_children': [ 'default', 'file' ]
                     },
-                    "file": {
-                        "icon": "glyphicon glyphicon-file",
-                        "valid_children": []
+                    'file': {
+                        'icon': 'glyphicon glyphicon-file',
+                        'valid_children': []
                     }
                 },
-                "plugins": ["dnd", "search", "sort", "types",
-                    "themes" ]
+                'plugins': ['dnd', 'search', 'sort', 'types',
+                    'themes' ]
             });
         if(scope.DescriptionService.getExpandedLevel()>0){
-        	$("#jstree").jstree("open_node", $("#" + rootid));
+        	$('#jstree').jstree('open_node', $('#' + rootid));
         
-        	var children =  $("#jstree").jstree("get_children_dom", $("#" + rootid));
+        	var children =  $('#jstree').jstree('get_children_dom', $('#' + rootid));
         	openDirectories(scope.DescriptionService.getExpandedLevel()-1,children);
         }
     }
@@ -163,8 +163,8 @@ var CDARJsTree = (function () {
     	$.each(children, function( index, value ) {
     		if(val>=1)
 			{
-        		$("#jstree").jstree("open_node",(value.id));
-    			openDirectories(val-1, $("#jstree").jstree("get_children_dom", value.id));
+        		$('#jstree').jstree('open_node',(value.id));
+    			openDirectories(val-1, $('#jstree').jstree('get_children_dom', value.id));
 			}
     	});
     }
@@ -173,11 +173,11 @@ var CDARJsTree = (function () {
     function deleteChildNodes(data) {
         data.children_d.forEach(function (nodeId) {
         	node = $('#jstree').jstree(true).get_node(nodeId);
-            nodeId = nodeId.replace(DIRECTORY, "");
+            nodeId = nodeId.replace(DIRECTORY, '');
             if (node.type === 'default') {
                scope.deleteDirectory(nodeId);
             } else {
-               scope.deleteNode(nodeId.replace(NODE, ""));
+               scope.deleteNode(nodeId.replace(NODE, ''));
             }
         });
     }
@@ -190,7 +190,7 @@ var CDARJsTree = (function () {
             if (node.type === 'default') {
                 scope.addDirectoryCopy(node);
             } else {
-            	var id = data.original.children_d[i].replace(NODE, "").replace(DIRECTORY, "");
+            	var id = data.original.children_d[i].replace(NODE, '').replace(DIRECTORY, '');
                 scope.addNodeCopy(id,node);
             }
             i++;
@@ -201,14 +201,12 @@ var CDARJsTree = (function () {
     function setId() {
         for (var i in copiedId) {
             var nodeParent = $('#jstree').jstree(true).get_node(copiedId[i]);
-            var id = copiedId[i].replace(DIRECTORY, "");
+            var id = copiedId[i].replace(DIRECTORY, '');
             if (nodeParent.type === 'default') {
-                scope.moveDirectory(id, nodeParent.parent
-                    .replace(DIRECTORY, ""));
+                scope.moveDirectory(id, nodeParent.parent.replace(DIRECTORY, ''));
 
             } else {
-                scope.moveNode(id.replace(NODE, ""), nodeParent.parent.replace(
-                    DIRECTORY, ""));
+                scope.moveNode(id.replace(NODE, ''), nodeParent.parent.replace(DIRECTORY, ''));
             }
         }
         copiedId = [];
@@ -233,14 +231,14 @@ var CDARJsTree = (function () {
     		controller : 'ConfirmationController'
     	}).result.then(function(result) {	
     	      selected.forEach(function (name) {    	       
-    	    	  var id = name.replace(DIRECTORY, "");
-    	    	  if(id.indexOf("node")>=0)	
+    	    	  var id = name.replace(DIRECTORY, '');
+    	    	  if(id.indexOf('node')>=0)	
     	    	  {
-    	    		  scope.deleteNode(id.replace(NODE, ""));
+    	    		  scope.deleteNode(id.replace(NODE, ''));
     	    	  }
     	    	  else
     	    	  {
-    	    		  var data = $("#jstree").jstree('get_node', $('#'+name));
+    	    		  var data = $('#jstree').jstree('get_node', $('#'+name));
     	    		  scope.deleteDirectory(id);
     	    		  if (data.children_d.length) {
     	    			  deleteChildNodes(data);
@@ -257,11 +255,11 @@ var CDARJsTree = (function () {
     	//Buttonclick createNode
         createNode: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
-            if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== "default") {
+            if (!sel.length || sel.length > 1 || ref._model.data[sel].type !== 'default') {
                 noty({type: 'information', text: 'Please select a '+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             } else {
-                scope.addNode(sel[0].replace(DIRECTORY, ""));
+                scope.addNode(sel[0].replace(DIRECTORY, ''));
             };
         },
         
@@ -269,11 +267,11 @@ var CDARJsTree = (function () {
         createDirectory: function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             if (!sel.length || sel.length > 1
-                || ref._model.data[sel].type !== "default" && ref._model.data[sel].type !== "root") {
+                || ref._model.data[sel].type !== 'default' && ref._model.data[sel].type !== 'root') {
                 noty({type: 'information', text: 'Please select a '+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             } else {
-                scope.addDirectory(sel[0].replace(DIRECTORY, ""));
+                scope.addDirectory(sel[0].replace(DIRECTORY, ''));
             }
         },
         
@@ -281,13 +279,13 @@ var CDARJsTree = (function () {
         drillDown: function () {
         	var ref = $('#jstree').jstree(true), sel = ref.get_selected();
         	if (!sel.length || sel.length > 1
-        			|| ref._model.data[sel].type === "default" || ref._model.data[sel].type === "root") {
+        			|| ref._model.data[sel].type === 'default' || ref._model.data[sel].type === 'root') {
         		noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});
         		return false;
         	} else {
         		var nodeId = sel[0];
-        		nodeId=nodeId.replace(NODE, "");
-        		nodeId=nodeId.replace(DIRECTORY, "");
+        		nodeId=nodeId.replace(NODE, '');
+        		nodeId=nodeId.replace(DIRECTORY, '');
         		scope.drillDownNode(nodeId);
         	}
         },
@@ -304,7 +302,7 @@ var CDARJsTree = (function () {
             	return false;
             }               
             sel = sel[0];
-            if($("#jstree").jstree('get_node', $('#'+sel)).parent==='#'){
+            if($('#jstree').jstree('get_node', $('#'+sel)).parent==='#'){
             	 noty({type: 'information', text: 'Please select a '+ scope.DescriptionService.getDirectoryDescription()+' or a '+ scope.DescriptionService.getNodeDescription(), timeout: 5000});            	return false;
             }
             ref.edit(sel);
@@ -318,7 +316,7 @@ var CDARJsTree = (function () {
                 return false;
             }
             if (ref._model.data[sel[0]].parent === '#') {
-                noty({type: 'warning', text: "You can't delete a root "+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
+                noty({type: 'warning', text: 'You cannot delete a root '+scope.DescriptionService.getDirectoryDescription(), timeout: 5000});
                 return false;
             }
 
@@ -335,27 +333,27 @@ var CDARJsTree = (function () {
             var rootid = null;
             resDirectory.forEach(function (entry) {
                 if (entry.parentId === 0) {
-                    parentId = "#";
-                    type = "root";
+                    parentId = '#';
+                    type = 'root';
                     rootid = DIRECTORY + entry.id;
                 } else {
                     parentId = DIRECTORY + entry.parentId;
-                    type = "default";
+                    type = 'default';
                 }
                 treeArray.push({
-                    "id": DIRECTORY + entry.id,
-                    "parent": parentId,
-                    "text": entry.title,
-                    "type": type
+                    'id': DIRECTORY + entry.id,
+                    'parent': parentId,
+                    'text': entry.title,
+                    'type': type
                 });
             });
 
             resNodes.forEach(function (node) {
                 treeArray.push({
-                    "id": DIRECTORY + NODE + node.id,
-                    "parent": DIRECTORY + node.directoryId,
-                    "text": node.title,
-                    "type": "file"
+                    'id': DIRECTORY + NODE + node.id,
+                    'parent': DIRECTORY + node.directoryId,
+                    'text': node.title,
+                    'type': 'file'
                 });
             });
             drawDirectory(treeArray, rootid);
@@ -366,10 +364,10 @@ var CDARJsTree = (function () {
             var ref = $('#jstree').jstree(true), sel = ref.get_selected();
             sel = sel[0];
             sel = ref.create_node(sel, {
-                "type": "file",
-                "id": DIRECTORY + NODE
+                'type': 'file',
+                'id': DIRECTORY + NODE
                 + response.id,
-                "text": 'new '+scope.DescriptionService.getNodeDescription()
+                'text': 'new '+scope.DescriptionService.getNodeDescription()
             });
             if (sel) {
                 ref.edit(sel);
@@ -383,9 +381,9 @@ var CDARJsTree = (function () {
             sel = ref.get_selected();
             sel = sel[0];
             sel = ref.create_node(sel, {
-                "type": "default",
+                'type': 'default',
                 'text': 'new '+scope.DescriptionService.getDirectoryDescription(),
-                "id": DIRECTORY + response.id
+                'id': DIRECTORY + response.id
             });
             if (sel) {
                 ref.edit(sel);
