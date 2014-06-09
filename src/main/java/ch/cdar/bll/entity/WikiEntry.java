@@ -4,9 +4,9 @@ import info.bliki.wiki.model.WikiModel;
 import org.wikipedia.Wiki;
 
 import ch.cdar.bll.entity.consumer.ProjectNode;
-import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
-import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.bll.helper.WikiEntryConcurrentHelper;
+import ch.cdar.dal.exception.UnknownUserException;
+import ch.cdar.dal.helper.PropertyHelper;
 import ch.cdar.dal.repository.wiki.WikiRepository;
 
 /**

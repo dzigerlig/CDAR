@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.Node;
 import ch.cdar.bll.entity.WikiEntry;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.wiki.MediaWikiManager;

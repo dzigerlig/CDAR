@@ -1,4 +1,4 @@
-package ch.cdar.bll.exceptions;
+package ch.cdar.bll.exception;
 
 /**
  * The Class LockingException.

@@ -3,10 +3,10 @@ package ch.cdar.dal.repository.interfaces;
 import java.util.List;
 
 import ch.cdar.bll.entity.Directory;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownDirectoryException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownDirectoryException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Interface IDirectoryRepository.

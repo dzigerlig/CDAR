@@ -26,13 +26,13 @@ import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
 import ch.cdar.bll.manager.producer.NodeLinkManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownCommentException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownCommentException;
+import ch.cdar.dal.exception.UnknownProjectNodeException;
+import ch.cdar.dal.exception.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exception.UnknownProjectSubnodeException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 import ch.cdar.dal.repository.consumer.ProjectDirectoryRepository;
 
 public class TestBLLKnowledgeConsumer {

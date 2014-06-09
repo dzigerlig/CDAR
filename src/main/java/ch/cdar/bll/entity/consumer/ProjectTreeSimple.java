@@ -15,11 +15,11 @@ import ch.cdar.bll.manager.consumer.CommentManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeManager;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class ProjectTreeSimple.

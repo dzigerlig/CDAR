@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 import ch.cdar.bll.entity.Tree;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.helpers.DBConnection;
-import ch.cdar.dal.helpers.DBTableHelper;
-import ch.cdar.dal.helpers.DateHelper;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
+import ch.cdar.dal.helper.DBConnection;
+import ch.cdar.dal.helper.DBTableHelper;
+import ch.cdar.dal.helper.DateHelper;
 import ch.cdar.dal.repository.interfaces.ITreeRepository;
 
 /**

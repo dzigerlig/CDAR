@@ -1,17 +1,17 @@
-package ch.cdar.bll.helpers;
+package ch.cdar.bll.helper;
 
 import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
-import ch.cdar.dal.exceptions.UnknownSubnodeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownProjectNodeException;
+import ch.cdar.dal.exception.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exception.UnknownProjectSubnodeException;
+import ch.cdar.dal.exception.UnknownSubnodeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class SubnodeCopyHelper.

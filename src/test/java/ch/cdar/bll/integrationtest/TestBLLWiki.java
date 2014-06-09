@@ -16,8 +16,8 @@ import ch.cdar.bll.manager.TreeManager;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.exception.UnknownUserException;
+import ch.cdar.dal.helper.PropertyHelper;
 
 public class TestBLLWiki {
 	private UserManager um = new UserManager();

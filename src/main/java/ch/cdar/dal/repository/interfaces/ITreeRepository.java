@@ -3,11 +3,11 @@ package ch.cdar.dal.repository.interfaces;
 import java.util.List;
 
 import ch.cdar.bll.entity.Tree;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Interface ITreeRepository.

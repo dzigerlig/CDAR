@@ -1,4 +1,4 @@
-package ch.cdar.dal.helpers;
+package ch.cdar.dal.helper;
 
 import java.text.DateFormat;
 import java.text.ParseException;

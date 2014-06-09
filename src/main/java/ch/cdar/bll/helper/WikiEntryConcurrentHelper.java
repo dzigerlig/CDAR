@@ -1,4 +1,4 @@
-package ch.cdar.bll.helpers;
+package ch.cdar.bll.helper;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -19,8 +19,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import ch.cdar.dal.exceptions.WikiCreateUserException;
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.exception.WikiCreateUserException;
+import ch.cdar.dal.helper.PropertyHelper;
 
 /**
  * The Class WikiRegistrationManager.

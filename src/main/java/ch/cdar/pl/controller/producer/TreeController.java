@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import ch.cdar.bll.entity.Tree;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.UserRole;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.TreeManager;
 import ch.cdar.bll.manager.UserManager;

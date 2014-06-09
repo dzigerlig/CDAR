@@ -3,7 +3,7 @@ package ch.cdar.bll.entity;
 import java.util.Calendar;
 import java.util.Date;
 
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.helper.PropertyHelper;
 
 /**
  * Class used for locking, to prevent data overrides when multiple users are trying to change the same tree at the same time.

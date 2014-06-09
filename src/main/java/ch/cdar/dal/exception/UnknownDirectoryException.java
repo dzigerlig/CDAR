@@ -1,4 +1,4 @@
-package ch.cdar.dal.exceptions;
+package ch.cdar.dal.exception;
 
 /**
  * The Class UnknownDirectoryException.

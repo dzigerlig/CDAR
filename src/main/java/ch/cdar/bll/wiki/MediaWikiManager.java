@@ -5,18 +5,18 @@ import java.util.concurrent.CountDownLatch;
 
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.WikiEntry;
-import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
+import ch.cdar.bll.helper.WikiEntryConcurrentHelper;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeManager;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
-import ch.cdar.dal.exceptions.UnknownSubnodeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownProjectNodeException;
+import ch.cdar.dal.exception.UnknownProjectSubnodeException;
+import ch.cdar.dal.exception.UnknownSubnodeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class MediaWikiManager.

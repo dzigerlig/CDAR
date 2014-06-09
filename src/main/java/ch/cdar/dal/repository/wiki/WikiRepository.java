@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.wikipedia.Wiki;
 
-import ch.cdar.dal.exceptions.WikiLoginException;
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.exception.WikiLoginException;
+import ch.cdar.dal.helper.PropertyHelper;
 
 /**
  * The Class WikiRepository.

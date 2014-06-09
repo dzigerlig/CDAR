@@ -16,7 +16,7 @@ import ch.cdar.bll.entity.ChangesWrapper;
 import ch.cdar.bll.entity.NodeLink;
 import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectSubnode;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;

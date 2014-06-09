@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.manager.UserManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.exceptions.UsernameInvalidException;
-import ch.cdar.dal.exceptions.WrongCredentialsException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownUserException;
+import ch.cdar.dal.exception.UsernameInvalidException;
+import ch.cdar.dal.exception.WrongCredentialsException;
 
 public class TestBLLUser {
 	private UserManager um = new UserManager();

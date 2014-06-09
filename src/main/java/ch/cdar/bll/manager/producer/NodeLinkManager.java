@@ -7,12 +7,12 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.Node;
 import ch.cdar.bll.entity.NodeLink;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownSubnodeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownNodeLinkException;
+import ch.cdar.dal.exception.UnknownSubnodeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 import ch.cdar.dal.repository.producer.NodeLinkRepository;
 import ch.cdar.dal.repository.producer.NodeRepository;
 import ch.cdar.dal.repository.user.UserRepository;

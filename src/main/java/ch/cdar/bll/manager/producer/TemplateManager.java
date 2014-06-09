@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ch.cdar.bll.entity.producer.Template;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownTemplateException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownXmlTreeException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownTemplateException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownXmlTreeException;
 import ch.cdar.dal.repository.producer.TemplateRepository;
 
 /**

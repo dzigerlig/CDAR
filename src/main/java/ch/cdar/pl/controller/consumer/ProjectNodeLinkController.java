@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.NodeLink;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import ch.cdar.pl.StatusHelper;

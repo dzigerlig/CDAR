@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.Directory;
 import ch.cdar.bll.entity.UserRole;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.bll.manager.DirectoryManager;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.pl.StatusHelper;

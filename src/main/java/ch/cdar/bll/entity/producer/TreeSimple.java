@@ -17,11 +17,11 @@ import ch.cdar.bll.manager.producer.NodeLinkManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
 import ch.cdar.bll.manager.producer.TemplateManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class TreeSimple representing a Simple Tree Export/Import

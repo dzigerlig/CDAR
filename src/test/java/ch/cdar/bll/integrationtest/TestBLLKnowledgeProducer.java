@@ -21,14 +21,14 @@ import ch.cdar.bll.manager.producer.NodeLinkManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
 import ch.cdar.bll.manager.producer.TemplateManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownDirectoryException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownSubnodeException;
-import ch.cdar.dal.exceptions.UnknownTemplateException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownDirectoryException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownNodeLinkException;
+import ch.cdar.dal.exception.UnknownSubnodeException;
+import ch.cdar.dal.exception.UnknownTemplateException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 public class TestBLLKnowledgeProducer {
 	private UserManager um = new UserManager();

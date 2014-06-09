@@ -10,13 +10,13 @@ import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.manager.DirectoryManager;
 import ch.cdar.bll.manager.UserManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownDirectoryException;
-import ch.cdar.dal.exceptions.UnknownNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownSubnodeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownDirectoryException;
+import ch.cdar.dal.exception.UnknownNodeException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownSubnodeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class ReportingBean.

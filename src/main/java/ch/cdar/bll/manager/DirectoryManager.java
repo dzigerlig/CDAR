@@ -5,11 +5,11 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.Directory;
 import ch.cdar.bll.entity.UserRole;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownDirectoryException;
-import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownDirectoryException;
+import ch.cdar.dal.exception.UnknownUserException;
+import ch.cdar.dal.helper.PropertyHelper;
 import ch.cdar.dal.repository.consumer.ProjectDirectoryRepository;
 import ch.cdar.dal.repository.interfaces.IDirectoryRepository;
 import ch.cdar.dal.repository.producer.DirectoryRepository;

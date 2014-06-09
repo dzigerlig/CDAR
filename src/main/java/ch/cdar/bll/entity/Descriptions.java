@@ -1,6 +1,6 @@
 package ch.cdar.bll.entity;
 
-import ch.cdar.dal.helpers.PropertyHelper;
+import ch.cdar.dal.helper.PropertyHelper;
 
 /**
  * Class containing values out of the property file, used to transfer the configured value to the client application.

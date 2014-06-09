@@ -1,4 +1,4 @@
-package ch.cdar.dal.helpers;
+package ch.cdar.dal.helper;
 
 import java.io.InputStream;
 import java.util.Properties;

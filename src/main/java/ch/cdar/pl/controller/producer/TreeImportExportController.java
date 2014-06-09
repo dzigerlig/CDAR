@@ -13,8 +13,8 @@ import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.TreeXml;
 import ch.cdar.bll.manager.importexport.ProducerImportExportManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownXmlTreeException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownXmlTreeException;
 import ch.cdar.pl.StatusHelper;
 
 /**

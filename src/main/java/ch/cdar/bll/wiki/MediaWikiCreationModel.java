@@ -9,9 +9,9 @@ import javax.security.auth.login.LoginException;
 import org.wikipedia.Wiki;
 
 import ch.cdar.bll.entity.User;
-import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
+import ch.cdar.bll.helper.WikiEntryConcurrentHelper;
 import ch.cdar.bll.manager.UserManager;
-import ch.cdar.dal.exceptions.WikiLoginException;
+import ch.cdar.dal.exception.WikiLoginException;
 import ch.cdar.dal.repository.wiki.WikiRepository;
 
 /**

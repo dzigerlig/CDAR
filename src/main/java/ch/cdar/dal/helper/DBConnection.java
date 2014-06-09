@@ -1,4 +1,4 @@
-package ch.cdar.dal.helpers;
+package ch.cdar.dal.helper;
 
 import java.sql.DriverManager;
 import java.sql.Connection;

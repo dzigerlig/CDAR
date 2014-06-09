@@ -5,10 +5,10 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.consumer.Comment;
 import ch.cdar.bll.entity.consumer.ProjectNode;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownCommentException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownCommentException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
 import ch.cdar.dal.repository.consumer.CommentRepository;
 
 /**

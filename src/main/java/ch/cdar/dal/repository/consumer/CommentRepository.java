@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.List;
 
 import ch.cdar.bll.entity.consumer.Comment;
-import ch.cdar.dal.exceptions.CreationException;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownCommentException;
-import ch.cdar.dal.helpers.DBConnection;
-import ch.cdar.dal.helpers.DBTableHelper;
-import ch.cdar.dal.helpers.DateHelper;
+import ch.cdar.dal.exception.CreationException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownCommentException;
+import ch.cdar.dal.helper.DBConnection;
+import ch.cdar.dal.helper.DBTableHelper;
+import ch.cdar.dal.helper.DateHelper;
 
 /**
  * The Class CommentRepository.

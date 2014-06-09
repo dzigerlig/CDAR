@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ch.cdar.bll.entity.Locking;
-import ch.cdar.bll.exceptions.LockingException;
+import ch.cdar.bll.exception.LockingException;
 import ch.cdar.dal.repository.user.UserRepository;
 
 /**

@@ -8,13 +8,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.dal.exceptions.EntityException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeException;
-import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
-import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
-import ch.cdar.dal.exceptions.UnknownProjectTreeException;
-import ch.cdar.dal.exceptions.UnknownTreeException;
-import ch.cdar.dal.exceptions.UnknownUserException;
+import ch.cdar.dal.exception.EntityException;
+import ch.cdar.dal.exception.UnknownProjectNodeException;
+import ch.cdar.dal.exception.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exception.UnknownProjectSubnodeException;
+import ch.cdar.dal.exception.UnknownProjectTreeException;
+import ch.cdar.dal.exception.UnknownTreeException;
+import ch.cdar.dal.exception.UnknownUserException;
 
 /**
  * The Class ProjectTreeFull.
