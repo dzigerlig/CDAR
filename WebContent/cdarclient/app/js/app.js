@@ -54,13 +54,13 @@ app.config(function ($routeProvider,$httpProvider) {
     });
     
     $routeProvider.when('/projecttree/:treeId/importexport', {
-    	templateUrl: 'sharedfiles/importexport.html',
+    	templateUrl: 'importexport/importexport.html',
     	controller: 'ImportExportController',
     	needsLogin: true
     });
     
     $routeProvider.when('/knowledgetree/:treeId/importexport', {
-    	templateUrl: 'sharedfiles/importexport.html',
+    	templateUrl: 'importexport/importexport.html',
     	controller: 'ImportExportController',
     	needsLogin: true
     });
@@ -78,13 +78,13 @@ app.config(function ($routeProvider,$httpProvider) {
     });
     
     $routeProvider.when('/knowledgetree/:treeId/users', {
-    	templateUrl: 'sharedfiles/useraccess.html',
+    	templateUrl: 'user/useraccess.html',
     	controller: 'AccessController',
     	needsLogin: true
     });
     
     $routeProvider.when('/projecttree/:treeId/users', {
-    	templateUrl: 'sharedfiles/useraccess.html',
+    	templateUrl: 'user/useraccess.html',
     	controller: 'AccessController',
     	needsLogin: true
     });
