@@ -8,7 +8,7 @@ import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownTemplateException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownXmlTreeException;
-import ch.cdar.dal.producer.TemplateRepository;
+import ch.cdar.dal.repository.producer.TemplateRepository;
 
 /**
  * The Class TemplateManager.

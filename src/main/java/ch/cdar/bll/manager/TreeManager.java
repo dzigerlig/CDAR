@@ -20,11 +20,6 @@ import ch.cdar.bll.entity.consumer.ProjectSubnode;
 import ch.cdar.bll.manager.producer.NodeLinkManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
-import ch.cdar.dal.consumer.ProjectDirectoryRepository;
-import ch.cdar.dal.consumer.ProjectNodeLinkRepository;
-import ch.cdar.dal.consumer.ProjectNodeRepository;
-import ch.cdar.dal.consumer.ProjectSubnodeRepository;
-import ch.cdar.dal.consumer.ProjectTreeRepository;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownDirectoryException;
@@ -33,11 +28,16 @@ import ch.cdar.dal.exceptions.UnknownProjectNodeException;
 import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.interfaces.IDirectoryRepository;
-import ch.cdar.dal.interfaces.ITreeRepository;
-import ch.cdar.dal.producer.DirectoryRepository;
-import ch.cdar.dal.producer.TreeRepository;
-import ch.cdar.dal.user.UserRepository;
+import ch.cdar.dal.repository.consumer.ProjectDirectoryRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeLinkRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeRepository;
+import ch.cdar.dal.repository.consumer.ProjectSubnodeRepository;
+import ch.cdar.dal.repository.consumer.ProjectTreeRepository;
+import ch.cdar.dal.repository.interfaces.IDirectoryRepository;
+import ch.cdar.dal.repository.interfaces.ITreeRepository;
+import ch.cdar.dal.repository.producer.DirectoryRepository;
+import ch.cdar.dal.repository.producer.TreeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class TreeManager.

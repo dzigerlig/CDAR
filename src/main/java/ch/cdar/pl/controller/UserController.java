@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.manager.UserManager;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class UserController.

@@ -14,7 +14,7 @@ import ch.cdar.bll.entity.NodeLink;
 import ch.cdar.bll.exceptions.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.producer.NodeLinkManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class NodeLinkController.

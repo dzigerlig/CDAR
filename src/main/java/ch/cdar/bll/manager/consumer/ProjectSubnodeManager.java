@@ -1,6 +1,5 @@
 package ch.cdar.bll.manager.consumer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -10,8 +9,6 @@ import ch.cdar.bll.entity.WikiEntry;
 import ch.cdar.bll.entity.consumer.ProjectNode;
 import ch.cdar.bll.entity.consumer.ProjectSubnode;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.dal.consumer.ProjectNodeRepository;
-import ch.cdar.dal.consumer.ProjectSubnodeRepository;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
@@ -21,7 +18,9 @@ import ch.cdar.dal.exceptions.UnknownProjectSubnodeException;
 import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
-import ch.cdar.dal.user.UserRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeRepository;
+import ch.cdar.dal.repository.consumer.ProjectSubnodeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class ProjectSubnodeManager.

@@ -21,7 +21,7 @@ import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.consumer.ProjectNodeLinkManager;
 import ch.cdar.bll.manager.consumer.ProjectSubnodeManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class ProjectSubnodeController.

@@ -5,14 +5,14 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.Directory;
 import ch.cdar.bll.entity.UserRole;
-import ch.cdar.dal.consumer.ProjectDirectoryRepository;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownDirectoryException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
-import ch.cdar.dal.interfaces.IDirectoryRepository;
-import ch.cdar.dal.producer.DirectoryRepository;
+import ch.cdar.dal.repository.consumer.ProjectDirectoryRepository;
+import ch.cdar.dal.repository.interfaces.IDirectoryRepository;
+import ch.cdar.dal.repository.producer.DirectoryRepository;
 
 /**
  * The Class DirectoryManager manages the Directory (Consumer and Producer).

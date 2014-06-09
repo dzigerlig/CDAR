@@ -16,7 +16,7 @@ import ch.cdar.bll.exceptions.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.producer.NodeManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class NodeController.

@@ -1,4 +1,4 @@
-package ch.cdar.pl.controller;
+package ch.cdar.pl;
 
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.MediaType;

@@ -23,7 +23,7 @@ import ch.cdar.bll.manager.producer.SubnodeManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class SubnodeController.

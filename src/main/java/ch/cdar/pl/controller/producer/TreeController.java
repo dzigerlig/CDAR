@@ -20,7 +20,7 @@ import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.TreeManager;
 import ch.cdar.bll.manager.UserManager;
 import ch.cdar.bll.manager.producer.SubnodeManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class TreeController.

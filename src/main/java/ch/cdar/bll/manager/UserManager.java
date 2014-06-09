@@ -8,7 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import ch.cdar.bll.entity.Tree;
 import ch.cdar.bll.entity.User;
 import ch.cdar.bll.entity.UserRole;
-import ch.cdar.bll.wiki.WikiRegistrationManager;
+import ch.cdar.bll.wiki.MediaWikiRegistrationManager;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
@@ -16,8 +16,8 @@ import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.exceptions.UsernameInvalidException;
 import ch.cdar.dal.exceptions.WikiLoginException;
 import ch.cdar.dal.exceptions.WrongCredentialsException;
-import ch.cdar.dal.user.UserRepository;
-import ch.cdar.dal.wiki.WikiRepository;
+import ch.cdar.dal.repository.user.UserRepository;
+import ch.cdar.dal.repository.wiki.WikiRepository;
 
 /**
  * The Class UserManager.
@@ -80,7 +80,7 @@ public class UserManager {
 					WikiRepository wikiConnection = new WikiRepository();
 					wikiConnection.getConnection(user.getUsername(), user.getPassword());
 				} catch (WikiLoginException ex) {
-					WikiRegistrationManager wrm = new WikiRegistrationManager();
+					MediaWikiRegistrationManager wrm = new MediaWikiRegistrationManager();
 					wrm.createUser(user.getUsername(), user.getPassword());
 				}
 			}

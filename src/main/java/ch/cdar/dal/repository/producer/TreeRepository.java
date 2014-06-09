@@ -1,4 +1,4 @@
-package ch.cdar.dal.producer;
+package ch.cdar.dal.repository.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.DBConnection;
 import ch.cdar.dal.helpers.DBTableHelper;
 import ch.cdar.dal.helpers.DateHelper;
-import ch.cdar.dal.interfaces.ITreeRepository;
+import ch.cdar.dal.repository.interfaces.ITreeRepository;
 
 /**
  * The Class TreeRepository.

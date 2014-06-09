@@ -7,7 +7,7 @@ import ch.cdar.bll.entity.consumer.ProjectNode;
 import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
-import ch.cdar.dal.wiki.WikiRepository;
+import ch.cdar.dal.repository.wiki.WikiRepository;
 
 /**
  * Class which loads wiki page of the specified node or subnode containing raw-string of the text and the html formatted string of the text.

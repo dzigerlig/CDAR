@@ -1,4 +1,4 @@
-package ch.cdar.dal.producer;
+package ch.cdar.dal.repository.consumer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,56 +15,103 @@ import ch.cdar.bll.entity.NodeLink;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
 import ch.cdar.dal.exceptions.UnknownNodeLinkException;
+import ch.cdar.dal.exceptions.UnknownProjectNodeLinkException;
+import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.helpers.DBConnection;
 import ch.cdar.dal.helpers.DBTableHelper;
 import ch.cdar.dal.helpers.DateHelper;
-import ch.cdar.dal.interfaces.INodeLinkRepository;
+import ch.cdar.dal.repository.interfaces.INodeLinkRepository;
 
 /**
- * The Class NodeLinkRepository.
+ * The Class ProjectNodeLinkRepository.
  */
-public class NodeLinkRepository implements INodeLinkRepository {
+public class ProjectNodeLinkRepository implements INodeLinkRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinks(int)
 	 */
-	public List<NodeLink> getNodeLinks(int treeId) throws EntityException, UnknownTreeException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID FROM %s WHERE KTRID = ?", DBTableHelper.NODELINK);
+	public List<NodeLink> getNodeLinks(int projectTreeId) throws UnknownProjectTreeException, EntityException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID FROM %s WHERE KPTID = ?",DBTableHelper.PROJECTNODELINK);
 
-		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
-
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql)) {
-			preparedStatement.setInt(1, treeId);
-
+		List<NodeLink> projectNodeLinks = new ArrayList<NodeLink>();
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
+				.prepareStatement(sql)) {
+			preparedStatement.setInt(1, projectTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
-					NodeLink nodelink = new NodeLink();
-					nodelink.setTreeId(treeId);
-					nodelink.setId(result.getInt(1));
-					nodelink.setCreationTime(DateHelper.getDate(result.getString(2)));
-					nodelink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					nodelink.setSourceId(result.getInt(4));
-					nodelink.setTargetId(result.getInt(5));
-					nodelink.setSubnodeId(result.getInt(6));
-					nodelinks.add(nodelink);
+					NodeLink projectNodeLink = new NodeLink();
+					projectNodeLink.setId(result.getInt(1));
+					projectNodeLink.setCreationTime(DateHelper.getDate(result.getString(2)));
+					projectNodeLink.setLastModificationTime(DateHelper.getDate(result.getString(3)));
+					projectNodeLink.setSourceId(result.getInt(4));
+					projectNodeLink.setTargetId(result.getInt(5));
+					projectNodeLink.setSubnodeId(result.getInt(6));
+					projectNodeLink.setTreeId(projectTreeId);
+					projectNodeLinks.add(projectNodeLink);
 				}
 			} catch (ParseException e) {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw new UnknownTreeException();
-		} 
-		return nodelinks;
+			throw new UnknownProjectTreeException();
+		}
+		return projectNodeLinks;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#createNodeLink(cdar.bll.entity.NodeLink)
+	 */
+	public NodeLink createNodeLink(NodeLink projectNodeLink) throws UnknownProjectTreeException {
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.PROJECTNODELINK);
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
+			preparedStatement.setInt(2, projectNodeLink.getSourceId());
+			preparedStatement.setInt(3, projectNodeLink.getTargetId());
+			if (projectNodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, projectNodeLink.getSubnodeId());
+			} else {
+				preparedStatement.setNull(4, Types.INTEGER);
+			}
+			preparedStatement.setInt(5, projectNodeLink.getTreeId());
+
+			preparedStatement.executeUpdate();
+
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					projectNodeLink.setId(generatedKeys.getInt(1));
+				}
+			}
+		} catch (Exception ex) {
+			throw new UnknownProjectTreeException();
+		}
+		return projectNodeLink;
+	}
+	
+	/* (non-Javadoc)
+	 * @see cdar.dal.interfaces.INodeLinkRepository#deleteNodeLink(int)
+	 */
+	public void deleteNodeLink(int projectNodeLinkId) throws UnknownProjectNodeLinkException {
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
+		try (Connection connection = DBConnection.getConnection();
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setInt(1, projectNodeLinkId);
+			if (preparedStatement.executeUpdate()!=1) {
+				throw new UnknownProjectNodeLinkException();
+			}
+		} catch (Exception ex) {
+			throw new UnknownProjectNodeLinkException();
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getParentNodeLinks(int)
 	 */
 	public List<NodeLink> getParentNodeLinks(int nodeId) throws EntityException, UnknownNodeLinkException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = TARGETID",DBTableHelper.NODELINK);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = TARGETID",DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -89,16 +136,17 @@ public class NodeLinkRepository implements INodeLinkRepository {
 			}
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+
 			throw new UnknownNodeLinkException();
 		}
 		return nodelinks;
 	}
-
-	/* (non-Javadoc)
-	 * @see cdar.dal.interfaces.INodeLinkRepository#getSiblingNodeLinks(int)
-	 */
-	public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
-		final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KSNID, LINK.KTRID FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID) AND LINK.TARGETID <> ?", DBTableHelper.NODELINK,DBTableHelper.NODELINK);
+	
+		/* (non-Javadoc)
+		 * @see cdar.dal.interfaces.INodeLinkRepository#getSiblingNodeLinks(int)
+		 */
+		public List<NodeLink> getSiblingNodeLinks(int nodeId) throws UnknownTreeException, EntityException {
+			final String sql = String.format("SELECT LINK.ID, LINK.CREATION_TIME, LINK.LAST_MODIFICATION_TIME, LINK.SOURCEID, LINK.TARGETID, LINK.KPNSNID, LINK.KPTID FROM %s AS LINK WHERE LINK.SOURCEID IN (SELECT LINKTO.SOURCEID FROM %s AS LINKTO WHERE  ?=LINKTO.TARGETID) AND LINK.TARGETID <> ?",DBTableHelper.PROJECTNODELINK,DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -124,6 +172,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 			}
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+
 			throw new UnknownTreeException();
 		}
 		return nodelinks;
@@ -133,7 +182,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getFollowerNodeLinks(int)
 	 */
 	public List<NodeLink> getFollowerNodeLinks(int nodeId) throws UnknownNodeException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE ? = SOURCEID",DBTableHelper.NODELINK);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE ? = SOURCEID", DBTableHelper.PROJECTNODELINK);
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
 		try (Connection connection = DBConnection.getConnection();
@@ -158,6 +207,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 			}
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
+
 			throw new UnknownNodeException();
 		}
 		return nodelinks;
@@ -167,7 +217,7 @@ public class NodeLinkRepository implements INodeLinkRepository {
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLinksBySubnode(int)
 	 */
 	public List<NodeLink> getNodeLinksBySubnode(int subnodeId) throws EntityException, UnknownSubnodeException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KSNID, KTRID FROM %s WHERE KSNID = ?",DBTableHelper.NODELINK);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPNSNID, KPTID FROM %s WHERE KPNSNID = ?",DBTableHelper.PROJECTNODELINK);
 
 		List<NodeLink> nodelinks = new ArrayList<NodeLink>();
 
@@ -200,8 +250,9 @@ public class NodeLinkRepository implements INodeLinkRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#getNodeLink(int)
 	 */
-	public NodeLink getNodeLink(int nodeLinkId) throws UnknownNodeLinkException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KTRID, KSNID FROM %s WHERE ID = ?",DBTableHelper.NODELINK);
+	public NodeLink getNodeLink(int nodeLinkId) throws EntityException, UnknownProjectNodeLinkException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, SOURCEID, TARGETID, KPTID, KPNSNID FROM %s WHERE ID = ?",DBTableHelper.PROJECTNODELINK);
+
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -224,83 +275,34 @@ public class NodeLinkRepository implements INodeLinkRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw new UnknownNodeLinkException();
+			throw new UnknownProjectNodeLinkException();
 		}
-		throw new UnknownNodeLinkException();
-	}
-	
-	/* (non-Javadoc)
-	 * @see cdar.dal.interfaces.INodeLinkRepository#createNodeLink(cdar.bll.entity.NodeLink)
-	 */
-	public NodeLink createNodeLink(NodeLink nodeLink) throws UnknownTreeException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, SOURCEID, TARGETID, KSNID, KTRID) VALUES (?, ?, ?, ?, ?)",DBTableHelper.NODELINK);
-
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1, DateHelper.getDate(new Date()));
-			preparedStatement.setInt(2, nodeLink.getSourceId());
-			preparedStatement.setInt(3, nodeLink.getTargetId());
-			if (nodeLink.getSubnodeId() != 0) {
-				preparedStatement.setInt(4, nodeLink.getSubnodeId());
-			} else {
-				preparedStatement.setNull(4, Types.INTEGER);
-			}
-			preparedStatement.setInt(5, nodeLink.getTreeId());
-
-			preparedStatement.executeUpdate();
-
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					nodeLink.setId(generatedKeys.getInt(1));
-				}
-			}
-		} catch (Exception ex) {
-			throw new UnknownTreeException();
-		}
-		return nodeLink;
+		throw new UnknownProjectNodeLinkException();
 	}
 	
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.INodeLinkRepository#updateNodeLink(cdar.bll.entity.NodeLink)
 	 */
-	public NodeLink updateNodeLink(NodeLink nodeLink) throws UnknownNodeLinkException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KSNID = ?, KTRID = ? WHERE id = ?",DBTableHelper.NODELINK);
+	public NodeLink updateNodeLink(NodeLink updatedNodeLink) throws UnknownProjectNodeLinkException {
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, SOURCEID = ?, TARGETID = ?, KPNSNID = ?, KPTID = ? WHERE id = ?",DBTableHelper.PROJECTNODELINK);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
 			preparedStatement.setString(1, DateHelper.getDate(new Date()));
-			preparedStatement.setInt(2, nodeLink.getSourceId());
-			preparedStatement.setInt(3, nodeLink.getTargetId());
-			if (nodeLink.getSubnodeId() != 0) {
-				preparedStatement.setInt(4, nodeLink.getSubnodeId());
+			preparedStatement.setInt(2, updatedNodeLink.getSourceId());
+			preparedStatement.setInt(3, updatedNodeLink.getTargetId());
+			if (updatedNodeLink.getSubnodeId() != 0) {
+				preparedStatement.setInt(4, updatedNodeLink.getSubnodeId());
 			} else {
 				preparedStatement.setNull(4, Types.INTEGER);
 			}
-			preparedStatement.setInt(5, nodeLink.getTreeId());
-			preparedStatement.setInt(6, nodeLink.getId());
+			preparedStatement.setInt(5, updatedNodeLink.getTreeId());
+			preparedStatement.setInt(6, updatedNodeLink.getId());
 
 			preparedStatement.executeUpdate();
 		} catch (Exception ex) {
-			throw new UnknownNodeLinkException();
+			throw new UnknownProjectNodeLinkException();
 		}
-		return nodeLink;
-	}
-	
-	/* (non-Javadoc)
-	 * @see cdar.dal.interfaces.INodeLinkRepository#deleteNodeLink(int)
-	 */
-	public void deleteNodeLink(int nodeLinkId) throws UnknownNodeLinkException {
-		final String sql = String.format("DELETE FROM %s WHERE ID = ?", DBTableHelper.NODELINK);
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setInt(1, nodeLinkId);
-			if (preparedStatement.executeUpdate()!=1) {
-				throw new UnknownNodeLinkException();
-			}
-		} catch (Exception ex) {
-			throw new UnknownNodeLinkException();
-		}
+		return updatedNodeLink;
 	}
 }

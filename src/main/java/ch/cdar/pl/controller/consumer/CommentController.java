@@ -14,7 +14,7 @@ import ch.cdar.bll.entity.consumer.Comment;
 import ch.cdar.bll.exceptions.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.consumer.CommentManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class CommentController.

@@ -1,4 +1,4 @@
-package ch.cdar.dal.user;
+package ch.cdar.dal.repository.user;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

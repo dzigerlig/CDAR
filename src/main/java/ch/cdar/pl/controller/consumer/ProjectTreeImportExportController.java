@@ -15,7 +15,7 @@ import ch.cdar.bll.entity.TreeXml;
 import ch.cdar.bll.manager.importexport.ConsumerImportExportManager;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownXmlTreeException;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class ProjectTreeImportExportController.

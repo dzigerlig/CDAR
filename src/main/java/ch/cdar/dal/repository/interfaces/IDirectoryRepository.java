@@ -1,4 +1,4 @@
-package ch.cdar.dal.interfaces;
+package ch.cdar.dal.repository.interfaces;
 
 import java.util.List;
 

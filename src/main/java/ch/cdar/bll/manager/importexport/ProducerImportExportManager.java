@@ -41,12 +41,12 @@ import ch.cdar.dal.exceptions.UnknownTemplateException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.exceptions.UnknownXmlTreeException;
-import ch.cdar.dal.producer.DirectoryRepository;
-import ch.cdar.dal.producer.NodeLinkRepository;
-import ch.cdar.dal.producer.NodeRepository;
-import ch.cdar.dal.producer.SubnodeRepository;
-import ch.cdar.dal.producer.TemplateRepository;
-import ch.cdar.dal.producer.XmlTreeRepository;
+import ch.cdar.dal.repository.producer.DirectoryRepository;
+import ch.cdar.dal.repository.producer.NodeLinkRepository;
+import ch.cdar.dal.repository.producer.NodeRepository;
+import ch.cdar.dal.repository.producer.SubnodeRepository;
+import ch.cdar.dal.repository.producer.TemplateRepository;
+import ch.cdar.dal.repository.producer.XmlTreeRepository;
 
 /**
  * The Class ProducerImportExportManager.

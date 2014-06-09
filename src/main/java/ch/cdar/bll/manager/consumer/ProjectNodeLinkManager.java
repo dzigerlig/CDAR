@@ -7,8 +7,6 @@ import java.util.Set;
 
 import ch.cdar.bll.entity.NodeLink;
 import ch.cdar.bll.entity.consumer.ProjectNode;
-import ch.cdar.dal.consumer.ProjectNodeLinkRepository;
-import ch.cdar.dal.consumer.ProjectNodeRepository;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
 import ch.cdar.dal.exceptions.UnknownNodeLinkException;
@@ -17,8 +15,9 @@ import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.user.UserRepository;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.dal.repository.consumer.ProjectNodeLinkRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class ProjectNodeLinkManager.

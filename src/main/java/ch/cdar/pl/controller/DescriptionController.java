@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ch.cdar.bll.entity.Descriptions;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class DescriptionController.

@@ -1,4 +1,4 @@
-package ch.cdar.dal.producer;
+package ch.cdar.dal.repository.consumer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,23 +12,23 @@ import java.util.Date;
 import java.util.List;
 
 import ch.cdar.bll.entity.Directory;
+import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownDirectoryException;
-import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.DBConnection;
 import ch.cdar.dal.helpers.DBTableHelper;
 import ch.cdar.dal.helpers.DateHelper;
-import ch.cdar.dal.interfaces.IDirectoryRepository;
+import ch.cdar.dal.repository.interfaces.IDirectoryRepository;
 
 /**
- * The Class DirectoryRepository.
+ * The Class ProjectDirectoryRepository.
  */
-public class DirectoryRepository implements IDirectoryRepository {
+public class ProjectDirectoryRepository implements IDirectoryRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#getDirectories(int)
 	 */
-	public List<Directory> getDirectories(int treeId) throws EntityException, UnknownUserException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM %s WHERE KTRID = ?",DBTableHelper.DIRECTORY);
+	public List<Directory> getDirectories(int treeId) throws EntityException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, TITLE FROM %s WHERE PTREEID = ?",DBTableHelper.PROJECTDIRECTORY);
 
 		List<Directory> directories = new ArrayList<Directory>();
 
@@ -51,7 +51,7 @@ public class DirectoryRepository implements IDirectoryRepository {
 				throw new EntityException();
 			}
 		} catch (SQLException ex) {
-			throw new UnknownUserException();
+			throw new EntityException();
 		}
 		return directories;
 	}
@@ -59,8 +59,8 @@ public class DirectoryRepository implements IDirectoryRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#getDirectory(int)
 	 */
-	public Directory getDirectory(int directoryId) throws UnknownDirectoryException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM DIRECTORY WHERE ID = ?",DBTableHelper.DIRECTORY);
+	public Directory getDirectory(int directoryId) throws UnknownDirectoryException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = ?",DBTableHelper.PROJECTDIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -79,7 +79,7 @@ public class DirectoryRepository implements IDirectoryRepository {
 					return directory;
 				}
 			} catch (ParseException e) {
-				throw new EntityException();
+				throw new UnknownDirectoryException();
 			}
 		} catch (SQLException ex) {
 			throw new UnknownDirectoryException();
@@ -90,8 +90,8 @@ public class DirectoryRepository implements IDirectoryRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#createDirectory(cdar.bll.entity.Directory)
 	 */
-	public Directory createDirectory(Directory directory) throws UnknownDirectoryException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, PARENTID, KTRID, TITLE) VALUES (?, ?, ?, ?)",DBTableHelper.DIRECTORY);
+	public Directory createDirectory(Directory directory) throws CreationException {
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, PARENTID, PTREEID, TITLE) VALUES (?, ?, ?, ?)",DBTableHelper.PROJECTDIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -112,7 +112,7 @@ public class DirectoryRepository implements IDirectoryRepository {
 				}
 			}
 		} catch (Exception ex) {
-			throw new UnknownDirectoryException();
+			throw new CreationException();
 		}
 
 		return directory;
@@ -121,8 +121,8 @@ public class DirectoryRepository implements IDirectoryRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#updateDirectory(cdar.bll.entity.Directory)
 	 */
-	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, KTRID = ?, TITLE = ? WHERE id = ?",DBTableHelper.DIRECTORY);
+	public Directory updateDirectory(Directory directory) throws UnknownDirectoryException  {
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, PARENTID = ?, PTREEID = ?, TITLE = ? WHERE id = ?",DBTableHelper.PROJECTDIRECTORY);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql)) {
@@ -147,7 +147,7 @@ public class DirectoryRepository implements IDirectoryRepository {
 	 * @see cdar.dal.interfaces.IDirectoryRepository#deleteDirectory(int)
 	 */
 	public void deleteDirectory(int directoryId) throws UnknownDirectoryException {
-		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.DIRECTORY);
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTDIRECTORY);
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
 						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -156,8 +156,6 @@ public class DirectoryRepository implements IDirectoryRepository {
 				throw new UnknownDirectoryException();
 			}
 		} catch (Exception ex) {
-			System.out.println(directoryId);
-			System.out.println(ex.getMessage());
 			throw new UnknownDirectoryException();
 		}
 	}
@@ -165,8 +163,10 @@ public class DirectoryRepository implements IDirectoryRepository {
 	/* (non-Javadoc)
 	 * @see cdar.dal.interfaces.IDirectoryRepository#getRootDirectory(int)
 	 */
-	public Directory getRootDirectory(int treeid) throws EntityException, UnknownDirectoryException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, KTRID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM %s WHERE  KTRID = ?)",DBTableHelper.DIRECTORY, DBTableHelper.DIRECTORY);
+	@Override
+	public Directory getRootDirectory(int treeid) throws EntityException,
+			UnknownDirectoryException {
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, PARENTID, PTREEID, TITLE FROM %s WHERE ID = (SELECT MIN(ID) FROM %s WHERE  PTREEID = ?)",DBTableHelper.PROJECTDIRECTORY,DBTableHelper.PROJECTDIRECTORY);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection

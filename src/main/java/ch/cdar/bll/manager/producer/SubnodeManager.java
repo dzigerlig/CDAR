@@ -15,9 +15,9 @@ import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
-import ch.cdar.dal.producer.NodeRepository;
-import ch.cdar.dal.producer.SubnodeRepository;
-import ch.cdar.dal.user.UserRepository;
+import ch.cdar.dal.repository.producer.NodeRepository;
+import ch.cdar.dal.repository.producer.SubnodeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class SubnodeManager.

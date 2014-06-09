@@ -5,7 +5,7 @@ import java.util.Map;
 
 import ch.cdar.bll.entity.Locking;
 import ch.cdar.bll.exceptions.LockingException;
-import ch.cdar.dal.user.UserRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class LockingManager.

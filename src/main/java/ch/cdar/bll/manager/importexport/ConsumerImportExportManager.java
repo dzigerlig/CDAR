@@ -30,10 +30,6 @@ import ch.cdar.bll.helpers.WikiEntryConcurrentHelper;
 import ch.cdar.bll.manager.DirectoryManager;
 import ch.cdar.bll.manager.consumer.CommentManager;
 import ch.cdar.bll.wiki.MediaWikiCreationModel;
-import ch.cdar.dal.consumer.ProjectNodeLinkRepository;
-import ch.cdar.dal.consumer.ProjectNodeRepository;
-import ch.cdar.dal.consumer.ProjectSubnodeRepository;
-import ch.cdar.dal.consumer.ProjectTreeXmlRepository;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownCommentException;
@@ -48,6 +44,10 @@ import ch.cdar.dal.exceptions.UnknownTemplateException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.exceptions.UnknownXmlTreeException;
+import ch.cdar.dal.repository.consumer.ProjectNodeLinkRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeRepository;
+import ch.cdar.dal.repository.consumer.ProjectSubnodeRepository;
+import ch.cdar.dal.repository.consumer.ProjectTreeXmlRepository;
 
 /**
  * The Class ConsumerImportExportManager.

@@ -15,7 +15,7 @@ import ch.cdar.bll.entity.UserRole;
 import ch.cdar.bll.exceptions.LockingException;
 import ch.cdar.bll.manager.DirectoryManager;
 import ch.cdar.bll.manager.LockingManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class DirectoryController.

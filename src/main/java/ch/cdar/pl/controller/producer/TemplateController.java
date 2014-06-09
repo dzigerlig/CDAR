@@ -14,7 +14,7 @@ import ch.cdar.bll.entity.producer.Template;
 import ch.cdar.bll.exceptions.LockingException;
 import ch.cdar.bll.manager.LockingManager;
 import ch.cdar.bll.manager.producer.TemplateManager;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.pl.StatusHelper;
 
 /**
  * The Class TemplateController.

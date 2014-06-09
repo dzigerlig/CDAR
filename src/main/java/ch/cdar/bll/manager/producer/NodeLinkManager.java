@@ -13,10 +13,9 @@ import ch.cdar.dal.exceptions.UnknownNodeLinkException;
 import ch.cdar.dal.exceptions.UnknownSubnodeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
-import ch.cdar.dal.producer.NodeLinkRepository;
-import ch.cdar.dal.producer.NodeRepository;
-import ch.cdar.dal.user.UserRepository;
-import ch.cdar.pl.controller.StatusHelper;
+import ch.cdar.dal.repository.producer.NodeLinkRepository;
+import ch.cdar.dal.repository.producer.NodeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class NodeLinkManager.

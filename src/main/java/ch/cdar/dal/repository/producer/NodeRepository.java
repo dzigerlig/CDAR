@@ -1,4 +1,4 @@
-package ch.cdar.dal.producer;
+package ch.cdar.dal.repository.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package ch.cdar.pl.controller;
+package ch.cdar.pl;
 
 import java.text.SimpleDateFormat;
 

@@ -1,4 +1,4 @@
-package ch.cdar.dal.consumer;
+package ch.cdar.dal.repository.producer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,9 +20,9 @@ import ch.cdar.dal.helpers.DBTableHelper;
 import ch.cdar.dal.helpers.DateHelper;
 
 /**
- * The Class ProjectTreeXmlRepository.
+ * The Class XmlTreeRepository.
  */
-public class ProjectTreeXmlRepository {
+public class XmlTreeRepository {
 	/**
 	 * Gets the xml trees.
 	 *
@@ -32,11 +32,12 @@ public class ProjectTreeXmlRepository {
 	 * @throws UnknownEntityException the unknown entity exception
 	 */
 	public List<TreeXml> getXmlTrees(int treeId) throws UnknownTreeException, UnknownEntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, XMLSTRING, UID, TREEID, FULLFLAG FROM %s WHERE TREEID = ?",DBTableHelper.PROJECTTREEXML);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE KTRID = ?",DBTableHelper.TREEXML);
 
 		List<TreeXml> xmlTrees = new ArrayList<TreeXml>();
 
-		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
+				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, treeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -44,10 +45,10 @@ public class ProjectTreeXmlRepository {
 					xmlTree.setId(result.getInt(1));
 					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
 					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					xmlTree.setTitle(result.getString(4));
-					xmlTree.setXmlString(result.getString(5));
-					xmlTree.setUserId(result.getInt(6));
-					xmlTree.setTreeId(result.getInt(7));
+					xmlTree.setXmlString(result.getString(4));
+					xmlTree.setUserId(result.getInt(5));
+					xmlTree.setTreeId(result.getInt(6));
+					xmlTree.setTitle(result.getString(7));
 					xmlTree.setIsFull(result.getInt(8) == 1);
 					xmlTrees.add(xmlTree);
 				}
@@ -69,9 +70,10 @@ public class ProjectTreeXmlRepository {
 	 * @throws EntityException the entity exception
 	 */
 	public TreeXml getXmlTree(int xmlTreeId) throws UnknownXmlTreeException, EntityException {
-		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, TITLE, XMLSTRING, UID, TREEID, FULLFLAG FROM %s WHERE ID = ?",DBTableHelper.PROJECTTREEXML);
+		final String sql = String.format("SELECT ID, CREATION_TIME, LAST_MODIFICATION_TIME, XMLSTRING, UID, KTRID, TITLE, FULLFLAG FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 
-		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection
+				.prepareStatement(sql)) {
 			preparedStatement.setInt(1, xmlTreeId);
 			try (ResultSet result = preparedStatement.executeQuery()) {
 				while (result.next()) {
@@ -79,10 +81,10 @@ public class ProjectTreeXmlRepository {
 					xmlTree.setId(result.getInt(1));
 					xmlTree.setCreationTime(DateHelper.getDate(result.getString(2)));
 					xmlTree.setLastModificationTime(DateHelper.getDate(result.getString(3)));
-					xmlTree.setTitle(result.getString(4));
-					xmlTree.setXmlString(result.getString(5));
-					xmlTree.setUserId(result.getInt(6));
-					xmlTree.setTreeId(result.getInt(7));
+					xmlTree.setXmlString(result.getString(4));
+					xmlTree.setUserId(result.getInt(5));
+					xmlTree.setTreeId(result.getInt(6));
+					xmlTree.setTitle(result.getString(7));
 					xmlTree.setIsFull(result.getInt(8) == 1);
 					return xmlTree;
 				}
@@ -104,7 +106,7 @@ public class ProjectTreeXmlRepository {
 	 * @throws UnknownXmlTreeException the unknown xml tree exception
 	 */
 	public TreeXml createXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
-		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, treeid, xmlstring, fullflag, title) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.PROJECTTREEXML);
+		final String sql = String.format("INSERT INTO %s (CREATION_TIME, uid, ktrid, xmlstring, title, fullflag) VALUES (?, ?, ?, ?, ?, ?)",DBTableHelper.TREEXML);
 
 		try (Connection connection = DBConnection.getConnection();
 				PreparedStatement preparedStatement = connection
@@ -113,12 +115,13 @@ public class ProjectTreeXmlRepository {
 			preparedStatement.setInt(2, xmlTree.getUserId());
 			preparedStatement.setInt(3, xmlTree.getTreeId());
 			preparedStatement.setString(4, xmlTree.getXmlString());
+			preparedStatement.setString(5, xmlTree.getTitle());
 			if (xmlTree.getIsFull()) {
-				preparedStatement.setInt(5, 1);
+				preparedStatement.setInt(6, 1);
 			} else {
-				preparedStatement.setInt(5, 0);
+				preparedStatement.setInt(6, 0);
 			}
-			preparedStatement.setString(6,  xmlTree.getTitle());
+
 			preparedStatement.executeUpdate();
 
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -127,7 +130,27 @@ public class ProjectTreeXmlRepository {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new UnknownXmlTreeException();
+		}
+		return xmlTree;
+	}
+	
+	/**
+	 * Update xml tree.
+	 *
+	 * @param xmlTree the xml tree
+	 * @return the tree xml
+	 * @throws UnknownXmlTreeException the unknown xml tree exception
+	 */
+	public TreeXml updateXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException {
+		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",DBTableHelper.TREEXML);
+		try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setString(1, DateHelper.getDate(new Date()));
+			preparedStatement.setString(2, xmlTree.getTitle());
+			preparedStatement.setInt(3, xmlTree.getId());
+
+			preparedStatement.executeUpdate();
+		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();
 		}
 		return xmlTree;
@@ -140,9 +163,10 @@ public class ProjectTreeXmlRepository {
 	 * @throws UnknownXmlTreeException the unknown xml tree exception
 	 */
 	public void deleteXmlTree(TreeXml xmlTree) throws UnknownXmlTreeException   {
-		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.PROJECTTREEXML);
+		final String sql = String.format("DELETE FROM %s WHERE ID = ?",DBTableHelper.TREEXML);
 		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+				PreparedStatement preparedStatement = connection
+						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 			preparedStatement.setInt(1, xmlTree.getId());
 			if (preparedStatement.executeUpdate()!=1) {
 				throw new UnknownXmlTreeException();
@@ -150,28 +174,5 @@ public class ProjectTreeXmlRepository {
 		} catch (Exception ex) {
 			throw new UnknownXmlTreeException();
 		}
-	}
-
-	/**
-	 * Update xml tree.
-	 *
-	 * @param updatedTreeXml the updated tree xml
-	 * @return the tree xml
-	 * @throws UnknownXmlTreeException the unknown xml tree exception
-	 */
-	public TreeXml updateXmlTree(TreeXml updatedTreeXml) throws UnknownXmlTreeException {
-		final String sql = String.format("UPDATE %s SET LAST_MODIFICATION_TIME = ?, TITLE = ? WHERE id = ?",DBTableHelper.PROJECTTREEXML);
-		try (Connection connection = DBConnection.getConnection();
-				PreparedStatement preparedStatement = connection
-						.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1, DateHelper.getDate(new Date()));
-			preparedStatement.setString(2, updatedTreeXml.getTitle());
-			preparedStatement.setInt(3, updatedTreeXml.getId());
-
-			preparedStatement.executeUpdate();
-		} catch (Exception ex) {
-			throw new UnknownXmlTreeException();
-		}
-		return updatedTreeXml;
 	}
 }

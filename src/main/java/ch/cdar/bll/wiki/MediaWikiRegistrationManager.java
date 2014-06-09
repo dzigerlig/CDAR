@@ -25,14 +25,14 @@ import ch.cdar.dal.helpers.PropertyHelper;
 /**
  * The Class WikiRegistrationManager.
  */
-public class WikiRegistrationManager {
+public class MediaWikiRegistrationManager {
 	/** The url. */
 	private String URL = null;
 	
 	/**
 	 * Instantiates a new wiki registration manager.
 	 */
-	public WikiRegistrationManager() {
+	public MediaWikiRegistrationManager() {
 		PropertyHelper propertyHelper = new PropertyHelper();
 		URL = String.format("http://%s/api.php/?", propertyHelper.getProperty("CDAR_MEDIAWIKI_CONNECTION"));
 	}

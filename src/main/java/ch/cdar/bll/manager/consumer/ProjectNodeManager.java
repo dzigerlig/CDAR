@@ -9,8 +9,6 @@ import ch.cdar.bll.entity.consumer.ProjectNode;
 import ch.cdar.bll.helpers.SubnodeCopyHelper;
 import ch.cdar.bll.manager.producer.TemplateManager;
 import ch.cdar.bll.wiki.MediaWikiManager;
-import ch.cdar.dal.consumer.ProjectDirectoryRepository;
-import ch.cdar.dal.consumer.ProjectNodeRepository;
 import ch.cdar.dal.exceptions.CreationException;
 import ch.cdar.dal.exceptions.EntityException;
 import ch.cdar.dal.exceptions.UnknownNodeException;
@@ -21,7 +19,9 @@ import ch.cdar.dal.exceptions.UnknownProjectTreeException;
 import ch.cdar.dal.exceptions.UnknownTreeException;
 import ch.cdar.dal.exceptions.UnknownUserException;
 import ch.cdar.dal.helpers.PropertyHelper;
-import ch.cdar.dal.user.UserRepository;
+import ch.cdar.dal.repository.consumer.ProjectDirectoryRepository;
+import ch.cdar.dal.repository.consumer.ProjectNodeRepository;
+import ch.cdar.dal.repository.user.UserRepository;
 
 /**
  * The Class ProjectNodeManager.
