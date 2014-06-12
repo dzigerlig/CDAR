@@ -154,7 +154,8 @@ public class ProjectNodeManager {
 			if (!projectNode.getWikititle().contains("PROJECTNODE_")) {
 				MediaWikiManager mwm = new MediaWikiManager();
 				TemplateManager tm = new TemplateManager();
-				String content = String.format("%s\n\n%s", mwm.getProjectNodeWikiEntry(projectNode.getId()).getWikiContentPlain(), tm.getDefaultProjectTemplateText(projectNode.getInheritedTreeId()));
+				String templateContent = tm.getDefaultProjectTemplateText(projectNode.getInheritedTreeId()) == null ? "" : tm.getDefaultProjectTemplateText(projectNode.getInheritedTreeId());
+				String content = String.format("%s\n\n%s", mwm.getProjectNodeWikiEntry(projectNode.getId()).getWikiContentPlain(), templateContent);
 				updatedProjectNode.setWikititle(String.format("PROJECTNODE_%d", projectNode.getId()));
 				mwm.createWikiEntry(userId, updatedProjectNode.getWikititle(), content);
 			}
