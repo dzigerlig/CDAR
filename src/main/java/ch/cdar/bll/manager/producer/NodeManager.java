@@ -116,7 +116,7 @@ public class NodeManager {
 			if (templateContent == null) {
 				PropertyHelper propertyHelper = new PropertyHelper();
 				templateContent = String.format("== %S ==",
-						propertyHelper.getProperty("NODE_DESCRIPTION"));
+						propertyHelper.getProperty("CDAR_NODE_DESCRIPTION"));
 			}
 		}
 
